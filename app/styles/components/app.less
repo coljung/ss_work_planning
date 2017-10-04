@@ -1,0 +1,90 @@
+.store_layout{
+    .ant-layout-header{
+        background-color: @palette-grey-900;
+        z-index: 100;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.26);
+        padding: 0 20px;
+        height: 6.4rem;
+        color: white;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        > i{
+            width: 64px;
+            color: #fff;
+        }
+    }
+    .ant-layout{
+        // height: ~"calc(100% - 64px)";
+        min-height: 100%;
+        background: #fff;
+        padding-top: 6.4rem;
+    }
+}
+
+.ant-layout-sider .ant-menu {
+    position: fixed;
+}
+
+.ant-menu-dark {
+	.ant-menu-item {
+		a{
+			color: rgba(255, 255, 255, 0.67);
+			font-size: 13px;
+		}
+	}
+}
+
+.ant-layout-sider-collapsed .anticon {
+	font-size: 16px;
+    line-height: 42px;
+}
+
+.ant-layout-sider-collapsed .nav-text {
+	display: none;
+}
+
+.ant-tabs-nav-wrap {
+    height: 45px;
+}
+
+.ant-tabs-nav .ant-tabs-tab {
+    height: 45px !important;
+}
+
+.ant-fullcalendar-header .ant-radio-group {
+    display: none;
+}
+
+.ant-fullcalendar-header .ant-select {
+    width: auto !important;
+}
+
+.ant-fullcalendar-date {
+    font-size: 13px;
+}
+
+.ant-fullcalendar-date .appointments {
+    line-height: 24px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.ant-fullcalendar-date .appointments li {
+    color: #999;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.ant-fullcalendar-date .appointments li span:first-child {
+    font-size: 9px;
+    margin-right: 4px;
+}
+
+.ant-fullcalendar-date .appointments li span {
+    vertical-align: middle;
+    color: #108ee9;
+}

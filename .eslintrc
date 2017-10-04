@@ -1,0 +1,18 @@
+{
+  "extends": "ui-core/client-react",
+  "plugins": ["react"],
+  "rules": {
+    "indent": [
+      2,
+      4,
+      {
+        "SwitchCase": 1,
+        "MemberExpression": 1,
+        "ObjectExpression": 1,
+        "CallExpression": {
+          "arguments": 1
+        }
+      }
+    ]
+  }
+}

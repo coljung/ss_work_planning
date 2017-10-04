@@ -1,0 +1,4 @@
+#!/bin/bash
+set -e
+
+curl --silent --output /dev/null http://localhost:80 || exit 1
