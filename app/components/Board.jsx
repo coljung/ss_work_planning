@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { NotificationManager } from '../notifications/NotificationManager';
 
 export default class Board extends React.Component {
     render() {
@@ -17,7 +16,6 @@ export default class Board extends React.Component {
         }
         return (
             <div className='board' id={this.props.id}>
-                <NotificationManager />
                 {boardTitle}
                 {this.props.children}
             </div>
