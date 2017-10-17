@@ -8,7 +8,7 @@ export default class HeaderContent extends Component {
         return (
             <div className="headerContent">
                 <Logo />
-                <h1>MIcroservice Name</h1>
+                <h1>Merchanside Planning Tool</h1>
                 <NavigationUser />
             </div>
         );
