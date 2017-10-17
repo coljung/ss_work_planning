@@ -22,6 +22,9 @@ module.exports = {
             path.join(__dirname, './app'),
             'node_modules',
         ],
+        alias: {
+            handsontable: path.resolve(__dirname, 'node_modules/handsontable-pro')
+        }
     },
     module: {
         rules: [

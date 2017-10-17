@@ -15,7 +15,7 @@ base.entry.unshift(`webpack-dev-server/client?http://localhost:${PORT}`, 'webpac
 base.devServer = {
     historyApiFallback: true,
     host: HOST,
-    port: 8003,
+    port: 8007,
     clientLogLevel: 'info',
     headers: { 'Access-Control-Allow-Origin': '*' },
     public: `localhost:${PORT}`,
