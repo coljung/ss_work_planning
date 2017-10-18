@@ -1,0 +1,15 @@
+.budgetList{
+    list-style: disc;
+    margin-left: 20px;
+    > li {
+        margin-bottom: 5px;
+    }
+    ul{
+        margin-left: 20px;
+        li:before {
+            content: '\2014';
+            position: absolute;
+            margin-left: -20px;
+        }
+    }
+}
