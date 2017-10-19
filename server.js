@@ -7,6 +7,7 @@ const basicAuth = require('node-basicauth');
 
 const host = config.get('server.host');
 const port = config.get('server.port');
+const apiPlanningBaseUrl = `http://${config.get('api.planning.host')}:${config.get('api.planning.port')}`;
 
 const app = express();
 
@@ -17,6 +18,13 @@ app.use(basicAuth({
 app.use(cors());
 app.use(express.static(path.resolve(__dirname, 'build')));
 app.use(express.static(path.resolve(__dirname, 'public')));
+
+app.all('/api/*', (req, res) => {
+    const uri = req.originalUrl.replace(/^\/api\//, '/');
+    const apiRequest = request(apiPlanningBaseUrl + uri);
+    req.pipe(apiRequest);
+    apiRequest.pipe(res);
+});
 
 app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, './public/index.html'));
