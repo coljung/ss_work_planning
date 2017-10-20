@@ -4,7 +4,6 @@ import Board from '../components/Board';
 import BudgetList from './BudgetList';
 import BudgetCreate from './BudgetCreate';
 
-
 export default class BudgetHome extends Component {
 
     constructor(props) {
