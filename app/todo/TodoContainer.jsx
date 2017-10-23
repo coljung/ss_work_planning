@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
-import ReactDataGrid from 'react-data-grid';
 import HotTable from 'react-handsontable';
+import Handsontable  from 'handsontable';
 import { data } from './test';
 
-const colHeaders = ['', 'Tesla', 'Nissan', 'Toyota', 'Honda'];
+// const colHeaders = ['', 'Tesla', 'Nissan', 'Toyota', 'Honda'];
+
+const rowHeaders = ['Sales', 'COGS', 'GM'];
 
 const columns = [
     {
@@ -31,6 +33,43 @@ const columns = [
     },
 ];
 
+const merge = [   
+    {row: 2, col: 0, rowspan: 5, colspan: 1},
+    {row: 7, col: 0, rowspan: 5, colspan: 1},
+    {row: 12, col: 0, rowspan: 5, colspan: 1},
+
+    {row: 0, col: 2, rowspan: 1, colspan: 4},
+    {row: 0, col: 6, rowspan: 1, colspan: 4},
+    {row: 0, col: 10, rowspan: 1, colspan: 4},
+];
+
+const customBorders = [
+    {range: {
+        from: {row: 0, col: 0},
+        to: {row: 3, col: 4}},
+        left: {},
+        right: {},
+        top: {},
+        bottom: {}
+    }
+];
+
+function firstRowRenderer(instance, td, row, col, prop, value, cellProperties) {
+    // debugger;
+  Handsontable.renderers.TextRenderer.apply(this, arguments);
+  td.style.background = '#CCC';
+}
+
+const highlight = function (row, col, prop) {
+  var cellProperties = {};
+  if (row === 5 && col !== 0) {
+    cellProperties.renderer = firstRowRenderer; // uses function directly
+  }
+  return cellProperties;
+}
+
+
+
 export default class TodoContainer extends Component {
 
     constructor(props) {
@@ -48,19 +87,18 @@ export default class TodoContainer extends Component {
             <HotTable
                 root="hot"
                 data={this.handsontableData}
-                fixedColumnsLeft={1}
-                fixedRowsTop={1}
-                colHeaders={colHeaders}
-                rowHeaders={false}
-                columns={columns}
-                width={1200}
-                height={600}
+                cells={highlight}
+                fixedRowsTop={2} 
+                contextMenu={true}
+                height={800}
+                width={1500}
+                mergeCells={merge}
+                customBorders={true}
                 currentRowClassName= {'currentRow'}
                 currentColClassName= {'currentCol'}
                 function={true}
                 observeChanges={true}
-                afterChange={this.test.bind(this)}
-                stretchH="all" />
+                afterChange={this.test.bind(this)} />
         );
     }
 }
