@@ -1,7 +1,12 @@
 const path = require('path');
 const webpack = require('webpack');
 const autoprefixer = require('autoprefixer');
+const chalk = require('chalk');
+// eslint-disable-next-line import/no-extraneous-dependencies
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const Visualizer = require('webpack-visualizer-plugin');
+const ProgressBarPlugin = require('progress-bar-webpack-plugin');
+
 const config = require('config');
 
 module.exports = {
@@ -82,6 +87,14 @@ module.exports = {
                 context: __dirname,
                 postcss: [autoprefixer],
             },
+        }),
+        new Visualizer({
+            filename: './webpackBundleStats.html',
+        }),
+        new ProgressBarPlugin({
+            format: `${chalk.blue.bold(' build [:bar] ')}${chalk.magenta.bold(':percent')} (:elapsed seconds)`,
+            clear: false,
+            width: 50,
         }),
     ],
 };

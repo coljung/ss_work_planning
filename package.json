@@ -6,7 +6,7 @@
   "scripts": {
     "start": "NODE_ENV=production npm run build && node server.js",
     "dev": "NODE_ENV=development webpack-dev-server --color --hot --inline --config ./webpack.dev.config.js --content-base ./public",
-    "build": "NODE_ENV=production UV_THREADPOOL_SIZE=100 webpack --config ./webpack.prod.config.js",
+    "build": "NODE_ENV=production UV_THREADPOOL_SIZE=100 webpack --color --config ./webpack.prod.config.js",
     "lint": "./node_modules/.bin/eslint 'app/**'",
     "lint:fix": "./node_modules/.bin/eslint 'app/**' --fix",
     "test": "npm run test:unit",
@@ -42,7 +42,8 @@
     "request": "^2.83.0",
     "superagent": "^3.6.3",
     "superagent-promise": "^1.1.0",
-    "webpack": "^2.3.2"
+    "webpack": "^2.3.2",
+    "webpack-visualizer-plugin": "^0.1.11"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.5",

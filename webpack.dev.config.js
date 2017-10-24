@@ -3,7 +3,6 @@ const webpack = require('webpack');
 const config = require('config');
 const chalk = require('chalk');
 // eslint-disable-next-line import/no-extraneous-dependencies
-const ProgressBarPlugin = require('progress-bar-webpack-plugin');
 
 const base = require('./webpack.config');
 
@@ -31,11 +30,6 @@ base.devServer = {
 
 base.plugins.push(
     new webpack.HotModuleReplacementPlugin(),
-    new ProgressBarPlugin({
-        format: `${chalk.blue.bold(' build [:bar] ')}${chalk.magenta.bold(':percent')} (:elapsed seconds)`,
-        clear: false,
-        width: 50,
-    }),
     // eslint-disable-next-line comma-dangle
     new webpack.NoEmitOnErrorsPlugin()
 );
