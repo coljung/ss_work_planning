@@ -6,14 +6,18 @@ import { Link } from 'react-router';
 import { Spin } from 'antd';
 import { fetchBudgets } from './BudgetActions';
 
-import { data } from './fakeData';
 import { ROUTE_BUDGET } from '../Routes';
 
 class BudgetList extends Component {
 
-    constructor(props) {
-        super(props);
-        // this.handsontableData = data;
+    componentWillMount() {
+        this.props.fetchBudgets();
+    }
+
+    componentWillReceiveProps(props) {
+        this.setState({
+            budgets: props.budgets,
+        });
     }
 
     listItems = (versions) => {
@@ -32,12 +36,14 @@ class BudgetList extends Component {
     }
 
     createList = () => {
-        const budgetListParent = data.filter(e => e.versions.length)
+        const stBudgets = this.state.budgets.data;
+
+        const budgetListParent = stBudgets.filter(e => e.versions.length)
             .map((e) => {
                 const innerList = this.listItems(e.versions);
                 return (
                     <li key={e.id}>
-                        <h4>{e.name}</h4>
+                        <h4>{e.season}{e.year}</h4>
                         {innerList}
                     </li>
                 );
@@ -50,8 +56,7 @@ class BudgetList extends Component {
     }
 
     render() {
-    //     const budgetListData = data.length ? this.createList() : <Spin size="large" />;
-        const budgetListData = data.length ? this.createList() : <Spin size="large" />;
+        const budgetListData = this.props.budgetsFetched ? this.createList() : <Spin size="large" />;
         return (
             budgetListData
         );
@@ -59,7 +64,10 @@ class BudgetList extends Component {
 }
 
 BudgetList.propTypes = {
-    budgets: PropTypes.array.isRequired,
+    budgets: PropTypes.oneOfType([
+        PropTypes.array,
+        PropTypes.object,
+    ]).isRequired,
     budgetsFetched: PropTypes.bool.isRequired,
     fetchBudgets: PropTypes.func.isRequired,
 };

@@ -75,6 +75,10 @@ module.exports = {
         new webpack.DefinePlugin({
             'process.env': {
                 NODE_ENV: JSON.stringify(config.get('node_env.env')),
+                UI_PLANNING_HOST: JSON.stringify(config.get('server.exposedHost')),
+                UI_PLANNING_PORT: JSON.stringify(config.get('server.exposedPort')),
+                MS_PLANNING_HOST: JSON.stringify(config.get('api.planning.host')),
+                MS_PLANNING_PORT: JSON.stringify(config.get('api.planning.port')),
             },
         }),
         new webpack.LoaderOptionsPlugin({
