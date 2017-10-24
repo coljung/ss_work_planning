@@ -39,7 +39,7 @@ class BudgetList extends Component {
         const stBudgets = this.state.budgets.data;
 
         const budgetListParent = stBudgets.filter(e => e.versions.length)
-            .map((e) => {
+            .slice(0).reverse().map((e) => {
                 const innerList = this.listItems(e.versions);
                 return (
                     <li key={e.id}>
