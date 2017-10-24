@@ -33,10 +33,21 @@ const columns = [
     },
 ];
 
+// WITHOUT THE EMPTY CELLS HACK
+// const merge = [   
+//     {row: 2, col: 0, rowspan: 5, colspan: 1},
+//     {row: 7, col: 0, rowspan: 5, colspan: 1},
+//     {row: 12, col: 0, rowspan: 5, colspan: 1},
+
+//     {row: 0, col: 2, rowspan: 1, colspan: 4},
+//     {row: 0, col: 6, rowspan: 1, colspan: 4},
+//     {row: 0, col: 10, rowspan: 1, colspan: 4},
+// ];
+
 const merge = [   
     {row: 2, col: 0, rowspan: 5, colspan: 1},
-    {row: 7, col: 0, rowspan: 5, colspan: 1},
-    {row: 12, col: 0, rowspan: 5, colspan: 1},
+    {row: 8, col: 0, rowspan: 5, colspan: 1},
+    {row: 14, col: 0, rowspan: 5, colspan: 1},
 
     {row: 0, col: 2, rowspan: 1, colspan: 4},
     {row: 0, col: 6, rowspan: 1, colspan: 4},
@@ -57,12 +68,14 @@ const customBorders = [
 function firstRowRenderer(instance, td, row, col, prop, value, cellProperties) {
     // debugger;
   Handsontable.renderers.TextRenderer.apply(this, arguments);
-  td.style.background = '#CCC';
+  td.style.background = '#DCDCDC';
+  td.style.fontWeight = 'bold';
+  td.className = 'grey';
 }
 
 const highlight = function (row, col, prop) {
   var cellProperties = {};
-  if (row === 5 && col !== 0) {
+  if (row === 6 && col !== 0 || row === 12 && col !== 0 || row === 18 && col !== 0 ) {
     cellProperties.renderer = firstRowRenderer; // uses function directly
   }
   return cellProperties;
@@ -89,9 +102,10 @@ export default class TodoContainer extends Component {
                 data={this.handsontableData}
                 cells={highlight}
                 fixedRowsTop={2} 
+                fixedColumnsLeft={2}
                 contextMenu={true}
-                height={800}
-                width={1500}
+                height={400}
+                width={800}
                 mergeCells={merge}
                 customBorders={true}
                 currentRowClassName= {'currentRow'}

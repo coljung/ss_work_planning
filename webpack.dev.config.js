@@ -9,17 +9,24 @@ const base = require('./webpack.config');
 
 const HOST = config.get('server.host');
 const PORT = config.get('server.port');
+const exposedPort = config.get('server.exposedPort');
 
-base.entry.unshift(`webpack-dev-server/client?http://localhost:${PORT}`, 'webpack/hot/only-dev-server');
+base.entry.unshift(`webpack-dev-server/client?http://localhost:${exposedPort}`, 'webpack/hot/only-dev-server');
 
 base.devServer = {
     historyApiFallback: true,
     host: HOST,
-    port: 8007,
+    port: PORT,
     clientLogLevel: 'info',
     headers: { 'Access-Control-Allow-Origin': '*' },
-    public: `localhost:${PORT}`,
-    // for proxy, check https://github.com/Groupe-Atallah/ui-store/blob/v1/webpack.dev.config.js#L21
+    public: `localhost:${exposedPort}`,
+	proxy: {
+        '/api': {
+            target: `http://${config.get('api.planning.host')}:${config.get('api.planning.port')}`,
+            pathRewrite: { '^/api': '' },
+            secure: false,
+        },
+    },
 };
 
 base.plugins.push(

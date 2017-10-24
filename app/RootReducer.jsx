@@ -1,8 +1,8 @@
 import { combineReducers } from 'redux';
-import TodoReducer from './todo/TodoReducer';
+import BudgetReducer from './budgets/BudgetReducer';
 import Message from './notifications/NotificationReducer';
 
 export default combineReducers({
-    TodoReducer,
+    BudgetReducer,
     Message,
 });

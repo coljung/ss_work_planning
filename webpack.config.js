@@ -23,8 +23,8 @@ module.exports = {
             'node_modules',
         ],
         alias: {
-            handsontable: path.resolve(__dirname, 'node_modules/handsontable-pro')
-        }
+            handsontable: path.resolve(__dirname, 'node_modules/handsontable-pro'),
+        },
     },
     module: {
         rules: [
@@ -34,7 +34,7 @@ module.exports = {
                 use: ['babel-loader'],
             },
             {
-                test: /(\.less|\.css)$/,
+                test: /(\.css)$/,
                 use: ExtractTextPlugin.extract({
                     fallback: [{
                         loader: 'style-loader',
@@ -44,9 +44,19 @@ module.exports = {
                             loader: 'css-loader',
                             options: {
                                 minimize: true,
-                            }
+                            },
                         },
-                        // 'css-loader',
+                    ],
+                }),
+            },
+            {
+                test: /(\.less)$/,
+                use: ExtractTextPlugin.extract({
+                    fallback: [{
+                        loader: 'style-loader',
+                    }],
+                    use: [
+                        'css-loader',
                         'less-loader',
                     ],
                 }),
