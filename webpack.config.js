@@ -23,8 +23,8 @@ module.exports = {
             'node_modules',
         ],
         alias: {
-            handsontable: path.resolve(__dirname, 'node_modules/handsontable-pro')
-        }
+            handsontable: path.resolve(__dirname, 'node_modules/handsontable-pro'),
+        },
     },
     module: {
         rules: [
@@ -34,7 +34,7 @@ module.exports = {
                 use: ['babel-loader'],
             },
             {
-                test: /(\.less|\.css)$/,
+                test: /(\.css)$/,
                 use: ExtractTextPlugin.extract({
                     fallback: [{
                         loader: 'style-loader',
@@ -44,9 +44,19 @@ module.exports = {
                             loader: 'css-loader',
                             options: {
                                 minimize: true,
-                            }
+                            },
                         },
-                        // 'css-loader',
+                    ],
+                }),
+            },
+            {
+                test: /(\.less)$/,
+                use: ExtractTextPlugin.extract({
+                    fallback: [{
+                        loader: 'style-loader',
+                    }],
+                    use: [
+                        'css-loader',
                         'less-loader',
                     ],
                 }),
@@ -65,6 +75,10 @@ module.exports = {
         new webpack.DefinePlugin({
             'process.env': {
                 NODE_ENV: JSON.stringify(config.get('node_env.env')),
+                UI_PLANNING_HOST: JSON.stringify(config.get('server.exposedHost')),
+                UI_PLANNING_PORT: JSON.stringify(config.get('server.exposedPort')),
+                MS_PLANNING_HOST: JSON.stringify(config.get('api.planning.host')),
+                MS_PLANNING_PORT: JSON.stringify(config.get('api.planning.port')),
             },
         }),
         new webpack.LoaderOptionsPlugin({
