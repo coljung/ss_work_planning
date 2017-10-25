@@ -45,14 +45,31 @@ const columns = [
 // ];
 
 const merge = [   
-    {row: 2, col: 0, rowspan: 5, colspan: 1},
-    {row: 8, col: 0, rowspan: 5, colspan: 1},
-    {row: 14, col: 0, rowspan: 5, colspan: 1},
+    // {row: 2, col: 0, rowspan: 5, colspan: 1},
+    // {row: 8, col: 0, rowspan: 5, colspan: 1},
+    // {row: 14, col: 0, rowspan: 5, colspan: 1},
 
     {row: 0, col: 2, rowspan: 1, colspan: 4},
     {row: 0, col: 6, rowspan: 1, colspan: 4},
     {row: 0, col: 10, rowspan: 1, colspan: 4},
 ];
+
+const cellStyle = [
+    {row: 0, col: 2, className: "bold"},
+    {row: 0, col: 6, className: "bold"},
+    {row: 0, col: 10, className: "bold"},
+    {row: 1, col: 2, className: "bold"},
+    {row: 1, col: 3, className: "bold"},
+    {row: 1, col: 4, className: "bold"},
+    {row: 1, col: 5, className: "bold"},
+    {row: 1, col: 6, className: "bold"},
+    {row: 1, col: 7, className: "bold"},
+    {row: 1, col: 8, className: "bold"},
+    {row: 1, col: 9, className: "bold"},
+    {row: 1, col: 10, className: "bold"},
+    {row: 1, col: 11, className: "bold"},
+    {row: 1, col: 12, className: "bold"}
+]
 
 const customBorders = [
     {range: {
@@ -68,8 +85,8 @@ const customBorders = [
 function firstRowRenderer(instance, td, row, col, prop, value, cellProperties) {
     // debugger;
   Handsontable.renderers.TextRenderer.apply(this, arguments);
-  td.style.background = '#DCDCDC';
   td.style.fontWeight = 'bold';
+  td.style.background = '#DCDCDC';
   td.className = 'grey';
 }
 
@@ -79,6 +96,7 @@ const highlight = function (row, col, prop) {
     cellProperties.renderer = firstRowRenderer; // uses function directly
   }
   return cellProperties;
+
 }
 
 
@@ -92,7 +110,6 @@ export default class TodoContainer extends Component {
 
     test(val) {
         console.log(val);
-
     }
 
     render() {
@@ -101,11 +118,13 @@ export default class TodoContainer extends Component {
                 root="hot"
                 data={this.handsontableData}
                 cells={highlight}
+                cell={cellStyle}
                 fixedRowsTop={2} 
                 fixedColumnsLeft={2}
+                formulas={true}
                 contextMenu={true}
-                height={400}
-                width={800}
+                height={900}
+                width={1200}
                 mergeCells={merge}
                 customBorders={true}
                 currentRowClassName= {'currentRow'}
