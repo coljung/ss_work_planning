@@ -1,7 +1,12 @@
 const path = require('path');
 const webpack = require('webpack');
 const autoprefixer = require('autoprefixer');
+const chalk = require('chalk');
+// eslint-disable-next-line import/no-extraneous-dependencies
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const Visualizer = require('webpack-visualizer-plugin');
+const ProgressBarPlugin = require('progress-bar-webpack-plugin');
+
 const config = require('config');
 
 module.exports = {
@@ -23,8 +28,8 @@ module.exports = {
             'node_modules',
         ],
         alias: {
-            handsontable: path.resolve(__dirname, 'node_modules/handsontable-pro')
-        }
+            handsontable: path.resolve(__dirname, 'node_modules/handsontable-pro'),
+        },
     },
     module: {
         rules: [
@@ -34,7 +39,7 @@ module.exports = {
                 use: ['babel-loader'],
             },
             {
-                test: /(\.less|\.css)$/,
+                test: /(\.css)$/,
                 use: ExtractTextPlugin.extract({
                     fallback: [{
                         loader: 'style-loader',
@@ -44,9 +49,19 @@ module.exports = {
                             loader: 'css-loader',
                             options: {
                                 minimize: true,
-                            }
+                            },
                         },
-                        // 'css-loader',
+                    ],
+                }),
+            },
+            {
+                test: /(\.less)$/,
+                use: ExtractTextPlugin.extract({
+                    fallback: [{
+                        loader: 'style-loader',
+                    }],
+                    use: [
+                        'css-loader',
                         'less-loader',
                     ],
                 }),
@@ -65,6 +80,10 @@ module.exports = {
         new webpack.DefinePlugin({
             'process.env': {
                 NODE_ENV: JSON.stringify(config.get('node_env.env')),
+                UI_PLANNING_HOST: JSON.stringify(config.get('server.exposedHost')),
+                UI_PLANNING_PORT: JSON.stringify(config.get('server.exposedPort')),
+                MS_PLANNING_HOST: JSON.stringify(config.get('api.planning.host')),
+                MS_PLANNING_PORT: JSON.stringify(config.get('api.planning.port')),
             },
         }),
         new webpack.LoaderOptionsPlugin({
@@ -72,6 +91,14 @@ module.exports = {
                 context: __dirname,
                 postcss: [autoprefixer],
             },
+        }),
+        new Visualizer({
+            filename: './webpackBundleStats.html',
+        }),
+        new ProgressBarPlugin({
+            format: `${chalk.blue.bold(' build [:bar] ')}${chalk.magenta.bold(':percent')} (:elapsed seconds)`,
+            clear: false,
+            width: 50,
         }),
     ],
 };

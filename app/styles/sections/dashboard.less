@@ -1,0 +1,15 @@
+.budgetList{
+    list-style: disc;
+    margin-left: 20px;
+    > li {
+        margin-bottom: 5px;
+    }
+    ul{
+        margin-left: 10px;
+        li:before {
+            content: '-';
+            position: absolute;
+            margin-left: -10px;
+        }
+    }
+}

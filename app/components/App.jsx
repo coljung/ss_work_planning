@@ -36,7 +36,7 @@ export default class App extends Component {
                 </Header>
                 <Layout>
                     <Content>
-                        <main style={{ flex: 1, overflowY: 'auto', padding: 25 }}>
+                        <main style={{ flex: 1, overflowY: 'auto', padding: '0 25px 25px' }}>
                             <ReactCSSTransitionGroup
                                     component="div"
                                     transitionName="example"
