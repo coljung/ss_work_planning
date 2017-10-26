@@ -1,20 +1,12 @@
-// dummy host
-const dummyHost = '0.0.0.0';
-const dummyPort = '8007';
-const dummyEnv = 'development';
-const dummyPassword = 'development'
-
 module.exports = {
     server: {
-        host: dummyHost,
-        port: dummyPort,
-        // exposedHost: process.env.UI_STORE_HOST,
-        // exposedPort: process.env.UI_STORE_PORT
+        host: process.env.HTTP_UI_HOST || '0.0.0.0',
+        port: process.env.HTTP_UI_PORT || 8007
     },
     auth: {
-        password: process.env.HTTP_AUTH_PASSWORD || dummyPassword,
+        password: process.env.HTTP_AUTH_PASSWORD || 'development',
     },
     node_env: {
-        env: process.env.NODE_ENV || dummyEnv,
+        env: process.env.NODE_ENV || 'development',
     }
 };
