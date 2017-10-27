@@ -9,6 +9,8 @@ export const REQUEST_BUDGETS = 'REQUEST_BUDGETS';
 export const RECEIVE_BUDGETS = 'RECEIVE_BUDGETS';
 export const REQUEST_SEASONS = 'REQUEST_SEASONS';
 export const RECEIVE_SEASONS = 'RECEIVE_SEASONS';
+export const REQUEST_CREATE_BUDGET = 'REQUEST_CREATE_BUDGET';
+export const RECEIVE_CREATE_BUDGET = 'RECEIVE_CREATE_BUDGET';
 
 function requestBudgets() {
     return {
@@ -36,6 +38,20 @@ function receiveSeasons(seasons) {
     };
 }
 
+function requestBudgetCreate(budget) {
+    return {
+        type: REQUEST_CREATE_BUDGET,
+        budget,
+    };
+}
+
+function receiveBudgetCreate(budget) {
+    return {
+        type: RECEIVE_CREATE_BUDGET,
+        budget,
+    };
+}
+
 export function fetchBudgets() {
     return (dispatch) => {
         dispatch(requestBudgets());
@@ -56,6 +72,21 @@ export function fetchSeasons() {
             .get('http://localhost:3001/planning/seasons/show/available')
             .then(
                 res => dispatch(receiveSeasons(res.body)),
+                err => dispatch(messages({ content: err, response: err.response, isError: true })),
+            );
+    };
+}
+
+export function createBudget(budget) {
+    return (dispatch) => {
+        dispatch(requestBudgetCreate(budget));
+        const req = request.post('http://localhost:3001/planning/seasons');
+        return req.send(budget)
+            .then(
+                (res) => {
+                    dispatch(messages({ content: 'Budget created successfully!', response: '', isError: false }));
+                    return dispatch(receiveBudgetCreate(res.body));
+                },
                 err => dispatch(messages({ content: err, response: err.response, isError: true })),
             );
     };
