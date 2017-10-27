@@ -3,10 +3,6 @@ import HotTable from 'react-handsontable';
 import Handsontable  from 'handsontable';
 import { data } from './test';
 
-// const colHeaders = ['', 'Tesla', 'Nissan', 'Toyota', 'Honda'];
-
-const rowHeaders = ['Sales', 'COGS', 'GM'];
-
 const columns = [
     {
         type: 'numeric'
@@ -45,13 +41,13 @@ const columns = [
 // ];
 
 const merge = [   
-    // {row: 2, col: 0, rowspan: 5, colspan: 1},
-    // {row: 8, col: 0, rowspan: 5, colspan: 1},
-    // {row: 14, col: 0, rowspan: 5, colspan: 1},
+    {row: 2, col: 0, rowspan: 5, colspan: 1},
+    {row: 8, col: 0, rowspan: 5, colspan: 1},
+    {row: 14, col: 0, rowspan: 5, colspan: 1},
 
-    {row: 0, col: 2, rowspan: 1, colspan: 4},
-    {row: 0, col: 6, rowspan: 1, colspan: 4},
-    {row: 0, col: 10, rowspan: 1, colspan: 4},
+    {row: 0, col: 2, rowspan: 1, colspan: 3},
+    {row: 0, col: 5, rowspan: 1, colspan: 3},
+    {row: 0, col: 8, rowspan: 1, colspan: 3},
 ];
 
 const cellStyle = [
