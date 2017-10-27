@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
-import { Button, Modal, Spin } from 'antd';
+import { Button, Modal, Spin, Row, Col } from 'antd';
 import { fetchBudgets } from './BudgetActions';
 
 import { ROUTE_BUDGET } from '../Routes';
@@ -32,21 +32,6 @@ class BudgetList extends Component {
         }
     }
 
-    listItems = (versions) => {
-        const list = versions.map(v =>
-            <li key={v.id}>
-                <Link to={`${ROUTE_BUDGET}/new`}>
-                    {v.name}
-                </Link>
-            </li>,
-        );
-        return (
-            <ul className="versionList">
-                {list}
-            </ul>
-        );
-    }
-
     enterLoading = (e) => {
         this.setState({
             modalActive: !this.state.modalActive,
@@ -55,11 +40,10 @@ class BudgetList extends Component {
 
     createList = () => {
         const stBudgets = this.state.budgets;
-        // take latest 4 budgets
         const hasVersions = stBudgets.filter(e => e.versions.length);
 
+        // take latest 4 budgets
         const recentBudgets = hasVersions.slice(0, 4).map((e) => {
-            // const innerList = this.listItems(e.versions);
             return (
                 <li key={e.id}>
                     <h4>
@@ -71,6 +55,7 @@ class BudgetList extends Component {
             );
         });
 
+        // take rest of  4 budgets
         this.restOfBudgets = hasVersions.slice(4).map(e =>
             <li key={e.id}>
                 <h4>
@@ -100,6 +85,11 @@ class BudgetList extends Component {
             <div>
                 { budgetListData }
                 <Button icon="line-chart" onClick={this.enterLoading}>View Older Budgets</Button>
+                <Row>
+                    <Col>
+                         buttons here
+                    </Col>
+                </Row>
                 <Modal
                     title="All Previous Budgets"
                     visible={this.state.modalActive}
