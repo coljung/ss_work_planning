@@ -1,7 +1,8 @@
 import { RECEIVE_BUDGETS,
         REQUEST_BUDGETS,
         REQUEST_SEASONS,
-        RECEIVE_SEASONS } from './BudgetActions';
+        RECEIVE_SEASONS,
+        RECEIVE_CREATE_BUDGET } from './BudgetActions';
 
 const initialState = {
     budgets: [],
@@ -18,8 +19,15 @@ export default (state = initialState, action) => {
             });
         case RECEIVE_BUDGETS:
             return Object.assign({}, state, {
-                budgets: action.budgets,
+                budgets: action.budgets.data,
                 budgetsFetched: true,
+            });
+        case RECEIVE_CREATE_BUDGET:
+            return Object.assign({}, state, {
+                budgets: [
+                    ...state.budgets,
+                    action.budget,
+                ],
             });
         case REQUEST_SEASONS:
             return Object.assign({}, state, {

@@ -1,6 +1,6 @@
 .budgetList{
     list-style: disc;
-    margin-left: 20px;
+    margin: 0 0 20px 20px;
     > li {
         margin-bottom: 5px;
     }
@@ -11,5 +11,9 @@
             position: absolute;
             margin-left: -10px;
         }
+    }
+    .ant-modal-body & {
+        max-height: 300px;
+        overflow-y: scroll;
     }
 }

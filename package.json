@@ -9,7 +9,7 @@
     "build": "NODE_ENV=production UV_THREADPOOL_SIZE=100 webpack --color --config ./webpack.prod.config.js",
     "lint": "./node_modules/.bin/eslint 'app/**'",
     "lint:fix": "./node_modules/.bin/eslint 'app/**' --fix",
-    "test": "npm run test:unit",
+    "test": "jest",
     "test:unit": "NODE_ENV=test:unit ./node_modules/.bin/mocha tests/unit --recursive --compilers jsx:babel-core/register,jsx:./tests/compilers/less-compiler.jsx,less:./tests/compilers/less-compiler.jsx --require ./server.js --require ./tests/helpers/setup.jsx --bail",
     "cover": "npm run cover:unit",
     "cover:unit": "NODE_ENV=test:unit ./node_modules/.bin/nyc --report-dir tests/coverage/unit npm run test:unit"
@@ -25,6 +25,7 @@
     "handsontable-pro": "^1.14.3",
     "history": "^4.3.0",
     "immutability-helper": "^2.4.0",
+    "jest": "^21.2.1",
     "lodash": "^4.16.4",
     "node-basicauth": "0.0.9",
     "offline-plugin": "^4.8.4",
@@ -43,6 +44,7 @@
     "superagent": "^3.6.3",
     "superagent-promise": "^1.1.0",
     "webpack": "^2.3.2",
+    "webpack-dashboard": "^1.0.0",
     "webpack-visualizer-plugin": "^0.1.11"
   },
   "devDependencies": {
@@ -92,6 +94,9 @@
     "webpack-dev-middleware": "^1.8.4",
     "webpack-dev-server": "^2.9.2",
     "webpack-hot-middleware": "^2.20.0"
+  },
+  "jest": {
+    "transform": {}
   },
   "nyc": {
     "exclude": [

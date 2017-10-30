@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Button, Modal, Select, Spin } from 'antd';
-import { fetchSeasons } from './BudgetActions';
+import { createBudget, fetchSeasons } from './BudgetActions';
 
 const Option = Select.Option;
 
@@ -17,14 +17,14 @@ class BudgetCreate extends Component {
         };
     }
 
-    componentWillMount() {
-        this.props.fetchSeasons();
-    }
-
     componentWillReceiveProps(props) {
         this.setState({
             seasons: props.seasons,
         });
+
+        if (props.visible && !props.seasonsFetched) {
+            this.props.fetchSeasons();
+        }
     }
 
     handleChange = (value) => {
@@ -35,8 +35,13 @@ class BudgetCreate extends Component {
         });
     }
 
-    createBudget = () => {
-
+    saveNewBudget = () => {
+        const budget = {
+            year: this.state.year,
+            season: this.state.season,
+        };
+        this.props.createBudget(budget);
+        this.props.onOverlayClick();
     }
 
     createDropdown = () => {
@@ -51,9 +56,10 @@ class BudgetCreate extends Component {
     }
 
     render() {
+        // this.props.budgetCreated;
         const footerButtons = (<div>
             <Button
-                onClick={this.createBudget.bind(this)}
+                onClick={this.saveNewBudget.bind(this)}
                 type='primary'
                 size='large'
                 id='createButtonSave' >Create Budget
@@ -87,6 +93,7 @@ BudgetCreate.propTypes = {
     visible: PropTypes.bool.isRequired,
     onOverlayClick: PropTypes.func.isRequired,
     fetchSeasons: PropTypes.func.isRequired,
+    createBudget: PropTypes.func.isRequired,
 };
 
 function mapStateToProps(state) {
@@ -98,7 +105,7 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-    return bindActionCreators({ fetchSeasons }, dispatch);
+    return bindActionCreators({ fetchSeasons, createBudget }, dispatch);
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(BudgetCreate);
