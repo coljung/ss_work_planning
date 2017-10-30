@@ -10,6 +10,7 @@ export default class BudgetHome extends Component {
         super(props);
         this.state = {
             createModalActive: false,
+            viewArchivedModalActive: false,
         };
     }
 
@@ -19,17 +20,31 @@ export default class BudgetHome extends Component {
         });
     }
 
+    toggleViewArchivedModal = () => {
+        this.setState({
+            viewArchivedModalActive: !this.state.viewArchivedModalActive,
+        });
+    }
+
 
     render() {
-        const btn = <Button type="primary" onClick={this.toggleCreateModal}>Create New Budget</Button>;
+        // const btn = <Button type="primary" onClick={this.toggleCreateModal}>Create New Budget</Button>;
         return (
             <Row>
-                <Col xs={12}>
-                    <Board title="Budgets Dashboard" btnInTitle={btn}>
-                        <BudgetList />
+                <Col xs={8}>
+                    <Board title="Budgets Dashboard">
+                        <BudgetList
+                            visible={this.state.viewArchivedModalActive}
+                            onOverlayClick={this.toggleViewArchivedModal.bind(this)} />
                         <BudgetCreate
                             visible={this.state.createModalActive}
                             onOverlayClick={this.toggleCreateModal.bind(this)} />
+                        <Row type="flex" justify="end">
+                            <Col>
+                                 <Button size="large" icon="file" type="primary" onClick={this.toggleCreateModal}>Create New Budget</Button>
+                                 <Button style={{ marginLeft: '20px' }} size="large" icon="line-chart" onClick={this.toggleViewArchivedModal}>View Older Budgets</Button>
+                            </Col>
+                        </Row>
                     </Board>
 
                 </Col>

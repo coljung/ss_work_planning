@@ -1,5 +1,4 @@
 const config = require('config');
-const chalk = require('chalk');
 const path = require('path');
 const webpack = require('webpack');
 const base = require('./webpack.config');

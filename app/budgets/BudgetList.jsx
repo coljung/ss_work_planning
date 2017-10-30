@@ -3,67 +3,105 @@ import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
-import { Spin } from 'antd';
+import { Button, Modal, Spin, Row, Col } from 'antd';
 import { fetchBudgets } from './BudgetActions';
 
 import { ROUTE_BUDGET } from '../Routes';
 
 class BudgetList extends Component {
 
+    constructor(props) {
+        super(props);
+        this.state = {
+            year: '',
+            season: '',
+            modalActive: false,
+        };
+        this.restOfBudgets = '';
+    }
+
     componentWillMount() {
         this.props.fetchBudgets();
     }
 
-    componentWillReceiveProps(props) {
+    componentWillReceiveProps(nextProps) {
+        if (this.props.budgets.length !== nextProps.budgets.length) {
+            this.setState({
+                budgets: nextProps.budgets,
+            });
+        }
+    }
+
+    enterLoading = (e) => {
         this.setState({
-            budgets: props.budgets,
+            modalActive: !this.state.modalActive,
         });
     }
 
-    listItems = (versions) => {
-        const list = versions.map(v =>
-            <li key={v.id}>
-                <Link to={`${ROUTE_BUDGET}/new`}>
-                    {v.name}
-                </Link>
+    createList = () => {
+        const stBudgets = this.state.budgets;
+        const hasVersions = stBudgets.filter(e => e.versions.length);
+
+        // take latest 4 budgets
+        const recentBudgets = hasVersions.slice(0, 4).map((e) => {
+            return (
+                <li key={e.id}>
+                    <h4>
+                        <Link to={`${ROUTE_BUDGET}/${e.versions[0].id}`}>
+                            {e.season}{e.year}
+                        </Link>
+                    </h4>
+                </li>
+            );
+        });
+
+        // take rest of  4 budgets
+        this.restOfBudgets = hasVersions.slice(4).map(e =>
+            <li key={e.id}>
+                <h4>
+                    <Link to={`${ROUTE_BUDGET}/${e.versions[0].id}`}>
+                        {e.season}{e.year}
+                    </Link>
+                </h4>
             </li>,
         );
-        return (
-            <ul className="versionList">
-                {list}
-            </ul>
-        );
-    }
 
-    createList = () => {
-        const stBudgets = this.state.budgets.data;
-
-        const budgetListParent = stBudgets.filter(e => e.versions.length)
-            .map((e) => {
-                const innerList = this.listItems(e.versions);
-                return (
-                    <li key={e.id}>
-                        <h4>{e.season}{e.year}</h4>
-                        {innerList}
-                    </li>
-                );
-            });
         return (
             <ul className="budgetList">
-                {budgetListParent}
+                {recentBudgets}
             </ul>
         );
     }
 
     render() {
         const budgetListData = this.props.budgetsFetched ? this.createList() : <Spin size="large" />;
+        const footerButtons = (<div>
+            <Button
+                onClick={this.enterLoading}
+                size='large'>Ok
+            </Button>
+        </div>);
         return (
-            budgetListData
+            <div>
+                { budgetListData }
+                <Modal
+                    title="All Previous Budgets"
+                    visible={this.props.visible}
+                    onCancel={this.props.onOverlayClick}
+                    footer={footerButtons}>
+
+                    <ul className="budgetList">
+                        { this.restOfBudgets }
+                    </ul>
+                </Modal>
+            </div>
         );
     }
 }
 
 BudgetList.propTypes = {
+    visible: PropTypes.bool.isRequired,
+    onOverlayClick: PropTypes.func.isRequired,
     budgets: PropTypes.oneOfType([
         PropTypes.array,
         PropTypes.object,
