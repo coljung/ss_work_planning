@@ -1,10 +1,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Button, Modal, Select } from 'antd';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import { Button, Modal, Select, Spin } from 'antd';
+import { fetchSeasons } from './BudgetActions';
 
 const Option = Select.Option;
 
-export default class BudgetCreate extends Component {
+class BudgetCreate extends Component {
 
     constructor(props) {
         super(props);
@@ -12,6 +15,16 @@ export default class BudgetCreate extends Component {
             year: '',
             season: '',
         };
+    }
+
+    componentWillMount() {
+        this.props.fetchSeasons();
+    }
+
+    componentWillReceiveProps(props) {
+        this.setState({
+            seasons: props.seasons,
+        });
     }
 
     handleChange = (value) => {
@@ -24,6 +37,17 @@ export default class BudgetCreate extends Component {
 
     createBudget = () => {
 
+    }
+
+    createDropdown = () => {
+        const buildSelect = this.state.seasons.map(s =>
+            <Option key={s.name} value={`${s.season}-${s.year}`}>{s.name}</Option>,
+        );
+        return (
+            <Select placeholder="Select a Season" style={{ width: 120 }} onChange={this.handleChange}>
+                {buildSelect}
+            </Select>
+        );
     }
 
     render() {
@@ -41,6 +65,7 @@ export default class BudgetCreate extends Component {
             </Button>
         </div>);
 
+        const mySelect = this.props.seasonsFetched ? this.createDropdown() : <Spin size="large" />;
 
         return (
             <Modal
@@ -50,20 +75,30 @@ export default class BudgetCreate extends Component {
                 onCancel={this.props.onOverlayClick}
                 footer={footerButtons}>
 
-                <Select defaultValue="SS17" style={{ width: 120 }} onChange={this.handleChange}>
-                    <Option value="SS-2017">SS17</Option>
-                    <Option value="FW-2017">FW17</Option>
-                    <Option value="SS-2018">SS18</Option>
-                    <Option value="FW-2018">FW18</Option>
-                    <Option value="SS-2019">SS19</Option>
-                    <Option value="FW-2019">FW19</Option>
-                </Select>
+                {mySelect}
             </Modal>
         );
     }
 }
 
 BudgetCreate.propTypes = {
+    seasons: PropTypes.array.isRequired,
+    seasonsFetched: PropTypes.bool.isRequired,
     visible: PropTypes.bool.isRequired,
     onOverlayClick: PropTypes.func.isRequired,
+    fetchSeasons: PropTypes.func.isRequired,
 };
+
+function mapStateToProps(state) {
+    const { BudgetReducer } = state;
+    return {
+        seasons: BudgetReducer.seasons,
+        seasonsFetched: BudgetReducer.seasonsFetched,
+    };
+}
+
+function mapDispatchToProps(dispatch) {
+    return bindActionCreators({ fetchSeasons }, dispatch);
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(BudgetCreate);
