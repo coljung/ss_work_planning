@@ -84,16 +84,10 @@ class BudgetList extends Component {
         return (
             <div>
                 { budgetListData }
-                <Button icon="line-chart" onClick={this.enterLoading}>View Older Budgets</Button>
-                <Row>
-                    <Col>
-                         buttons here
-                    </Col>
-                </Row>
                 <Modal
                     title="All Previous Budgets"
-                    visible={this.state.modalActive}
-                    onCancel={this.enterLoading}
+                    visible={this.props.visible}
+                    onCancel={this.props.onOverlayClick}
                     footer={footerButtons}>
 
                     <ul className="budgetList">
@@ -106,6 +100,8 @@ class BudgetList extends Component {
 }
 
 BudgetList.propTypes = {
+    visible: PropTypes.bool.isRequired,
+    onOverlayClick: PropTypes.func.isRequired,
     budgets: PropTypes.oneOfType([
         PropTypes.array,
         PropTypes.object,

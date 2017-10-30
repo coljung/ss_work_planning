@@ -43,6 +43,7 @@
     "superagent": "^3.6.3",
     "superagent-promise": "^1.1.0",
     "webpack": "^2.3.2",
+    "webpack-dashboard": "^1.0.0",
     "webpack-visualizer-plugin": "^0.1.11"
   },
   "devDependencies": {
