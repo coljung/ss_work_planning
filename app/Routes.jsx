@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Route, IndexRoute } from 'react-router';
 import App from './components/App';
-import Todo from './todo/TodoContainer';
+import BudgetViewsContainer from './views/BudgetViewsContainer';
 import Home from './budgets/BudgetHome';
 import Test from './budgets/BudgetTest';
 
@@ -22,15 +22,16 @@ const authOnChange = ((prev, next, replace, callback) => {
 // For testing purposes
 export const ROUTE_DASHBOARD = '/home';
 export const ROUTE_TODO = '/todo';
-export const ROUTE_BUDGET = '/budget';
+export const ROUTE_BUDGET = '/budgets';
 
 export default (
     <Route path="/" component={App}>
         <IndexRoute component={Home} />
         <Route path={ROUTE_DASHBOARD} component={Home} />
-        <Route path={ROUTE_TODO} component={Todo} />
+        <Route path={ROUTE_TODO} component={BudgetViewsContainer} />
         <Route path={ROUTE_BUDGET}>
             <Route path=':id' component={Test} />
+            // <Route path=':budget/:id/:tab' component={BudgetViewsContainer} />
         </Route>
     </Route>
 );

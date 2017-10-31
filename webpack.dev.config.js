@@ -12,6 +12,10 @@ base.entry.unshift(
     'webpack/hot/only-dev-server'
 );
 
+
+console.log('----------------------------');
+console.log(`http://${config.get('api.planning.host')}:${config.get('api.planning.port')}`);
+
 base.devServer = {
     historyApiFallback: true,
     host,

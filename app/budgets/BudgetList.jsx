@@ -44,10 +44,11 @@ class BudgetList extends Component {
 
         // take latest 4 budgets
         const recentBudgets = hasVersions.slice(0, 4).map((e) => {
+            const url = `${ROUTE_BUDGET}/${e.season}${e.year}/${e.versions[0].id}/exec`;
             return (
                 <li key={e.id}>
                     <h4>
-                        <Link to={`${ROUTE_BUDGET}/${e.versions[0].id}`}>
+                        <Link to={url}>
                             {e.season}{e.year}
                         </Link>
                     </h4>
