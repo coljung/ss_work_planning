@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import HotTable from 'react-handsontable';
 import Handsontable from 'handsontable';
 import { Spin } from 'antd';
-import { fetchBudgetViewData } from './BudgetViewActions';
+import { fetchBudgetExecData, resetState } from './ExecViewActions';
 
 
 const merge = [
@@ -62,13 +62,21 @@ class ExecViewContainer extends Component {
     }
 
     componentWillMount() {
-        this.props.fetchBudgetViewData();
+
+    }
+
+    componentDidMount() {
+        this.props.fetchBudgetExecData();
+    }
+
+    componentWillUnmount() {
+        this.props.resetState();
     }
 
     componentWillReceiveProps = (nextProps) => {
-        if (this.props.viewData.length !== nextProps.viewData.length) {
+        if (this.props.viewExecData.length !== nextProps.viewExecData.length) {
             this.setState({
-                data: nextProps.viewData,
+                data: nextProps.viewExecData,
             });
         }
     }
@@ -101,9 +109,11 @@ class ExecViewContainer extends Component {
     }
 
     render() {
-        const budgetListData = this.props.viewDataFetched ? this.buildTable() : <Spin size="large" />;
+        // console.log(this.props);
+        const budgetListData = this.props.viewExecDataFetched ? this.buildTable() : <Spin size="large" />;
         return (
             <div>
+                <h2>EXEC</h2>
                 {budgetListData}
             </div>
         );
@@ -112,24 +122,24 @@ class ExecViewContainer extends Component {
 
 
 ExecViewContainer.propTypes = {
-    viewData: PropTypes.oneOfType([
+    viewExecData: PropTypes.oneOfType([
+        PropTypes.bool,
         PropTypes.array,
-        PropTypes.object,
     ]).isRequired,
-    viewDataFetched: PropTypes.bool.isRequired,
-    fetchBudgetViewData: PropTypes.func.isRequired,
+    viewExecDataFetched: PropTypes.bool.isRequired,
+    fetchBudgetExecData: PropTypes.func.isRequired,
 };
 
 function mapStateToProps(state) {
-    const { BudgetViewReducer } = state;
+    const { ExecViewReducer } = state;
     return {
-        viewData: BudgetViewReducer.viewData,
-        viewDataFetched: BudgetViewReducer.viewDataFetched,
+        viewExecData: ExecViewReducer.viewExecData,
+        viewExecDataFetched: ExecViewReducer.viewExecDataFetched,
     };
 }
 
 function mapDispatchToProps(dispatch) {
-    return bindActionCreators({ fetchBudgetViewData }, dispatch);
+    return bindActionCreators({ fetchBudgetExecData, resetState }, dispatch);
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(ExecViewContainer);

@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Button, Row, Col, Tabs } from 'antd';
 import { Link } from 'react-router';
-import ExecViewContainer from './ExecViewContainer';
+import ExecViewContainer from 'top_down/exec/ExecViewContainer';
+import TotalViewContainer from 'top_down/total/TotalViewContainer';
 import { ROUTE_DASHBOARD } from '../Routes';
 
 const TabPane = Tabs.TabPane;
@@ -20,15 +21,47 @@ export default class BudgetViewsContainer extends Component {
         super(props);
         this.state = {
             activeTab: this.props.params.tab || TAB_EXEC_RECAP,
+            [TAB_EXEC_RECAP]: true,
+            [TAB_TOTAL]: false,
+            [TAB_WOMEN]: false,
+            [TAB_MEN]: false,
+            [TAB_BRAND_GROUPS]: false,
         };
+        // this.updateActiveComponent();
     }
 
+    // componentDidUpdate(_, previousState) {
+    //     console.log(previousState); // => {}
+    //     console.log(this.state);    // => { name: "Michael" }
+    // }
+
+    componentDidMount() {
+        console.log(this.props);
+    }
+
+    // updateActiveComponent = () => {
+    //     // set active tab content on load
+    //     const currentKey = this.state.activeTab;
+    //     console.log('-----------', currentKey);
+    //     this.setState({
+    //         [currentKey]: true,
+    //     });
+    // }
+
+
     onTabChange(newTabKey) {
-        this.setState({ activeTab: newTabKey });
+        // set true to load tabbed component
+        const currentKey = this.state.activeTab;
+        this.setState({
+            [currentKey]: false,
+            activeTab: newTabKey,
+            [newTabKey]: true,
+        });
     }
 
     render() {
-        console.log(this.props.params);
+        const currentKey = this.state.activeTab;
+        // console.log(this.state);
         return (
             <div>
                 <div className="budgetHeader">
@@ -50,23 +83,19 @@ export default class BudgetViewsContainer extends Component {
                 <div className="budgetBody">
                     <Tabs defaultActiveKey={this.state.activeTab} onChange={this.onTabChange.bind(this)}>
                         <TabPane tab="Exec Recap" key={TAB_EXEC_RECAP}>
-
-                                <ExecViewContainer />
+                            {this.state[TAB_EXEC_RECAP] && <ExecViewContainer /> }
                         </TabPane>
                         <TabPane tab="Total" key={TAB_TOTAL}>
-                            {console.log('ddddd')}
+                            {this.state[TAB_TOTAL] && <TotalViewContainer /> }
                         </TabPane>
                         <TabPane tab="Women" key={TAB_WOMEN}>
 
-                                {console.log('ddddd')}
                         </TabPane>
                         <TabPane tab="Men" key={TAB_MEN}>
 
-                                {console.log('ddddd')}
                         </TabPane>
                         <TabPane tab="Brand Groups" key={TAB_BRAND_GROUPS}>
 
-                                {console.log('ddddd')}
                         </TabPane>
                     </Tabs>
                 </div>

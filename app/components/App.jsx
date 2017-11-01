@@ -37,15 +37,9 @@ export default class App extends Component {
                 <Layout>
                     <Content>
                         <main style={{ flex: 1, overflowY: 'auto', padding: '0 25px 25px' }}>
-                            <ReactCSSTransitionGroup
-                                    component="div"
-                                    transitionName="example"
-                                    transitionEnterTimeout={500}
-                                    transitionLeaveTimeout={500}>
-                                        {React.cloneElement(this.props.children, {
-                                            key: this.props.location.pathname,
-                                        })}
-                            </ReactCSSTransitionGroup>
+                            {React.cloneElement(this.props.children, {
+                                key: this.props.location.pathname,
+                            })}
                             <NotificationManager />
                         </main>
                     </Content>
