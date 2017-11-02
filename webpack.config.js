@@ -29,6 +29,9 @@ module.exports = {
         ],
         alias: {
             handsontable: path.resolve(__dirname, 'node_modules/handsontable-pro'),
+            top_down: path.join(__dirname, './app/views/top-down'),
+            helpers: path.join(__dirname, './app/Helpers'),
+            notifications: path.join(__dirname, './app/notifications/'),
         },
     },
     module: {

@@ -32,7 +32,7 @@ export default class BudgetHome extends Component {
         return (
             <Row>
                 <Col xs={8}>
-                    <Board title="Budgets Dashboard">
+                    <Board title="Budgets Dashboard" style={{ paddingTop: '25px' }}>
                         <BudgetList
                             visible={this.state.viewArchivedModalActive}
                             onOverlayClick={this.toggleViewArchivedModal.bind(this)} />
