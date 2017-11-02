@@ -13,9 +13,8 @@ class BudgetList extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            year: '',
-            season: '',
             modalActive: false,
+            budgets: this.props.budgets || [],
         };
         this.restOfBudgets = '';
     }
@@ -82,6 +81,7 @@ class BudgetList extends Component {
                 size='large'>Ok
             </Button>
         </div>);
+
         return (
             <div>
                 { budgetListData }
