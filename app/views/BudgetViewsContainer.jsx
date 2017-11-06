@@ -1,11 +1,15 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Button, Row, Col, Tabs } from 'antd';
-import { Link } from 'react-router';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import { Row, Col, Tabs } from 'antd';
+import { browserHistory } from 'react-router';
+import BudgetViewsButtonActions from './BudgetViewsButtonActions';
 import ExecViewContainer from 'top_down/exec/ExecViewContainer';
 import TotalViewContainer from 'top_down/total/TotalViewContainer';
-import { ROUTE_DASHBOARD } from '../Routes';
+import { saveNewBudgetVersion } from './BudgetViewActions';
 
+import { ROUTE_BUDGET } from '../Routes';
 const TabPane = Tabs.TabPane;
 
 export const TAB_EXEC_RECAP = 'exec';
@@ -15,39 +19,41 @@ export const TAB_MEN = 'men';
 export const TAB_BRAND_GROUPS = 'brand-groups';
 
 
-export default class BudgetViewsContainer extends Component {
+class BudgetViewsContainer extends Component {
 
     constructor(props) {
         super(props);
+
+        const { budgetid, id, seasonname, vname, tab } = this.props.params;
+
         this.state = {
-            activeTab: this.props.params.tab || TAB_EXEC_RECAP,
+            budgetSeasonId: budgetid,
+            versionId: id,
+            seasonName: seasonname,
+            versionName: vname,
+            activeTab: tab || TAB_EXEC_RECAP,
             [TAB_EXEC_RECAP]: true,
             [TAB_TOTAL]: false,
             [TAB_WOMEN]: false,
             [TAB_MEN]: false,
             [TAB_BRAND_GROUPS]: false,
         };
-        // this.updateActiveComponent();
     }
 
-    // componentDidUpdate(_, previousState) {
-    //     console.log(previousState); // => {}
-    //     console.log(this.state);    // => { name: "Michael" }
-    // }
+    shouldComponentUpdate(nextProps, nextState) {
+        // console.log(this.props.newVersion, nextProps.newVersion);
+        if (nextProps.newVersion === null) {
+            return true;
+        }
+        browserHistory.push(`${ROUTE_BUDGET}/${this.state.seasonName}/budget/${this.state.budgetSeasonId}/version/${nextProps.newVersion.name}/${nextProps.newVersion.id}/${this.state.activeTab}`);
+        return false;
 
-    componentDidMount() {
-        console.log(this.props);
+        // return nextProps.newVersion === null;
     }
 
-    // updateActiveComponent = () => {
-    //     // set active tab content on load
-    //     const currentKey = this.state.activeTab;
-    //     console.log('-----------', currentKey);
-    //     this.setState({
-    //         [currentKey]: true,
-    //     });
-    // }
-
+    saveNewVersion = (budget, version) => {
+        this.props.saveNewBudgetVersion(budget, version);
+    }
 
     onTabChange(newTabKey) {
         // set true to load tabbed component
@@ -61,22 +67,18 @@ export default class BudgetViewsContainer extends Component {
 
     render() {
         const currentKey = this.state.activeTab;
-        // console.log(this.state);
         return (
             <div>
                 <div className="budgetHeader">
 
                     <Row>
                         <Col xs={12}>
-                            <h2>SS18 Budget - V1</h2>
+                            <h2>{this.state.seasonName} Budget - {this.state.versionName}</h2>
                             <h3>Top Down</h3>
                         </Col>
                         <Col xs={12}>
-                            <Button type="primary" size="large">
-                                <Link to={ROUTE_DASHBOARD} >
-                                    Back to Dashboard
-                                </Link>
-                            </Button>
+                            <BudgetViewsButtonActions
+                                save={() => this.saveNewVersion(this.state.budgetSeasonId, this.state.versionId)} />
                         </Col>
                     </Row>
                 </div>
@@ -106,7 +108,21 @@ export default class BudgetViewsContainer extends Component {
     }
 }
 
-
 BudgetViewsContainer.propTypes = {
     params: PropTypes.object.isRequired,
+    newVersion: PropTypes.object,
+    saveNewBudgetVersion: PropTypes.func.isRequired,
 };
+
+function mapStateToProps(state) {
+    const { BudgetViewReducer } = state;
+    return {
+        newVersion: BudgetViewReducer.newVersion,
+    };
+}
+
+function mapDispatchToProps(dispatch) {
+    return bindActionCreators({ saveNewBudgetVersion }, dispatch);
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(BudgetViewsContainer);

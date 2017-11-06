@@ -22,7 +22,7 @@ function receiveBudgetExecViewData(viewData) {
     };
 }
 
-function resetBudgetViews() {
+export function resetState() {
     return {
         type: RESET_BUDGETS_EXEC_VIEW,
     };
@@ -39,8 +39,4 @@ export function fetchBudgetExecData() {
                 err => dispatch(messages({ content: err, response: err.response, isError: true })),
             );
     };
-}
-
-export function resetState() {
-    return dispatch => dispatch(resetBudgetViews());
 }

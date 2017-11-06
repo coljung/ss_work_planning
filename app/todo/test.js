@@ -2,7 +2,7 @@ export const data = [
    [
       "",
       "",
-      "Women + Men",
+      "Women + Men22",
       "D1",
       "E1",
       "Women",
@@ -418,4 +418,3 @@ export const data = [
       "M25",
    ]
 ]
-

@@ -6,6 +6,7 @@ import HotTable from 'react-handsontable';
 import Handsontable from 'handsontable';
 import { Spin } from 'antd';
 import { fetchBudgetExecData, resetState } from './ExecViewActions';
+import { data } from '../../../todo/test';
 
 
 const merge = [
@@ -37,6 +38,7 @@ const cellStyle = [
 
 function firstRowRenderer(instance, td, row, col, prop, value, cellProperties) {
     // debugger;
+    console.log('dddd', arguments);
     Handsontable.renderers.TextRenderer.apply(this, arguments);
     td.style.fontWeight = 'bold';
     td.style.background = '#DCDCDC';
@@ -45,7 +47,7 @@ function firstRowRenderer(instance, td, row, col, prop, value, cellProperties) {
 
 const highlight = function (row, col, prop) {
     const cellProperties = {};
-    if (row === 6 && col !== 0 || row === 12 && col !== 0 || row === 18 && col !== 0) {
+    if ((row === 6 && col !== 0) || (row === 12 && col !== 0) || (row === 18 && col !== 0)) {
         cellProperties.renderer = firstRowRenderer; // uses function directly
     }
     return cellProperties;
@@ -85,7 +87,7 @@ class ExecViewContainer extends Component {
         return (
             <HotTable
                 root="hot"
-                data={this.state.data}
+                data={data}
                 cells={highlight}
                 cell={cellStyle}
                 fixedRowsTop={2}
@@ -105,11 +107,10 @@ class ExecViewContainer extends Component {
     }
 
     test(val) {
-        console.log(val);
+        // console.log(val);
     }
 
     render() {
-        // console.log(this.props);
         const budgetListData = this.props.viewExecDataFetched ? this.buildTable() : <Spin size="large" />;
         return (
             <div>
