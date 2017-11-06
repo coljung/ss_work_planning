@@ -81,6 +81,7 @@ export function createBudget(budget) {
     return (dispatch) => {
         dispatch(requestBudgetCreate(budget));
         const req = request.post('http://localhost:3001/planning/seasons');
+        console.log(budget);
         return req.send(budget)
             .then(
                 (res) => {

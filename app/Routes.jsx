@@ -22,7 +22,7 @@ const authOnChange = ((prev, next, replace, callback) => {
 // For testing purposes
 export const ROUTE_DASHBOARD = '/home';
 export const ROUTE_TODO = '/todo';
-export const ROUTE_BUDGET = '/budgets';
+export const ROUTE_BUDGET = '/season';
 
 export default (
     <Route path="/" component={App}>
@@ -31,7 +31,7 @@ export default (
         <Route path={ROUTE_TODO} component={BudgetViewsContainer} />
         <Route path={ROUTE_BUDGET}>
             <Route path=':id' component={Test} />
-            // <Route path=':budget/:id/:tab' component={BudgetViewsContainer} />
+            <Route path=':seasonname/budget/:budgetid/version/:vname/:id/:tab' component={BudgetViewsContainer} />
         </Route>
     </Route>
 );

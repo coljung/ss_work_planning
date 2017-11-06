@@ -9,7 +9,7 @@ export const REQUEST_BUDGETS_TOTAL_VIEW = 'REQUEST_BUDGETS_TOTAL_VIEW';
 export const RECEIVE_BUDGETS_TOTAL_VIEW = 'RECEIVE_BUDGETS_TOTAL_VIEW';
 export const RESET_BUDGETS_TOTAL_VIEW = 'RESET_BUDGETS_TOTAL_VIEW';
 
-function requestBudgetTotalViewData() {
+export function requestBudgetTotalViewData() {
     return {
         type: REQUEST_BUDGETS_TOTAL_VIEW,
     };
@@ -22,7 +22,7 @@ function receiveBudgetTotalViewData(viewData) {
     };
 }
 
-function resetBudgetViews() {
+export function resetBudgetViews() {
     return {
         type: RESET_BUDGETS_TOTAL_VIEW,
     };
@@ -39,8 +39,4 @@ export function fetchBudgetTotalData() {
                 err => dispatch(messages({ content: err, response: err.response, isError: true })),
             );
     };
-}
-
-export function resetState() {
-    return dispatch => dispatch(resetBudgetViews());
 }
