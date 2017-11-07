@@ -6,13 +6,15 @@ import HotTable from 'react-handsontable';
 import Handsontable from 'handsontable';
 import { Spin } from 'antd';
 import { fetchBudgetExecData, resetState } from './ExecViewActions';
-import { data } from '../../../todo/test';
+import { data } from './test_exec';
 
 
 const merge = [
-    { row: 0, col: 0, rowspan: 5, colspan: 1 },
-    { row: 6, col: 0, rowspan: 5, colspan: 1 },
-    { row: 12, col: 0, rowspan: 5, colspan: 1 },
+    { row: 0, col: 2, rowspan: 6, colspan: 1 },
+    { row: 0, col: 8, rowspan: 7, colspan: 1 },
+    { row: 0, col: 15, rowspan: 7, colspan: 1 },
+    // { row: 6, col: 0, rowspan: 5, colspan: 1 },
+    // { row: 12, col: 0, rowspan: 5, colspan: 1 },
     //
     // { row: 0, col: 2, rowspan: 1, colspan: 3 },
     // { row: 0, col: 5, rowspan: 1, colspan: 3 },
@@ -36,40 +38,29 @@ const cellStyle = [
     { row: 1, col: 12, className: 'bold' },
 ];
 
-const nested = [
-    [
-        { label: '&nbsp;', colspan: 2, className: 'ffffff' },
-        { label: 'Women + Men', colspan: 6 },
-        { label: 'Women', colspan: 7 },
-        { label: 'Men', colspan: 7 },
-    ],
-    [
-        'Metrics',
-        'Season/Year',
-        { label: 'STD Pre-Markdown', colspan: 1 },
-        { label: 'Inc %', colspan: 1 },
-        { label: 'STD Post-Markdown', colspan: 1 },
-        { label: 'Inc %', colspan: 1 },
-        { label: 'Full Season', colspan: 1 },
-        { label: 'Inc %', colspan: 1 },
-        
-        { label: 'STD Pre-Markdown', colspan: 1 },
-        { label: 'Inc %', colspan: 1 },
-        { label: 'STD Post-Markdown', colspan: 1 },
-        { label: 'Inc %', colspan: 1 },
-        { label: 'Full Season', colspan: 1 },
-        { label: 'Inc %', colspan: 1 },
-        { label: 'Cont %', colspan: 1 },
 
-        { label: 'STD Pre-Markdown', colspan: 1 },
-        { label: 'Inc %', colspan: 1 },
-        { label: 'STD Post-Markdown', colspan: 1 },
-        { label: 'Inc %', colspan: 1 },
-        { label: 'Full Season', colspan: 1 },
-        { label: 'Inc %', colspan: 1 },
-        { label: 'Cont %', colspan: 1 },
-    ],
-];
+// const nested = [
+//     [
+//         { label: '&nbsp;', colspan: 2, className: 'ffffff' },
+//         { label: 'Women + Men', colspan: 3 },
+//         { label: 'Women', colspan: 3 },
+//         { label: 'Men', colspan: 3 },
+//     ],
+//     [
+//         'Metrics',
+//         'Season/Year',
+//         { label: 'Before Markdowns', colspan: 1 },
+//         { label: 'Inc %', colspan: 1 },
+//         { label: 'Full Season', colspan: 1 },
+//         { label: 'Before Markdowns', colspan: 1 },
+//         { label: 'Inc %', colspan: 1 },
+//         { label: 'Full Season', colspan: 1 },
+//         { label: 'Before Markdowns', colspan: 1 },
+//         { label: 'Inc %', colspan: 1 },
+//         { label: 'Full Season', colspan: 1 },
+//     ],
+// ];
+
 
 const customBorders = [
     {
@@ -95,8 +86,16 @@ function firstRowRenderer(instance, td, row, col, prop, value, cellProperties) {
     td.className = 'grey';
 }
 
-const highlight = (row, col, prop) => {
+function fakeHeaders(instance, td, row, col, prop, value, cellProperties) {
+    Handsontable.renderers.TextRenderer.apply(this, arguments);
+    td.className = 'headerCell';
+}
+
+const cellStyles = (row, col, prop) => {
     const cellProperties = {};
+    if (row < 2) {
+        cellProperties.renderer = fakeHeaders; // uses function directly
+    }
     if ((row === 6 && col > 1) || (row === 12 && col > 1) || (row === 18 && col > 1)) {
         cellProperties.renderer = firstRowRenderer; // uses function directly
     }
@@ -138,13 +137,11 @@ class ExecViewContainer extends Component {
                 <HotTable
                     root="hot"
                     data={data}
-                    cells={highlight}
+                    cells={cellStyles}
                     cell={cellStyle}
                     fixedRowsTop={2}
                     fixedColumnsLeft={2}
                     formulas={true}
-                    colHeaders={true}
-                    nestedHeaders={nested}
                     contextMenu={true}
 
                     mergeCells={merge}
