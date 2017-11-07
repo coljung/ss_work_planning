@@ -10,15 +10,13 @@ import { data } from './test_exec';
 
 
 const merge = [
-    { row: 0, col: 2, rowspan: 6, colspan: 1 },
-    { row: 0, col: 8, rowspan: 7, colspan: 1 },
-    { row: 0, col: 15, rowspan: 7, colspan: 1 },
-    // { row: 6, col: 0, rowspan: 5, colspan: 1 },
-    // { row: 12, col: 0, rowspan: 5, colspan: 1 },
-    //
-    // { row: 0, col: 2, rowspan: 1, colspan: 3 },
-    // { row: 0, col: 5, rowspan: 1, colspan: 3 },
-    // { row: 0, col: 8, rowspan: 1, colspan: 3 },
+    { row: 0, col: 2, rowspan: 1, colspan: 6 },
+    { row: 0, col: 8, rowspan: 1, colspan: 7 },
+    { row: 0, col: 15, rowspan: 1, colspan: 7 },
+
+    { row: 2, col: 0, rowspan: 5, colspan: 1 },
+    { row: 7, col: 0, rowspan: 5, colspan: 1 },
+    { row: 12, col: 0, rowspan: 5, colspan: 1 },
 ];
 
 const cellStyle = [
