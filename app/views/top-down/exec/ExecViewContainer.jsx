@@ -10,13 +10,13 @@ import { data } from '../../../todo/test';
 
 
 const merge = [
-    { row: 2, col: 0, rowspan: 5, colspan: 1 },
-    { row: 8, col: 0, rowspan: 5, colspan: 1 },
-    { row: 14, col: 0, rowspan: 5, colspan: 1 },
-
-    { row: 0, col: 2, rowspan: 1, colspan: 3 },
-    { row: 0, col: 5, rowspan: 1, colspan: 3 },
-    { row: 0, col: 8, rowspan: 1, colspan: 3 },
+    { row: 0, col: 0, rowspan: 5, colspan: 1 },
+    { row: 6, col: 0, rowspan: 5, colspan: 1 },
+    { row: 12, col: 0, rowspan: 5, colspan: 1 },
+    //
+    // { row: 0, col: 2, rowspan: 1, colspan: 3 },
+    // { row: 0, col: 5, rowspan: 1, colspan: 3 },
+    // { row: 0, col: 8, rowspan: 1, colspan: 3 },
 ];
 
 const cellStyle = [
@@ -36,18 +36,55 @@ const cellStyle = [
     { row: 1, col: 12, className: 'bold' },
 ];
 
+const nested = [
+    [
+        { label: '&nbsp;', colspan: 2, className: 'ffffff' },
+        { label: 'Women + Men', colspan: 3 },
+        { label: 'Women', colspan: 3 },
+        { label: 'Men', colspan: 3 },
+    ],
+    [
+        'Metrics',
+        'Season/Year',
+        { label: 'Before Markdowns', colspan: 1 },
+        { label: 'Inc %', colspan: 1 },
+        { label: 'Full Season', colspan: 1 },
+        { label: 'Before Markdowns', colspan: 1 },
+        { label: 'Inc %', colspan: 1 },
+        { label: 'Full Season', colspan: 1 },
+        { label: 'Before Markdowns', colspan: 1 },
+        { label: 'Inc %', colspan: 1 },
+        { label: 'Full Season', colspan: 1 },
+    ],
+];
+
+const customBorders = [
+    {
+        range: {
+            from: {
+                row: 1,
+                col: 1,
+            },
+            to: {
+                row: 3,
+                col: 4,
+            },
+        },
+        width: 2,
+        color: '#5292F7',
+    },
+];
+
 function firstRowRenderer(instance, td, row, col, prop, value, cellProperties) {
-    // debugger;
-    console.log('dddd', arguments);
     Handsontable.renderers.TextRenderer.apply(this, arguments);
     td.style.fontWeight = 'bold';
     td.style.background = '#DCDCDC';
     td.className = 'grey';
 }
 
-const highlight = function (row, col, prop) {
+const highlight = (row, col, prop) => {
     const cellProperties = {};
-    if ((row === 6 && col !== 0) || (row === 12 && col !== 0) || (row === 18 && col !== 0)) {
+    if ((row === 6 && col > 1) || (row === 12 && col > 1) || (row === 18 && col > 1)) {
         cellProperties.renderer = firstRowRenderer; // uses function directly
     }
     return cellProperties;
@@ -83,28 +120,29 @@ class ExecViewContainer extends Component {
         }
     }
 
-    buildTable = () => {
-        return (
-            <HotTable
-                root="hot"
-                data={data}
-                cells={highlight}
-                cell={cellStyle}
-                fixedRowsTop={2}
-                fixedColumnsLeft={2}
-                formulas={true}
-                contextMenu={true}
-                height={900}
-                width={1200}
-                mergeCells={merge}
-                customBorders={true}
-                currentRowClassName= {'currentRow'}
-                currentColClassName= {'currentCol'}
-                function={true}
-                observeChanges={true}
-                afterChange={this.test.bind(this)} />
-        );
-    }
+    buildTable = () => (
+            <div className="parentDiv">
+                <HotTable
+                    root="hot"
+                    data={data}
+                    cells={highlight}
+                    cell={cellStyle}
+                    fixedRowsTop={2}
+                    fixedColumnsLeft={2}
+                    formulas={true}
+                    colHeaders={true}
+                    nestedHeaders={nested}
+                    contextMenu={true}
+
+                    mergeCells={merge}
+                    customBorders={customBorders}
+                    currentRowClassName= {'currentRow'}
+                    currentColClassName= {'currentCol'}
+                    function={true}
+                    observeChanges={true}
+                    afterChange={this.test.bind(this)} />
+            </div>
+        )
 
     test(val) {
         // console.log(val);
@@ -114,7 +152,6 @@ class ExecViewContainer extends Component {
         const budgetListData = this.props.viewExecDataFetched ? this.buildTable() : <Spin size="large" />;
         return (
             <div>
-                <h2>EXEC</h2>
                 {budgetListData}
             </div>
         );
