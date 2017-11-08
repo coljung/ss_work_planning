@@ -61,19 +61,14 @@ const cellStyle = [
 
 
 const customBorders = [
-    {
-        range: {
-            from: {
-                row: 1,
-                col: 1,
-            },
-            to: {
-                row: 3,
-                col: 4,
-            },
-        },
-        width: 2,
-        color: '#5292F7',
+
+    { range: { from: { row: 1, col: 4}, to: {row: 20, col: 5}}, right: {width: 1, color: '#000'}, left: {width: 1, color: '#000'},
+    },
+    { range: { from: { row: 1, col: 8}, to: {row: 20, col: 9}}, right: {width: 1, color: '#000'}, left: {width: 1, color: '#000'},
+    },
+    { range: { from: { row: 1, col: 12}, to: {row: 20, col: 14}}, right: {width: 1, color: '#000'}, left: {width: 1, color: '#000'},
+    },
+    { range: { from: { row: 1, col: 17}, to: {row: 20, col: 18}}, right: {width: 1, color: '#000'}, left: {width: 1, color: '#000'},
     },
 ];
 
