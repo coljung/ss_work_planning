@@ -6,43 +6,10 @@ import HotTable from 'react-handsontable';
 import Handsontable from 'handsontable';
 import { Spin } from 'antd';
 import { fetchBudgetExecData, resetState } from './ExecViewActions';
-import { data } from './test_exec';
+// import { data } from './test_exec';
+import dataTet from './test_exec_tetyana';
+import { merge, cellClasses } from './grid-build/index';
 
-
-const merge = [
-    // TOP HEADER
-    { row: 0, col: 2, rowspan: 1, colspan: 6 },
-    { row: 0, col: 8, rowspan: 1, colspan: 7 },
-    { row: 0, col: 15, rowspan: 1, colspan: 7 },
-    // LEFT HEADER
-    { row: 2, col: 0, rowspan: 5, colspan: 1 },
-    { row: 8, col: 0, rowspan: 5, colspan: 1 },
-    { row: 14, col: 0, rowspan: 5, colspan: 1 },
-    // HEADINGS
-    { row: 0, col: 0, rowspan: 1, colspan: 2 },
-    // GAPS
-    { row: 7, col: 0, rowspan: 1, colspan: 23 },
-    { row: 13, col: 0, rowspan: 1, colspan: 23 },
-
-
-];
-
-const cellStyle = [
-    { row: 0, col: 2, className: 'bold' },
-    { row: 0, col: 6, className: 'bold' },
-    { row: 0, col: 10, className: 'bold' },
-    { row: 1, col: 2, className: 'bold' },
-    { row: 1, col: 3, className: 'bold' },
-    { row: 1, col: 4, className: 'bold' },
-    { row: 1, col: 5, className: 'bold' },
-    { row: 1, col: 6, className: 'bold' },
-    { row: 1, col: 7, className: 'bold' },
-    { row: 1, col: 8, className: 'bold' },
-    { row: 1, col: 9, className: 'bold' },
-    { row: 1, col: 10, className: 'bold' },
-    { row: 1, col: 11, className: 'bold' },
-    { row: 1, col: 12, className: 'bold' },
-];
 
 
 // const nested = [
@@ -68,40 +35,32 @@ const cellStyle = [
 // ];
 
 
-const customBorders = [
-
-    { range: { from: { row: 1, col: 4}, to: {row: 20, col: 5}}, right: {width: 1, color: '#000'}, left: {width: 1, color: '#000'},
+const myColumns = [
+    {
+        data: 'col0',
     },
-    { range: { from: { row: 1, col: 8}, to: {row: 20, col: 9}}, right: {width: 1, color: '#000'}, left: {width: 1, color: '#000'},
+    {
+        data: 'col1',
     },
-    { range: { from: { row: 1, col: 12}, to: {row: 20, col: 14}}, right: {width: 1, color: '#000'}, left: {width: 1, color: '#000'},
+    {
+        data: 'col2',
     },
-    { range: { from: { row: 1, col: 17}, to: {row: 20, col: 18}}, right: {width: 1, color: '#000'}, left: {width: 1, color: '#000'},
+    {
+        data: 'col03',
+    },
+    {
+        data: 'col4',
+    },
+    {
+        data: 'col5',
     },
 ];
 
-function firstRowRenderer(instance, td, row, col, prop, value, cellProperties) {
-    Handsontable.renderers.TextRenderer.apply(this, arguments);
-    td.style.fontWeight = 'bold';
-    td.style.background = '#DCDCDC';
-    td.className = 'grey';
-}
-
-function fakeHeaders(instance, td, row, col, prop, value, cellProperties) {
-    Handsontable.renderers.TextRenderer.apply(this, arguments);
-    td.className = 'headerCell';
-}
-
-const cellStyles = (row, col, prop) => {
-    const cellProperties = {};
-    if (row < 2) {
-        cellProperties.renderer = fakeHeaders; // uses function directly
-    }
-    if ((row === 6 && col > 1) || (row === 12 && col > 1) || (row === 18 && col > 1)) {
-        cellProperties.renderer = firstRowRenderer; // uses function directly
-    }
-    return cellProperties;
-};
+const cellStyle = [
+    { row: 3, col: 2, className: 'bold' },
+    { row: 3, col: 6, className: 'bold' },
+    { row: 3, col: 10, className: 'bold' },
+];
 
 
 class ExecViewContainer extends Component {
@@ -137,16 +96,14 @@ class ExecViewContainer extends Component {
             <div className="parentDiv">
                 <HotTable
                     root="hot"
-                    data={data}
-                    cells={cellStyles}
+                    data={dataTet.data}
+                    cells={cellClasses}
                     cell={cellStyle}
-                    fixedRowsTop={2}
-                    fixedColumnsLeft={2}
+                    fixedRowsTop={0}
+                    fixedColumnsLeft={0}
                     formulas={true}
                     contextMenu={true}
-
                     mergeCells={merge}
-                    customBorders={customBorders}
                     currentRowClassName= {'currentRow'}
                     currentColClassName= {'currentCol'}
                     function={true}
@@ -160,6 +117,7 @@ class ExecViewContainer extends Component {
     }
 
     render() {
+        console.log(merge);
         const budgetListData = this.props.viewExecDataFetched ? this.buildTable() : <Spin size="large" />;
         return (
             <div>
