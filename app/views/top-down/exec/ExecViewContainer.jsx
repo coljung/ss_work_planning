@@ -10,31 +10,6 @@ import { fetchBudgetExecData, resetState } from './ExecViewActions';
 import dataTet from './test_exec_tetyana';
 import { merge, cellClasses } from './grid-build/index';
 
-
-
-// const nested = [
-//     [
-//         { label: '&nbsp;', colspan: 2, className: 'ffffff' },
-//         { label: 'Women + Men', colspan: 3 },
-//         { label: 'Women', colspan: 3 },
-//         { label: 'Men', colspan: 3 },
-//     ],
-//     [
-//         'Metrics',
-//         'Season/Year',
-//         { label: 'Before Markdowns', colspan: 1 },
-//         { label: 'Inc %', colspan: 1 },
-//         { label: 'Full Season', colspan: 1 },
-//         { label: 'Before Markdowns', colspan: 1 },
-//         { label: 'Inc %', colspan: 1 },
-//         { label: 'Full Season', colspan: 1 },
-//         { label: 'Before Markdowns', colspan: 1 },
-//         { label: 'Inc %', colspan: 1 },
-//         { label: 'Full Season', colspan: 1 },
-//     ],
-// ];
-
-
 const myColumns = [
     {
         data: 'col0',
@@ -71,11 +46,7 @@ class ExecViewContainer extends Component {
             data: [],
         };
     }
-
-    componentWillMount() {
-
-    }
-
+    
     componentDidMount() {
         this.props.fetchBudgetExecData();
     }
@@ -85,9 +56,9 @@ class ExecViewContainer extends Component {
     }
 
     componentWillReceiveProps = (nextProps) => {
-        if (this.props.viewExecData.length !== nextProps.viewExecData.length) {
+        if (this.props.viewExecData.length || nextProps.viewExecData) {
             this.setState({
-                data: nextProps.viewExecData,
+                data: nextProps.viewExecData.data,
             });
         }
     }
@@ -96,7 +67,7 @@ class ExecViewContainer extends Component {
             <div className="parentDiv">
                 <HotTable
                     root="hot"
-                    data={dataTet.data}
+                    data={this.state.data}
                     cells={cellClasses}
                     cell={cellStyle}
                     fixedRowsTop={0}
@@ -117,7 +88,6 @@ class ExecViewContainer extends Component {
     }
 
     render() {
-        console.log(merge);
         const budgetListData = this.props.viewExecDataFetched ? this.buildTable() : <Spin size="large" />;
         return (
             <div>
