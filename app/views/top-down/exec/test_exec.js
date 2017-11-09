@@ -1,6 +1,6 @@
 export const data = [
     [
-        '',
+        'Metrics',
         '',
         'Women + Men',
         '',
@@ -25,7 +25,7 @@ export const data = [
         '',
     ],
     [
-        'Metrics',
+        'OTB',
         'Season/Year',
         'STD Pre-Markdown',
         'Incr%',
@@ -169,6 +169,9 @@ export const data = [
         '',
     ],
     [
+        '',
+    ],
+    [
         'COGS',
         'SS18',
         '',
@@ -286,6 +289,9 @@ export const data = [
         '',
         '',
         '',
+        '',
+    ],
+    [
         '',
     ],
     [
