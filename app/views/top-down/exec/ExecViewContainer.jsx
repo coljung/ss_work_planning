@@ -6,9 +6,9 @@ import HotTable from 'react-handsontable';
 import Handsontable from 'handsontable';
 import { Spin } from 'antd';
 import { fetchBudgetExecData, resetState } from './ExecViewActions';
-// import { data } from './test_exec';
-import dataTet from './test_exec_tetyana';
-import { merge, cellClasses } from './grid-build/index';
+import datagrid from './test_exec';
+import { cellClasses, headers } from './grid-build/index';
+import { mergeMetrics, mergeHeadersExecRecap } from '../../../Helpers';
 
 const myColumns = [
     {
@@ -46,7 +46,7 @@ class ExecViewContainer extends Component {
             data: [],
         };
     }
-    
+
     componentDidMount() {
         this.props.fetchBudgetExecData();
     }
@@ -63,28 +63,36 @@ class ExecViewContainer extends Component {
         }
     }
 
-    buildTable = () => (
+    mergeCells = () => {
+        const { start_row, row_span, total, total_cols, has_gaps } = datagrid.info;
+        const newMerge = mergeMetrics(start_row, row_span, total, total_cols, has_gaps);
+
+        return newMerge;
+    }
+
+    buildTable = () => {
+        // console.log();
+        const newMerge = this.mergeCells();
+        return (
             <div className="parentDiv">
                 <HotTable
                     root="hot"
-                    data={this.state.data}
+                    data={datagrid.data}
                     cells={cellClasses}
                     cell={cellStyle}
+                    nestedHeaders= {headers}
+                    colHeaders= {true}
                     fixedRowsTop={0}
                     fixedColumnsLeft={0}
                     formulas={true}
-                    contextMenu={true}
-                    mergeCells={merge}
+                    contextMenu={false}
+                    mergeCells={newMerge}
+                    persistentState={true}
                     currentRowClassName= {'currentRow'}
                     currentColClassName= {'currentCol'}
                     function={true}
-                    observeChanges={true}
-                    afterChange={this.test.bind(this)} />
-            </div>
-        )
-
-    test(val) {
-        // console.log(val);
+                    observeChanges={true} />
+            </div>);
     }
 
     render() {

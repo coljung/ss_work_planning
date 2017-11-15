@@ -8,7 +8,6 @@ const initialState = {
 };
 
 export default (state = initialState, action) => {
-    console.log(action);
     switch (action.type) {
         case RESET_BUDGETS_EXEC_VIEW:
             return initialState;
