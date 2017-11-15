@@ -3,7 +3,7 @@ export default function getApiUrl() {
 }
 
 
-export const mergeMetrics = (startRow, rowSpan, totalRows, totalCols, hasGap = false) => {
+export const mergeMetrics = (startRow = 0, rowSpan, totalRows, totalCols, hasGap = false) => {
     const mergeArr = [];
 
     // span between metrics
