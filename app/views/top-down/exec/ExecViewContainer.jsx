@@ -62,6 +62,8 @@ const cellStyle = [
     { row: 3, col: 10, className: 'bold' },
 ];
 
+const menu = ["undo", "redo"]
+
 
 class ExecViewContainer extends Component {
 
@@ -92,6 +94,7 @@ class ExecViewContainer extends Component {
         }
     }
 
+
     buildTable = () => (
             <div className="parentDiv">
                 <HotTable
@@ -102,7 +105,8 @@ class ExecViewContainer extends Component {
                     fixedRowsTop={0}
                     fixedColumnsLeft={0}
                     formulas={true}
-                    contextMenu={true}
+
+                    contextMenu={menu}
                     mergeCells={merge}
                     currentRowClassName= {'currentRow'}
                     currentColClassName= {'currentCol'}
