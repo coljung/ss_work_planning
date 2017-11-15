@@ -1,32 +1,30 @@
 export const data = [
-   [
-      "",
-      "",
-      "Women + Men22",
-      "D1",
-      "E1",
-      "Women",
-      "G1",
-      "H1",
-      "Men",
-      "J1",
-      "K1",
-      "L1",
-      "M1",
-   ],
-   [
-      "",
-      "",
-      "Before Markdowns",
-      "Incr %",
-      "Full Season",
-      "Before Markdowns",
-      "Incr %",
-      "Full Season",
-      "Before Markdowns",
-      "Incr %",
-      "Full Season",
-   ],
+   // [
+   //    "",
+   //    "",
+   //    "Women + Men22",
+   //    "D1",
+   //    "E1",
+   //    "Women",
+   //    "G1",
+   //    "H1",
+   //    "Men",
+   //    "J1",
+   //    "K1",
+   // ],
+   // [
+   //    "",
+   //    "",
+   //    "Before Markdowns",
+   //    "Incr %",
+   //    "Full Season",
+   //    "Before Markdowns",
+   //    "Incr %",
+   //    "Full Season",
+   //    "Before Markdowns",
+   //    "Incr %",
+   //    "Full Season",
+   // ],
    [
       "Sales",
       "SS14",
@@ -40,7 +38,6 @@ export const data = [
       "J3",
       "K3",
       "L3",
-      "M3",
    ],
    [
       "A4",
@@ -55,7 +52,6 @@ export const data = [
       "J4",
       "K4",
       "L4",
-      "M4",
    ],
    [
       "A5",
@@ -70,7 +66,6 @@ export const data = [
       "J5",
       "K5",
       "L5",
-      "M5",
    ],
    [
       "A6",
@@ -85,7 +80,6 @@ export const data = [
       "J6",
       "K6",
       "L6",
-      "M6",
    ],
    [
       "A7",
@@ -100,10 +94,8 @@ export const data = [
       "J7",
       "K7",
       "L7",
-      "M7",
    ],
    [
-      "",
       "",
       "",
       "",
@@ -130,7 +122,6 @@ export const data = [
       "J8",
       "K8",
       "L8",
-      "M8",
    ],
    [
       "A9",
@@ -145,7 +136,6 @@ export const data = [
       "J9",
       "K9",
       "L9",
-      "M9",
    ],
    [
       "A10",
@@ -160,7 +150,6 @@ export const data = [
       "J10",
       "K10",
       "L10",
-      "M10",
    ],
    [
       "A11",
@@ -175,7 +164,6 @@ export const data = [
       "J11",
       "K11",
       "L11",
-      "M11",
    ],
    [
       "A12",
@@ -190,7 +178,6 @@ export const data = [
       "J12",
       "K12",
       "L12",
-      "M12",
    ],
    [
       "",
@@ -204,8 +191,7 @@ export const data = [
       "",
       "",
       "",
-      "",
-      "",
+      ""
    ],
    [
       "GM",
@@ -220,7 +206,7 @@ export const data = [
       "J13",
       "K13",
       "L13",
-      "M13",
+
    ],
    [
       "A14",
@@ -235,7 +221,7 @@ export const data = [
       "J14",
       "K14",
       "L14",
-      "M14",
+
    ],
    [
       "A15",
@@ -250,7 +236,7 @@ export const data = [
       "J15",
       "K15",
       "L15",
-      "M15",
+
    ],
    [
       "A16",
@@ -265,7 +251,7 @@ export const data = [
       "J16",
       "K16",
       "L16",
-      "M16",
+
    ],
    [
       "A17",
@@ -280,7 +266,7 @@ export const data = [
       "J17",
       "K17",
       "L17",
-      "M17",
+
    ],
    [
       "",
@@ -294,8 +280,7 @@ export const data = [
       "",
       "",
       "",
-      "",
-      "",
+      ""
    ],
    [
       "A18",
@@ -310,7 +295,7 @@ export const data = [
       "J18",
       "K18",
       "L18",
-      "M18",
+
    ],
    [
       "A19",
@@ -325,7 +310,7 @@ export const data = [
       "J19",
       "K19",
       "L19",
-      "M19",
+
    ],
    [
       "A20",
@@ -340,7 +325,7 @@ export const data = [
       "J20",
       "K20",
       "L20",
-      "M20",
+
    ],
    [
       "A21",
@@ -355,7 +340,7 @@ export const data = [
       "J21",
       "K21",
       "L21",
-      "M21",
+
    ],
    [
       "A22",
@@ -370,7 +355,7 @@ export const data = [
       "J22",
       "K22",
       "L22",
-      "M22",
+
    ],
    [
       "A23",
@@ -385,7 +370,7 @@ export const data = [
       "J23",
       "K23",
       "L23",
-      "M23",
+
    ],
    [
       "A24",
@@ -400,7 +385,7 @@ export const data = [
       "J24",
       "K24",
       "L24",
-      "M24",
+
    ],
    [
       "A25",

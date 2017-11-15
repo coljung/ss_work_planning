@@ -35,8 +35,8 @@ export function fetchBudgetTotalData() {
             // .get(`${getApiUrl()}planning/seasons/show/available`)
             .get('http://localhost:3001/planning/budgets/versions/13/exec')
             .then(
-                res => dispatch(receiveBudgetTotalViewData(res.body)),
-                err => dispatch(messages({ content: err, response: err.response, isError: true })),
+            res => dispatch(receiveBudgetTotalViewData(res.body)),
+            err => dispatch(messages({ content: err, response: err.response, isError: true })),
             );
     };
 }

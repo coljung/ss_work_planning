@@ -6,40 +6,49 @@ import HotTable from 'react-handsontable';
 import Handsontable from 'handsontable';
 import { Spin } from 'antd';
 import { fetchBudgetTotalData, resetState } from './TotalViewActions';
-
-
-const merge = [
-    { row: 2, col: 0, rowspan: 5, colspan: 1 },
-    { row: 8, col: 0, rowspan: 5, colspan: 1 },
-    { row: 14, col: 0, rowspan: 5, colspan: 1 },
-
-    { row: 0, col: 2, rowspan: 1, colspan: 3 },
-    { row: 0, col: 5, rowspan: 1, colspan: 3 },
-    { row: 0, col: 8, rowspan: 1, colspan: 3 },
-];
+import datagrid from './test_exec';
+// import dataTet from './test_exec_tetyana';
+import { merge, cellClasses } from '../exec/grid-build/index';
+import { mergeMetrics, mergeHeadersExecRecap } from '../../../Helpers';
 
 const cellStyle = [
-    { row: 0, col: 2, className: 'bold' },
-    { row: 0, col: 6, className: 'bold' },
-    { row: 0, col: 10, className: 'bold' },
+    { row: 3, col: 2, className: 'bold' },
+    { row: 3, col: 6, className: 'bold' },
+    { row: 3, col: 10, className: 'bold' },
 ];
 
-function firstRowRenderer(instance, td, row, col, prop, value, cellProperties) {
-    // debugger;
-    Handsontable.renderers.TextRenderer.apply(this, arguments);
-    td.style.fontWeight = 'bold';
-    td.style.background = '#DCDCDC';
-    td.className = 'grey';
-}
-
-const highlight = function (row, col, prop) {
-    const cellProperties = {};
-    if (row === 6 && col !== 0 || row === 12 && col !== 0 || row === 18 && col !== 0) {
-        cellProperties.renderer = firstRowRenderer; // uses function directly
-    }
-    return cellProperties;
-};
-
+const headers = [
+    [
+        { label: 'Metrics', colspan: 2 },
+        { label: 'Total', colspan: 6 },
+        { label: 'Women', colspan: 7 },
+        { label: 'Men', colspan: 7 },
+    ],
+    [
+        'Name',
+        'Season/Year',
+        'STD Pre-Markdown',
+        'Incr%',
+        'STD Post-Markdown',
+        'Incr%',
+        'Full Season',
+        'Incr%',
+        'STD Pre-Markdown',
+        'Incr%',
+        'STD Post-Markdown',
+        'Incr%',
+        'Full Season',
+        'Incr%',
+        'Cont%',
+        'STD Pre-Markdown',
+        'Incr%',
+        'STD Post-Markdown',
+        'Incr%',
+        'Full Season',
+        'Incr%',
+        'Cont%',
+    ],
+];
 
 class TotalViewContainer extends Component {
 
@@ -59,7 +68,6 @@ class TotalViewContainer extends Component {
     }
 
     componentWillReceiveProps = (nextProps) => {
-        // console.log(this.props.viewTotalData, nextProps.viewTotalData);
         if (this.props.viewTotalData.length !== nextProps.viewTotalData.length) {
             this.setState({
                 data: nextProps.viewTotalData,
@@ -67,35 +75,37 @@ class TotalViewContainer extends Component {
         }
     }
 
+    mergeCells = () => {
+        const { start_row, row_span, total, total_cols, has_gaps } = datagrid.info;
+        const newMerge = mergeMetrics(start_row, row_span, total, total_cols, has_gaps);
+
+        return newMerge;
+    }
+
     buildTable = () => {
-        return (
+        const newMerge = this.mergeCells();
+        return (<div className="parentDiv">
             <HotTable
                 root="hot"
-                data={this.state.data}
-                cells={highlight}
+                data={datagrid.data}
+                cells={cellClasses}
                 cell={cellStyle}
-                fixedRowsTop={2}
-                fixedColumnsLeft={2}
+                nestedHeaders= {headers}
+                colHeaders= {true}
+                fixedRowsTop={0}
+                fixedColumnsLeft={0}
                 formulas={true}
-                contextMenu={true}
-                height={900}
-                width={1200}
-                mergeCells={merge}
-                customBorders={true}
+                contextMenu={false}
+                mergeCells={newMerge}
+                persistentState={true}
                 currentRowClassName= {'currentRow'}
                 currentColClassName= {'currentCol'}
                 function={true}
-                observeChanges={true}
-                afterChange={this.test.bind(this)} />
-        );
-    }
-
-    test(val) {
-        console.log(val);
+                observeChanges={true} />
+        </div>);
     }
 
     render() {
-        console.log(typeof this.props.viewTotalData);
         const budgetListData = this.props.viewTotalDataFetched ? this.buildTable() : <Spin size="large" />;
         return (
             <div>
