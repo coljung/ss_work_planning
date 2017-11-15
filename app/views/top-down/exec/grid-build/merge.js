@@ -1,4 +1,5 @@
 const merge = [
+    // headers
     { row: 0, col: 0, rowspan: 1, colspan: 2 },
     { row: 0, col: 2, rowspan: 1, colspan: 6 },
     { row: 0, col: 8, rowspan: 1, colspan: 7 },

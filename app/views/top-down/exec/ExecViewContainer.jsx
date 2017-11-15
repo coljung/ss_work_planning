@@ -6,34 +6,9 @@ import HotTable from 'react-handsontable';
 import Handsontable from 'handsontable';
 import { Spin } from 'antd';
 import { fetchBudgetExecData, resetState } from './ExecViewActions';
-// import { data } from './test_exec';
-import dataTet from './test_exec_tetyana';
-import { merge, cellClasses } from './grid-build/index';
-
-
-
-// const nested = [
-//     [
-//         { label: '&nbsp;', colspan: 2, className: 'ffffff' },
-//         { label: 'Women + Men', colspan: 3 },
-//         { label: 'Women', colspan: 3 },
-//         { label: 'Men', colspan: 3 },
-//     ],
-//     [
-//         'Metrics',
-//         'Season/Year',
-//         { label: 'Before Markdowns', colspan: 1 },
-//         { label: 'Inc %', colspan: 1 },
-//         { label: 'Full Season', colspan: 1 },
-//         { label: 'Before Markdowns', colspan: 1 },
-//         { label: 'Inc %', colspan: 1 },
-//         { label: 'Full Season', colspan: 1 },
-//         { label: 'Before Markdowns', colspan: 1 },
-//         { label: 'Inc %', colspan: 1 },
-//         { label: 'Full Season', colspan: 1 },
-//     ],
-// ];
-
+import datagrid from './test_exec';
+import { cellClasses, headers } from './grid-build/index';
+import { mergeMetrics, mergeHeadersExecRecap } from '../../../Helpers';
 
 const myColumns = [
     {
@@ -64,7 +39,6 @@ const cellStyle = [
 
 const menu = ["undo", "redo"]
 
-
 class ExecViewContainer extends Component {
 
     constructor(props) {
@@ -72,10 +46,6 @@ class ExecViewContainer extends Component {
         this.state = {
             data: [],
         };
-    }
-
-    componentWillMount() {
-
     }
 
     componentDidMount() {
@@ -87,41 +57,46 @@ class ExecViewContainer extends Component {
     }
 
     componentWillReceiveProps = (nextProps) => {
-        if (this.props.viewExecData.length !== nextProps.viewExecData.length) {
+        if (this.props.viewExecData.length || nextProps.viewExecData) {
             this.setState({
-                data: nextProps.viewExecData,
+                data: nextProps.viewExecData.data,
             });
         }
     }
 
+    mergeCells = () => {
+        const { start_row, row_span, total, total_cols, has_gaps } = datagrid.info;
+        const newMerge = mergeMetrics(start_row, row_span, total, total_cols, has_gaps);
 
-    buildTable = () => (
+        return newMerge;
+    }
+
+    buildTable = () => {
+        // console.log();
+        const newMerge = this.mergeCells();
+        return (
             <div className="parentDiv">
                 <HotTable
                     root="hot"
-                    data={dataTet.data}
+                    data={datagrid.data}
                     cells={cellClasses}
                     cell={cellStyle}
+                    nestedHeaders= {headers}
+                    colHeaders= {true}
                     fixedRowsTop={0}
                     fixedColumnsLeft={0}
                     formulas={true}
-
                     contextMenu={menu}
-                    mergeCells={merge}
+                    mergeCells={newMerge}
+                    persistentState={true}
                     currentRowClassName= {'currentRow'}
                     currentColClassName= {'currentCol'}
                     function={true}
-                    observeChanges={true}
-                    afterChange={this.test.bind(this)} />
-            </div>
-        )
-
-    test(val) {
-        // console.log(val);
+                    observeChanges={true} />
+            </div>);
     }
 
     render() {
-        console.log(merge);
         const budgetListData = this.props.viewExecDataFetched ? this.buildTable() : <Spin size="large" />;
         return (
             <div>
