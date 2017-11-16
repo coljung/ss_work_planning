@@ -7,7 +7,7 @@ import Handsontable from 'handsontable';
 import { Spin } from 'antd';
 import { fetchBudgetExecData, resetState } from './ExecViewActions';
 import datagrid from './test_exec';
-import { cellClasses, headers } from './grid-build/index';
+import { cellClasses, headers, columns } from './grid-build/index';
 import { mergeMetrics, mergeHeadersExecRecap } from '../../../Helpers';
 
 const myColumns = [
@@ -72,7 +72,7 @@ class ExecViewContainer extends Component {
     }
 
     buildTable = () => {
-        // console.log();
+        console.log(columns);
         const newMerge = this.mergeCells();
         return (
             <div className="parentDiv">
@@ -86,13 +86,15 @@ class ExecViewContainer extends Component {
                     fixedRowsTop={0}
                     fixedColumnsLeft={0}
                     formulas={true}
+                    columns={columns}
                     contextMenu={menu}
                     mergeCells={newMerge}
                     persistentState={true}
                     currentRowClassName= {'currentRow'}
                     currentColClassName= {'currentCol'}
                     function={true}
-                    observeChanges={true} />
+                    observeChanges={true} 
+                    />
             </div>);
     }
 

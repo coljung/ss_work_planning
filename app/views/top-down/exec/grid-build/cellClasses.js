@@ -28,10 +28,10 @@ function specialborder(instance, td, row, col, prop, value, cellProperties) {
 
 const cellClasses = (row, col, prop) => {
     const cellProperties = {};
-    cellProperties.renderer = empty;
-    if (col === 2 || col === 8 || col === 15) {
-        cellProperties.renderer = specialborder; // uses function directly
-    }
+    // cellProperties.renderer = empty;
+    // if (col === 2 || col === 8 || col === 15) {
+    //     cellProperties.renderer = specialborder; // uses function directly
+    // }
     // if ((row === 6 && col > 1) || (row === 12 && col > 1) || (row === 18 && col > 1)) {
     //     cellProperties.renderer = firstRowRenderer; // uses function directly
     // }
