@@ -57,6 +57,7 @@ export function fetchBudgets() {
         dispatch(requestBudgets());
         return request
             .get('http://localhost:3001/planning/seasons')
+            .query({ page_size: 1000 })
             .then(
                 res => dispatch(receiveBudgets(res.body)),
                 err => dispatch(messages({ content: err, response: err.response, isError: true })),
@@ -85,6 +86,7 @@ export function createBudget(budget) {
         return req.send(budget)
             .then(
                 (res) => {
+                    fetchBudgets()(dispatch);
                     dispatch(messages({ content: 'Budget created successfully!', response: '', isError: false }));
                     return dispatch(receiveBudgetCreate(res.body));
                 },
