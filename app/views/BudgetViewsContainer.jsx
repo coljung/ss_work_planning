@@ -69,7 +69,8 @@ class BudgetViewsContainer extends Component {
 
     render() {
         const currentKey = this.state.activeTab;
-        const currentTab = this.props.params.tab;
+        // const currentTab = this.props.params.tab === currentKey ? currentKey;
+        // console.log('---------', currentTab, currentKey);
         return (
             <div>
                 <div className="budgetHeader">
@@ -88,23 +89,23 @@ class BudgetViewsContainer extends Component {
                 <div className="budgetBody">
                     <Tabs defaultActiveKey={this.state.activeTab} onChange={this.onTabChange.bind(this)}>
                         <TabPane tab="Exec Recap" key={TAB_EXEC_RECAP}>
-                            {(currentTab === TAB_EXEC_RECAP || this.state[TAB_EXEC_RECAP]) &&
+                            {(currentKey === TAB_EXEC_RECAP || this.state[TAB_EXEC_RECAP]) &&
                                 <ExecViewContainer /> }
                         </TabPane>
                         <TabPane tab="Total" key={TAB_TOTAL}>
-                            {(currentTab === TAB_TOTAL || this.state[TAB_TOTAL]) &&
+                            {(currentKey === TAB_TOTAL || this.state[TAB_TOTAL]) &&
                                 <TotalViewContainer /> }
                         </TabPane>
                         <TabPane tab="Women" key={TAB_WOMEN}>
-                            {(currentTab === TAB_WOMEN || this.state[TAB_WOMEN]) &&
+                            {(currentKey === TAB_WOMEN || this.state[TAB_WOMEN]) &&
                                 <WomenViewContainer /> }
                         </TabPane>
                         <TabPane tab="Men" key={TAB_MEN}>
-                            {(currentTab === TAB_MEN || this.state[TAB_MEN]) &&
+                            {(currentKey === TAB_MEN || this.state[TAB_MEN]) &&
                                 <MenViewContainer /> }
                         </TabPane>
                         <TabPane tab="Brand Groups" key={TAB_BRAND_GROUPS}>
-                            {(currentTab === TAB_BRAND_GROUPS || this.state[TAB_BRAND_GROUPS]) &&
+                            {(currentKey === TAB_BRAND_GROUPS || this.state[TAB_BRAND_GROUPS]) &&
                                 <TotalViewContainer /> }
                         </TabPane>
                     </Tabs>

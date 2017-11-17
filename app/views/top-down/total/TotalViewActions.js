@@ -22,7 +22,7 @@ function receiveBudgetTotalViewData(viewData) {
     };
 }
 
-export function resetBudgetViews() {
+export function resetState() {
     return {
         type: RESET_BUDGETS_TOTAL_VIEW,
     };

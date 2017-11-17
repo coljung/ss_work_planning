@@ -22,7 +22,7 @@ function receiveBudgetWomenViewData(viewData) {
     };
 }
 
-export function resetBudgetViews() {
+export function resetState() {
     return {
         type: RESET_BUDGETS_WOMEN_VIEW,
     };
