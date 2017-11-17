@@ -17,11 +17,16 @@
                 border-color:#999;
                 word-wrap: break-word;
             }
-            th {
-                background: #ddd;
-                border:none;
-                padding: 3px 10px;
-                font-size: 13px;
+            thead{
+                th {
+                    background: #ddd;
+                    // border:none;
+                    padding: 3px 8px;
+                    font-size: 13px;
+                }
+                tr:last-child th{
+                    border-bottom: 1px solid #aaa;
+                }
             }
             td{
                 padding: 3px 5px;
@@ -29,6 +34,11 @@
             }
         }
     }
+}
+
+.colHeader{
+    font-weight: bold;
+    font-size: 12px;
 }
 
 .hiddenHeader{

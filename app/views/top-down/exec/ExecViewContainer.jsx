@@ -71,6 +71,10 @@ class ExecViewContainer extends Component {
         return newMerge;
     }
 
+    test = (changes) => {
+        console.log(changes);
+    }
+
     buildTable = () => {
         console.log(columns);
         const newMerge = this.mergeCells();
@@ -93,8 +97,8 @@ class ExecViewContainer extends Component {
                     currentRowClassName= {'currentRow'}
                     currentColClassName= {'currentCol'}
                     function={true}
-                    observeChanges={true} 
-                    />
+                    observeChanges={true}
+                    afterChange={this.test} />
             </div>);
     }
 
@@ -111,8 +115,8 @@ class ExecViewContainer extends Component {
 
 ExecViewContainer.propTypes = {
     viewExecData: PropTypes.oneOfType([
-        PropTypes.bool,
         PropTypes.array,
+        PropTypes.object,
     ]).isRequired,
     viewExecDataFetched: PropTypes.bool.isRequired,
     fetchBudgetExecData: PropTypes.func.isRequired,

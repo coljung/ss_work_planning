@@ -129,7 +129,7 @@ const datagrid = {
             men_full_cont: 64564,
         },
         {
-            empty: '',
+            empty: ' ',
         },
         {
             metric: 'COGS',
@@ -252,7 +252,7 @@ const datagrid = {
             men_full_cont: 64564,
         },
         {
-            empty: '',
+            empty: ' ',
         },
         {
             metric: 'GM $',
