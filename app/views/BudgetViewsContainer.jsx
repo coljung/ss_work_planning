@@ -4,12 +4,12 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Row, Col, Tabs } from 'antd';
 import { browserHistory } from 'react-router';
-import BudgetViewsButtonActions from './BudgetViewsButtonActions';
 import ExecViewContainer from 'top_down/exec/ExecViewContainer';
 import TotalViewContainer from 'top_down/total/TotalViewContainer';
+import BudgetViewsButtonActions from './BudgetViewsButtonActions';
 import { saveNewBudgetVersion } from './BudgetViewActions';
-
 import { ROUTE_BUDGET } from '../Routes';
+
 const TabPane = Tabs.TabPane;
 
 export const TAB_EXEC_RECAP = 'exec';
@@ -32,7 +32,7 @@ class BudgetViewsContainer extends Component {
             seasonName: seasonname,
             versionName: vname,
             activeTab: tab || TAB_EXEC_RECAP,
-            [TAB_EXEC_RECAP]: true,
+            [TAB_EXEC_RECAP]: false,
             [TAB_TOTAL]: false,
             [TAB_WOMEN]: false,
             [TAB_MEN]: false,
@@ -67,6 +67,7 @@ class BudgetViewsContainer extends Component {
 
     render() {
         const currentKey = this.state.activeTab;
+        const currentTab = this.props.params.tab;
         return (
             <div>
                 <div className="budgetHeader">
@@ -85,19 +86,24 @@ class BudgetViewsContainer extends Component {
                 <div className="budgetBody">
                     <Tabs defaultActiveKey={this.state.activeTab} onChange={this.onTabChange.bind(this)}>
                         <TabPane tab="Exec Recap" key={TAB_EXEC_RECAP}>
-                            {this.state[TAB_EXEC_RECAP] && <ExecViewContainer /> }
+                            {(currentTab === TAB_EXEC_RECAP || this.state[TAB_EXEC_RECAP]) &&
+                                <ExecViewContainer /> }
                         </TabPane>
                         <TabPane tab="Total" key={TAB_TOTAL}>
-                            {this.state[TAB_TOTAL] && <TotalViewContainer /> }
+                            {(currentTab === TAB_TOTAL || this.state[TAB_TOTAL]) &&
+                                <TotalViewContainer /> }
                         </TabPane>
                         <TabPane tab="Women" key={TAB_WOMEN}>
-
+                            {(currentTab === TAB_WOMEN || this.state[TAB_WOMEN]) &&
+                                <TotalViewContainer /> }
                         </TabPane>
                         <TabPane tab="Men" key={TAB_MEN}>
-
+                            {(currentTab === TAB_MEN || this.state[TAB_MEN]) &&
+                                <TotalViewContainer /> }
                         </TabPane>
                         <TabPane tab="Brand Groups" key={TAB_BRAND_GROUPS}>
-
+                            {(currentTab === TAB_BRAND_GROUPS || this.state[TAB_BRAND_GROUPS]) &&
+                                <TotalViewContainer /> }
                         </TabPane>
                     </Tabs>
                 </div>
