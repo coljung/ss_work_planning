@@ -7,6 +7,8 @@ import { browserHistory } from 'react-router';
 import BudgetViewsButtonActions from './BudgetViewsButtonActions';
 import ExecViewContainer from 'top_down/exec/ExecViewContainer';
 import TotalViewContainer from 'top_down/total/TotalViewContainer';
+import WomenViewContainer from 'top_down/total/WomenViewContainer';
+import MenViewContainer from 'top_down/total/MenViewContainer';
 import { saveNewBudgetVersion } from './BudgetViewActions';
 
 import { ROUTE_BUDGET } from '../Routes';
