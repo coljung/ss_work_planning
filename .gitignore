@@ -5,3 +5,5 @@ build
 stats.json
 tests/coverage
 .nyc_output
+.DS_Store
+app/.DS_Store
