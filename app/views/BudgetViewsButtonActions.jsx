@@ -4,6 +4,7 @@ import { Button, Popconfirm } from 'antd';
 import { Link } from 'react-router';
 import { ROUTE_DASHBOARD } from '../Routes';
 
+
 export default class BudgetViewsButtonActions extends Component {
 
     render() {
@@ -14,11 +15,14 @@ export default class BudgetViewsButtonActions extends Component {
                         Back to Dashboard
                     </Link>
                 </Button>
+
                 <Popconfirm placement="top" title='Create new Budget version' onConfirm={ this.props.save } okText="Yes" cancelText="Cancel">
                     <Button size='large'>Save New Version</Button>
                 </Popconfirm>
-            </div>
 
+                <Button className="undo" >Undo</Button>
+                <Button className="redo" >Redo</Button>
+            </div>
         );
     }
 }

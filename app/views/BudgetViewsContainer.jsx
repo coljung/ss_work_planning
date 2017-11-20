@@ -6,6 +6,8 @@ import { Row, Col, Tabs } from 'antd';
 import { browserHistory } from 'react-router';
 import ExecViewContainer from 'top_down/exec/ExecViewContainer';
 import TotalViewContainer from 'top_down/total/TotalViewContainer';
+import WomenViewContainer from 'top_down/women/WomenViewContainer';
+import MenViewContainer from 'top_down/men/MenViewContainer';
 import BudgetViewsButtonActions from './BudgetViewsButtonActions';
 import { saveNewBudgetVersion } from './BudgetViewActions';
 import { ROUTE_BUDGET } from '../Routes';
@@ -96,11 +98,11 @@ class BudgetViewsContainer extends Component {
                         </TabPane>
                         <TabPane tab="Women" key={TAB_WOMEN}>
                             {(currentKey === TAB_WOMEN || this.state[TAB_WOMEN]) &&
-                                <TotalViewContainer /> }
+                                <WomenViewContainer /> }
                         </TabPane>
                         <TabPane tab="Men" key={TAB_MEN}>
                             {(currentKey === TAB_MEN || this.state[TAB_MEN]) &&
-                                <TotalViewContainer /> }
+                                <MenViewContainer /> }
                         </TabPane>
                         <TabPane tab="Brand Groups" key={TAB_BRAND_GROUPS}>
                             {(currentKey === TAB_BRAND_GROUPS || this.state[TAB_BRAND_GROUPS]) &&
