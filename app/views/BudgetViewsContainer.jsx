@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { Row, Col, Tabs } from 'antd';
+import { Row, Col, Tabs, Menu, Dropdown, Icon } from 'antd';
 import { browserHistory } from 'react-router';
 import ExecViewContainer from 'top_down/exec/ExecViewContainer';
 import TotalViewContainer from 'top_down/total/TotalViewContainer';
@@ -71,16 +71,43 @@ class BudgetViewsContainer extends Component {
         const currentKey = this.state.activeTab;
         // const currentTab = this.props.params.tab === currentKey ? currentKey;
         // console.log('---------', currentTab, currentKey);
+        const SubMenu = Menu.SubMenu;
+        const MenuItemGroup = Menu.ItemGroup;
+        const menuBudget = (
+            <Menu>
+                <Menu.Item>SS2018 - V3</Menu.Item>
+                <Menu.Item>SS2018 - V2</Menu.Item>
+                <Menu.Item>SS2018 - V1</Menu.Item>
+            </Menu>
+        );
+        const menuView = (
+            <Menu>
+                <Menu.Item>Top Down</Menu.Item>
+                <SubMenu title="Bottom Up">
+                    <Menu.Item>Receipt Planning</Menu.Item>
+                    <Menu.Item>Delivery Planning</Menu.Item>
+                </SubMenu>
+            </Menu>
+        );
         return (
             <div>
                 <div className="budgetHeader">
-
-                    <Row>
-                        <Col xs={12}>
-                            <h2>{this.state.seasonName} Budget - {this.state.versionName}</h2>
-                            <h3>Top Down</h3>
+                    <Row type="flex" justify="start" className="innerHeader">
+                        <Col span={4} className="col">
+                            <Dropdown overlay={menuBudget}>
+                                <h3><a className="ant-dropdown-link" href="#">
+                                    {this.state.seasonName} - {this.state.versionName}<Icon type="down" />
+                                </a></h3>
+                            </Dropdown>
                         </Col>
-                        <Col xs={12}>
+                        <Col span={4} className="col">
+                            <Dropdown overlay={menuView}>
+                                <h3><a className="ant-dropdown-link" href="#">
+                                    Top Down <Icon type="down" />
+                                </a></h3>
+                            </Dropdown>
+                        </Col>
+                        <Col span={16} className="col">
                             <BudgetViewsButtonActions
                                 save={() => this.saveNewVersion(this.state.budgetSeasonId, this.state.versionId)} />
                         </Col>

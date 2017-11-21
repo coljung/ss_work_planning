@@ -10,18 +10,18 @@ export default class BudgetViewsButtonActions extends Component {
     render() {
         return (
             <div>
-                <Button type="primary" size="large">
-                    <Link to={ROUTE_DASHBOARD} >
-                        Back to Dashboard
-                    </Link>
-                </Button>
-
                 <Popconfirm placement="top" title='Create new Budget version' onConfirm={ this.props.save } okText="Yes" cancelText="Cancel">
-                    <Button size='large'>Save New Version</Button>
+                    <Button>Save New Version</Button>
                 </Popconfirm>
 
                 <Button className="undo" >Undo</Button>
                 <Button className="redo" >Redo</Button>
+
+                <Button type="primary">
+                    <Link to={ROUTE_DASHBOARD} >
+                        Back
+                    </Link>
+                </Button>
             </div>
         );
     }
