@@ -8,7 +8,7 @@ import { Spin } from 'antd';
 import { mergeMetrics, mergeHeadersExecRecap } from 'helpers';
 import { fetchBudgetMenData, resetState } from './MenViewActions';
 import datagrid from './test';
-import { cellClasses, headers } from './grid-build/index';
+import { cellClasses, headers, columns } from './grid-build/index';
 
 class MenViewContainer extends Component {
 
@@ -42,6 +42,10 @@ class MenViewContainer extends Component {
         return newMerge;
     }
 
+    test = (v) => {
+        console.log(v);
+    }
+
     buildTable = () => {
         const newMerge = this.mergeCells();
         return (<div className="parentDiv">
@@ -51,8 +55,7 @@ class MenViewContainer extends Component {
                 cells={cellClasses}
                 nestedHeaders= {headers}
                 colHeaders= {true}
-                fixedRowsTop={0}
-                fixedColumnsLeft={0}
+                columns={columns}
                 formulas={true}
                 contextMenu={false}
                 mergeCells={newMerge}
@@ -60,7 +63,8 @@ class MenViewContainer extends Component {
                 currentRowClassName= {'currentRow'}
                 currentColClassName= {'currentCol'}
                 function={true}
-                observeChanges={true} />
+                observeChanges={true}
+                afterChange={this.test} />
         </div>);
     }
 

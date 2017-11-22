@@ -8,7 +8,7 @@ import { Spin } from 'antd';
 import { mergeMetrics, mergeHeadersExecRecap } from 'helpers';
 import { fetchBudgetWomenData, resetState } from './WomenViewActions';
 import datagrid from './test';
-import { cellClasses, headers } from './grid-build/index';
+import { cellClasses, headers, columns } from './grid-build/index';
 
 class WomenViewContainer extends Component {
 
@@ -51,8 +51,7 @@ class WomenViewContainer extends Component {
                 cells={cellClasses}
                 nestedHeaders= {headers}
                 colHeaders= {true}
-                fixedRowsTop={0}
-                fixedColumnsLeft={0}
+                columns={columns}
                 formulas={true}
                 contextMenu={false}
                 mergeCells={newMerge}
