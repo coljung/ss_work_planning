@@ -1,7 +1,6 @@
 import Handsontable from 'handsontable';
 
 function firstRowRenderer(instance, td, row, col, prop, value, cellProperties) {
-
     Handsontable.renderers.TextRenderer.apply(this, arguments);
     td.style.fontWeight = 'bold';
     td.style.background = '#DCDCDC';
@@ -21,7 +20,6 @@ function empty(instance, td, row, col, prop, value, cellProperties) {
 }
 
 function specialborder(instance, td, row, col, prop, value, cellProperties) {
-
     Handsontable.renderers.TextRenderer.apply(this, arguments);
     td.className += 'testborder';
 }
