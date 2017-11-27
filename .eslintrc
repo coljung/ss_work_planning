@@ -1,6 +1,9 @@
 {
   "extends": "ui-core/client-react",
   "plugins": ["react"],
+  "settings": {
+    'import/resolver': 'webpack'
+  },
   "rules": {
     "indent": [
       2,

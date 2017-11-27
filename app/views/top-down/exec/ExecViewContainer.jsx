@@ -10,34 +10,7 @@ import datagrid from './test_exec';
 import { cellClasses, headers, columns } from './grid-build/index';
 import { mergeMetrics, mergeHeadersExecRecap } from '../../../Helpers';
 
-const myColumns = [
-    {
-        data: 'col0',
-    },
-    {
-        data: 'col1',
-    },
-    {
-        data: 'col2',
-    },
-    {
-        data: 'col03',
-    },
-    {
-        data: 'col4',
-    },
-    {
-        data: 'col5',
-    },
-];
-
-const cellStyle = [
-    { row: 3, col: 2, className: 'bold' },
-    { row: 3, col: 6, className: 'bold' },
-    { row: 3, col: 10, className: 'bold' },
-];
-
-const menu = ["undo", "redo"]
+const menu = ['undo', 'redo'];
 
 class ExecViewContainer extends Component {
 
@@ -84,7 +57,6 @@ class ExecViewContainer extends Component {
                     root="hot"
                     data={datagrid.data}
                     cells={cellClasses}
-                    cell={cellStyle}
                     nestedHeaders= {headers}
                     colHeaders= {true}
                     fixedRowsTop={0}

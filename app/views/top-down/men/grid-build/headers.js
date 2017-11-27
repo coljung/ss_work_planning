@@ -1,0 +1,33 @@
+const headers = [
+    [
+        'Name',
+        'Season/Year',
+        'STD Pre-Markdown',
+        'Incr%',
+        'STD Post-Markdown',
+        'Incr%',
+        'Full Season',
+        'Incr%',
+        'Feb',
+        'Mar',
+        'Apr',
+        'May',
+        'Jun',
+        'Jul',
+        'Aug',
+        'Sep',
+        'Oct',
+        'Nov',
+        'Dec',
+        'Jan',
+        'Feb',
+        'Mar',
+        'Apr',
+        'May',
+        'Jun',
+        'Jul',
+        'Future',
+    ],
+];
+
+export default headers;

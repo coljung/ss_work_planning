@@ -5,49 +5,10 @@ import { connect } from 'react-redux';
 import HotTable from 'react-handsontable';
 import Handsontable from 'handsontable';
 import { Spin } from 'antd';
+import { mergeMetrics, mergeHeadersExecRecap } from 'helpers';
 import { fetchBudgetMenData, resetState } from './MenViewActions';
 import datagrid from './test';
-import { merge, cellClasses } from '../exec/grid-build/index';
-import { mergeMetrics, mergeHeadersExecRecap } from '../../../Helpers';
-
-const cellStyle = [
-    { row: 3, col: 2, className: 'bold' },
-    { row: 3, col: 6, className: 'bold' },
-    { row: 3, col: 10, className: 'bold' },
-];
-
-const headers = [
-    [
-        { label: 'Metrics', colspan: 2 },
-        { label: 'Total', colspan: 6 },
-        { label: 'Women', colspan: 7 },
-        { label: 'Men', colspan: 7 },
-    ],
-    [
-        'Name',
-        'Season/Year',
-        'STD Pre-Markdown',
-        'Incr%',
-        'STD Post-Markdown',
-        'Incr%',
-        'Full Season',
-        'Incr%',
-        'STD Pre-Markdown',
-        'Incr%',
-        'STD Post-Markdown',
-        'Incr%',
-        'Full Season',
-        'Incr%',
-        'Cont%',
-        'STD Pre-Markdown',
-        'Incr%',
-        'STD Post-Markdown',
-        'Incr%',
-        'Full Season',
-        'Incr%',
-        'Cont%',
-    ],
-];
+import { cellClasses, headers, columns } from './grid-build/index';
 
 class MenViewContainer extends Component {
 
@@ -81,6 +42,10 @@ class MenViewContainer extends Component {
         return newMerge;
     }
 
+    test = (v) => {
+        console.log(v);
+    }
+
     buildTable = () => {
         const newMerge = this.mergeCells();
         return (<div className="parentDiv">
@@ -88,11 +53,9 @@ class MenViewContainer extends Component {
                 root="hot"
                 data={datagrid.data}
                 cells={cellClasses}
-                cell={cellStyle}
                 nestedHeaders= {headers}
                 colHeaders= {true}
-                fixedRowsTop={0}
-                fixedColumnsLeft={0}
+                columns={columns}
                 formulas={true}
                 contextMenu={false}
                 mergeCells={newMerge}
@@ -100,7 +63,8 @@ class MenViewContainer extends Component {
                 currentRowClassName= {'currentRow'}
                 currentColClassName= {'currentCol'}
                 function={true}
-                observeChanges={true} />
+                observeChanges={true}
+                afterChange={this.test} />
         </div>);
     }
 
