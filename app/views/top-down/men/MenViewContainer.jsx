@@ -16,6 +16,7 @@ class MenViewContainer extends Component {
         super(props);
         this.state = {
             data: [],
+            datagrid,
         };
     }
 
@@ -42,8 +43,18 @@ class MenViewContainer extends Component {
         return newMerge;
     }
 
-    test = (v) => {
-        console.log(v);
+    test = (cellEdits) => {
+        const relations = datagrid.relationships;
+        if (cellEdits) {
+            const edit = cellEdits[0];
+            const [row, col, prevValue, newValue] = edit;
+            const whattochange = relations[row][col];
+
+            let item = Object.assign({}, this.state.datagrid.data[whattochange.row], { [whattochange.col]: newValue });
+            items[1] = item;
+            this.setState({items: items});
+            // debugger;
+        }
     }
 
     buildTable = () => {
@@ -51,7 +62,7 @@ class MenViewContainer extends Component {
         return (<div className="parentDiv">
             <HotTable
                 root="hot"
-                data={datagrid.data}
+                data={this.state.datagrid.data}
                 cells={cellClasses}
                 nestedHeaders= {headers}
                 colHeaders= {true}

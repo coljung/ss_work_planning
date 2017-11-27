@@ -57,13 +57,14 @@ class ExecViewContainer extends Component {
                     root="hot"
                     data={datagrid.data}
                     cells={cellClasses}
-                    nestedHeaders= {headers}
-                    colHeaders= {true}
+                    colHeaders={true}
+                    rowHeaders={true}
+                    nestedHeaders={headers}
                     fixedRowsTop={0}
                     fixedColumnsLeft={0}
                     formulas={true}
                     columns={columns}
-                    contextMenu={menu}
+                    contextMenu={false}
                     mergeCells={newMerge}
                     persistentState={true}
                     currentRowClassName= {'currentRow'}
