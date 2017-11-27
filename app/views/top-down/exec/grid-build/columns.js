@@ -23,6 +23,11 @@ const columns = [
         format: '$0,000',
     },
     {
+        data: 'total_incr_stdpostmarkdown',
+        type: 'numeric',
+        format: '0.00%',
+    },
+    {
         data: 'total_full',
         type: 'numeric',
         format: '$0,000',
@@ -65,7 +70,7 @@ const columns = [
     {
         data: 'women_full_cont',
         type: 'numeric',
-        format: '$0,000',
+        format: '0.00%',
     },
     {
         data: 'men_stdpremarkdown',
@@ -100,7 +105,7 @@ const columns = [
     {
         data: 'men_full_cont',
         type: 'numeric',
-        format: '$0,000',
+        format: '0.00%',
     },
 ];
 
