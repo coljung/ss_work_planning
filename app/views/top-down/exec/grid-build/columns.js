@@ -15,12 +15,17 @@ const columns = [
     {
         data: 'total_incr_stdpremarkdown',
         type: 'numeric',
-        format: '0%',
+        format: '0.00%',
     },
     {
         data: 'total_stdpostmarkdown',
         type: 'numeric',
         format: '$0,000',
+    },
+    {
+        data: 'total_incr_stdpostmarkdown',
+        type: 'numeric',
+        format: '0.00%',
     },
     {
         data: 'total_full',
@@ -30,7 +35,7 @@ const columns = [
     {
         data: 'total_full_incr',
         type: 'numeric',
-        format: '0%',
+        format: '0.00.00%',
     },
     {
         data: 'women_stdpremarkdown',
@@ -40,7 +45,7 @@ const columns = [
     {
         data: 'women_incr_stdpremarkdown',
         type: 'numeric',
-        format: '0%',
+        format: '0.00%',
     },
     {
         data: 'women_stdpostmarkdown',
@@ -50,7 +55,7 @@ const columns = [
     {
         data: 'women_incr_stdpostmarkdown',
         type: 'numeric',
-        format: '0%',
+        format: '0.00%',
     },
     {
         data: 'women_full',
@@ -60,12 +65,12 @@ const columns = [
     {
         data: 'women_full_incr',
         type: 'numeric',
-        format: '0%',
+        format: '0.00%',
     },
     {
         data: 'women_full_cont',
         type: 'numeric',
-        format: '$0,000',
+        format: '0.00%',
     },
     {
         data: 'men_stdpremarkdown',
@@ -75,7 +80,7 @@ const columns = [
     {
         data: 'men_incr_stdpremarkdown',
         type: 'numeric',
-        format: '0%',
+        format: '0.00%',
     },
     {
         data: 'men_stdpostmarkdown',
@@ -85,7 +90,7 @@ const columns = [
     {
         data: 'men_incr_stdpostmarkdown',
         type: 'numeric',
-        format: '0%',
+        format: '0.00%',
     },
     {
         data: 'men_full',
@@ -95,12 +100,12 @@ const columns = [
     {
         data: 'men_full_incr',
         type: 'numeric',
-        format: '0%',
+        format: '0.00%',
     },
     {
         data: 'men_full_cont',
         type: 'numeric',
-        format: '$0,000',
+        format: '0.00%',
     },
 ];
 

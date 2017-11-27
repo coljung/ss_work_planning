@@ -32,13 +32,14 @@ class ExecViewContainer extends Component {
     componentWillReceiveProps = (nextProps) => {
         if (this.props.viewExecData.length || nextProps.viewExecData) {
             this.setState({
-                data: nextProps.viewExecData.data,
+                data: nextProps.viewExecData,
             });
         }
     }
 
     mergeCells = () => {
-        const { start_row, row_span, total, total_cols, has_gaps } = datagrid.info;
+        // debugger;
+        const { start_row, row_span, total, total_cols, has_gaps } = this.state.data.info;
         const newMerge = mergeMetrics(start_row, row_span, total, total_cols, has_gaps);
 
         return newMerge;
@@ -55,7 +56,7 @@ class ExecViewContainer extends Component {
             <div className="parentDiv">
                 <HotTable
                     root="hot"
-                    data={datagrid.data}
+                    data={this.state.data.data}
                     cells={cellClasses}
                     nestedHeaders= {headers}
                     colHeaders= {true}
