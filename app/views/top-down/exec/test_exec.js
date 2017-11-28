@@ -12,7 +12,7 @@ const datagrid = {
             metric: 'Sales',
             seasonyear: 'FW18',
             total_stdpremarkdown: '=SUM(I1,P1)',
-            total_incr_stdpremarkdown: '=(C1-C2)/C2',
+            total_incr_stdpremarkdown: '=(C1-(I2+P2))/(I2+P2)',
             total_stdpostmarkdown: '=SUM(K1,R1)',
             total_incr_stdpostmarkdown: '=(E1-E2)/E2',
             total_full: '=SUM(M1,T1)',
