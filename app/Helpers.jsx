@@ -22,12 +22,12 @@ export const mergeMetrics = (startRow = 0, rowSpan, totalRows, totalCols, hasGap
                 rowspan: rowSpan,
                 colspan: 1,
             });
-            mergeArr.push({
-                row: i - 1,
-                col: 0,
-                rowspan: 1,
-                colspan: totalCols,
-            });
+            // mergeArr.push({
+            //     row: i - 1,
+            //     col: 0,
+            //     rowspan: 1,
+            //     colspan: totalCols,
+            // });
         }
     }
 

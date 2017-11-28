@@ -1,3 +1,14 @@
+import Handsontable from 'handsontable';
+
+function coverRenderer(instance, td, row, col, prop, value, cellProperties) {
+    value = value * 100;
+    console.log(typeof value, value);
+    console.log(arguments, '----------');
+    Handsontable.renderers.NumericRenderer.apply(this, arguments);
+
+    return td;
+  }
+
 const columns = [
     {
         data: 'metric',
@@ -69,8 +80,9 @@ const columns = [
     },
     {
         data: 'women_full_cont',
-        type: 'numeric',
-        format: '0.00%',
+        renderer: coverRenderer,
+        // type: 'numeric',
+        // format: '0.00%',
     },
     {
         data: 'men_stdpremarkdown',
