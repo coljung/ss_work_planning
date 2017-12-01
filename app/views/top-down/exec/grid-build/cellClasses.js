@@ -24,6 +24,8 @@ function specialborder(instance, td, row, col, prop, value, cellProperties) {
     td.className += 'testborder';
 }
 
+
+
 const cellClasses = (row, col, prop) => {
     const cellProperties = {};
     // cellProperties.renderer = empty;

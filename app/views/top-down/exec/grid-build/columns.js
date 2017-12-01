@@ -1,3 +1,22 @@
+import Handsontable from 'handsontable';
+
+function coverRenderer(instance, td, row, col, prop, value, cellProperties) {
+
+    // #VALUE!
+    if (value === '#VALUE!') {
+      Handsontable.renderers.TextRenderer.apply(this, arguments);
+      console.log(value, cellProperties);
+      cellProperties.type = 'text';
+      cellProperties.className = 'newclass';
+      cellProperties.innerHTML = 'N/AAAA';
+      cellProperties.value = 'N/AAAAAAA';
+    } else {
+      cellProperties.type = 'numeric';
+      cellProperties.format = '0.[00]%';
+      Handsontable.renderers.NumericRenderer.apply(this, arguments);
+    }
+}
+
 const columns = [
     {
         data: 'metric',
@@ -14,8 +33,9 @@ const columns = [
     },
     {
         data: 'total_incr_stdpremarkdown',
-        type: 'numeric',
-        format: '0.00%',
+        renderer: coverRenderer,
+        // type: 'numeric',
+        // format: '0.00%',
     },
     {
         data: 'total_stdpostmarkdown',
