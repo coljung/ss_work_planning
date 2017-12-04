@@ -18,12 +18,12 @@
                 word-wrap: break-word;
             }
             thead{
-                th {
-                    background: #ddd;
-                    // border:none;
-                    padding: 3px 8px;
-                    font-size: 13px;
-                }
+                // th {
+                //     background: #ddd;
+                //     // border:none;
+                //     padding: 3px 8px;
+                //     font-size: 13px;
+                // }
                 tr:last-child th{
                     border-bottom: 1px solid #aaa;
                 }
@@ -36,10 +36,22 @@
     }
 }
 
-.colHeader{
-    font-weight: bold;
-    font-size: 12px;
+.colHeader, .rowHeader{
+    // font-weight: bold;
+    // font-size: 12px;
 }
+.parentDiv .handsontable table.htCore th{
+    background: #f6f6f6;
+    font-size: 11px;
+    font-weight: normal;
+}
+.parentDiv .handsontable table.htCore thead th{
+    padding: 0 3px;
+}
+.parentDiv .handsontable table.htCore tbody th{
+    padding: 3px 0;
+}
+
 
 .hiddenHeader{
     display: none;

@@ -12,7 +12,6 @@ export const mergeMetrics = (startRow = 0, rowSpan, totalRows, totalCols, hasGap
     // span between gaps
     const emptyRowSpan = hasGap ? rowSpan : null;
 
-    // debugger;
 
     for (let i = startRow; i < totalRows; ++i) {
         if (i % metricSpan === 0) {
@@ -22,12 +21,14 @@ export const mergeMetrics = (startRow = 0, rowSpan, totalRows, totalCols, hasGap
                 rowspan: rowSpan,
                 colspan: 1,
             });
-            mergeArr.push({
-                row: i - 1,
-                col: 0,
-                rowspan: 1,
-                colspan: totalCols,
-            });
+            if (hasGap) {
+                mergeArr.push({
+                    row: i - 1,
+                    col: 0,
+                    rowspan: 1,
+                    colspan: totalCols,
+                });
+            }
         }
     }
 

@@ -85,7 +85,7 @@ const columns = [
         format: '$0,000',
     },
     {
-        data: 'nov',
+        data: 'nov1',
         type: 'numeric',
         format: '$0,000',
     },

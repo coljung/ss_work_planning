@@ -15,7 +15,7 @@ class MenViewContainer extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            data: [],
+            grid: [],
         };
     }
 
@@ -28,22 +28,32 @@ class MenViewContainer extends Component {
     }
 
     componentWillReceiveProps = (nextProps) => {
-        if (this.props.viewMenData.length !== nextProps.viewMenData.length) {
+        if (this.props.viewMenData.length !== nextProps.viewMenData) {
             this.setState({
-                data: nextProps.viewMenData,
+                grid: nextProps.viewMenData,
             });
         }
     }
 
     mergeCells = () => {
-        const { start_row, row_span, total, total_cols, has_gaps } = datagrid.info;
+        const { start_row, row_span, total, total_cols, has_gaps } = this.state.grid.info;
         const newMerge = mergeMetrics(start_row, row_span, total, total_cols, has_gaps);
 
         return newMerge;
     }
 
-    test = (v) => {
-        console.log(v);
+    test = (cellEdits) => {
+        // const relations = datagrid.relationships;
+        // if (cellEdits) {
+        //     const edit = cellEdits[0];
+        //     const [row, col, prevValue, newValue] = edit;
+        //     const whattochange = relations[row][col];
+        //
+        //     let item = Object.assign({}, this.state.datagrid.data[whattochange.row], { [whattochange.col]: newValue });
+        //     items[1] = item;
+        //     this.setState({items: items});
+        //     // debugger;
+        // }
     }
 
     buildTable = () => {
@@ -51,7 +61,7 @@ class MenViewContainer extends Component {
         return (<div className="parentDiv">
             <HotTable
                 root="hot"
-                data={datagrid.data}
+                data={this.state.grid.data}
                 cells={cellClasses}
                 nestedHeaders= {headers}
                 colHeaders= {true}
@@ -82,11 +92,12 @@ class MenViewContainer extends Component {
 
 MenViewContainer.propTypes = {
     viewMenData: PropTypes.oneOfType([
-        PropTypes.bool,
         PropTypes.array,
+        PropTypes.object,
     ]).isRequired,
     viewMenDataFetched: PropTypes.bool.isRequired,
     fetchBudgetMenData: PropTypes.func.isRequired,
+    resetState: PropTypes.func.isRequired,
 };
 
 function mapStateToProps(state) {

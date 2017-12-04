@@ -1,3 +1,20 @@
+import Handsontable from 'handsontable';
+
+function errorValueRender(instance, td, row, col, prop, value, cellProperties) {
+
+    cellProperties = {};
+    if (isNaN(value)) {
+        cellProperties.type = 'text';
+        td.innerHTML = 'N/A';
+        return td;
+    }
+
+    cellProperties.type = 'numeric';
+    cellProperties.format = '0.[00]%';
+    Handsontable.renderers.NumericRenderer.apply(this, arguments);
+    return td;
+}
+
 const columns = [
     {
         data: 'metric',
@@ -14,13 +31,20 @@ const columns = [
     },
     {
         data: 'total_incr_stdpremarkdown',
+        renderer: errorValueRender,
         type: 'numeric',
-        format: '0%',
+        format: '0.00%',
     },
     {
         data: 'total_stdpostmarkdown',
         type: 'numeric',
         format: '$0,000',
+    },
+    {
+        data: 'total_incr_stdpostmarkdown',
+        renderer: errorValueRender,
+        type: 'numeric',
+        format: '0.00%',
     },
     {
         data: 'total_full',
@@ -29,8 +53,9 @@ const columns = [
     },
     {
         data: 'total_full_incr',
+        renderer: errorValueRender,
         type: 'numeric',
-        format: '0%',
+        format: '0.00%',
     },
     {
         data: 'women_stdpremarkdown',
@@ -39,8 +64,9 @@ const columns = [
     },
     {
         data: 'women_incr_stdpremarkdown',
+        renderer: errorValueRender,
         type: 'numeric',
-        format: '0%',
+        format: '0.00%',
     },
     {
         data: 'women_stdpostmarkdown',
@@ -49,8 +75,9 @@ const columns = [
     },
     {
         data: 'women_incr_stdpostmarkdown',
+        renderer: errorValueRender,
         type: 'numeric',
-        format: '0%',
+        format: '0.00%',
     },
     {
         data: 'women_full',
@@ -59,13 +86,15 @@ const columns = [
     },
     {
         data: 'women_full_incr',
+        renderer: errorValueRender,
         type: 'numeric',
-        format: '0%',
+        format: '0.00%',
     },
     {
         data: 'women_full_cont',
+        renderer: errorValueRender,
         type: 'numeric',
-        format: '$0,000',
+        format: '0.00%',
     },
     {
         data: 'men_stdpremarkdown',
@@ -74,8 +103,9 @@ const columns = [
     },
     {
         data: 'men_incr_stdpremarkdown',
+        renderer: errorValueRender,
         type: 'numeric',
-        format: '0%',
+        format: '0.00%',
     },
     {
         data: 'men_stdpostmarkdown',
@@ -84,8 +114,9 @@ const columns = [
     },
     {
         data: 'men_incr_stdpostmarkdown',
+        renderer: errorValueRender,
         type: 'numeric',
-        format: '0%',
+        format: '0.00%',
     },
     {
         data: 'men_full',
@@ -94,13 +125,15 @@ const columns = [
     },
     {
         data: 'men_full_incr',
+        renderer: errorValueRender,
         type: 'numeric',
-        format: '0%',
+        format: '0.00%',
     },
     {
         data: 'men_full_cont',
+        renderer: errorValueRender,
         type: 'numeric',
-        format: '$0,000',
+        format: '0.00%',
     },
 ];
 

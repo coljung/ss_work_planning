@@ -17,6 +17,22 @@ export default class BudgetViewsButtonActions extends Component {
                 <Button className="undo" >Undo</Button>
                 <Button className="redo" >Redo</Button>
 
+{/*                $(".undo").on("click", function() {
+                    if (undoQ.length > 0) {
+                        var hotInstance = undoQ.shift();
+                        hotInstance.undo();
+                        redoQ.push(hotInstance);
+                    }
+                })
+
+                $(".redo").on("click", function() {
+                    if (redoQ.length > 0) {
+                        var hotInstance = redoQ.shift();
+                        hotInstance.redo();
+                        undoQ.push(hotInstance);
+                    }
+                })*/}
+
                 <Button type="primary">
                     <Link to={ROUTE_DASHBOARD} >
                         Back

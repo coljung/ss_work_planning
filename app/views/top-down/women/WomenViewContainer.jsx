@@ -15,7 +15,7 @@ class WomenViewContainer extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            data: [],
+            grid: [],
         };
     }
 
@@ -28,15 +28,17 @@ class WomenViewContainer extends Component {
     }
 
     componentWillReceiveProps = (nextProps) => {
-        if (this.props.viewWomenData.length !== nextProps.viewWomenData.length) {
+        if (this.props.viewWomenData.length !== nextProps.viewWomenData) {
             this.setState({
-                data: nextProps.viewWomenData,
+                grid: nextProps.viewWomenData,
             });
         }
     }
 
     mergeCells = () => {
-        const { start_row, row_span, total, total_cols, has_gaps } = datagrid.info;
+        console.log(this.props.viewWomenData);
+        console.log(this.state.grid);
+        const { start_row, row_span, total, total_cols, has_gaps } = this.state.grid.info;
         const newMerge = mergeMetrics(start_row, row_span, total, total_cols, has_gaps);
 
         return newMerge;
@@ -47,7 +49,7 @@ class WomenViewContainer extends Component {
         return (<div className="parentDiv">
             <HotTable
                 root="hot"
-                data={datagrid.data}
+                data={this.state.grid.data}
                 cells={cellClasses}
                 nestedHeaders= {headers}
                 colHeaders= {true}
@@ -77,11 +79,12 @@ class WomenViewContainer extends Component {
 
 WomenViewContainer.propTypes = {
     viewWomenData: PropTypes.oneOfType([
-        PropTypes.bool,
         PropTypes.array,
+        PropTypes.object,
     ]).isRequired,
     viewWomenDataFetched: PropTypes.bool.isRequired,
     fetchBudgetWomenData: PropTypes.func.isRequired,
+    resetState: PropTypes.func.isRequired,
 };
 
 function mapStateToProps(state) {
