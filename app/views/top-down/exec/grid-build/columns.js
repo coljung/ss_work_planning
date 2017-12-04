@@ -103,9 +103,7 @@ const columns = [
     },
     {
         data: 'men_incr_stdpremarkdown',
-        renderer: errorValueRender,
-        type: 'numeric',
-        format: '0.00%',
+        renderer: coverRenderer,
     },
     {
         data: 'men_stdpostmarkdown',
