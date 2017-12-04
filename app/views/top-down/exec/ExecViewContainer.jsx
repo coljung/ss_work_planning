@@ -17,7 +17,7 @@ class ExecViewContainer extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            data: [],
+            grid: [],
         };
     }
 
@@ -32,30 +32,31 @@ class ExecViewContainer extends Component {
     componentWillReceiveProps = (nextProps) => {
         if (this.props.viewExecData.length || nextProps.viewExecData) {
             this.setState({
-                data: nextProps.viewExecData.data,
+                grid: nextProps.viewExecData,
             });
         }
     }
 
     mergeCells = () => {
-        const { start_row, row_span, total, total_cols, has_gaps } = datagrid.info;
+        // debugger;
+        const { start_row, row_span, total, total_cols, has_gaps } = this.state.grid.info;
         const newMerge = mergeMetrics(start_row, row_span, total, total_cols, has_gaps);
 
         return newMerge;
     }
 
     test = (changes) => {
-        console.log(changes);
+        // console.log(changes);
     }
 
     buildTable = () => {
-        console.log(columns);
         const newMerge = this.mergeCells();
         return (
             <div className="parentDiv">
                 <HotTable
                     root="hot"
-                    data={datagrid.data}
+                    ref={'table'}
+                    data={this.state.grid.data}
                     cells={cellClasses}
                     colHeaders={true}
                     rowHeaders={true}
@@ -71,6 +72,7 @@ class ExecViewContainer extends Component {
                     currentColClassName= {'currentCol'}
                     function={true}
                     observeChanges={true}
+                    stretchH='all'
                     afterChange={this.test} />
             </div>);
     }
