@@ -50,12 +50,12 @@ class ExecViewContainer extends Component {
     }
 
     buildTable = () => {
-        console.log(columns);
         const newMerge = this.mergeCells();
         return (
             <div className="parentDiv">
                 <HotTable
                     root="hot"
+                    ref={'table'}
                     data={this.state.data.data}
                     cells={cellClasses}
                     nestedHeaders= {headers}
@@ -71,6 +71,7 @@ class ExecViewContainer extends Component {
                     currentColClassName= {'currentCol'}
                     function={true}
                     observeChanges={true}
+                    stretchH='all'
                     afterChange={this.test} />
             </div>);
     }
