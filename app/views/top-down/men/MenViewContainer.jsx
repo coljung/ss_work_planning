@@ -28,7 +28,7 @@ class MenViewContainer extends Component {
     }
 
     componentWillReceiveProps = (nextProps) => {
-        if (this.props.viewMenData.length !== nextProps.viewMenData.length) {
+        if (this.props.viewMenData.length !== nextProps.viewMenData) {
             this.setState({
                 grid: nextProps.viewMenData,
             });

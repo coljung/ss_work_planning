@@ -28,7 +28,7 @@ class WomenViewContainer extends Component {
     }
 
     componentWillReceiveProps = (nextProps) => {
-        if (this.props.viewWomenData.length !== nextProps.viewWomenData.length) {
+        if (this.props.viewWomenData.length !== nextProps.viewWomenData) {
             this.setState({
                 grid: nextProps.viewWomenData,
             });
@@ -36,6 +36,8 @@ class WomenViewContainer extends Component {
     }
 
     mergeCells = () => {
+        console.log(this.props.viewWomenData);
+        console.log(this.state.grid);
         const { start_row, row_span, total, total_cols, has_gaps } = this.state.grid.info;
         const newMerge = mergeMetrics(start_row, row_span, total, total_cols, has_gaps);
 
