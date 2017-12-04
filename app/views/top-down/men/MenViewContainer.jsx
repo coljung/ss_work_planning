@@ -15,8 +15,7 @@ class MenViewContainer extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            data: [],
-            datagrid,
+            grid: [],
         };
     }
 
@@ -29,32 +28,32 @@ class MenViewContainer extends Component {
     }
 
     componentWillReceiveProps = (nextProps) => {
-        if (this.props.viewMenData.length !== nextProps.viewMenData.length) {
+        if (this.props.viewMenData.length !== nextProps.viewMenData) {
             this.setState({
-                data: nextProps.viewMenData,
+                grid: nextProps.viewMenData,
             });
         }
     }
 
     mergeCells = () => {
-        const { start_row, row_span, total, total_cols, has_gaps } = datagrid.info;
+        const { start_row, row_span, total, total_cols, has_gaps } = this.state.grid.info;
         const newMerge = mergeMetrics(start_row, row_span, total, total_cols, has_gaps);
 
         return newMerge;
     }
 
     test = (cellEdits) => {
-        const relations = datagrid.relationships;
-        if (cellEdits) {
-            const edit = cellEdits[0];
-            const [row, col, prevValue, newValue] = edit;
-            const whattochange = relations[row][col];
-
-            let item = Object.assign({}, this.state.datagrid.data[whattochange.row], { [whattochange.col]: newValue });
-            items[1] = item;
-            this.setState({items: items});
-            // debugger;
-        }
+        // const relations = datagrid.relationships;
+        // if (cellEdits) {
+        //     const edit = cellEdits[0];
+        //     const [row, col, prevValue, newValue] = edit;
+        //     const whattochange = relations[row][col];
+        //
+        //     let item = Object.assign({}, this.state.datagrid.data[whattochange.row], { [whattochange.col]: newValue });
+        //     items[1] = item;
+        //     this.setState({items: items});
+        //     // debugger;
+        // }
     }
 
     buildTable = () => {
@@ -62,7 +61,7 @@ class MenViewContainer extends Component {
         return (<div className="parentDiv">
             <HotTable
                 root="hot"
-                data={this.state.datagrid.data}
+                data={this.state.grid.data}
                 cells={cellClasses}
                 nestedHeaders= {headers}
                 colHeaders= {true}
