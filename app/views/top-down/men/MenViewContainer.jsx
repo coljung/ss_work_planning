@@ -92,11 +92,12 @@ class MenViewContainer extends Component {
 
 MenViewContainer.propTypes = {
     viewMenData: PropTypes.oneOfType([
-        PropTypes.bool,
         PropTypes.array,
+        PropTypes.object,
     ]).isRequired,
     viewMenDataFetched: PropTypes.bool.isRequired,
     fetchBudgetMenData: PropTypes.func.isRequired,
+    resetState: PropTypes.func.isRequired,
 };
 
 function mapStateToProps(state) {

@@ -79,11 +79,12 @@ class WomenViewContainer extends Component {
 
 WomenViewContainer.propTypes = {
     viewWomenData: PropTypes.oneOfType([
-        PropTypes.bool,
         PropTypes.array,
+        PropTypes.object,
     ]).isRequired,
     viewWomenDataFetched: PropTypes.bool.isRequired,
     fetchBudgetWomenData: PropTypes.func.isRequired,
+    resetState: PropTypes.func.isRequired,
 };
 
 function mapStateToProps(state) {

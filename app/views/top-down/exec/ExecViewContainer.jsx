@@ -95,6 +95,7 @@ ExecViewContainer.propTypes = {
     ]).isRequired,
     viewExecDataFetched: PropTypes.bool.isRequired,
     fetchBudgetExecData: PropTypes.func.isRequired,
+    resetState: PropTypes.func.isRequired,
 };
 
 function mapStateToProps(state) {
