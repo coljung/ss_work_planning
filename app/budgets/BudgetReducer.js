@@ -2,7 +2,8 @@ import { RECEIVE_BUDGETS,
         REQUEST_BUDGETS,
         REQUEST_SEASONS,
         RECEIVE_SEASONS,
-        RECEIVE_CREATE_BUDGET } from './BudgetActions';
+        RECEIVE_CREATE_BUDGET,
+        RESET_SEASONS_VIEW } from './BudgetActions';
 
 const initialState = {
     budgets: [],
@@ -30,6 +31,7 @@ export default (state = initialState, action) => {
                 ],
             });
         case REQUEST_SEASONS:
+        case RESET_SEASONS_VIEW:
             return Object.assign({}, state, {
                 seasonsFetched: false,
             });

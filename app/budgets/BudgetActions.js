@@ -9,6 +9,7 @@ export const REQUEST_BUDGETS = 'REQUEST_BUDGETS';
 export const RECEIVE_BUDGETS = 'RECEIVE_BUDGETS';
 export const REQUEST_SEASONS = 'REQUEST_SEASONS';
 export const RECEIVE_SEASONS = 'RECEIVE_SEASONS';
+export const RESET_SEASONS_VIEW = 'RESET_SEASONS_VIEW';
 export const REQUEST_CREATE_BUDGET = 'REQUEST_CREATE_BUDGET';
 export const RECEIVE_CREATE_BUDGET = 'RECEIVE_CREATE_BUDGET';
 
@@ -49,6 +50,12 @@ function receiveBudgetCreate(budget) {
     return {
         type: RECEIVE_CREATE_BUDGET,
         budget,
+    };
+}
+
+export function resetState() {
+    return {
+        type: RESET_SEASONS_VIEW,
     };
 }
 

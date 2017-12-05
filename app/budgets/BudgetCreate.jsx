@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Button, Modal, Select, Spin } from 'antd';
-import { createBudget, fetchSeasons } from './BudgetActions';
+import { createBudget, fetchSeasons, resetState } from './BudgetActions';
 
 const Option = Select.Option;
 
@@ -41,6 +41,11 @@ class BudgetCreate extends Component {
             season: this.state.season,
         };
         this.props.createBudget(budget);
+        this.closeModal();
+    }
+
+    closeModal = () => {
+        this.props.resetState();
         this.props.onOverlayClick();
     }
 
@@ -65,7 +70,7 @@ class BudgetCreate extends Component {
                 id='createButtonSave' >Create Budget
             </Button>
             <Button
-                onClick={this.props.onOverlayClick}
+                onClick={this.closeModal}
                 size='large'
                 id='createButtonSave' >Cancel
             </Button>
@@ -78,7 +83,7 @@ class BudgetCreate extends Component {
                 title="Create Budget"
                 visible={this.props.visible}
                 onOk={this.handleOk}
-                onCancel={this.props.onOverlayClick}
+                onCancel={this.closeModal}
                 footer={footerButtons}>
 
                 {mySelect}
@@ -94,6 +99,7 @@ BudgetCreate.propTypes = {
     onOverlayClick: PropTypes.func.isRequired,
     fetchSeasons: PropTypes.func.isRequired,
     createBudget: PropTypes.func.isRequired,
+    resetState: PropTypes.func.isRequired,
 };
 
 function mapStateToProps(state) {
@@ -105,7 +111,7 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-    return bindActionCreators({ fetchSeasons, createBudget }, dispatch);
+    return bindActionCreators({ fetchSeasons, createBudget, resetState }, dispatch);
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(BudgetCreate);
