@@ -7,35 +7,34 @@ const columns = [
     {
         data: 'seasonyear',
         type: 'text',
-        editor: false,
     },
     {
-        data: 'total_stdpremarkdown',
+        data: 'stdpremarkdown',
         type: 'numeric',
         format: '$0,000',
     },
     {
-        data: 'total_incr_stdpremarkdown',
+        data: 'incr_stdpremarkdown',
         type: 'numeric',
         format: '0%',
     },
     {
-        data: 'total_stdpostmarkdown',
+        data: 'stdpostmarkdown',
         type: 'numeric',
         format: '$0,000',
     },
     {
-        data: 'total_incr_stdpostmarkdown',
+        data: 'incr_stdpostmarkdown',
         type: 'numeric',
         format: '$0,000',
     },
     {
-        data: 'full_season',
+        data: 'full',
         type: 'numeric',
         format: '0%',
     },
     {
-        data: 'full_season_incr',
+        data: 'full_incr',
         type: 'numeric',
         format: '$0,000',
     },

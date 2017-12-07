@@ -7,7 +7,7 @@ import Handsontable from 'handsontable';
 import { Spin } from 'antd';
 import { fetchBudgetExecData, resetState } from './ExecViewActions';
 import datagrid from './test_exec';
-import { cellClasses, headers, columns } from './grid-build/index';
+import { headers, columns } from './grid-build/index';
 import { mergeMetrics, mergeHeadersExecRecap } from '../../../Helpers';
 
 const menu = ['undo', 'redo'];
@@ -57,7 +57,6 @@ class ExecViewContainer extends Component {
                     root="hot"
                     ref={'table'}
                     data={this.state.grid.data}
-                    cells={cellClasses}
                     colHeaders={true}
                     rowHeaders={true}
                     nestedHeaders={headers}

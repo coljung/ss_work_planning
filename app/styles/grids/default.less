@@ -6,10 +6,8 @@
     overflow: hidden;
     .handsontable{
         table.htCore{
-            // table-layout: auto;
-            border: 1px solid #ddd;
+            border: 1px solid #555;
             .headerCell{
-                // white-space: nowrap;
                 padding: 3px 8px;
                 font-weight: bold;
                 font-size: 12px;
@@ -32,6 +30,29 @@
                 padding: 3px 5px;
                 font-size: 12px;
             }
+            th{
+                border-left: 1px solid #999;
+                border-bottom: 1px solid #999;
+                border-top: none;
+            }
+            // tr:first-child th,
+            // .handsontable th:first-child,
+            // .handsontable th:nth-child(2),
+            // .handsontable .htNoFrame + th{
+            //     border: 1px solid #999;
+            // }
+        }
+        .leftCellBorder{
+            border-left: 1px solid #555;
+        }
+        .bottomCellBorder{
+            border-bottom: 1px solid #555;
+        }
+        .metricCell{
+            padding-right: 20px !important;
+        }
+        .cellNA{
+            text-align: right;
         }
     }
 }
