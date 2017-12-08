@@ -1,20 +1,5 @@
 import Handsontable from 'handsontable';
 
-// function cellValueRender(instance, td, row, col, prop, value, cellProperties) {
-//
-//     cellProperties = {};
-//     if (isNaN(value)) {
-//         cellProperties.type = 'text';
-//         td.innerHTML = 'N/A';
-//         return td;
-//     }
-//
-//     cellProperties.type = 'numeric';
-//     cellProperties.format = '0.[00]%';
-//     Handsontable.renderers.NumericRenderer.apply(this, arguments);
-//     return td;
-// }
-
 const leftBorderCols = [
     'total_stdpremarkdown',
     'women_stdpremarkdown',
@@ -70,6 +55,7 @@ function cellValueRender(instance, td, row, col, prop, value, cellProperties) {
     }
     if (amountCols.indexOf(prop) !== -1) {
         cellProperties.format = '$0,000';
+        cellProperties.editor = true;
     }
 
     return td;
