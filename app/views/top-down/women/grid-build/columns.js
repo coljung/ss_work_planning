@@ -1,9 +1,22 @@
 import Handsontable from 'handsontable';
 
-function cellValueRender(instance, td, row, col, prop, value, cellProperties) {
+const leftBorderCols = [
+    'stdpremarkdown',
+    'feb1',
+];
 
+function cellValueRender(instance, td, row, col, prop, value, cellProperties) {
+    cellProperties = {};
+
+    if (leftBorderCols.indexOf(prop) !== -1) {
+        td.className += ' leftCellBorder';
+    }
+
+    const rowSpan = 5;
+    if ((row + 1) % rowSpan === 0) {
+        td.className += ' bottomCellBorder';
+    }
     if (isNaN(value)) {
-        cellProperties = {};
         cellProperties.type = 'text';
         td.innerHTML = 'N/A';
         td.className += ' cellNA';
@@ -18,9 +31,17 @@ function cellValueRender(instance, td, row, col, prop, value, cellProperties) {
 }
 
 function cellValueRenderIncr(instance, td, row, col, prop, value, cellProperties) {
+    cellProperties = {};
 
+    if (leftBorderCols.indexOf(prop) !== -1) {
+        td.className += ' leftCellBorder';
+    }
+
+    const rowSpan = 5;
+    if ((row + 1) % rowSpan === 0) {
+        td.className += ' bottomCellBorder';
+    }
     if (isNaN(value)) {
-        cellProperties = {};
         cellProperties.type = 'text';
         td.innerHTML = 'N/A';
         td.className += ' cellNA';
@@ -76,7 +97,7 @@ const columns = [
         data: 'full',
         renderer: cellValueRender,
         type: 'numeric',
-        format: '0%',
+        format: '$0,000',
         editor: false,
     },
     {
@@ -85,6 +106,12 @@ const columns = [
         type: 'numeric',
         format: '0%',
         editor: false,
+    },
+    {
+        data: 'previous',
+        renderer: cellValueRender,
+        type: 'numeric',
+        format: '$0,000',
     },
     {
         data: 'feb1',
@@ -190,6 +217,12 @@ const columns = [
     },
     {
         data: 'jul2',
+        renderer: cellValueRender,
+        type: 'numeric',
+        format: '$0,000',
+    },
+    {
+        data: 'future',
         renderer: cellValueRender,
         type: 'numeric',
         format: '$0,000',

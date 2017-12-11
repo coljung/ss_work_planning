@@ -97,7 +97,7 @@ const columns = [
         data: 'full',
         renderer: cellValueRender,
         type: 'numeric',
-        format: '0%',
+        format: '$0,000',
         editor: false,
     },
     {
@@ -106,6 +106,12 @@ const columns = [
         type: 'numeric',
         format: '0%',
         editor: false,
+    },
+    {
+        data: 'previous',
+        renderer: cellValueRender,
+        type: 'numeric',
+        format: '$0,000',
     },
     {
         data: 'feb1',
@@ -211,6 +217,12 @@ const columns = [
     },
     {
         data: 'jul2',
+        renderer: cellValueRender,
+        type: 'numeric',
+        format: '$0,000',
+    },
+    {
+        data: 'future',
         renderer: cellValueRender,
         type: 'numeric',
         format: '$0,000',
