@@ -17,6 +17,8 @@ class MenViewContainer extends Component {
         this.state = {
             grid: [],
         };
+
+        this.dataToSave = [];
     }
 
     componentDidMount() {
@@ -43,6 +45,18 @@ class MenViewContainer extends Component {
     }
 
     test = (cellEdits) => {
+        if (cellEdits) {
+            const row = cellEdits[0][0];
+            const col = cellEdits[0][1];
+            const prevValue = cellEdits[0][2];
+            const newValue = cellEdits[0][3];
+            debugger;
+            if (prevValue !== newValue) {
+                this.dataToSave[row][col] = newValue;
+            }
+            // console.log(this.dataToSave);
+            console.log(newValue);
+        }
         // const relations = datagrid.relationships;
         // if (cellEdits) {
         //     const edit = cellEdits[0];
