@@ -5,8 +5,14 @@ const leftBorderCols = [
     'feb1',
 ];
 
+const currentYear = parseInt(new Date().getFullYear().toString().substr(-2), 10);
+
 function cellValueRender(instance, td, row, col, prop, value, cellProperties) {
+    // console.log(instance);
     cellProperties = {};
+    const currentRowYear = instance.getDataAtCell(row, 1);
+    const currentRowIntYear = parseInt(currentRowYear.substr(-2), 10);
+
 
     if (leftBorderCols.indexOf(prop) !== -1) {
         td.className += ' leftCellBorder';
@@ -23,11 +29,18 @@ function cellValueRender(instance, td, row, col, prop, value, cellProperties) {
         return td;
     }
 
-    Handsontable.renderers.NumericRenderer.apply(this, arguments);
     cellProperties.type = 'numeric';
     cellProperties.format = '$0,000';
+    if (currentRowIntYear > currentYear) {
+        cellProperties.readOnly = true;
+        // console.log(row, col, value, cellProperties);
+        console.log(currentRowIntYear);
+    }
 
-    return td;
+    // console.log(cellProperties);
+
+        Handsontable.renderers.NumericRenderer.apply(this, arguments);
+    return cellProperties;
 }
 
 function cellValueRenderIncr(instance, td, row, col, prop, value, cellProperties) {
