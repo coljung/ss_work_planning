@@ -44,30 +44,26 @@ class MenViewContainer extends Component {
         return newMerge;
     }
 
-    test = (cellEdits) => {
+    changeCell = (cellEdits) => {
+        // on load this is called, hence the check
         if (cellEdits) {
             const row = cellEdits[0][0];
             const col = cellEdits[0][1];
             const prevValue = cellEdits[0][2];
             const newValue = cellEdits[0][3];
-            debugger;
             if (prevValue !== newValue) {
-                this.dataToSave[row][col] = newValue;
+                const newData = {
+                    row,
+                    col,
+                    value: newValue,
+                };
+                // check if cell has been modified already
+                const checkDuplicate = this.dataToSave.filter(e => e.row !== row || e.col !== col);
+                checkDuplicate.push(newData);
+                this.dataToSave = checkDuplicate;
+                console.log(this.dataToSave);
             }
-            // console.log(this.dataToSave);
-            console.log(newValue);
         }
-        // const relations = datagrid.relationships;
-        // if (cellEdits) {
-        //     const edit = cellEdits[0];
-        //     const [row, col, prevValue, newValue] = edit;
-        //     const whattochange = relations[row][col];
-        //
-        //     let item = Object.assign({}, this.state.datagrid.data[whattochange.row], { [whattochange.col]: newValue });
-        //     items[1] = item;
-        //     this.setState({items: items});
-        //     // debugger;
-        // }
     }
 
     buildTable = () => {
@@ -88,7 +84,7 @@ class MenViewContainer extends Component {
                 currentColClassName= {'currentCol'}
                 function={true}
                 observeChanges={true}
-                afterChange={this.test} />
+                afterChange={this.changeCell} />
         </div>);
     }
 
