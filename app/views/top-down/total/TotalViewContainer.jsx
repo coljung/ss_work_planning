@@ -5,58 +5,20 @@ import { connect } from 'react-redux';
 import HotTable from 'react-handsontable';
 import Handsontable from 'handsontable';
 import { Spin } from 'antd';
+import { mergeMetrics, mergeHeadersExecRecap } from 'helpers';
 import { fetchBudgetTotalData, resetState } from './TotalViewActions';
 import datagrid from './test_exec';
-// import dataTet from './test_exec_tetyana';
-import { merge, cellClasses } from '../exec/grid-build/index';
-import { mergeMetrics, mergeHeadersExecRecap } from '../../../Helpers';
-
-const cellStyle = [
-    { row: 3, col: 2, className: 'bold' },
-    { row: 3, col: 6, className: 'bold' },
-    { row: 3, col: 10, className: 'bold' },
-];
-
-const headers = [
-    [
-        { label: 'Metrics', colspan: 2 },
-        { label: 'Total', colspan: 6 },
-        { label: 'Women', colspan: 7 },
-        { label: 'Men', colspan: 7 },
-    ],
-    [
-        'Name',
-        'Season/Year',
-        'STD Pre-Markdown',
-        'Incr%',
-        'STD Post-Markdown',
-        'Incr%',
-        'Full Season',
-        'Incr%',
-        'STD Pre-Markdown',
-        'Incr%',
-        'STD Post-Markdown',
-        'Incr%',
-        'Full Season',
-        'Incr%',
-        'Cont%',
-        'STD Pre-Markdown',
-        'Incr%',
-        'STD Post-Markdown',
-        'Incr%',
-        'Full Season',
-        'Incr%',
-        'Cont%',
-    ],
-];
+import { cellClasses, headers, columns } from './grid-build/index';
 
 class TotalViewContainer extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            data: [],
+            grid: [],
         };
+
+        this.dataToSave = [];
     }
 
     componentDidMount() {
@@ -68,18 +30,44 @@ class TotalViewContainer extends Component {
     }
 
     componentWillReceiveProps = (nextProps) => {
-        if (this.props.viewTotalData.length !== nextProps.viewTotalData.length) {
+        if (this.props.viewTotalData.length !== nextProps.viewTotalData) {
             this.setState({
-                data: nextProps.viewTotalData,
+                grid: nextProps.viewTotalData,
             });
         }
     }
 
     mergeCells = () => {
-        const { start_row, row_span, total, total_cols, has_gaps } = datagrid.info;
+        const { start_row, row_span, total, total_cols, has_gaps } = this.state.grid.info;
         const newMerge = mergeMetrics(start_row, row_span, total, total_cols, has_gaps);
 
         return newMerge;
+    }
+
+    test = (cellEdits) => {
+        if (cellEdits) {
+            const row = cellEdits[0][0];
+            const col = cellEdits[0][1];
+            const prevValue = cellEdits[0][2];
+            const newValue = cellEdits[0][3];
+            debugger;
+            if (prevValue !== newValue) {
+                this.dataToSave[row][col] = newValue;
+            }
+            // console.log(this.dataToSave);
+            console.log(newValue);
+        }
+        // const relations = datagrid.relationships;
+        // if (cellEdits) {
+        //     const edit = cellEdits[0];
+        //     const [row, col, prevValue, newValue] = edit;
+        //     const whattochange = relations[row][col];
+        //
+        //     let item = Object.assign({}, this.state.datagrid.data[whattochange.row], { [whattochange.col]: newValue });
+        //     items[1] = item;
+        //     this.setState({items: items});
+        //     // debugger;
+        // }
     }
 
     buildTable = () => {
@@ -87,13 +75,11 @@ class TotalViewContainer extends Component {
         return (<div className="parentDiv">
             <HotTable
                 root="hot"
-                data={datagrid.data}
+                data={this.state.grid.data}
                 cells={cellClasses}
-                cell={cellStyle}
                 nestedHeaders= {headers}
                 colHeaders= {true}
-                fixedRowsTop={0}
-                fixedColumnsLeft={0}
+                columns={columns}
                 formulas={true}
                 contextMenu={false}
                 mergeCells={newMerge}
@@ -101,7 +87,8 @@ class TotalViewContainer extends Component {
                 currentRowClassName= {'currentRow'}
                 currentColClassName= {'currentCol'}
                 function={true}
-                observeChanges={true} />
+                observeChanges={true}
+                afterChange={this.test} />
         </div>);
     }
 
@@ -124,6 +111,7 @@ TotalViewContainer.propTypes = {
     ]).isRequired,
     viewTotalDataFetched: PropTypes.bool.isRequired,
     fetchBudgetTotalData: PropTypes.func.isRequired,
+    resetState: PropTypes.func.isRequired,
 };
 
 function mapStateToProps(state) {
