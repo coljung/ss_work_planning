@@ -2,7 +2,7 @@ import Handsontable from 'handsontable';
 
 const leftBorderCols = [
     'stdpremarkdown',
-    'feb1',
+    'previous',
 ];
 
 function cellValueRender(instance, td, row, col, prop, value, cellProperties) {
