@@ -2,7 +2,7 @@ import Handsontable from 'handsontable';
 
 const leftBorderCols = [
     'stdpremarkdown',
-    'feb1',
+    'previous',
 ];
 
 const currentYear = parseInt(new Date().getFullYear().toString().substr(-2), 10);
@@ -47,7 +47,7 @@ function cellValueRenderIncr(instance, td, row, col, prop, value, cellProperties
     cellProperties = {};
 
     if (leftBorderCols.indexOf(prop) !== -1) {
-        td.className += ' leftCellBorder';
+        // td.className += ' leftCellBorder';
     }
 
     const rowSpan = 5;
@@ -63,7 +63,6 @@ function cellValueRenderIncr(instance, td, row, col, prop, value, cellProperties
     Handsontable.renderers.NumericRenderer.apply(this, arguments);
     cellProperties.type = 'numeric';
     cellProperties.format = '0%';
-
 
     return td;
 }
