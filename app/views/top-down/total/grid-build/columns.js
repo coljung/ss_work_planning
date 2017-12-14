@@ -2,7 +2,7 @@ import Handsontable from 'handsontable';
 
 const leftBorderCols = [
     'stdpremarkdown',
-    'feb1',
+    'previous',
 ];
 
 const currentYear = parseInt(new Date().getFullYear().toString().substr(-2), 10);
