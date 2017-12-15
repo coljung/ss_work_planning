@@ -2,9 +2,9 @@ const headers = [
     [
         'A-Name',
         'B-Season/Year',
-        'C-STD Pre-Markdown',
+        'C-STD Pre Mkd',
         'D-Incr%',
-        'E-STD Post-Markdown',
+        'E-STD Post Mkd',
         'F-Incr%',
         'G-Full Season',
         'H-Incr%',
