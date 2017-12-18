@@ -35,6 +35,10 @@ const amountCols = [
 function cellValueRender(instance, td, row, col, prop, value, cellProperties) {
     cellProperties = {};
 
+    if ((row === 0 && col > 0) || (row === 5 && col > 1) || (row === 10 && col > 1)) {
+      td.style.background = '#eee';
+    }
+
     if (leftBorderCols.indexOf(prop) !== -1) {
         td.className += ' leftCellBorder';
     }
@@ -86,6 +90,7 @@ const columns = [
         type: 'numeric',
         format: '$0,000',
         editor: false,
+        colWidths: 100,
     },
     {
         data: 'total_incr_stdpremarkdown',
@@ -93,6 +98,7 @@ const columns = [
         type: 'numeric',
         format: '0%',
         editor: false,
+        colWidths: 100,
     },
     {
         data: 'total_stdpostmarkdown',
@@ -100,6 +106,7 @@ const columns = [
         type: 'numeric',
         format: '$0,000',
         editor: false,
+        colWidths: 100,
     },
     {
         data: 'total_incr_stdpostmarkdown',
@@ -107,6 +114,7 @@ const columns = [
         type: 'numeric',
         format: '0%',
         editor: false,
+        colWidths: 100,
     },
     {
         data: 'total_full',
@@ -114,6 +122,7 @@ const columns = [
         type: 'numeric',
         format: '$0,000',
         editor: false,
+        colWidths: 100,
     },
     {
         data: 'total_full_incr',
@@ -121,12 +130,14 @@ const columns = [
         type: 'numeric',
         format: '0%',
         editor: false,
+        colWidths: 100,
     },
     {
         data: 'women_stdpremarkdown',
         renderer: cellValueRender,
         type: 'numeric',
         format: '$0,000',
+        colWidths: 100,
     },
     {
         data: 'women_incr_stdpremarkdown',
@@ -134,12 +145,14 @@ const columns = [
         type: 'numeric',
         format: '0%',
         editor: false,
+        colWidths: 100,
     },
     {
         data: 'women_stdpostmarkdown',
         renderer: cellValueRender,
         type: 'numeric',
         format: '$0,000',
+        colWidths: 100,
     },
     {
         data: 'women_incr_stdpostmarkdown',
@@ -147,12 +160,14 @@ const columns = [
         type: 'numeric',
         format: '0%',
         editor: false,
+        colWidths: 100,
     },
     {
         data: 'women_full',
         renderer: cellValueRender,
         type: 'numeric',
         format: '$0,000',
+        colWidths: 100,
     },
     {
         data: 'women_full_incr',
@@ -160,6 +175,7 @@ const columns = [
         type: 'numeric',
         format: '0%',
         editor: false,
+        colWidths: 100,
     },
     {
         data: 'women_full_cont',
@@ -167,12 +183,14 @@ const columns = [
         type: 'numeric',
         format: '0%',
         editor: false,
+        colWidths: 100,
     },
     {
         data: 'men_stdpremarkdown',
         renderer: cellValueRender,
         type: 'numeric',
         format: '$0,000',
+        colWidths: 100,
     },
     {
         data: 'men_incr_stdpremarkdown',
@@ -180,12 +198,14 @@ const columns = [
         type: 'numeric',
         format: '0%',
         editor: false,
+        colWidths: 100,
     },
     {
         data: 'men_stdpostmarkdown',
         renderer: cellValueRender,
         type: 'numeric',
         format: '$0,000',
+        colWidths: 100,
     },
     {
         data: 'men_incr_stdpostmarkdown',
@@ -193,12 +213,14 @@ const columns = [
         type: 'numeric',
         format: '0%',
         editor: false,
+        colWidths: 100,
     },
     {
         data: 'men_full',
         renderer: cellValueRender,
         type: 'numeric',
         format: '$0,000',
+        colWidths: 100,
     },
     {
         data: 'men_full_incr',
@@ -206,6 +228,7 @@ const columns = [
         type: 'numeric',
         format: '0%',
         editor: false,
+        colWidths: 100,
     },
     {
         data: 'men_full_cont',
@@ -213,6 +236,7 @@ const columns = [
         type: 'numeric',
         format: '0%',
         editor: false,
+        colWidths: 100,
     },
 ];
 

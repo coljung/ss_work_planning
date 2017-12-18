@@ -2,7 +2,7 @@ import Handsontable from 'handsontable';
 
 const leftBorderCols = [
     'stdpremarkdown',
-    'feb1',
+    'previous',
 ];
 
 const currentYear = parseInt(new Date().getFullYear().toString().substr(-2), 10);
@@ -13,6 +13,9 @@ function cellValueRender(instance, td, row, col, prop, value, cellProperties) {
     const currentRowYear = instance.getDataAtCell(row, 1);
     const currentRowIntYear = parseInt(currentRowYear.substr(-2), 10);
 
+    if ((row === 0 && col > 0) || (row === 5 && col > 1) || (row === 10 && col > 1)) {
+      td.style.background = '#eee';
+    }
 
     if (leftBorderCols.indexOf(prop) !== -1) {
         td.className += ' leftCellBorder';
@@ -45,9 +48,12 @@ function cellValueRender(instance, td, row, col, prop, value, cellProperties) {
 
 function cellValueRenderIncr(instance, td, row, col, prop, value, cellProperties) {
     cellProperties = {};
+    if ((row === 0 && col > 0) || (row === 5 && col > 1) || (row === 10 && col > 1)) {
+      td.style.background = '#eee';
+    }
 
     if (leftBorderCols.indexOf(prop) !== -1) {
-        td.className += ' leftCellBorder';
+        // td.className += ' leftCellBorder';
     }
 
     const rowSpan = 5;
@@ -63,7 +69,6 @@ function cellValueRenderIncr(instance, td, row, col, prop, value, cellProperties
     Handsontable.renderers.NumericRenderer.apply(this, arguments);
     cellProperties.type = 'numeric';
     cellProperties.format = '0%';
-
 
     return td;
 }
@@ -84,6 +89,7 @@ const columns = [
         type: 'numeric',
         format: '$0,000',
         editor: false,
+        colWidths: 100,
     },
     {
         data: 'incr_stdpremarkdown',
@@ -91,6 +97,7 @@ const columns = [
         type: 'numeric',
         format: '0%',
         editor: false,
+        colWidths: 100,
     },
     {
         data: 'stdpostmarkdown',
@@ -98,6 +105,7 @@ const columns = [
         type: 'numeric',
         format: '$0,000',
         editor: false,
+        colWidths: 100,
     },
     {
         data: 'incr_stdpostmarkdown',
@@ -105,6 +113,7 @@ const columns = [
         type: 'numeric',
         format: '0%',
         editor: false,
+        colWidths: 100,
     },
     {
         data: 'full',
@@ -112,6 +121,7 @@ const columns = [
         type: 'numeric',
         format: '$0,000',
         editor: false,
+        colWidths: 100,
     },
     {
         data: 'full_incr',
@@ -119,126 +129,147 @@ const columns = [
         type: 'numeric',
         format: '0%',
         editor: false,
+        colWidths: 100,
     },
     {
         data: 'previous',
         renderer: cellValueRender,
         type: 'numeric',
         format: '$0,000',
+        colWidths: 100,
     },
     {
         data: 'feb1',
         renderer: cellValueRender,
         type: 'numeric',
         format: '$0,000',
+        colWidths: 100,
     },
     {
         data: 'mar1',
         renderer: cellValueRender,
         type: 'numeric',
         format: '$0,000',
+        colWidths: 100,
     },
     {
         data: 'apr1',
         renderer: cellValueRender,
         type: 'numeric',
         format: '$0,000',
+        colWidths: 100,
     },
     {
         data: 'may1',
         renderer: cellValueRender,
         type: 'numeric',
         format: '$0,000',
+        colWidths: 100,
     },
     {
         data: 'jun1',
         renderer: cellValueRender,
         type: 'numeric',
         format: '$0,000',
+        colWidths: 100,
     },
     {
         data: 'jul1',
         renderer: cellValueRender,
         type: 'numeric',
         format: '$0,000',
+        colWidths: 100,
     },
     {
         data: 'aug1',
         renderer: cellValueRender,
         type: 'numeric',
         format: '$0,000',
+        colWidths: 100,
     },
     {
         data: 'sep1',
         renderer: cellValueRender,
         type: 'numeric',
         format: '$0,000',
+        colWidths: 100,
     },
     {
         data: 'oct1',
         renderer: cellValueRender,
         type: 'numeric',
         format: '$0,000',
+        colWidths: 100,
     },
     {
         data: 'nov1',
         renderer: cellValueRender,
         type: 'numeric',
         format: '$0,000',
+        colWidths: 100,
     },
     {
         data: 'dec1',
         renderer: cellValueRender,
         type: 'numeric',
         format: '$0,000',
+        colWidths: 100,
     },
     {
         data: 'jan2',
         renderer: cellValueRender,
         type: 'numeric',
         format: '$0,000',
+        colWidths: 100,
     },
     {
         data: 'feb2',
         renderer: cellValueRender,
         type: 'numeric',
         format: '$0,000',
+        colWidths: 100,
     },
     {
         data: 'mar2',
         renderer: cellValueRender,
         type: 'numeric',
         format: '$0,000',
+        colWidths: 100,
     },
     {
         data: 'apr2',
         renderer: cellValueRender,
         type: 'numeric',
         format: '$0,000',
+        colWidths: 100,
     },
     {
         data: 'may2',
         renderer: cellValueRender,
         type: 'numeric',
         format: '$0,000',
+        colWidths: 100,
     },
     {
         data: 'jun2',
         renderer: cellValueRender,
         type: 'numeric',
         format: '$0,000',
+        colWidths: 100,
     },
     {
         data: 'jul2',
         renderer: cellValueRender,
         type: 'numeric',
         format: '$0,000',
+        colWidths: 100,
     },
     {
         data: 'future',
         renderer: cellValueRender,
         type: 'numeric',
         format: '$0,000',
+        colWidths: 100,
     },
 ];
 
