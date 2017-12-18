@@ -33,7 +33,7 @@ export function fetchBudgetExecData() {
         dispatch(requestBudgetExecViewData());
         return request
             // .get(`${getApiUrl()}planning/seasons/show/available`)
-            .get('http://localhost:3001/planning/budgets/versions/:id/exec')
+            .get('http://localhost:3001/planning/budgets/1/versions/1/exec')
             .then(
             res => dispatch(receiveBudgetExecViewData(res.body)),
             err => dispatch(messages({ content: err, response: err.response, isError: true })),
