@@ -53,6 +53,10 @@ class BudgetViewsContainer extends Component {
         // return nextProps.newVersion === null;
     }
 
+    save = (budget, version) => {
+        this.props.saveNewBudgetVersion(budget, version);
+    }
+
     saveNewVersion = (budget, version) => {
         this.props.saveNewBudgetVersion(budget, version);
     }
@@ -109,7 +113,10 @@ class BudgetViewsContainer extends Component {
                         </Col>
                         <Col span={16} className="col">
                             <BudgetViewsButtonActions
-                                save={() => this.saveNewVersion(this.state.budgetSeasonId, this.state.versionId)} />
+                                saveNew={() => this.saveNewVersion(this.state.budgetSeasonId, this.state.versionId)}
+                                save={() => this.save(this.state.budgetSeasonId, this.state.versionId)}
+                                currentView={this.state.activeTab}
+                            />
                         </Col>
                     </Row>
                 </div>
