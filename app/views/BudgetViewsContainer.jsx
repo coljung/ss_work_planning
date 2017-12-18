@@ -117,23 +117,43 @@ class BudgetViewsContainer extends Component {
                     <Tabs defaultActiveKey={this.state.activeTab} onChange={this.onTabChange.bind(this)}>
                         <TabPane tab="Exec Recap" key={TAB_EXEC_RECAP}>
                             {(currentKey === TAB_EXEC_RECAP || this.state[TAB_EXEC_RECAP]) &&
-                                <ExecViewContainer /> }
+                                <ExecViewContainer
+                                    budget={this.state.budgetSeasonId}
+                                    version={this.state.versionId}
+                                />
+                            }
                         </TabPane>
                         <TabPane tab="Total" key={TAB_TOTAL}>
                             {(currentKey === TAB_TOTAL || this.state[TAB_TOTAL]) &&
-                                <TotalViewContainer /> }
+                                <TotalViewContainer
+                                    budget={this.state.budgetSeasonId}
+                                    version={this.state.versionId}
+                                />
+                            }
                         </TabPane>
                         <TabPane tab="Women" key={TAB_WOMEN}>
                             {(currentKey === TAB_WOMEN || this.state[TAB_WOMEN]) &&
-                                <WomenViewContainer /> }
+                                <WomenViewContainer
+                                    budget={this.state.budgetSeasonId}
+                                    version={this.state.versionId}
+                                />
+                            }
                         </TabPane>
                         <TabPane tab="Men" key={TAB_MEN}>
                             {(currentKey === TAB_MEN || this.state[TAB_MEN]) &&
-                                <MenViewContainer /> }
+                                <MenViewContainer
+                                    budget={this.state.budgetSeasonId}
+                                    version={this.state.versionId}
+                                />
+                            }
                         </TabPane>
                         <TabPane tab="Brand Groups" key={TAB_BRAND_GROUPS}>
                             {(currentKey === TAB_BRAND_GROUPS || this.state[TAB_BRAND_GROUPS]) &&
-                                <TotalViewContainer /> }
+                                <TotalViewContainer
+                                    budget={this.state.budgetSeasonId}
+                                    version={this.state.versionId}
+                                />
+                            }
                         </TabPane>
                     </Tabs>
                 </div>

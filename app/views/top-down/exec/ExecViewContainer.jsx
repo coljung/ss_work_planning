@@ -22,7 +22,7 @@ class ExecViewContainer extends Component {
     }
 
     componentDidMount() {
-        this.props.fetchBudgetExecData();
+        this.props.fetchBudgetExecData(this.props.budget, this.props.version);
     }
 
     componentWillUnmount() {
@@ -51,6 +51,7 @@ class ExecViewContainer extends Component {
 
     buildTable = () => {
         const newMerge = this.mergeCells();
+        console.log(this.props.budget, this.props.version);
         return (
             <div className="parentDiv">
                 <HotTable
@@ -95,6 +96,8 @@ ExecViewContainer.propTypes = {
     viewExecDataFetched: PropTypes.bool.isRequired,
     fetchBudgetExecData: PropTypes.func.isRequired,
     resetState: PropTypes.func.isRequired,
+    budget: PropTypes.string.isRequired,
+    version: PropTypes.string.isRequired,
 };
 
 function mapStateToProps(state) {

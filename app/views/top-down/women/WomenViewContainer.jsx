@@ -20,7 +20,7 @@ class WomenViewContainer extends Component {
     }
 
     componentDidMount() {
-        this.props.fetchBudgetWomenData();
+        this.props.fetchBudgetWomenData(this.props.budget, this.props.version);
     }
 
     componentWillUnmount() {
@@ -85,6 +85,8 @@ WomenViewContainer.propTypes = {
     viewWomenDataFetched: PropTypes.bool.isRequired,
     fetchBudgetWomenData: PropTypes.func.isRequired,
     resetState: PropTypes.func.isRequired,
+    budget: PropTypes.string.isRequired,
+    version: PropTypes.string.isRequired,
 };
 
 function mapStateToProps(state) {

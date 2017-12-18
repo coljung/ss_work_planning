@@ -22,7 +22,7 @@ class TotalViewContainer extends Component {
     }
 
     componentDidMount() {
-        this.props.fetchBudgetTotalData();
+        this.props.fetchBudgetTotalData(this.props.budget, this.props.version);
     }
 
     componentWillUnmount() {
@@ -112,6 +112,8 @@ TotalViewContainer.propTypes = {
     viewTotalDataFetched: PropTypes.bool.isRequired,
     fetchBudgetTotalData: PropTypes.func.isRequired,
     resetState: PropTypes.func.isRequired,
+    budget: PropTypes.string.isRequired,
+    version: PropTypes.string.isRequired,
 };
 
 function mapStateToProps(state) {
