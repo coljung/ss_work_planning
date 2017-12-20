@@ -4,9 +4,9 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import HotTable from 'react-handsontable';
 import Handsontable from 'handsontable';
-import { Spin } from 'antd';
+import { Button, Spin } from 'antd';
 import { mergeMetrics, mergeHeadersExecRecap } from 'helpers';
-import { fetchBudgetMenData, resetState } from './MenViewActions';
+import { saveBudget, fetchBudgetMenData, resetState } from './MenViewActions';
 import { cellClasses, headers, columns } from '../common/men-women/index';
 
 class MenViewContainer extends Component {
@@ -60,9 +60,17 @@ class MenViewContainer extends Component {
                 const checkDuplicate = this.dataToSave.filter(e => e.row !== row || e.col !== col);
                 checkDuplicate.push(newData);
                 this.dataToSave = checkDuplicate;
-                console.log(this.dataToSave);
             }
         }
+
+    }
+
+    save = () => {
+        // console.log(this.dataToSave);
+        // debugger;
+        const tt = {};
+        tt.data = this.dataToSave;
+        this.props.saveBudget(this.props.budget, this.props.version, 'men', tt);
     }
 
     buildTable = () => {
@@ -86,7 +94,7 @@ class MenViewContainer extends Component {
                 currentColClassName= {'currentCol'}
                 function={true}
                 observeChanges={true}
-                afterChange={this.props.updateData} />
+                afterChange={this.changeCell} />
         </div>);
     }
 
@@ -94,7 +102,9 @@ class MenViewContainer extends Component {
         const budgetListData = this.props.viewMenDataFetched ? this.buildTable() : <Spin size="large" />;
         return (
             <div>
-                <h2>MEN</h2>
+                <h2>MEN -
+                    <Button onClick={() => this.save()}>Save Men view</Button>
+                </h2>
                 {budgetListData}
             </div>
         );
@@ -108,6 +118,7 @@ MenViewContainer.propTypes = {
         PropTypes.object,
     ]).isRequired,
     viewMenDataFetched: PropTypes.bool.isRequired,
+    saveBudget: PropTypes.func.isRequired,
     fetchBudgetMenData: PropTypes.func.isRequired,
     resetState: PropTypes.func.isRequired,
     updateData: PropTypes.func.isRequired,
@@ -124,7 +135,7 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-    return bindActionCreators({ fetchBudgetMenData, resetState }, dispatch);
+    return bindActionCreators({ fetchBudgetMenData, resetState, saveBudget }, dispatch);
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(MenViewContainer);

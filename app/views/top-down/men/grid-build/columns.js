@@ -37,7 +37,7 @@ function cellValueRender(instance, td, row, col, prop, value, cellProperties) {
     if (currentRowIntYear > currentYear) {
         cellProperties.readOnly = true;
         // console.log(row, col, value, cellProperties);
-        console.log(currentRowIntYear);
+        // console.log(currentRowIntYear);
     }
 
     // console.log(cellProperties);

@@ -70,5 +70,4 @@ export function saveBudget(budget, id, view, data) {
 }
 
 
-
 // http://localhost:3001/planning/budgets/143/versions/1/man
