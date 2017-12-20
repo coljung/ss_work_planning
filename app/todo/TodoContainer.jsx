@@ -30,7 +30,7 @@ const columns = [
 ];
 
 // WITHOUT THE EMPTY CELLS HACK
-// const merge = [   
+// const merge = [
 //     {row: 2, col: 0, rowspan: 5, colspan: 1},
 //     {row: 7, col: 0, rowspan: 5, colspan: 1},
 //     {row: 12, col: 0, rowspan: 5, colspan: 1},
@@ -40,7 +40,7 @@ const columns = [
 //     {row: 0, col: 10, rowspan: 1, colspan: 4},
 // ];
 
-const merge = [   
+const merge = [
     {row: 2, col: 0, rowspan: 5, colspan: 1},
     {row: 8, col: 0, rowspan: 5, colspan: 1},
     {row: 14, col: 0, rowspan: 5, colspan: 1},
@@ -111,11 +111,11 @@ export default class TodoContainer extends Component {
     render() {
         return (
             <HotTable
-                root="hot"
+                root='hot'
                 data={this.handsontableData}
                 cells={highlight}
                 cell={cellStyle}
-                fixedRowsTop={2} 
+                fixedRowsTop={2}
                 fixedColumnsLeft={2}
                 formulas={true}
                 contextMenu={true}
@@ -127,7 +127,8 @@ export default class TodoContainer extends Component {
                 currentColClassName= {'currentCol'}
                 function={true}
                 observeChanges={true}
-                afterChange={this.test.bind(this)} />
+                afterChange={this.test.bind(this)}
+                licenseKey= 'a389a-f2591-70b41-a480d-1911a' />
         );
     }
 }

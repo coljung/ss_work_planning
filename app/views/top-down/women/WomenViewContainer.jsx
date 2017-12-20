@@ -48,7 +48,7 @@ class WomenViewContainer extends Component {
         const newMerge = this.mergeCells();
         return (<div className="parentDiv">
             <HotTable
-                root="hot"
+                root='hot'
                 data={this.state.grid.data}
                 cells={cellClasses}
                 nestedHeaders= {headers}
@@ -61,7 +61,8 @@ class WomenViewContainer extends Component {
                 currentRowClassName= {'currentRow'}
                 currentColClassName= {'currentCol'}
                 function={true}
-                observeChanges={true} />
+                observeChanges={true}
+                licenseKey= 'a389a-f2591-70b41-a480d-1911a' />
         </div>);
     }
 

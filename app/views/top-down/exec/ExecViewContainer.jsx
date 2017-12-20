@@ -55,7 +55,7 @@ class ExecViewContainer extends Component {
         return (
             <div className="parentDiv">
                 <HotTable
-                    root="hot"
+                    root='hot'
                     ref={'table'}
                     data={this.state.grid.data}
                     colHeaders={true}
@@ -73,7 +73,8 @@ class ExecViewContainer extends Component {
                     function={true}
                     observeChanges={true}
                     stretchH='all'
-                    afterChange={this.test} />
+                    afterChange={this.test}
+                    licenseKey= 'a389a-f2591-70b41-a480d-1911a' />
             </div>);
     }
 
