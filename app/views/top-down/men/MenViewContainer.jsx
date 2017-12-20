@@ -7,8 +7,7 @@ import Handsontable from 'handsontable';
 import { Spin } from 'antd';
 import { mergeMetrics, mergeHeadersExecRecap } from 'helpers';
 import { fetchBudgetMenData, resetState } from './MenViewActions';
-import datagrid from './test';
-import { cellClasses, headers, columns } from './grid-build/index';
+import { cellClasses, headers, columns } from '../common/men-women/index';
 
 class MenViewContainer extends Component {
 
@@ -68,14 +67,17 @@ class MenViewContainer extends Component {
 
     buildTable = () => {
         const newMerge = this.mergeCells();
+        const { season } = this.state.grid.info;
+        const seasonColumns = season === 'SS' ? columns[0] : columns[1];
+        const seasonHeaders = season === 'SS' ? headers[0] : headers[1];
         return (<div className="parentDiv">
             <HotTable
                 root="hot"
                 data={this.state.grid.data}
                 cells={cellClasses}
-                nestedHeaders= {headers}
+                nestedHeaders= {seasonHeaders}
                 colHeaders= {true}
-                columns={columns}
+                columns={seasonColumns}
                 formulas={true}
                 contextMenu={false}
                 mergeCells={newMerge}
@@ -84,7 +86,7 @@ class MenViewContainer extends Component {
                 currentColClassName= {'currentCol'}
                 function={true}
                 observeChanges={true}
-                afterChange={this.changeCell} />
+                afterChange={this.props.updateData} />
         </div>);
     }
 
@@ -108,6 +110,7 @@ MenViewContainer.propTypes = {
     viewMenDataFetched: PropTypes.bool.isRequired,
     fetchBudgetMenData: PropTypes.func.isRequired,
     resetState: PropTypes.func.isRequired,
+    updateData: PropTypes.func.isRequired,
     budget: PropTypes.string.isRequired,
     version: PropTypes.string.isRequired,
 };

@@ -40,6 +40,8 @@ class BudgetViewsContainer extends Component {
             [TAB_MEN]: false,
             [TAB_BRAND_GROUPS]: false,
         };
+
+        this.dataToSave = [];
     }
 
     shouldComponentUpdate(nextProps, nextState) {
@@ -61,6 +63,28 @@ class BudgetViewsContainer extends Component {
         this.props.saveNewBudgetVersion(budget, version);
     }
 
+    changeCell = (cellEdits) => {
+        // on load this is called, hence the check
+        if (cellEdits) {
+            const row = cellEdits[0][0];
+            const col = cellEdits[0][1];
+            const prevValue = cellEdits[0][2];
+            const newValue = cellEdits[0][3];
+            if (prevValue !== newValue) {
+                const newData = {
+                    row,
+                    col,
+                    value: newValue,
+                };
+                // check if cell has been modified already
+                const checkDuplicate = this.dataToSave.filter(e => e.row !== row || e.col !== col);
+                checkDuplicate.push(newData);
+                this.dataToSave = checkDuplicate;
+                console.log(this.dataToSave);
+            }
+        }
+    }
+
     onTabChange(newTabKey) {
         // set true to load tabbed component
         const currentKey = this.state.activeTab;
@@ -69,6 +93,7 @@ class BudgetViewsContainer extends Component {
             activeTab: newTabKey,
             [newTabKey]: true,
         });
+        this.dataToSave = [];
     }
 
     render() {
@@ -151,6 +176,7 @@ class BudgetViewsContainer extends Component {
                                 <MenViewContainer
                                     budget={this.state.budgetSeasonId}
                                     version={this.state.versionId}
+                                    updateData={this.changeCell}
                                 />
                             }
                         </TabPane>
