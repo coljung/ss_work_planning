@@ -10,12 +10,16 @@ const currentYear = parseInt(new Date().getFullYear().toString().substr(-2), 10)
 function cellValueRender(instance, td, row, col, prop, value, cellProperties) {
     // console.log(instance);
     cellProperties = {};
-    const currentRowYear = instance.getDataAtCell(row, 1);
-    const currentRowIntYear = parseInt(currentRowYear.substr(-2), 10);
+    // const currentRowYear = instance.getDataAtCell(row, 1);
+    // const currentRowIntYear = parseInt(currentRowYear.substr(-2), 10);
 
     if ((row === 0 && col > 0) || (row === 5 && col > 1) || (row === 10 && col > 1)) {
       td.style.background = '#eee';
     }
+
+    // if (cellProperties.editor = true) {
+    //   td.style.background = '#bada55';
+    // }
 
     if (leftBorderCols.indexOf(prop) !== -1) {
         td.className += ' leftCellBorder';
@@ -34,10 +38,19 @@ function cellValueRender(instance, td, row, col, prop, value, cellProperties) {
 
     cellProperties.type = 'numeric';
     cellProperties.format = '$0,000';
+    const currentRowYear = instance.getDataAtCell(row, 1);
+    const currentRowIntYear = parseInt(currentRowYear.substr(-2), 10);
+
     if (currentRowIntYear > currentYear) {
-        cellProperties.readOnly = true;
+        cellProperties.editor = true;
+        td.style.background = '#666';
+        console.log(currentRowIntYear < currentYear);
+
         // console.log(row, col, value, cellProperties);
-        console.log(currentRowIntYear);
+        console.log(currentRowIntYear, currentYear);
+    } else {
+      // console.log(currentRowIntYear < currentYear);
+      // td.style.background = '#bada55';
     }
 
     // console.log(cellProperties);
@@ -51,6 +64,10 @@ function cellValueRenderIncr(instance, td, row, col, prop, value, cellProperties
     if ((row === 0 && col > 0) || (row === 5 && col > 1) || (row === 10 && col > 1)) {
       td.style.background = '#eee';
     }
+
+    // if (cellProperties.editor = false) {
+    //   td.style.background = '#bada55';
+    // }
 
     if (leftBorderCols.indexOf(prop) !== -1) {
         // td.className += ' leftCellBorder';
@@ -66,6 +83,24 @@ function cellValueRenderIncr(instance, td, row, col, prop, value, cellProperties
         td.className += ' cellNA';
         return td;
     }
+
+    // cellProperties.type = 'numeric';
+    // cellProperties.format = '$0,000';
+    const currentRowYear = instance.getDataAtCell(row, 1);
+    const currentRowIntYear = parseInt(currentRowYear.substr(-2), 10);
+
+    if (currentRowIntYear > currentYear) {
+        cellProperties.editor = true;
+        td.style.background = '#666';
+        console.log(currentRowIntYear < currentYear);
+
+        // console.log(row, col, value, cellProperties);
+        console.log(currentRowIntYear, currentYear);
+    } else {
+      // console.log(currentRowIntYear < currentYear);
+      td.style.background = '#bada55';
+    }
+
     Handsontable.renderers.NumericRenderer.apply(this, arguments);
     cellProperties.type = 'numeric';
     cellProperties.format = '0%';
@@ -76,19 +111,19 @@ const columns = [
     {
         data: 'metric',
         type: 'text',
-        editor: false,
+        // editor: false,
     },
     {
         data: 'seasonyear',
         type: 'text',
-        editor: false,
+        // editor: false,
     },
     {
         data: 'stdpremarkdown',
         renderer: cellValueRender,
         type: 'numeric',
         format: '$0,000',
-        editor: false,
+        // editor: false,
         colWidths: 100,
     },
     {
@@ -96,7 +131,7 @@ const columns = [
         renderer: cellValueRenderIncr,
         type: 'numeric',
         format: '0%',
-        editor: false,
+        // editor: false,
         colWidths: 100,
     },
     {
@@ -104,7 +139,7 @@ const columns = [
         renderer: cellValueRender,
         type: 'numeric',
         format: '$0,000',
-        editor: false,
+        // editor: false,
         colWidths: 100,
     },
     {
@@ -112,7 +147,7 @@ const columns = [
         renderer: cellValueRenderIncr,
         type: 'numeric',
         format: '0%',
-        editor: false,
+        // editor: false,
         colWidths: 100,
     },
     {
@@ -120,7 +155,7 @@ const columns = [
         renderer: cellValueRender,
         type: 'numeric',
         format: '$0,000',
-        editor: false,
+        // editor: false,
         colWidths: 100,
     },
     {
@@ -128,7 +163,7 @@ const columns = [
         renderer: cellValueRenderIncr,
         type: 'numeric',
         format: '0%',
-        editor: false,
+        // editor: false,
         colWidths: 100,
     },
     {

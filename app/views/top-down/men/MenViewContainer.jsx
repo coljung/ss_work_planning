@@ -86,6 +86,7 @@ class MenViewContainer extends Component {
                 persistentState={true}
                 currentRowClassName= {'currentRow'}
                 currentColClassName= {'currentCol'}
+                // readOnly={true}
                 function={true}
                 observeChanges={true}
                 afterChange={this.test}
