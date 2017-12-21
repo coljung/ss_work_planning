@@ -8,7 +8,6 @@ const leftBorderCols = [
 const currentYear = parseInt(new Date().getFullYear().toString().substr(-2), 10);
 
 function cellValueRender(instance, td, row, col, prop, value, cellProperties) {
-    // console.log(instance);
     cellProperties = {};
     const currentRowYear = instance.getDataAtCell(row, 1);
     const currentRowIntYear = parseInt(currentRowYear.substr(-2), 10);
@@ -35,14 +34,14 @@ function cellValueRender(instance, td, row, col, prop, value, cellProperties) {
     cellProperties.type = 'numeric';
     cellProperties.format = '$0,000';
     if (currentRowIntYear > currentYear) {
-        cellProperties.readOnly = true;
+        // cellProperties.readOnly = true;
+        instance.setCellMeta(row, col, 'readOnly', true);
         // console.log(row, col, value, cellProperties);
         // console.log(currentRowIntYear);
     }
 
-    // console.log(cellProperties);
 
-        Handsontable.renderers.NumericRenderer.apply(this, arguments);
+    Handsontable.renderers.NumericRenderer.apply(this, arguments);
     return cellProperties;
 }
 

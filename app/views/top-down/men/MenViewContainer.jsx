@@ -15,6 +15,7 @@ class MenViewContainer extends Component {
         super(props);
         this.state = {
             grid: [],
+            disabledBtn: true,
         };
 
         this.dataToSave = [];
@@ -61,16 +62,18 @@ class MenViewContainer extends Component {
                 checkDuplicate.push(newData);
                 this.dataToSave = checkDuplicate;
             }
+            if (this.state.disabledBtn) {
+                this.setState({
+                    disabledBtn: false,
+                });
+            }
         }
-
     }
 
     save = () => {
-        // console.log(this.dataToSave);
-        // debugger;
-        const tt = {};
-        tt.data = this.dataToSave;
-        this.props.saveBudget(this.props.budget, this.props.version, 'men', tt);
+        const dataToSend = {};
+        dataToSend.data = this.dataToSave;
+        this.props.saveBudget(this.props.budget, this.props.version, 'men', dataToSend);
     }
 
     buildTable = () => {
@@ -102,9 +105,11 @@ class MenViewContainer extends Component {
         const budgetListData = this.props.viewMenDataFetched ? this.buildTable() : <Spin size="large" />;
         return (
             <div>
-                <h2>MEN -
-                    <Button onClick={() => this.save()}>Save Men view</Button>
-                </h2>
+                <Button
+                    icon="save"
+                    className="saveBtn"
+                    disabled={this.state.disabledBtn}
+                    onClick={() => this.save()}>Save Men's view</Button>
                 {budgetListData}
             </div>
         );
