@@ -49,7 +49,8 @@ export default class BudgetTest extends Component {
                                 currentRowClassName= {'currentRow'}
                                 currentColClassName= {'currentCol'}
                                 function={true}
-                                stretchH="all" />
+                                stretchH='all'
+                                licenseKey= 'a389a-f2591-70b41-a480d-1911a' />
                         </TabPane>
                         <TabPane tab="Total" key="2">
 

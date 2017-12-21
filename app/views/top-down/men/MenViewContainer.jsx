@@ -83,7 +83,7 @@ class MenViewContainer extends Component {
         const seasonHeaders = season === 'SS' ? headers[0] : headers[1];
         return (<div className="parentDiv">
             <HotTable
-                root="hot"
+                root='hot'
                 data={this.state.grid.data}
                 cells={cellClasses}
                 nestedHeaders= {seasonHeaders}
@@ -97,7 +97,8 @@ class MenViewContainer extends Component {
                 currentColClassName= {'currentCol'}
                 function={true}
                 observeChanges={true}
-                afterChange={this.changeCell} />
+                afterChange={this.changeCell}
+                licenseKey= 'a389a-f2591-70b41-a480d-1911a' />
         </div>);
     }
 
