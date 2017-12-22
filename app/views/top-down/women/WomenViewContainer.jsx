@@ -7,8 +7,7 @@ import Handsontable from 'handsontable';
 import { Spin } from 'antd';
 import { mergeMetrics, mergeHeadersExecRecap } from 'helpers';
 import { fetchBudgetWomenData, resetState } from './WomenViewActions';
-import datagrid from './test';
-import { cellClasses, headers, columns } from './grid-build/index';
+import { cellClasses, headers, columns } from '../common/men-women/index';
 
 class WomenViewContainer extends Component {
 
@@ -36,8 +35,6 @@ class WomenViewContainer extends Component {
     }
 
     mergeCells = () => {
-        console.log(this.props.viewWomenData);
-        console.log(this.state.grid);
         const { start_row, row_span, total, total_cols, has_gaps } = this.state.grid.info;
         const newMerge = mergeMetrics(start_row, row_span, total, total_cols, has_gaps);
 
@@ -46,14 +43,17 @@ class WomenViewContainer extends Component {
 
     buildTable = () => {
         const newMerge = this.mergeCells();
+        const { season } = this.state.grid.info;
+        const seasonColumns = season === 'SS' ? columns[0] : columns[1];
+        const seasonHeaders = season === 'SS' ? headers[0] : headers[1];
         return (<div className="parentDiv">
             <HotTable
                 root='hot'
                 data={this.state.grid.data}
                 cells={cellClasses}
-                nestedHeaders= {headers}
-                colHeaders= {true}
-                columns={columns}
+                nestedHeaders={seasonHeaders}
+                colHeaders={true}
+                columns={seasonColumns}
                 formulas={true}
                 contextMenu={false}
                 mergeCells={newMerge}

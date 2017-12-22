@@ -4,11 +4,10 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import HotTable from 'react-handsontable';
 import Handsontable from 'handsontable';
-import { Spin } from 'antd';
+import { Button, Spin } from 'antd';
 import { mergeMetrics, mergeHeadersExecRecap } from 'helpers';
-import { fetchBudgetMenData, resetState } from './MenViewActions';
-import datagrid from './test';
-import { cellClasses, headers, columns } from './grid-build/index';
+import { saveBudget, fetchBudgetMenData, resetState } from './MenViewActions';
+import { cellClasses, headers, columns } from '../common/men-women/index';
 
 class MenViewContainer extends Component {
 
@@ -16,6 +15,7 @@ class MenViewContainer extends Component {
         super(props);
         this.state = {
             grid: [],
+            disabledBtn: true,
         };
 
         this.dataToSave = [];
@@ -44,52 +44,60 @@ class MenViewContainer extends Component {
         return newMerge;
     }
 
-    test = (cellEdits) => {
+    changeCell = (cellEdits) => {
+        // on load this is called, hence the check
         if (cellEdits) {
             const row = cellEdits[0][0];
             const col = cellEdits[0][1];
             const prevValue = cellEdits[0][2];
             const newValue = cellEdits[0][3];
-            debugger;
             if (prevValue !== newValue) {
-                this.dataToSave[row][col] = newValue;
+                const newData = {
+                    row,
+                    col,
+                    value: newValue,
+                };
+                // check if cell has been modified already
+                const checkDuplicate = this.dataToSave.filter(e => e.row !== row || e.col !== col);
+                checkDuplicate.push(newData);
+                this.dataToSave = checkDuplicate;
             }
-            // console.log(this.dataToSave);
-            console.log(newValue);
+            if (this.state.disabledBtn) {
+                this.setState({
+                    disabledBtn: false,
+                });
+            }
         }
-        // const relations = datagrid.relationships;
-        // if (cellEdits) {
-        //     const edit = cellEdits[0];
-        //     const [row, col, prevValue, newValue] = edit;
-        //     const whattochange = relations[row][col];
-        //
-        //     let item = Object.assign({}, this.state.datagrid.data[whattochange.row], { [whattochange.col]: newValue });
-        //     items[1] = item;
-        //     this.setState({items: items});
-        //     // debugger;
-        // }
+    }
+
+    save = () => {
+        const dataToSend = {};
+        dataToSend.data = this.dataToSave;
+        this.props.saveBudget(this.props.budget, this.props.version, 'men', dataToSend);
     }
 
     buildTable = () => {
         const newMerge = this.mergeCells();
+        const { season } = this.state.grid.info;
+        const seasonColumns = season === 'SS' ? columns[0] : columns[1];
+        const seasonHeaders = season === 'SS' ? headers[0] : headers[1];
         return (<div className="parentDiv">
             <HotTable
                 root='hot'
                 data={this.state.grid.data}
                 cells={cellClasses}
-                nestedHeaders= {headers}
+                nestedHeaders= {seasonHeaders}
                 colHeaders= {true}
-                columns={columns}
+                columns={seasonColumns}
                 formulas={true}
                 contextMenu={false}
                 mergeCells={newMerge}
                 persistentState={true}
                 currentRowClassName= {'currentRow'}
                 currentColClassName= {'currentCol'}
-                // readOnly={true}
                 function={true}
                 observeChanges={true}
-                afterChange={this.test}
+                afterChange={this.changeCell}
                 licenseKey= 'a389a-f2591-70b41-a480d-1911a' />
         </div>);
     }
@@ -98,7 +106,11 @@ class MenViewContainer extends Component {
         const budgetListData = this.props.viewMenDataFetched ? this.buildTable() : <Spin size="large" />;
         return (
             <div>
-                <h2>MEN</h2>
+                <Button
+                    icon="save"
+                    className="saveBtn"
+                    disabled={this.state.disabledBtn}
+                    onClick={() => this.save()}>Save Men's view</Button>
                 {budgetListData}
             </div>
         );
@@ -112,8 +124,10 @@ MenViewContainer.propTypes = {
         PropTypes.object,
     ]).isRequired,
     viewMenDataFetched: PropTypes.bool.isRequired,
+    saveBudget: PropTypes.func.isRequired,
     fetchBudgetMenData: PropTypes.func.isRequired,
     resetState: PropTypes.func.isRequired,
+    updateData: PropTypes.func.isRequired,
     budget: PropTypes.string.isRequired,
     version: PropTypes.string.isRequired,
 };
@@ -127,7 +141,7 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-    return bindActionCreators({ fetchBudgetMenData, resetState }, dispatch);
+    return bindActionCreators({ fetchBudgetMenData, resetState, saveBudget }, dispatch);
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(MenViewContainer);
