@@ -8,7 +8,6 @@ const leftBorderCols = [
 const currentYear = parseInt(new Date().getFullYear().toString().substr(-2), 10);
 
 function cellValueRender(instance, td, row, col, prop, value, cellProperties) {
-    // console.log(instance);
     cellProperties = {};
     const currentRowYear = instance.getDataAtCell(row, 1);
     const currentRowIntYear = parseInt(currentRowYear.substr(-2), 10);
@@ -35,14 +34,14 @@ function cellValueRender(instance, td, row, col, prop, value, cellProperties) {
     cellProperties.type = 'numeric';
     cellProperties.format = '$0,000';
     if (currentRowIntYear > currentYear) {
-        cellProperties.readOnly = true;
+        // cellProperties.readOnly = true;
+        instance.setCellMeta(row, col, 'readOnly', true);
         // console.log(row, col, value, cellProperties);
-        console.log(currentRowIntYear);
+        // console.log(currentRowIntYear);
     }
 
-    // console.log(cellProperties);
 
-        Handsontable.renderers.NumericRenderer.apply(this, arguments);
+    Handsontable.renderers.NumericRenderer.apply(this, arguments);
     return cellProperties;
 }
 
@@ -72,7 +71,8 @@ function cellValueRenderIncr(instance, td, row, col, prop, value, cellProperties
 
     return td;
 }
-const columns = [
+
+const commonColums = [
     {
         data: 'metric',
         type: 'text',
@@ -138,6 +138,145 @@ const columns = [
         format: '$0,000',
         colWidths: 100,
     },
+];
+
+const SS = [
+    {
+        data: 'aug0',
+        renderer: cellValueRender,
+        type: 'numeric',
+        format: '$0,000',
+        colWidths: 100,
+    },
+    {
+        data: 'sep0',
+        renderer: cellValueRender,
+        type: 'numeric',
+        format: '$0,000',
+        colWidths: 100,
+    },
+    {
+        data: 'oct0',
+        renderer: cellValueRender,
+        type: 'numeric',
+        format: '$0,000',
+        colWidths: 100,
+    },
+    {
+        data: 'nov0',
+        renderer: cellValueRender,
+        type: 'numeric',
+        format: '$0,000',
+        colWidths: 100,
+    },
+    {
+        data: 'dec0',
+        renderer: cellValueRender,
+        type: 'numeric',
+        format: '$0,000',
+        colWidths: 100,
+    },
+    {
+        data: 'jan1',
+        renderer: cellValueRender,
+        type: 'numeric',
+        format: '$0,000',
+        colWidths: 100,
+    },
+    {
+        data: 'feb1',
+        renderer: cellValueRender,
+        type: 'numeric',
+        format: '$0,000',
+        colWidths: 100,
+    },
+    {
+        data: 'mar1',
+        renderer: cellValueRender,
+        type: 'numeric',
+        format: '$0,000',
+        colWidths: 100,
+    },
+    {
+        data: 'apr1',
+        renderer: cellValueRender,
+        type: 'numeric',
+        format: '$0,000',
+        colWidths: 100,
+    },
+    {
+        data: 'may1',
+        renderer: cellValueRender,
+        type: 'numeric',
+        format: '$0,000',
+        colWidths: 100,
+    },
+    {
+        data: 'jun1',
+        renderer: cellValueRender,
+        type: 'numeric',
+        format: '$0,000',
+        colWidths: 100,
+    },
+    {
+        data: 'jul1',
+        renderer: cellValueRender,
+        type: 'numeric',
+        format: '$0,000',
+        colWidths: 100,
+    },
+    {
+        data: 'aug1',
+        renderer: cellValueRender,
+        type: 'numeric',
+        format: '$0,000',
+        colWidths: 100,
+    },
+    {
+        data: 'sep1',
+        renderer: cellValueRender,
+        type: 'numeric',
+        format: '$0,000',
+        colWidths: 100,
+    },
+    {
+        data: 'oct1',
+        renderer: cellValueRender,
+        type: 'numeric',
+        format: '$0,000',
+        colWidths: 100,
+    },
+    {
+        data: 'nov1',
+        renderer: cellValueRender,
+        type: 'numeric',
+        format: '$0,000',
+        colWidths: 100,
+    },
+    {
+        data: 'dec1',
+        renderer: cellValueRender,
+        type: 'numeric',
+        format: '$0,000',
+        colWidths: 100,
+    },
+    {
+        data: 'jan2',
+        renderer: cellValueRender,
+        type: 'numeric',
+        format: '$0,000',
+        colWidths: 100,
+    },
+    {
+        data: 'future',
+        renderer: cellValueRender,
+        type: 'numeric',
+        format: '$0,000',
+        colWidths: 100,
+    },
+];
+
+const FW = [
     {
         data: 'feb1',
         renderer: cellValueRender,
@@ -273,4 +412,11 @@ const columns = [
     },
 ];
 
+const SSData = commonColums.concat(SS);
+const FWData = commonColums.concat(FW);
+
+const columns = [SSData, FWData];
+
 export default columns;
+
+// Array.prototype.push.apply(cols,cols2);
