@@ -4,7 +4,7 @@
   "description": "Micro Service Name",
   "author": "SSENSE",
   "scripts": {
-    "start": "NODE_ENV=production npm run build && node server.js",
+    "start": "NODE_ENV=production node server.js",
     "dev": "NODE_ENV=development webpack-dev-server --color --hot --inline --config ./webpack.dev.config.js --content-base ./public",
     "build": "NODE_ENV=production UV_THREADPOOL_SIZE=100 webpack --color --config ./webpack.prod.config.js",
     "lint": "./node_modules/.bin/eslint 'app/**'",
