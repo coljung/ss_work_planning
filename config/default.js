@@ -6,12 +6,12 @@ module.exports = {
         exposedPort: process.env.UI_PLANNING_PORT || 8007
     },
     auth: {
-        password: process.env.HTTP_AUTH_PASSWORD
+        password: process.env.HTTP_AUTH_PASSWORD || 'admin'
     },
     api: {
         planning: {
             host: process.env.MS_PLANNING_HOST || 'localhost',
-            port: process.env.MS_PLANNING_PORT || '3001',
+            port: process.env.MS_PLANNING_PORT || '3000',
         }
     },
     node_env: {
