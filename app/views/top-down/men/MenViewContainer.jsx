@@ -78,8 +78,9 @@ class MenViewContainer extends Component {
 
     buildTable = () => {
         const newMerge = this.mergeCells();
-        const { season } = this.state.grid.info;
-        const seasonColumns = season === 'SS' ? columns[0] : columns[1];
+        const { currentMonthColumn, season } = this.state.grid.info;
+        const cols = columns(currentMonthColumn, season);
+        const seasonColumns = season === 'SS' ? cols[0] : cols[1];
         const seasonHeaders = season === 'SS' ? headers[0] : headers[1];
         return (<div className="parentDiv">
             <HotTable
