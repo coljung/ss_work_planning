@@ -10,8 +10,8 @@ const currentYear = parseInt(new Date().getFullYear().toString().substr(-2), 10)
 function cellValueRender(instance, td, row, col, prop, value, cellProperties) {
     // console.log(instance);
     cellProperties = {};
-    const currentRowYear = instance.getDataAtCell(row, 1);
-    const currentRowIntYear = parseInt(currentRowYear.substr(-2), 10);
+    // const currentRowYear = instance.getDataAtCell(row, 1);
+    // const currentRowIntYear = parseInt(currentRowYear.substr(-2), 10);
 
     if ((row === 0 && col > 0) || (row === 5 && col > 1) || (row === 10 && col > 1)) {
       td.style.background = '#eee';
@@ -34,10 +34,13 @@ function cellValueRender(instance, td, row, col, prop, value, cellProperties) {
 
     cellProperties.type = 'numeric';
     cellProperties.format = '$0,000';
-    if (currentRowIntYear > currentYear) {
-        cellProperties.readOnly = true;
-        // console.log(row, col, value, cellProperties);
-        console.log(currentRowIntYear);
+    const currentRowYear = instance.getDataAtCell(row, 1);
+    const currentRowIntYear = parseInt(currentRowYear.substr(-2), 10);
+    const currentColMonth = instance.getDataAtCell(1, col);
+
+    if (currentRowIntYear < currentYear) {
+      instance.setCellMeta(row, col, 'readOnly', true);
+      // console.log(instance.getDataAtCell(0, col));
     }
 
     // console.log(cellProperties);
@@ -67,10 +70,18 @@ function cellValueRenderIncr(instance, td, row, col, prop, value, cellProperties
         td.className += ' cellNA';
         return td;
     }
+    cellProperties.type = 'numeric';
+    cellProperties.format = '$0,000';
+    const currentRowYear = instance.getDataAtCell(row, 1);
+    const currentRowIntYear = parseInt(currentRowYear.substr(-2), 10);
+
+    if (currentRowIntYear < currentYear) {
+        instance.setCellMeta(row, col, 'readOnly', true);
+    }
+
     Handsontable.renderers.NumericRenderer.apply(this, arguments);
     cellProperties.type = 'numeric';
     cellProperties.format = '0%';
-
 
     return td;
 }
@@ -90,7 +101,7 @@ const columns = [
         renderer: cellValueRender,
         type: 'numeric',
         format: '$0,000',
-        editor: false,
+        readOnly: true,
         colWidths: 100,
     },
     {
@@ -98,7 +109,7 @@ const columns = [
         renderer: cellValueRenderIncr,
         type: 'numeric',
         format: '0%',
-        editor: false,
+        readOnly: true,
         colWidths: 100,
     },
     {
@@ -106,7 +117,7 @@ const columns = [
         renderer: cellValueRender,
         type: 'numeric',
         format: '$0,000',
-        editor: false,
+        readOnly: true,
         colWidths: 100,
     },
     {
@@ -114,7 +125,7 @@ const columns = [
         renderer: cellValueRenderIncr,
         type: 'numeric',
         format: '0%',
-        editor: false,
+        readOnly: true,
         colWidths: 100,
     },
     {
@@ -122,7 +133,7 @@ const columns = [
         renderer: cellValueRender,
         type: 'numeric',
         format: '$0,000',
-        editor: false,
+        readOnly: true,
         colWidths: 100,
     },
     {
@@ -130,7 +141,7 @@ const columns = [
         renderer: cellValueRenderIncr,
         type: 'numeric',
         format: '0%',
-        editor: false,
+        readOnly: true,
         colWidths: 100,
     },
     {

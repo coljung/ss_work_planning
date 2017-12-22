@@ -26,6 +26,16 @@ function cellValueRender(instance, td, row, col, prop, value, cellProperties) {
         td.className += ' cellNA';
         return td;
     }
+    cellProperties.type = 'numeric';
+    cellProperties.format = '$0,000';
+    const currentRowYear = instance.getDataAtCell(row, 1);
+    const currentRowIntYear = parseInt(currentRowYear.substr(-2), 10);
+    const currentColMonth = instance.getDataAtCell(1, col);
+
+    if (currentRowIntYear < currentYear) {
+      instance.setCellMeta(row, col, 'readOnly', true);
+      // console.log(instance.getDataAtCell(0, col));
+    }
 
     Handsontable.renderers.NumericRenderer.apply(this, arguments);
     cellProperties.type = 'numeric';
@@ -55,6 +65,16 @@ function cellValueRenderIncr(instance, td, row, col, prop, value, cellProperties
         td.className += ' cellNA';
         return td;
     }
+
+    cellProperties.type = 'numeric';
+    cellProperties.format = '$0,000';
+    const currentRowYear = instance.getDataAtCell(row, 1);
+    const currentRowIntYear = parseInt(currentRowYear.substr(-2), 10);
+
+    if (currentRowIntYear < currentYear) {
+        instance.setCellMeta(row, col, 'readOnly', true);
+    }
+
     Handsontable.renderers.NumericRenderer.apply(this, arguments);
     cellProperties.type = 'numeric';
     cellProperties.format = '0%';
@@ -78,7 +98,7 @@ const columns = [
         renderer: cellValueRender,
         type: 'numeric',
         format: '$0,000',
-        editor: false,
+        readOnly: true,
         colWidths: 100,
     },
     {
@@ -86,7 +106,7 @@ const columns = [
         renderer: cellValueRenderIncr,
         type: 'numeric',
         format: '0%',
-        editor: false,
+        readOnly: true,
         colWidths: 100,
     },
     {
@@ -94,7 +114,7 @@ const columns = [
         renderer: cellValueRender,
         type: 'numeric',
         format: '$0,000',
-        editor: false,
+        readOnly: true,
         colWidths: 100,
     },
     {
@@ -102,7 +122,7 @@ const columns = [
         renderer: cellValueRenderIncr,
         type: 'numeric',
         format: '0%',
-        editor: false,
+        readOnly: true,
         colWidths: 100,
     },
     {
@@ -110,7 +130,7 @@ const columns = [
         renderer: cellValueRender,
         type: 'numeric',
         format: '$0,000',
-        editor: false,
+        readOnly: true,
         colWidths: 100,
     },
     {
@@ -118,7 +138,7 @@ const columns = [
         renderer: cellValueRenderIncr,
         type: 'numeric',
         format: '0%',
-        editor: false,
+        readOnly: true,
         colWidths: 100,
     },
     {
