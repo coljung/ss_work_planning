@@ -26,7 +26,7 @@ export function saveNewBudgetVersion(seasonID, id) {
         dispatch(requestBudgetSaveNewVersion());
         return request
             // .get(`${getApiUrl()}planning/seasons/show/available`)
-            .post(`http://localhost:3001/planning/seasons/${seasonID}/versions/${id}/duplicate`)
+            .post(`/api/planning/seasons/${seasonID}/versions/${id}/duplicate`)
             .then(
                 res => {
                     dispatch(messages({ content: 'New Version Saved successfully!', response: '', isError: false }));
