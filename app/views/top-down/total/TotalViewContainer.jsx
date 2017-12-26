@@ -7,7 +7,6 @@ import Handsontable from 'handsontable';
 import { Spin } from 'antd';
 import { mergeMetrics, mergeHeadersExecRecap } from 'helpers';
 import { fetchBudgetTotalData, resetState } from './TotalViewActions';
-import datagrid from './test_exec';
 import { cellClasses, headers, columns } from './grid-build/index';
 
 class TotalViewContainer extends Component {
@@ -44,42 +43,46 @@ class TotalViewContainer extends Component {
         return newMerge;
     }
 
-    test = (cellEdits) => {
+    changeCell = (cellEdits) => {
+        // on load this is called, hence the check
         if (cellEdits) {
             const row = cellEdits[0][0];
             const col = cellEdits[0][1];
             const prevValue = cellEdits[0][2];
             const newValue = cellEdits[0][3];
-            debugger;
             if (prevValue !== newValue) {
-                this.dataToSave[row][col] = newValue;
+                const newData = {
+                    row,
+                    col,
+                    value: newValue,
+                };
+                // check if cell has been modified already
+                const checkDuplicate = this.dataToSave.filter(e => e.row !== row || e.col !== col);
+                checkDuplicate.push(newData);
+                this.dataToSave = checkDuplicate;
             }
-            // console.log(this.dataToSave);
-            console.log(newValue);
+            if (this.state.disabledBtn) {
+                this.setState({
+                    disabledBtn: false,
+                });
+            }
         }
-        // const relations = datagrid.relationships;
-        // if (cellEdits) {
-        //     const edit = cellEdits[0];
-        //     const [row, col, prevValue, newValue] = edit;
-        //     const whattochange = relations[row][col];
-        //
-        //     let item = Object.assign({}, this.state.datagrid.data[whattochange.row], { [whattochange.col]: newValue });
-        //     items[1] = item;
-        //     this.setState({items: items});
-        //     // debugger;
-        // }
     }
 
     buildTable = () => {
         const newMerge = this.mergeCells();
+        const { currentMonthColumn, season } = this.state.grid.info;
+        const cols = columns(currentMonthColumn, season);
+        const seasonColumns = season === 'SS' ? cols[0] : cols[1];
+        const seasonHeaders = season === 'SS' ? headers[0] : headers[1];
         return (<div className="parentDiv">
             <HotTable
                 root='hot'
                 data={this.state.grid.data}
                 cells={cellClasses}
-                nestedHeaders= {headers}
+                nestedHeaders= {seasonHeaders}
                 colHeaders= {true}
-                columns={columns}
+                columns={seasonColumns}
                 formulas={true}
                 contextMenu={false}
                 mergeCells={newMerge}
