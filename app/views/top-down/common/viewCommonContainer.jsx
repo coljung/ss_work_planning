@@ -9,7 +9,7 @@ import { mergeMetrics, mergeHeadersExecRecap } from 'helpers';
 import { saveBudget, fetchBudgetData, resetState } from '../common/viewActions';
 import { headers, columns } from '../common/grid/index';
 
-class WomenViewContainer extends Component {
+class ViewCommonContainer extends Component {
 
     constructor(props) {
         super(props);
@@ -19,12 +19,12 @@ class WomenViewContainer extends Component {
     }
 
     componentDidMount() {
-        this.props.fetchBudgetData(this.props.budget, this.props.version, 'women');
+        this.props.fetchBudgetData(this.props.budget, this.props.version, this.props.view);
     }
 
     componentWillUnmount() {
         this.props.resetState();
-        console.log('gone women');
+        console.log('gone ', this.props.view);
     }
 
     componentWillReceiveProps = (nextProps) => {
@@ -70,11 +70,11 @@ class WomenViewContainer extends Component {
 
     render() {
         console.log(this.props.viewData);
-        console.log(this.props.viewDataFetched);
+        // console.log(this.props.viewDataFetched);
         const budgetListData = this.props.viewDataFetched ? this.buildTable() : <Spin size="large" />;
         return (
             <div>
-                <h2>WOMEN</h2>
+                <h2>{this.props.view}</h2>
                 {budgetListData}
             </div>
         );
@@ -82,7 +82,7 @@ class WomenViewContainer extends Component {
 }
 
 
-WomenViewContainer.propTypes = {
+ViewCommonContainer.propTypes = {
     viewData: PropTypes.oneOfType([
         PropTypes.array,
         PropTypes.object,
@@ -92,6 +92,7 @@ WomenViewContainer.propTypes = {
     resetState: PropTypes.func.isRequired,
     budget: PropTypes.string.isRequired,
     version: PropTypes.string.isRequired,
+    view: PropTypes.string.isRequired,
 };
 
 function mapStateToProps(state) {
@@ -106,4 +107,4 @@ function mapDispatchToProps(dispatch) {
     return bindActionCreators({ fetchBudgetData, resetState }, dispatch);
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(WomenViewContainer);
+export default connect(mapStateToProps, mapDispatchToProps)(ViewCommonContainer);

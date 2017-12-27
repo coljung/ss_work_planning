@@ -8,6 +8,7 @@ import ExecViewContainer from 'top_down/exec/ExecViewContainer';
 import TotalViewContainer from 'top_down/total/TotalViewContainer';
 import WomenViewContainer from 'top_down/women/WomenViewContainer';
 import MenViewContainer from 'top_down/men/MenViewContainer';
+import ViewCommonContainer from 'top_down/common/ViewCommonContainer';
 import BudgetViewsButtonActions from './BudgetViewsButtonActions';
 import { saveNewBudgetVersion } from './BudgetViewActions';
 import { ROUTE_BUDGET } from '../Routes';
@@ -88,11 +89,17 @@ class BudgetViewsContainer extends Component {
     onTabChange(newTabKey) {
         // set true to load tabbed component
         const currentKey = this.state.activeTab;
+        // debugger;
         this.setState({
             [currentKey]: false,
             activeTab: newTabKey,
             [newTabKey]: true,
         });
+
+        this.setState({
+            user: { ...this.state.user, [target.name]: target.value },
+        });
+        console.log(this.state);
         this.dataToSave = [];
     }
 
@@ -157,26 +164,31 @@ class BudgetViewsContainer extends Component {
                         </TabPane>
                         <TabPane tab="Total" key={TAB_TOTAL}>
                             {(currentKey === TAB_TOTAL || this.state[TAB_TOTAL]) &&
-                                <TotalViewContainer
+                                <ViewCommonContainer
                                     budget={this.state.budgetSeasonId}
                                     version={this.state.versionId}
+                                    updateData={this.changeCell}
+                                    view='total'
                                 />
                             }
                         </TabPane>
                         <TabPane tab="Women" key={TAB_WOMEN}>
                             {(currentKey === TAB_WOMEN || this.state[TAB_WOMEN]) &&
-                                <WomenViewContainer
+                                <ViewCommonContainer
                                     budget={this.state.budgetSeasonId}
                                     version={this.state.versionId}
+                                    updateData={this.changeCell}
+                                    view='women'
                                 />
                             }
                         </TabPane>
                         <TabPane tab="Men" key={TAB_MEN}>
                             {(currentKey === TAB_MEN || this.state[TAB_MEN]) &&
-                                <MenViewContainer
+                                <ViewCommonContainer
                                     budget={this.state.budgetSeasonId}
                                     version={this.state.versionId}
                                     updateData={this.changeCell}
+                                    view='men'
                                 />
                             }
                         </TabPane>

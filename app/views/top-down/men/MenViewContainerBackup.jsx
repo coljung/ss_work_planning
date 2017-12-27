@@ -6,7 +6,7 @@ import HotTable from 'react-handsontable';
 import Handsontable from 'handsontable';
 import { Button, Spin } from 'antd';
 import { mergeMetrics, mergeHeadersExecRecap } from 'helpers';
-import { saveBudget, fetchBudgetData, resetState } from '../common/viewActions';
+import { saveBudget, fetchBudgetMenData, resetState } from './MenViewActions';
 import { headers, columns } from '../common/grid/index';
 
 class MenViewContainer extends Component {
@@ -22,18 +22,17 @@ class MenViewContainer extends Component {
     }
 
     componentDidMount() {
-        this.props.fetchBudgetData(this.props.budget, this.props.version, 'men');
+        this.props.fetchBudgetMenData(this.props.budget, this.props.version);
     }
 
     componentWillUnmount() {
         this.props.resetState();
-        console.log('gone men');
     }
 
     componentWillReceiveProps = (nextProps) => {
-        if (this.props.viewData.length !== nextProps.viewData) {
+        if (this.props.viewMenData.length !== nextProps.viewMenData) {
             this.setState({
-                grid: nextProps.viewData,
+                grid: nextProps.viewMenData,
             });
         }
     }
@@ -47,28 +46,28 @@ class MenViewContainer extends Component {
 
     changeCell = (cellEdits) => {
         // on load this is called, hence the check
-        // if (cellEdits) {
-        //     const row = cellEdits[0][0];
-        //     const col = cellEdits[0][1];
-        //     const prevValue = cellEdits[0][2];
-        //     const newValue = cellEdits[0][3];
-        //     if (prevValue !== newValue) {
-        //         const newData = {
-        //             row,
-        //             col,
-        //             value: newValue,
-        //         };
-        //         // check if cell has been modified already
-        //         const checkDuplicate = this.dataToSave.filter(e => e.row !== row || e.col !== col);
-        //         checkDuplicate.push(newData);
-        //         this.dataToSave = checkDuplicate;
-        //     }
-        //     if (this.state.disabledBtn) {
-        //         this.setState({
-        //             disabledBtn: false,
-        //         });
-        //     }
-        // }
+        if (cellEdits) {
+            const row = cellEdits[0][0];
+            const col = cellEdits[0][1];
+            const prevValue = cellEdits[0][2];
+            const newValue = cellEdits[0][3];
+            if (prevValue !== newValue) {
+                const newData = {
+                    row,
+                    col,
+                    value: newValue,
+                };
+                // check if cell has been modified already
+                const checkDuplicate = this.dataToSave.filter(e => e.row !== row || e.col !== col);
+                checkDuplicate.push(newData);
+                this.dataToSave = checkDuplicate;
+            }
+            if (this.state.disabledBtn) {
+                this.setState({
+                    disabledBtn: false,
+                });
+            }
+        }
     }
 
     save = () => {
@@ -104,11 +103,14 @@ class MenViewContainer extends Component {
     }
 
     render() {
-        // console.log(this.props.viewData);
-        console.log(this.props.viewDataFetched.length);
-        const budgetListData = this.props.viewDataFetched ? this.buildTable() : <Spin size="large" />;
+        const budgetListData = this.props.viewMenDataFetched ? this.buildTable() : <Spin size="large" />;
         return (
             <div>
+                <Button
+                    icon="save"
+                    className="saveBtn"
+                    disabled={this.state.disabledBtn}
+                    onClick={() => this.save()}>Save Men's view</Button>
                 {budgetListData}
             </div>
         );
@@ -117,29 +119,29 @@ class MenViewContainer extends Component {
 
 
 MenViewContainer.propTypes = {
-    viewData: PropTypes.oneOfType([
+    viewMenData: PropTypes.oneOfType([
         PropTypes.array,
         PropTypes.object,
     ]).isRequired,
-    viewDataFetched: PropTypes.bool.isRequired,
+    viewMenDataFetched: PropTypes.bool.isRequired,
     saveBudget: PropTypes.func.isRequired,
-    fetchBudgetData: PropTypes.func.isRequired,
+    fetchBudgetMenData: PropTypes.func.isRequired,
     resetState: PropTypes.func.isRequired,
-    // updateData: PropTypes.func.isRequired,
+    updateData: PropTypes.func.isRequired,
     budget: PropTypes.string.isRequired,
     version: PropTypes.string.isRequired,
 };
 
 function mapStateToProps(state) {
-    const { ViewReducers } = state;
+    const { MenViewReducer } = state;
     return {
-        viewData: ViewReducers.viewData,
-        viewDataFetched: ViewReducers.viewDataFetched,
+        viewMenData: MenViewReducer.viewMenData,
+        viewMenDataFetched: MenViewReducer.viewMenDataFetched,
     };
 }
 
 function mapDispatchToProps(dispatch) {
-    return bindActionCreators({ fetchBudgetData, resetState }, dispatch);
+    return bindActionCreators({ fetchBudgetMenData, resetState, saveBudget }, dispatch);
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(MenViewContainer);

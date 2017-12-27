@@ -1,10 +1,12 @@
 import Handsontable from 'handsontable';
 
 const columns = (month, season) => {
+
     const leftBorderCols = [
         'stdpremarkdown',
         'previous',
     ];
+    // console.log(month);
 
     const currentYear = parseInt(new Date().getFullYear().toString().substr(-2), 10);
 
@@ -15,8 +17,12 @@ const columns = (month, season) => {
         // const currentRowIntYear = parseInt(currentRowYear.substr(-2), 10);
 
         if ((row === 0 && col > 0) || (row === 5 && col > 1) || (row === 10 && col > 1)) {
-          td.style.background = '#eee';
+            td.style.background = '#eee';
         }
+
+        // if (cellProperties.editor = true) {
+        //   td.style.background = '#bada55';
+        // }
 
         if (leftBorderCols.indexOf(prop) !== -1) {
             td.className += ' leftCellBorder';
@@ -39,26 +45,27 @@ const columns = (month, season) => {
         const currentRowIntYear = parseInt(currentRowYear.substr(-2), 10);
         const currentColMonth = instance.getDataAtCell(1, col);
 
-        if (currentRowIntYear < currentYear) {
-          instance.setCellMeta(row, col, 'readOnly', true);
-          // console.log(instance.getDataAtCell(0, col));
+        if (currentRowIntYear > currentYear || (currentRowIntYear === currentYear && col >= month)) {
+            instance.setCellMeta(row, col, 'readOnly', false);
+            // console.log(instance.getDataAtCell(0, col));
         }
 
-        // console.log(cellProperties);
-
-            Handsontable.renderers.NumericRenderer.apply(this, arguments);
+        Handsontable.renderers.NumericRenderer.apply(this, arguments);
         return cellProperties;
     }
 
     function cellValueRenderIncr(instance, td, row, col, prop, value, cellProperties) {
         cellProperties = {};
-
         if ((row === 0 && col > 0) || (row === 5 && col > 1) || (row === 10 && col > 1)) {
-          td.style.background = '#eee';
+            td.style.background = '#eee';
         }
 
+        // if (cellProperties.editor = false) {
+        //   td.style.background = '#bada55';
+        // }
+
         if (leftBorderCols.indexOf(prop) !== -1) {
-            td.className += ' leftCellBorder';
+            // td.className += ' leftCellBorder';
         }
 
         const rowSpan = 5;
@@ -71,6 +78,7 @@ const columns = (month, season) => {
             td.className += ' cellNA';
             return td;
         }
+
         cellProperties.type = 'numeric';
         cellProperties.format = '$0,000';
         const currentRowYear = instance.getDataAtCell(row, 1);
@@ -78,6 +86,14 @@ const columns = (month, season) => {
 
         if (currentRowIntYear < currentYear) {
             instance.setCellMeta(row, col, 'readOnly', true);
+            // td.style.background = '#bada55';
+            // console.log(currentRowIntYear < currentYear);
+
+            // console.log(row, col, value, cellProperties);
+            // console.log(currentRowIntYear, currentYear);
+        } else {
+          // console.log(currentRowIntYear < currentYear);
+          // td.style.background = '#bada55';
         }
 
         Handsontable.renderers.NumericRenderer.apply(this, arguments);
@@ -472,4 +488,11 @@ const columns = (month, season) => {
     return test;
 };
 
+
+//
+// const SSData = commonColums.concat(SS);
+// const FWData = commonColums.concat(FW);
+//
+// const columns = [SSData, FWData];
+//
 export default columns;

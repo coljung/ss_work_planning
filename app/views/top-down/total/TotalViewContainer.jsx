@@ -7,7 +7,7 @@ import Handsontable from 'handsontable';
 import { Spin } from 'antd';
 import { mergeMetrics, mergeHeadersExecRecap } from 'helpers';
 import { fetchBudgetTotalData, resetState } from './TotalViewActions';
-import { cellClasses, headers, columns } from '../common/men-women/index';
+import { headers, columns } from '../common/grid/index';
 
 class TotalViewContainer extends Component {
 
@@ -26,6 +26,7 @@ class TotalViewContainer extends Component {
 
     componentWillUnmount() {
         this.props.resetState();
+        console.log('gone total');
     }
 
     componentWillReceiveProps = (nextProps) => {
@@ -79,7 +80,6 @@ class TotalViewContainer extends Component {
             <HotTable
                 root='hot'
                 data={this.state.grid.data}
-                cells={cellClasses}
                 nestedHeaders= {seasonHeaders}
                 colHeaders= {true}
                 columns={seasonColumns}

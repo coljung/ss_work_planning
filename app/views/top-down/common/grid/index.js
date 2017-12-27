@@ -1,9 +1,9 @@
-import cellClasses from './cellClasses';
+// import cellClasses from './cellClasses';
 import headers from './headers';
 import columns from './columns';
 
 export {
-    cellClasses,
+    // cellClasses,
     headers,
     columns,
 };

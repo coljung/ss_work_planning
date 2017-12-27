@@ -6,7 +6,7 @@ import HotTable from 'react-handsontable';
 import Handsontable from 'handsontable';
 import { Spin } from 'antd';
 import { mergeMetrics, mergeHeadersExecRecap } from 'helpers';
-import { saveBudget, fetchBudgetData, resetState } from '../common/viewActions';
+import { fetchBudgetWomenData, resetState } from './WomenViewActions';
 import { headers, columns } from '../common/grid/index';
 
 class WomenViewContainer extends Component {
@@ -19,19 +19,17 @@ class WomenViewContainer extends Component {
     }
 
     componentDidMount() {
-        this.props.fetchBudgetData(this.props.budget, this.props.version, 'women');
+        this.props.fetchBudgetWomenData(this.props.budget, this.props.version);
     }
 
     componentWillUnmount() {
         this.props.resetState();
-        console.log('gone women');
     }
 
     componentWillReceiveProps = (nextProps) => {
-        // debugger;
-        if (this.props.viewData.length !== nextProps.viewData) {
+        if (this.props.viewWomenData.length !== nextProps.viewWomenData) {
             this.setState({
-                grid: nextProps.viewData,
+                grid: nextProps.viewWomenData,
             });
         }
     }
@@ -69,9 +67,7 @@ class WomenViewContainer extends Component {
     }
 
     render() {
-        console.log(this.props.viewData);
-        console.log(this.props.viewDataFetched);
-        const budgetListData = this.props.viewDataFetched ? this.buildTable() : <Spin size="large" />;
+        const budgetListData = this.props.viewWomenDataFetched ? this.buildTable() : <Spin size="large" />;
         return (
             <div>
                 <h2>WOMEN</h2>
@@ -83,27 +79,27 @@ class WomenViewContainer extends Component {
 
 
 WomenViewContainer.propTypes = {
-    viewData: PropTypes.oneOfType([
+    viewWomenData: PropTypes.oneOfType([
         PropTypes.array,
         PropTypes.object,
     ]).isRequired,
-    viewDataFetched: PropTypes.bool.isRequired,
-    fetchBudgetData: PropTypes.func.isRequired,
+    viewWomenDataFetched: PropTypes.bool.isRequired,
+    fetchBudgetWomenData: PropTypes.func.isRequired,
     resetState: PropTypes.func.isRequired,
     budget: PropTypes.string.isRequired,
     version: PropTypes.string.isRequired,
 };
 
 function mapStateToProps(state) {
-    const { ViewReducers } = state;
+    const { WomenViewReducer } = state;
     return {
-        viewData: ViewReducers.viewData,
-        viewDataFetched: ViewReducers.viewDataFetched,
+        viewWomenData: WomenViewReducer.viewWomenData,
+        viewWomenDataFetched: WomenViewReducer.viewWomenDataFetched,
     };
 }
 
 function mapDispatchToProps(dispatch) {
-    return bindActionCreators({ fetchBudgetData, resetState }, dispatch);
+    return bindActionCreators({ fetchBudgetWomenData, resetState }, dispatch);
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(WomenViewContainer);
