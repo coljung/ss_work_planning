@@ -7,7 +7,7 @@ import Handsontable from 'handsontable';
 import { Spin } from 'antd';
 import { mergeMetrics, mergeHeadersExecRecap } from 'helpers';
 import { fetchBudgetTotalData, resetState } from './TotalViewActions';
-import { cellClasses, headers, columns } from './grid-build/index';
+import { cellClasses, headers, columns } from '../common/men-women/index';
 
 class TotalViewContainer extends Component {
 
