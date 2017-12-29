@@ -89,24 +89,20 @@ class BudgetViewsContainer extends Component {
     onTabChange(newTabKey) {
         // set true to load tabbed component
         const currentKey = this.state.activeTab;
-        // debugger;
+
         this.setState({
             [currentKey]: false,
             activeTab: newTabKey,
             [newTabKey]: true,
         });
 
-        this.setState({
-            user: { ...this.state.user, [target.name]: target.value },
-        });
-        console.log(this.state);
         this.dataToSave = [];
     }
 
     render() {
         const currentKey = this.state.activeTab;
         // const currentTab = this.props.params.tab === currentKey ? currentKey;
-        // console.log('---------', currentTab, currentKey);
+        console.log('---------', this.state.activeTab, this.state);
         const SubMenu = Menu.SubMenu;
         const MenuItemGroup = Menu.ItemGroup;
         const menuBudget = (
@@ -163,7 +159,7 @@ class BudgetViewsContainer extends Component {
                             }
                         </TabPane>
                         <TabPane tab="Total" key={TAB_TOTAL}>
-                            {(currentKey === TAB_TOTAL || this.state[TAB_TOTAL]) &&
+                            {(currentKey === TAB_TOTAL) &&
                                 <ViewCommonContainer
                                     budget={this.state.budgetSeasonId}
                                     version={this.state.versionId}
@@ -173,7 +169,7 @@ class BudgetViewsContainer extends Component {
                             }
                         </TabPane>
                         <TabPane tab="Women" key={TAB_WOMEN}>
-                            {(currentKey === TAB_WOMEN || this.state[TAB_WOMEN]) &&
+                            {(currentKey === TAB_WOMEN) &&
                                 <ViewCommonContainer
                                     budget={this.state.budgetSeasonId}
                                     version={this.state.versionId}
@@ -183,7 +179,7 @@ class BudgetViewsContainer extends Component {
                             }
                         </TabPane>
                         <TabPane tab="Men" key={TAB_MEN}>
-                            {(currentKey === TAB_MEN || this.state[TAB_MEN]) &&
+                            {(currentKey === TAB_MEN) &&
                                 <ViewCommonContainer
                                     budget={this.state.budgetSeasonId}
                                     version={this.state.versionId}

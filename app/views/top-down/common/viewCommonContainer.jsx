@@ -69,7 +69,7 @@ class ViewCommonContainer extends Component {
     }
 
     render() {
-        console.log(this.props.viewData);
+        // console.log(this.props.viewData);
         // console.log(this.props.viewDataFetched);
         const budgetListData = this.props.viewDataFetched ? this.buildTable() : <Spin size="large" />;
         return (
