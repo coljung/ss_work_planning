@@ -102,7 +102,7 @@ class BudgetViewsContainer extends Component {
     render() {
         const currentKey = this.state.activeTab;
         // const currentTab = this.props.params.tab === currentKey ? currentKey;
-        console.log('---------', this.state.activeTab, this.state);
+        // console.log('---------', this.state.activeTab, this.state);
         const SubMenu = Menu.SubMenu;
         const MenuItemGroup = Menu.ItemGroup;
         const menuBudget = (
@@ -164,6 +164,7 @@ class BudgetViewsContainer extends Component {
                                     budget={this.state.budgetSeasonId}
                                     version={this.state.versionId}
                                     updateData={this.changeCell}
+                                    key={TAB_TOTAL}
                                     view='total'
                                 />
                             }
@@ -174,6 +175,7 @@ class BudgetViewsContainer extends Component {
                                     budget={this.state.budgetSeasonId}
                                     version={this.state.versionId}
                                     updateData={this.changeCell}
+                                    key={TAB_WOMEN}
                                     view='women'
                                 />
                             }
@@ -184,6 +186,7 @@ class BudgetViewsContainer extends Component {
                                     budget={this.state.budgetSeasonId}
                                     version={this.state.versionId}
                                     updateData={this.changeCell}
+                                    key={TAB_MEN}
                                     view='men'
                                 />
                             }

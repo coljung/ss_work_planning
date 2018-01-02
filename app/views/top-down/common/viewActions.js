@@ -15,9 +15,10 @@ export const requestBudgetViewData = () => ({
     type: REQUEST_BUDGETS_VIEW,
 });
 
-export const receiveBudgetViewData = viewData => ({
+export const receiveBudgetViewData = (viewData, view) => ({
     type: RECEIVE_BUDGETS_VIEW,
     viewData,
+    view,
 });
 
 export const requestBudgetSave = () => ({
@@ -40,7 +41,7 @@ export function fetchBudgetData(budget, version, view) {
             // .get(`${getApiUrl()}planning/seasons/show/available`)
             .get(`http://localhost:3001/planning/budgets/${budget}/versions/${version}/${view}`)
             .then(
-            res => dispatch(receiveBudgetViewData(res.body)),
+            res => dispatch(receiveBudgetViewData(res.body, view)),
             err => dispatch(messages({ content: err, response: err.response, isError: true })),
             );
     };

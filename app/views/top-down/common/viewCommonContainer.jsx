@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import HotTable from 'react-handsontable';
 import Handsontable from 'handsontable';
-import { Spin } from 'antd';
+import { Button, Spin } from 'antd';
 import { mergeMetrics, mergeHeadersExecRecap } from 'helpers';
 import { saveBudget, fetchBudgetData, resetState } from '../common/viewActions';
 import { headers, columns } from '../common/grid/index';
@@ -15,7 +15,9 @@ class ViewCommonContainer extends Component {
         super(props);
         this.state = {
             grid: [],
+            disabledBtn: true,
         };
+        this.dataToSave = [];
     }
 
     componentDidMount() {
@@ -24,16 +26,47 @@ class ViewCommonContainer extends Component {
 
     componentWillUnmount() {
         this.props.resetState();
-        console.log('gone ', this.props.view);
     }
 
     componentWillReceiveProps = (nextProps) => {
-        // debugger;
-        if (this.props.viewData.length !== nextProps.viewData) {
+        const setData = nextProps.viewData[nextProps.view];
+        if (this.props.viewData.length !== setData) {
             this.setState({
-                grid: nextProps.viewData,
+                grid: setData,
             });
         }
+    }
+
+    changeCell = (cellEdits) => {
+        // on load this is called, hence the check
+        if (cellEdits) {
+            const row = cellEdits[0][0];
+            const col = cellEdits[0][1];
+            const prevValue = cellEdits[0][2];
+            const newValue = cellEdits[0][3];
+            if (prevValue !== newValue) {
+                const newData = {
+                    row,
+                    col,
+                    value: newValue,
+                };
+                // check if cell has been modified already
+                const checkDuplicate = this.dataToSave.filter(e => e.row !== row || e.col !== col);
+                checkDuplicate.push(newData);
+                this.dataToSave = checkDuplicate;
+            }
+            if (this.state.disabledBtn) {
+                this.setState({
+                    disabledBtn: false,
+                });
+            }
+        }
+    }
+
+    save = () => {
+        const dataToSend = {};
+        dataToSend.data = this.dataToSave;
+        this.props.saveBudget(this.props.budget, this.props.version, this.props.view, dataToSend);
     }
 
     mergeCells = () => {
@@ -49,32 +82,38 @@ class ViewCommonContainer extends Component {
         const cols = columns(currentMonthColumn, season);
         const seasonColumns = season === 'SS' ? cols[0] : cols[1];
         const seasonHeaders = season === 'SS' ? headers[0] : headers[1];
-        return (<div className="parentDiv">
-            <HotTable
-                root='hot'
-                data={this.state.grid.data}
-                nestedHeaders={seasonHeaders}
-                colHeaders={true}
-                columns={seasonColumns}
-                formulas={true}
-                contextMenu={false}
-                mergeCells={newMerge}
-                persistentState={true}
-                currentRowClassName= {'currentRow'}
-                currentColClassName= {'currentCol'}
-                function={true}
-                observeChanges={true}
-                licenseKey= 'a389a-f2591-70b41-a480d-1911a' />
-        </div>);
+        return (
+            <div className="parentDiv">
+                <HotTable
+                    root='hot'
+                    data={this.state.grid.data}
+                    nestedHeaders={seasonHeaders}
+                    colHeaders={true}
+                    columns={seasonColumns}
+                    formulas={true}
+                    contextMenu={false}
+                    mergeCells={newMerge}
+                    persistentState={true}
+                    currentRowClassName= {'currentRow'}
+                    currentColClassName= {'currentCol'}
+                    function={true}
+                    observeChanges={true}
+                    afterChange={this.changeCell}
+                    licenseKey= 'a389a-f2591-70b41-a480d-1911a' />
+            </div>
+        );
     }
 
     render() {
-        // console.log(this.props.viewData);
-        // console.log(this.props.viewDataFetched);
-        const budgetListData = this.props.viewDataFetched ? this.buildTable() : <Spin size="large" />;
+        const budgetListData = this.props.viewData[this.props.view] ? this.buildTable() : <Spin size="large" />;
+        // console.log(budgetListData);
         return (
             <div>
-                <h2>{this.props.view}</h2>
+                <Button
+                    icon="save"
+                    className="saveBtn"
+                    disabled={this.state.disabledBtn}
+                    onClick={() => this.save()}>Save Men's view</Button>
                 {budgetListData}
             </div>
         );
@@ -88,6 +127,7 @@ ViewCommonContainer.propTypes = {
         PropTypes.object,
     ]).isRequired,
     viewDataFetched: PropTypes.bool.isRequired,
+    saveBudget: PropTypes.func.isRequired,
     fetchBudgetData: PropTypes.func.isRequired,
     resetState: PropTypes.func.isRequired,
     budget: PropTypes.string.isRequired,
@@ -104,7 +144,7 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-    return bindActionCreators({ fetchBudgetData, resetState }, dispatch);
+    return bindActionCreators({ fetchBudgetData, resetState, saveBudget }, dispatch);
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(ViewCommonContainer);

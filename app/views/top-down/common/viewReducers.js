@@ -14,8 +14,10 @@ export default (state = initialState, action) => {
         case REQUEST_BUDGETS_VIEW:
             return initialState;
         case RECEIVE_BUDGETS_VIEW: {
+            const setData = [];
+            setData[action.view] = action.viewData;
             return Object.assign({}, state, {
-                viewData: action.viewData,
+                viewData: setData,
                 viewDataFetched: true,
             });
         }
