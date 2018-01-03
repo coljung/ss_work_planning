@@ -104,9 +104,17 @@ class ViewCommonContainer extends Component {
         );
     }
 
+    spinLoad = () => {
+        const mySpin = <Spin size="large" />;
+        return (
+            <div className="spinDiv">
+                {mySpin}
+            </div>
+        );
+    }
+
     render() {
-        const budgetListData = this.props.viewData[this.props.view] ? this.buildTable() : <Spin size="large" />;
-        // console.log(budgetListData);
+        const budgetListData = this.props.viewData[this.props.view] ? this.buildTable() : this.spinLoad();
         return (
             <div>
                 <Button

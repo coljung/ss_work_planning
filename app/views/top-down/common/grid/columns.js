@@ -84,16 +84,10 @@ const columns = (month, season) => {
         const currentRowYear = instance.getDataAtCell(row, 1);
         const currentRowIntYear = parseInt(currentRowYear.substr(-2), 10);
 
-        if (currentRowIntYear < currentYear) {
-            instance.setCellMeta(row, col, 'readOnly', true);
-            // td.style.background = '#bada55';
-            // console.log(currentRowIntYear < currentYear);
-
-            // console.log(row, col, value, cellProperties);
-            // console.log(currentRowIntYear, currentYear);
-        } else {
-          // console.log(currentRowIntYear < currentYear);
-          // td.style.background = '#bada55';
+        if (prop !== 'previous' && prop !== 'future') {
+            if (currentRowIntYear < currentYear) {
+                instance.setCellMeta(row, col, 'readOnly', true);
+            }
         }
 
         Handsontable.renderers.NumericRenderer.apply(this, arguments);
@@ -167,6 +161,7 @@ const columns = (month, season) => {
             renderer: cellValueRender,
             type: 'numeric',
             format: '$0,000',
+            readOnly: true,
             colWidths: 100,
         },
     ];
@@ -484,15 +479,8 @@ const columns = (month, season) => {
     const SSData = commonColums.concat(SS);
     const FWData = commonColums.concat(FW);
 
-    const test = [SSData, FWData];
-    return test;
+    const columnData = [SSData, FWData];
+    return columnData;
 };
 
-
-//
-// const SSData = commonColums.concat(SS);
-// const FWData = commonColums.concat(FW);
-//
-// const columns = [SSData, FWData];
-//
 export default columns;
