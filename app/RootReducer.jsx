@@ -1,6 +1,5 @@
 import { combineReducers } from 'redux';
 import ExecViewReducer from 'top_down/exec/ExecViewReducer';
-import TotalViewReducer from 'top_down/total/TotalViewReducer';
 import ViewReducers from 'top_down/common/viewReducers';
 import BudgetReducer from './budgets/BudgetReducer';
 import BudgetViewReducer from './views/BudgetViewReducer';
@@ -10,7 +9,6 @@ export default combineReducers({
     BudgetReducer,
     BudgetViewReducer,
     ExecViewReducer,
-    TotalViewReducer,
     ViewReducers,
     Message,
 });
