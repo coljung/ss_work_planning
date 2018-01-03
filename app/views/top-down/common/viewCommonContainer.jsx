@@ -105,7 +105,7 @@ class ViewCommonContainer extends Component {
     }
 
     spinLoad = () => {
-        const mySpin = <Spin size="large" />;
+        const mySpin = <Spin size="large" tip="Loading..." />;
         return (
             <div className="spinDiv">
                 {mySpin}

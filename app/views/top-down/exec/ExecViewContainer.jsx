@@ -6,7 +6,6 @@ import HotTable from 'react-handsontable';
 import Handsontable from 'handsontable';
 import { Spin } from 'antd';
 import { fetchBudgetExecData, resetState } from './ExecViewActions';
-import datagrid from './test_exec';
 import { headers, columns } from './grid-build/index';
 import { mergeMetrics, mergeHeadersExecRecap } from '../../../Helpers';
 
@@ -39,20 +38,14 @@ class ExecViewContainer extends Component {
     }
 
     mergeCells = () => {
-        // debugger;
         const { start_row, row_span, total, total_cols, has_gaps } = this.state.grid.info;
         const newMerge = mergeMetrics(start_row, row_span, total, total_cols, has_gaps);
 
         return newMerge;
     }
 
-    test = (changes) => {
-        // console.log(changes);
-    }
-
     buildTable = () => {
         const newMerge = this.mergeCells();
-        console.log(this.props.budget, this.props.version);
         return (
             <div className="parentDiv">
                 <HotTable
@@ -68,13 +61,13 @@ class ExecViewContainer extends Component {
                     columns={columns}
                     contextMenu={false}
                     mergeCells={newMerge}
+                    readOnly={true}
                     persistentState={true}
                     currentRowClassName= {'currentRow'}
                     currentColClassName= {'currentCol'}
                     function={true}
                     observeChanges={true}
                     stretchH='all'
-                    afterChange={this.test}
                     licenseKey= 'a389a-f2591-70b41-a480d-1911a' />
             </div>);
     }
