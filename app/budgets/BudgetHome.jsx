@@ -26,9 +26,7 @@ export default class BudgetHome extends Component {
         });
     }
 
-
     render() {
-        // const btn = <Button type="primary" onClick={this.toggleCreateModal}>Create New Budget</Button>;
         return (
             <Row>
                 <Col xs={8}>
