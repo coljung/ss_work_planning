@@ -45,9 +45,11 @@ const columns = (month, season) => {
         const currentRowIntYear = parseInt(currentRowYear.substr(-2), 10);
         const currentColMonth = instance.getDataAtCell(1, col);
 
-        if (currentRowIntYear > currentYear || (currentRowIntYear === currentYear && col >= month)) {
-            instance.setCellMeta(row, col, 'readOnly', false);
-            // console.log(instance.getDataAtCell(0, col));
+        if (prop !== 'previous' && prop !== 'future') {
+            if (currentRowIntYear > currentYear || (currentRowIntYear === currentYear && col >= month)) {
+                instance.setCellMeta(row, col, 'readOnly', false);
+                // console.log(instance.getDataAtCell(0, col));
+            }
         }
 
         Handsontable.renderers.NumericRenderer.apply(this, arguments);
@@ -84,10 +86,8 @@ const columns = (month, season) => {
         const currentRowYear = instance.getDataAtCell(row, 1);
         const currentRowIntYear = parseInt(currentRowYear.substr(-2), 10);
 
-        if (prop !== 'previous' && prop !== 'future') {
-            if (currentRowIntYear < currentYear) {
-                instance.setCellMeta(row, col, 'readOnly', true);
-            }
+        if (currentRowIntYear < currentYear) {
+            instance.setCellMeta(row, col, 'readOnly', true);
         }
 
         Handsontable.renderers.NumericRenderer.apply(this, arguments);
