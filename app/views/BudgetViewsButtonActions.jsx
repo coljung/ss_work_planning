@@ -15,11 +15,11 @@ export default class BudgetViewsButtonActions extends Component {
                     <Button icon="switcher">Save New Version</Button>
                 </Popconfirm>&nbsp;
 
-                <Button type="primary" icon="arrow-left">
-                    <Link to={ROUTE_DASHBOARD} >
+                <Link to={ROUTE_DASHBOARD} >
+                    <Button type="primary" icon="arrow-left">
                         Back
-                    </Link>
-                </Button>
+                    </Button>
+                </Link>
             </div>
         );
     }
