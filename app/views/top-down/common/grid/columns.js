@@ -1,13 +1,30 @@
 import moment from 'moment';
 import Handsontable from 'handsontable';
 
-const currentYear = parseInt(moment().format('YY'), 10);
+const currentYear = moment().format('YY');
 const currentMonth = moment().format('MMM').toLowerCase();
 
 const splitValue = (value, index) => `${value.substring(0, index)},${value.substring(index)}`;
 
 let currentRow = '';
 let afterThisColumn = '';
+
+const monthsRef = {
+    jan: '01',
+    feb: '02',
+    mar: '03',
+    apr: '04',
+    may: '05',
+    jun: '06',
+    jul: '07',
+    aug: '08',
+    sep: '09',
+    oct: '10',
+    nov: '11',
+    dec: '12',
+};
+
+const getCurrentCellCode = (month, year) => year + monthsRef[month];
 
 const columns = (month, season, rowSpan) => {
 
@@ -57,6 +74,10 @@ const columns = (month, season, rowSpan) => {
         const currentRowSeasonYear = instance.getDataAtCell(row, 1);
         const currentRowYear = parseInt(currentRowSeasonYear.substr(-2), 10);
 
+        const cellCode = getCurrentCellCode(newPropMonth, currentRowYear);
+        const viewCode = currentYear + monthsRef[currentMonth];
+
+        console.log(viewCode);
         let defineProp = currentMonth;
         if (currentRowYear > currentYear) {
             defineProp += '0';
@@ -67,7 +88,6 @@ const columns = (month, season, rowSpan) => {
         } else {
             return td;
         }
-        console.log(prop, defineProp);
         if (prop === defineProp) {
             currentRow = row;
             afterThisColumn = col;
