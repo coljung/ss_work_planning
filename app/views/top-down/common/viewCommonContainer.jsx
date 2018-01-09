@@ -5,9 +5,9 @@ import { connect } from 'react-redux';
 import HotTable from 'react-handsontable';
 import Handsontable from 'handsontable';
 import { Button, Spin } from 'antd';
-import { mergeMetrics, mergeHeadersExecRecap } from 'helpers';
+// import { mergeMetrics } from 'helpers';
 import { saveBudget, fetchBudgetData, resetState } from '../common/viewActions';
-import { headers, columns } from '../common/grid/index';
+import { headers, columns, mergeMetrics } from '../common/grid/index';
 
 class ViewCommonContainer extends Component {
 
@@ -78,8 +78,8 @@ class ViewCommonContainer extends Component {
 
     buildTable = () => {
         const newMerge = this.mergeCells();
-        const { currentMonthColumn, season } = this.state.grid.info;
-        const cols = columns(currentMonthColumn, season);
+        const { currentMonthColumn, season, row_span } = this.state.grid.info;
+        const cols = columns(currentMonthColumn, season, row_span);
         const seasonColumns = season === 'SS' ? cols[0] : cols[1];
         const seasonHeaders = season === 'SS' ? headers[0] : headers[1];
         return (

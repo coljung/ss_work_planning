@@ -24,7 +24,6 @@ class BudgetList extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        console.log(this.props.budgets, nextProps.budgets);
         if (this.props.budgets.length !== nextProps.budgets.length) {
             this.setState({
                 budgets: nextProps.budgets,

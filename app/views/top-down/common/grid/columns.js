@@ -1,37 +1,41 @@
+import moment from 'moment';
 import Handsontable from 'handsontable';
 
-const columns = (month, season) => {
+const currentYear = parseInt(moment().format('YY'), 10);
+const currentMonth = moment().format('MMM').toLowerCase();
+
+const splitValue = (value, index) => `${value.substring(0, index)},${value.substring(index)}`;
+
+let currentRow = '';
+let afterThisColumn = '';
+
+const columns = (month, season, rowSpan) => {
 
     const leftBorderCols = [
         'stdpremarkdown',
         'previous',
     ];
-    // console.log(month);
-
-    const currentYear = parseInt(new Date().getFullYear().toString().substr(-2), 10);
 
     function cellValueRender(instance, td, row, col, prop, value, cellProperties) {
         // console.log(instance);
         cellProperties = {};
+        Handsontable.renderers.NumericRenderer.apply(this, arguments);
         // const currentRowYear = instance.getDataAtCell(row, 1);
         // const currentRowIntYear = parseInt(currentRowYear.substr(-2), 10);
 
         if ((row === 0 && col > 0) || (row === 5 && col > 1) || (row === 10 && col > 1)) {
-            td.style.background = '#eee';
+            // td.style.background = '#eee';
         }
-
-        // if (cellProperties.editor = true) {
-        //   td.style.background = '#bada55';
-        // }
 
         if (leftBorderCols.indexOf(prop) !== -1) {
             td.className += ' leftCellBorder';
         }
 
-        const rowSpan = 5;
         if ((row + 1) % rowSpan === 0) {
             td.className += ' bottomCellBorder';
         }
+
+        // manage error and display N/A instead
         if (isNaN(value)) {
             cellProperties.type = 'text';
             td.innerHTML = 'N/A';
@@ -39,38 +43,60 @@ const columns = (month, season) => {
             return td;
         }
 
-        cellProperties.type = 'numeric';
-        cellProperties.format = '$0,000';
-        const currentRowYear = instance.getDataAtCell(row, 1);
-        const currentRowIntYear = parseInt(currentRowYear.substr(-2), 10);
-        const currentColMonth = instance.getDataAtCell(1, col);
-
-        if (prop !== 'previous' && prop !== 'future') {
-            if (currentRowIntYear > currentYear || (currentRowIntYear === currentYear && col >= month)) {
-                instance.setCellMeta(row, col, 'readOnly', false);
-                // console.log(instance.getDataAtCell(0, col));
-            }
+        // no more customizations for these fields
+        if (prop === 'previous' || prop === 'future') {
+            return td;
         }
 
-        Handsontable.renderers.NumericRenderer.apply(this, arguments);
-        return cellProperties;
-    }
+        // const columnMonth = prop.substr(-2);
+        const newPropMonth = prop.substring(0, 3);
+        const newPropYearCode = prop.substring(3);
 
-    function cellValueRenderIncr(instance, td, row, col, prop, value, cellProperties) {
-        cellProperties = {};
-        if ((row === 0 && col > 0) || (row === 5 && col > 1) || (row === 10 && col > 1)) {
-            td.style.background = '#eee';
+        // console.log(newPropMonth, newPropYearCode, currentMonth);
+
+        const currentRowSeasonYear = instance.getDataAtCell(row, 1);
+        const currentRowYear = parseInt(currentRowSeasonYear.substr(-2), 10);
+
+        let defineProp = currentMonth;
+        if (currentRowYear > currentYear) {
+            defineProp += '0';
+        } else if (currentRowYear === currentYear) {
+            defineProp += '1';
+        } else if (currentRowYear - 1 === currentYear) {
+            defineProp += '2';
+        } else {
+            return td;
+        }
+        console.log(prop, defineProp);
+        if (prop === defineProp) {
+            currentRow = row;
+            afterThisColumn = col;
         }
 
-        // if (cellProperties.editor = false) {
-        //   td.style.background = '#bada55';
+        if (currentRow === row && col >= afterThisColumn) {
+            instance.setCellMeta(row, col, 'readOnly', false);
+        }
+
+        //
+        // if (
+        //     ((currentRowYear === currentYear - 1) && newPropYearCode === 2) ||
+        //     ((currentRowYear === currentYear) && newPropYearCode >= 1) ||
+        //     ((currentRowYear === currentYear) && newPropYearCode >= 1)
+        // ) {
+        //     instance.setCellMeta(row, col, 'readOnly', false);
         // }
 
-        if (leftBorderCols.indexOf(prop) !== -1) {
-            // td.className += ' leftCellBorder';
-        }
+        return td;
+    }
 
-        const rowSpan = 5;
+    function cellValueRenderSums(instance, td, row, col, prop, value, cellProperties) {
+        cellProperties = {};
+        Handsontable.renderers.NumericRenderer.apply(this, arguments);
+
+        // if ((row === 0 && col > 0) || (row === 5 && col > 1) || (row === 10 && col > 1)) {
+        //     td.style.background = '#eee';
+        // }
+
         if ((row + 1) % rowSpan === 0) {
             td.className += ' bottomCellBorder';
         }
@@ -80,20 +106,6 @@ const columns = (month, season) => {
             td.className += ' cellNA';
             return td;
         }
-
-        cellProperties.type = 'numeric';
-        cellProperties.format = '$0,000';
-        const currentRowYear = instance.getDataAtCell(row, 1);
-        const currentRowIntYear = parseInt(currentRowYear.substr(-2), 10);
-
-        if (currentRowIntYear < currentYear) {
-            instance.setCellMeta(row, col, 'readOnly', true);
-        }
-
-        Handsontable.renderers.NumericRenderer.apply(this, arguments);
-        cellProperties.type = 'numeric';
-        cellProperties.format = '0%';
-
         return td;
     }
 
@@ -110,7 +122,7 @@ const columns = (month, season) => {
         },
         {
             data: 'stdpremarkdown',
-            renderer: cellValueRender,
+            renderer: cellValueRenderSums,
             type: 'numeric',
             format: '$0,000',
             readOnly: true,
@@ -118,7 +130,7 @@ const columns = (month, season) => {
         },
         {
             data: 'incr_stdpremarkdown',
-            renderer: cellValueRenderIncr,
+            renderer: cellValueRenderSums,
             type: 'numeric',
             format: '0%',
             readOnly: true,
@@ -126,7 +138,7 @@ const columns = (month, season) => {
         },
         {
             data: 'stdpostmarkdown',
-            renderer: cellValueRender,
+            renderer: cellValueRenderSums,
             type: 'numeric',
             format: '$0,000',
             readOnly: true,
@@ -134,7 +146,7 @@ const columns = (month, season) => {
         },
         {
             data: 'incr_stdpostmarkdown',
-            renderer: cellValueRenderIncr,
+            renderer: cellValueRenderSums,
             type: 'numeric',
             format: '0%',
             readOnly: true,
@@ -142,7 +154,7 @@ const columns = (month, season) => {
         },
         {
             data: 'full',
-            renderer: cellValueRender,
+            renderer: cellValueRenderSums,
             type: 'numeric',
             format: '$0,000',
             readOnly: true,
@@ -150,7 +162,7 @@ const columns = (month, season) => {
         },
         {
             data: 'full_incr',
-            renderer: cellValueRenderIncr,
+            renderer: cellValueRenderSums,
             type: 'numeric',
             format: '0%',
             readOnly: true,
