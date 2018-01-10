@@ -7,6 +7,7 @@ const currentMonth = moment().format('MMM').toLowerCase();
 const splitValue = (value, index) => `${value.substring(0, index)},${value.substring(index)}`;
 
 let currentRow = '';
+let hasMonthsLeft = false;
 let afterThisColumn = '';
 
 const monthsRef = {
@@ -26,7 +27,7 @@ const monthsRef = {
 
 const getCurrentCellCode = (month, year) => year + monthsRef[month];
 
-const columns = (month, season, rowSpan) => {
+const columns = (season, rowSpan) => {
 
     const leftBorderCols = [
         'stdpremarkdown',
@@ -58,8 +59,19 @@ const columns = (month, season, rowSpan) => {
             return td;
         }
 
+        if (currentRow !== row) {
+            currentRow = row;
+        }
+
         // no more customizations for these fields
-        if (prop === 'previous' || prop === 'future') {
+        if (prop === 'previous') {
+            return td;
+        }
+
+        if (prop === 'future') {
+            if (!instance.getCellMeta(row, col - 1).readOnly) {
+                instance.setCellMeta(row, col, 'readOnly', false);
+            }
             return td;
         }
 
@@ -83,34 +95,12 @@ const columns = (month, season, rowSpan) => {
         if (cellCode >= viewCode) {
             instance.setCellMeta(row, col, 'readOnly', false);
         }
-        // console.log(cellCode);
-        // let defineProp = currentMonth;
-        // if (currentRowYear > currentYear) {
-        //     defineProp += '0';
-        // } else if (currentRowYear === currentYear) {
-        //     defineProp += '1';
-        // } else if (currentRowYear - 1 === currentYear) {
-        //     defineProp += '2';
-        // } else {
-        //     return td;
-        // }
-        // if (prop === defineProp) {
-        //     currentRow = row;
-        //     afterThisColumn = col;
-        // }
-        //
-        // if (currentRow === row && col >= afterThisColumn) {
-        //     instance.setCellMeta(row, col, 'readOnly', false);
-        // }
 
-        //
-        // if (
-        //     ((currentRowYear === currentYear - 1) && newPropYearCode === 2) ||
-        //     ((currentRowYear === currentYear) && newPropYearCode >= 1) ||
-        //     ((currentRowYear === currentYear) && newPropYearCode >= 1)
-        // ) {
-        //     instance.setCellMeta(row, col, 'readOnly', false);
-        // }
+        if ((season === 'FW' && prop === 'feb1') || (season === 'SS' && prop === 'aug0')) {
+            if (!instance.getCellMeta(row, col).readOnly) {
+                instance.setCellMeta(row, col - 1, 'readOnly', false);
+            }
+        }
 
         return td;
     }
