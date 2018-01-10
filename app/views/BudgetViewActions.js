@@ -41,7 +41,7 @@ export function saveNewBudgetVersion(seasonID, id) {
         dispatch(requestBudgetSaveNewVersion());
         return request
             // .get(`${getApiUrl()}planning/seasons/show/available`)
-            .post(`http://localhost:3001/planning/seasons/${seasonID}/versions/${id}/duplicate`)
+            .post(`${getApiUrl()}planning/seasons/${seasonID}/versions/${id}/duplicate`)
             .then(
                 res => {
                     dispatch(messages({ content: 'New Version Saved successfully!', response: '', isError: false }));
@@ -57,7 +57,7 @@ export function saveBudget(budget, id, view, data) {
         dispatch(requestBudgetSave());
         return request
             // .get(`${getApiUrl()}planning/seasons/show/available`)
-            .post(`http://localhost:3001/planning/budgets/${budget}/versions/${id}/${view}`)
+            .post(`${getApiUrl()}planning/budgets/${budget}/versions/${id}/${view}`)
             .send(data)
             .then(
                 res => {
@@ -70,4 +70,4 @@ export function saveBudget(budget, id, view, data) {
 }
 
 
-// http://localhost:3001/planning/budgets/143/versions/1/man
+// ${getApiUrl()}planning/budgets/143/versions/1/man

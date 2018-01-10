@@ -63,7 +63,8 @@ export function fetchBudgets() {
     return (dispatch) => {
         dispatch(requestBudgets());
         return request
-            .get('http://localhost:3001/planning/budgets')
+            // .get('http://localhost:3001/planning/budgets')
+            .get(`${getApiUrl()}planning/budgets`)
             .query({ page_size: 1000 })
             .then(
                 res => dispatch(receiveBudgets(res.body)),
@@ -76,8 +77,8 @@ export function fetchSeasons() {
     return (dispatch) => {
         dispatch(requestSeasons());
         return request
-            // .get(`${getApiUrl()}planning/budgets/show/available`)
-            .get('http://localhost:3001/planning/budgets/show/available')
+            .get(`${getApiUrl()}planning/budgets/show/available`)
+            // .get('http://localhost:3001/planning/budgets/show/available')
             .then(
                 res => dispatch(receiveSeasons(res.body)),
                 err => dispatch(messages({ content: err, response: err.response, isError: true })),
@@ -88,8 +89,7 @@ export function fetchSeasons() {
 export function createBudget(budget) {
     return (dispatch) => {
         dispatch(requestBudgetCreate(budget));
-        const req = request.post('http://localhost:3001/planning/budgets');
-        console.log(budget);
+        const req = request.post(`${getApiUrl()}planning/budgets`);
         return req.send(budget)
             .then(
                 (res) => {
