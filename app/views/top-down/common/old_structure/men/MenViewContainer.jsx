@@ -6,8 +6,8 @@ import HotTable from 'react-handsontable';
 import Handsontable from 'handsontable';
 import { Button, Spin } from 'antd';
 import { mergeMetrics, mergeHeadersExecRecap } from 'helpers';
-import { saveBudget, fetchBudgetMenData, resetState } from './MenViewActions';
-import { cellClasses, headers, columns } from '../common/men-women/index';
+import { saveBudget, fetchBudgetData, resetState } from '../common/viewActions';
+import { headers, columns } from '../common/grid/index';
 
 class MenViewContainer extends Component {
 
@@ -22,17 +22,18 @@ class MenViewContainer extends Component {
     }
 
     componentDidMount() {
-        this.props.fetchBudgetMenData(this.props.budget, this.props.version);
+        this.props.fetchBudgetData(this.props.budget, this.props.version, 'men');
     }
 
     componentWillUnmount() {
         this.props.resetState();
+        console.log('gone men');
     }
 
     componentWillReceiveProps = (nextProps) => {
-        if (this.props.viewMenData.length !== nextProps.viewMenData) {
+        if (this.props.viewData.length !== nextProps.viewData) {
             this.setState({
-                grid: nextProps.viewMenData,
+                grid: nextProps.viewData,
             });
         }
     }
@@ -46,28 +47,28 @@ class MenViewContainer extends Component {
 
     changeCell = (cellEdits) => {
         // on load this is called, hence the check
-        if (cellEdits) {
-            const row = cellEdits[0][0];
-            const col = cellEdits[0][1];
-            const prevValue = cellEdits[0][2];
-            const newValue = cellEdits[0][3];
-            if (prevValue !== newValue) {
-                const newData = {
-                    row,
-                    col,
-                    value: newValue,
-                };
-                // check if cell has been modified already
-                const checkDuplicate = this.dataToSave.filter(e => e.row !== row || e.col !== col);
-                checkDuplicate.push(newData);
-                this.dataToSave = checkDuplicate;
-            }
-            if (this.state.disabledBtn) {
-                this.setState({
-                    disabledBtn: false,
-                });
-            }
-        }
+        // if (cellEdits) {
+        //     const row = cellEdits[0][0];
+        //     const col = cellEdits[0][1];
+        //     const prevValue = cellEdits[0][2];
+        //     const newValue = cellEdits[0][3];
+        //     if (prevValue !== newValue) {
+        //         const newData = {
+        //             row,
+        //             col,
+        //             value: newValue,
+        //         };
+        //         // check if cell has been modified already
+        //         const checkDuplicate = this.dataToSave.filter(e => e.row !== row || e.col !== col);
+        //         checkDuplicate.push(newData);
+        //         this.dataToSave = checkDuplicate;
+        //     }
+        //     if (this.state.disabledBtn) {
+        //         this.setState({
+        //             disabledBtn: false,
+        //         });
+        //     }
+        // }
     }
 
     save = () => {
@@ -78,14 +79,14 @@ class MenViewContainer extends Component {
 
     buildTable = () => {
         const newMerge = this.mergeCells();
-        const { season } = this.state.grid.info;
-        const seasonColumns = season === 'SS' ? columns[0] : columns[1];
+        const { currentMonthColumn, season } = this.state.grid.info;
+        const cols = columns(currentMonthColumn, season);
+        const seasonColumns = season === 'SS' ? cols[0] : cols[1];
         const seasonHeaders = season === 'SS' ? headers[0] : headers[1];
         return (<div className="parentDiv">
             <HotTable
                 root='hot'
                 data={this.state.grid.data}
-                cells={cellClasses}
                 nestedHeaders= {seasonHeaders}
                 colHeaders= {true}
                 columns={seasonColumns}
@@ -103,14 +104,11 @@ class MenViewContainer extends Component {
     }
 
     render() {
-        const budgetListData = this.props.viewMenDataFetched ? this.buildTable() : <Spin size="large" />;
+        // console.log(this.props.viewData);
+        console.log(this.props.viewDataFetched.length);
+        const budgetListData = this.props.viewDataFetched ? this.buildTable() : <Spin size="large" />;
         return (
             <div>
-                <Button
-                    icon="save"
-                    className="saveBtn"
-                    disabled={this.state.disabledBtn}
-                    onClick={() => this.save()}>Save Men's view</Button>
                 {budgetListData}
             </div>
         );
@@ -119,29 +117,29 @@ class MenViewContainer extends Component {
 
 
 MenViewContainer.propTypes = {
-    viewMenData: PropTypes.oneOfType([
+    viewData: PropTypes.oneOfType([
         PropTypes.array,
         PropTypes.object,
     ]).isRequired,
-    viewMenDataFetched: PropTypes.bool.isRequired,
+    viewDataFetched: PropTypes.bool.isRequired,
     saveBudget: PropTypes.func.isRequired,
-    fetchBudgetMenData: PropTypes.func.isRequired,
+    fetchBudgetData: PropTypes.func.isRequired,
     resetState: PropTypes.func.isRequired,
-    updateData: PropTypes.func.isRequired,
+    // updateData: PropTypes.func.isRequired,
     budget: PropTypes.string.isRequired,
     version: PropTypes.string.isRequired,
 };
 
 function mapStateToProps(state) {
-    const { MenViewReducer } = state;
+    const { ViewReducers } = state;
     return {
-        viewMenData: MenViewReducer.viewMenData,
-        viewMenDataFetched: MenViewReducer.viewMenDataFetched,
+        viewData: ViewReducers.viewData,
+        viewDataFetched: ViewReducers.viewDataFetched,
     };
 }
 
 function mapDispatchToProps(dispatch) {
-    return bindActionCreators({ fetchBudgetMenData, resetState, saveBudget }, dispatch);
+    return bindActionCreators({ fetchBudgetData, resetState }, dispatch);
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(MenViewContainer);

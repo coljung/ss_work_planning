@@ -37,9 +37,22 @@ class BudgetList extends Component {
         });
     }
 
+    orderBudgets = (a, b) => {
+        if (a.year > b.year) {
+            return -1;
+        }
+        if (a.year < b.year) {
+            return 1;
+        }
+        return 0;
+    }
+
     createList = () => {
         const stBudgets = this.state.budgets;
         const hasVersions = stBudgets.filter(e => e.versions.length);
+
+        // sort by most recent
+        hasVersions.sort(this.orderBudgets);
 
         // take latest 4 budgets
         const recentBudgets = hasVersions.slice(0, 4).map((e) => {

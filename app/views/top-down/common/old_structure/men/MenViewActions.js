@@ -5,21 +5,22 @@ import { messages } from 'notifications/NotificationActions';
 
 const request = wrap(agent, Promise);
 
-export const REQUEST_BUDGETS_SAVE_NEW_VERSION = 'REQUEST_BUDGETS_SAVE_NEW_VERSION';
-export const RECEIVE_BUDGETS_SAVE_NEW_VERSION = 'RECEIVE_BUDGETS_SAVE_NEW_VERSION';
+export const REQUEST_BUDGETS_MEN_VIEW = 'REQUEST_BUDGETS_MEN_VIEW';
+export const RECEIVE_BUDGETS_MEN_VIEW = 'RECEIVE_BUDGETS_MEN_VIEW';
+export const RESET_BUDGETS_MEN_VIEW = 'RESET_BUDGETS_MEN_VIEW';
 export const REQUEST_BUDGETS_SAVE_BUDGET = 'REQUEST_BUDGETS_SAVE_BUDGET';
 export const RECEIVE_BUDGETS_SAVE_BUDGET = 'RECEIVE_BUDGETS_SAVE_BUDGET';
 
-function requestBudgetSaveNewVersion() {
+export function requestBudgetMenViewData() {
     return {
-        type: REQUEST_BUDGETS_SAVE_NEW_VERSION,
+        type: REQUEST_BUDGETS_MEN_VIEW,
     };
 }
 
-function receiveBudgetSaveNewVersion(version) {
+function receiveBudgetMenViewData(viewData) {
     return {
-        type: RECEIVE_BUDGETS_SAVE_NEW_VERSION,
-        version,
+        type: RECEIVE_BUDGETS_MEN_VIEW,
+        viewData,
     };
 }
 
@@ -36,18 +37,19 @@ function receiveBudgetSave(version) {
     };
 }
 
-export function saveNewBudgetVersion(seasonID, id) {
+export const resetState = () => ({
+    type: RESET_BUDGETS_MEN_VIEW,
+});
+
+export function fetchBudgetMenData(budget, version) {
     return (dispatch) => {
-        dispatch(requestBudgetSaveNewVersion());
+        dispatch(requestBudgetMenViewData());
         return request
             // .get(`${getApiUrl()}planning/seasons/show/available`)
-            .post(`${getApiUrl()}planning/seasons/${seasonID}/versions/${id}/duplicate`)
+            .get(`http://localhost:3001/planning/budgets/${budget}/versions/${version}/men`)
             .then(
-                res => {
-                    dispatch(messages({ content: 'New Version Saved successfully!', response: '', isError: false }));
-                    dispatch(receiveBudgetSaveNewVersion(res.body));
-                },
-                err => dispatch(messages({ content: err, response: err.response, isError: true })),
+            res => dispatch(receiveBudgetMenViewData(res.body)),
+            err => dispatch(messages({ content: err, response: err.response, isError: true })),
             );
     };
 }
@@ -57,7 +59,7 @@ export function saveBudget(budget, id, view, data) {
         dispatch(requestBudgetSave());
         return request
             // .get(`${getApiUrl()}planning/seasons/show/available`)
-            .post(`${getApiUrl()}planning/budgets/${budget}/versions/${id}/${view}`)
+            .post(`http://localhost:3001/planning/budgets/${budget}/versions/${id}/${view}`)
             .send(data)
             .then(
                 res => {
@@ -68,6 +70,3 @@ export function saveBudget(budget, id, view, data) {
             );
     };
 }
-
-
-// ${getApiUrl()}planning/budgets/143/versions/1/man

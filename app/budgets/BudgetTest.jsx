@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Row, Col, Button, Tabs } from 'antd';
 import HotTable from 'react-handsontable';
-import { data } from './test';
+import { data } from './testData';
 
 const TabPane = Tabs.TabPane;
 

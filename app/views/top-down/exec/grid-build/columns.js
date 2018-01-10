@@ -89,7 +89,7 @@ const columns = [
         renderer: cellValueRender,
         type: 'numeric',
         format: '$0,000',
-        editor: false,
+        readOnly: true,
         colWidths: 100,
     },
     {
@@ -97,7 +97,7 @@ const columns = [
         renderer: cellValueRender,
         type: 'numeric',
         format: '0%',
-        editor: false,
+        readOnly: true,
         colWidths: 100,
     },
     {
@@ -105,7 +105,7 @@ const columns = [
         renderer: cellValueRender,
         type: 'numeric',
         format: '$0,000',
-        editor: false,
+        readOnly: true,
         colWidths: 100,
     },
     {
@@ -113,7 +113,7 @@ const columns = [
         renderer: cellValueRender,
         type: 'numeric',
         format: '0%',
-        editor: false,
+        readOnly: true,
         colWidths: 100,
     },
     {
@@ -121,7 +121,7 @@ const columns = [
         renderer: cellValueRender,
         type: 'numeric',
         format: '$0,000',
-        editor: false,
+        readOnly: true,
         colWidths: 100,
     },
     {
@@ -129,7 +129,7 @@ const columns = [
         renderer: cellValueRender,
         type: 'numeric',
         format: '0%',
-        editor: false,
+        readOnly: true,
         colWidths: 100,
     },
     {
@@ -144,7 +144,7 @@ const columns = [
         renderer: cellValueRender,
         type: 'numeric',
         format: '0%',
-        editor: false,
+        readOnly: true,
         colWidths: 100,
     },
     {
@@ -159,7 +159,7 @@ const columns = [
         renderer: cellValueRender,
         type: 'numeric',
         format: '0%',
-        editor: false,
+        readOnly: true,
         colWidths: 100,
     },
     {
@@ -174,7 +174,7 @@ const columns = [
         renderer: cellValueRender,
         type: 'numeric',
         format: '0%',
-        editor: false,
+        readOnly: true,
         colWidths: 100,
     },
     {
@@ -182,7 +182,7 @@ const columns = [
         renderer: cellValueRender,
         type: 'numeric',
         format: '0%',
-        editor: false,
+        readOnly: true,
         colWidths: 100,
     },
     {
@@ -197,7 +197,7 @@ const columns = [
         renderer: cellValueRender,
         type: 'numeric',
         format: '0%',
-        editor: false,
+        readOnly: true,
         colWidths: 100,
     },
     {
@@ -212,7 +212,7 @@ const columns = [
         renderer: cellValueRender,
         type: 'numeric',
         format: '0%',
-        editor: false,
+        readOnly: true,
         colWidths: 100,
     },
     {
@@ -227,7 +227,7 @@ const columns = [
         renderer: cellValueRender,
         type: 'numeric',
         format: '0%',
-        editor: false,
+        readOnly: true,
         colWidths: 100,
     },
     {
@@ -235,7 +235,7 @@ const columns = [
         renderer: cellValueRender,
         type: 'numeric',
         format: '0%',
-        editor: false,
+        readOnly: true,
         colWidths: 100,
     },
 ];

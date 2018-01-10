@@ -5,9 +5,7 @@ import { connect } from 'react-redux';
 import { Row, Col, Tabs, Menu, Dropdown, Icon } from 'antd';
 import { browserHistory } from 'react-router';
 import ExecViewContainer from 'top_down/exec/ExecViewContainer';
-import TotalViewContainer from 'top_down/total/TotalViewContainer';
-import WomenViewContainer from 'top_down/women/WomenViewContainer';
-import MenViewContainer from 'top_down/men/MenViewContainer';
+import ViewCommonContainer from 'top_down/common/ViewCommonContainer';
 import BudgetViewsButtonActions from './BudgetViewsButtonActions';
 import { saveNewBudgetVersion } from './BudgetViewActions';
 import { ROUTE_BUDGET } from '../Routes';
@@ -88,18 +86,20 @@ class BudgetViewsContainer extends Component {
     onTabChange(newTabKey) {
         // set true to load tabbed component
         const currentKey = this.state.activeTab;
+
         this.setState({
             [currentKey]: false,
             activeTab: newTabKey,
             [newTabKey]: true,
         });
+
         this.dataToSave = [];
     }
 
     render() {
         const currentKey = this.state.activeTab;
         // const currentTab = this.props.params.tab === currentKey ? currentKey;
-        // console.log('---------', currentTab, currentKey);
+        // console.log('---------', this.state.activeTab, this.state);
         const SubMenu = Menu.SubMenu;
         const MenuItemGroup = Menu.ItemGroup;
         const menuBudget = (
@@ -146,7 +146,7 @@ class BudgetViewsContainer extends Component {
                     </Row>
                 </div>
                 <div className="budgetBody">
-                    <Tabs defaultActiveKey={this.state.activeTab} onChange={this.onTabChange.bind(this)}>
+                    <Tabs defaultActiveKey={this.state.activeTab} onChange={this.onTabChange.bind(this)} animated={false}>
                         <TabPane tab="Exec Recap" key={TAB_EXEC_RECAP}>
                             {(currentKey === TAB_EXEC_RECAP || this.state[TAB_EXEC_RECAP]) &&
                                 <ExecViewContainer
@@ -156,27 +156,35 @@ class BudgetViewsContainer extends Component {
                             }
                         </TabPane>
                         <TabPane tab="Total" key={TAB_TOTAL}>
-                            {(currentKey === TAB_TOTAL || this.state[TAB_TOTAL]) &&
-                                <TotalViewContainer
+                            {(currentKey === TAB_TOTAL) &&
+                                <ViewCommonContainer
                                     budget={this.state.budgetSeasonId}
                                     version={this.state.versionId}
+                                    updateData={this.changeCell}
+                                    key={TAB_TOTAL}
+                                    view='total'
                                 />
                             }
                         </TabPane>
                         <TabPane tab="Women" key={TAB_WOMEN}>
-                            {(currentKey === TAB_WOMEN || this.state[TAB_WOMEN]) &&
-                                <WomenViewContainer
+                            {(currentKey === TAB_WOMEN) &&
+                                <ViewCommonContainer
                                     budget={this.state.budgetSeasonId}
                                     version={this.state.versionId}
+                                    updateData={this.changeCell}
+                                    key={TAB_WOMEN}
+                                    view='women'
                                 />
                             }
                         </TabPane>
                         <TabPane tab="Men" key={TAB_MEN}>
-                            {(currentKey === TAB_MEN || this.state[TAB_MEN]) &&
-                                <MenViewContainer
+                            {(currentKey === TAB_MEN) &&
+                                <ViewCommonContainer
                                     budget={this.state.budgetSeasonId}
                                     version={this.state.versionId}
                                     updateData={this.changeCell}
+                                    key={TAB_MEN}
+                                    view='men'
                                 />
                             }
                         </TabPane>

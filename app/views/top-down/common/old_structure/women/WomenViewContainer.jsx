@@ -6,8 +6,8 @@ import HotTable from 'react-handsontable';
 import Handsontable from 'handsontable';
 import { Spin } from 'antd';
 import { mergeMetrics, mergeHeadersExecRecap } from 'helpers';
-import { fetchBudgetWomenData, resetState } from './WomenViewActions';
-import { cellClasses, headers, columns } from '../common/men-women/index';
+import { saveBudget, fetchBudgetData, resetState } from '../common/viewActions';
+import { headers, columns } from '../common/grid/index';
 
 class WomenViewContainer extends Component {
 
@@ -19,17 +19,19 @@ class WomenViewContainer extends Component {
     }
 
     componentDidMount() {
-        this.props.fetchBudgetWomenData(this.props.budget, this.props.version);
+        this.props.fetchBudgetData(this.props.budget, this.props.version, 'women');
     }
 
     componentWillUnmount() {
         this.props.resetState();
+        console.log('gone women');
     }
 
     componentWillReceiveProps = (nextProps) => {
-        if (this.props.viewWomenData.length !== nextProps.viewWomenData) {
+        // debugger;
+        if (this.props.viewData.length !== nextProps.viewData) {
             this.setState({
-                grid: nextProps.viewWomenData,
+                grid: nextProps.viewData,
             });
         }
     }
@@ -43,14 +45,14 @@ class WomenViewContainer extends Component {
 
     buildTable = () => {
         const newMerge = this.mergeCells();
-        const { season } = this.state.grid.info;
-        const seasonColumns = season === 'SS' ? columns[0] : columns[1];
+        const { currentMonthColumn, season } = this.state.grid.info;
+        const cols = columns(currentMonthColumn, season);
+        const seasonColumns = season === 'SS' ? cols[0] : cols[1];
         const seasonHeaders = season === 'SS' ? headers[0] : headers[1];
         return (<div className="parentDiv">
             <HotTable
                 root='hot'
                 data={this.state.grid.data}
-                cells={cellClasses}
                 nestedHeaders={seasonHeaders}
                 colHeaders={true}
                 columns={seasonColumns}
@@ -67,7 +69,9 @@ class WomenViewContainer extends Component {
     }
 
     render() {
-        const budgetListData = this.props.viewWomenDataFetched ? this.buildTable() : <Spin size="large" />;
+        console.log(this.props.viewData);
+        console.log(this.props.viewDataFetched);
+        const budgetListData = this.props.viewDataFetched ? this.buildTable() : <Spin size="large" />;
         return (
             <div>
                 <h2>WOMEN</h2>
@@ -79,27 +83,27 @@ class WomenViewContainer extends Component {
 
 
 WomenViewContainer.propTypes = {
-    viewWomenData: PropTypes.oneOfType([
+    viewData: PropTypes.oneOfType([
         PropTypes.array,
         PropTypes.object,
     ]).isRequired,
-    viewWomenDataFetched: PropTypes.bool.isRequired,
-    fetchBudgetWomenData: PropTypes.func.isRequired,
+    viewDataFetched: PropTypes.bool.isRequired,
+    fetchBudgetData: PropTypes.func.isRequired,
     resetState: PropTypes.func.isRequired,
     budget: PropTypes.string.isRequired,
     version: PropTypes.string.isRequired,
 };
 
 function mapStateToProps(state) {
-    const { WomenViewReducer } = state;
+    const { ViewReducers } = state;
     return {
-        viewWomenData: WomenViewReducer.viewWomenData,
-        viewWomenDataFetched: WomenViewReducer.viewWomenDataFetched,
+        viewData: ViewReducers.viewData,
+        viewDataFetched: ViewReducers.viewDataFetched,
     };
 }
 
 function mapDispatchToProps(dispatch) {
-    return bindActionCreators({ fetchBudgetWomenData, resetState }, dispatch);
+    return bindActionCreators({ fetchBudgetData, resetState }, dispatch);
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(WomenViewContainer);
