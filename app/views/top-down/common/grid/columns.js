@@ -37,8 +37,6 @@ const columns = (month, season, rowSpan) => {
         // console.log(instance);
         cellProperties = {};
         Handsontable.renderers.NumericRenderer.apply(this, arguments);
-        // const currentRowYear = instance.getDataAtCell(row, 1);
-        // const currentRowIntYear = parseInt(currentRowYear.substr(-2), 10);
 
         if ((row === 0 && col > 0) || (row === 5 && col > 1) || (row === 10 && col > 1)) {
             // td.style.background = '#eee';
@@ -72,30 +70,38 @@ const columns = (month, season, rowSpan) => {
         // console.log(newPropMonth, newPropYearCode, currentMonth);
 
         const currentRowSeasonYear = instance.getDataAtCell(row, 1);
-        const currentRowYear = parseInt(currentRowSeasonYear.substr(-2), 10);
+        let currentRowYear = parseInt(currentRowSeasonYear.substr(-2), 10);
 
+        if (newPropYearCode > 1) {
+            currentRowYear += 1;
+        } else if (newPropYearCode < 1) {
+            currentRowYear -= 1;
+        }
         const cellCode = getCurrentCellCode(newPropMonth, currentRowYear);
         const viewCode = currentYear + monthsRef[currentMonth];
 
-        console.log(viewCode);
-        let defineProp = currentMonth;
-        if (currentRowYear > currentYear) {
-            defineProp += '0';
-        } else if (currentRowYear === currentYear) {
-            defineProp += '1';
-        } else if (currentRowYear - 1 === currentYear) {
-            defineProp += '2';
-        } else {
-            return td;
-        }
-        if (prop === defineProp) {
-            currentRow = row;
-            afterThisColumn = col;
-        }
-
-        if (currentRow === row && col >= afterThisColumn) {
+        if (cellCode >= viewCode) {
             instance.setCellMeta(row, col, 'readOnly', false);
         }
+        // console.log(cellCode);
+        // let defineProp = currentMonth;
+        // if (currentRowYear > currentYear) {
+        //     defineProp += '0';
+        // } else if (currentRowYear === currentYear) {
+        //     defineProp += '1';
+        // } else if (currentRowYear - 1 === currentYear) {
+        //     defineProp += '2';
+        // } else {
+        //     return td;
+        // }
+        // if (prop === defineProp) {
+        //     currentRow = row;
+        //     afterThisColumn = col;
+        // }
+        //
+        // if (currentRow === row && col >= afterThisColumn) {
+        //     instance.setCellMeta(row, col, 'readOnly', false);
+        // }
 
         //
         // if (
