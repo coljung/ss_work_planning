@@ -92,6 +92,7 @@ class ViewCommonContainer extends Component {
                     viewportRowRenderingOffset={100}
                     colHeaders={true}
                     columns={seasonColumns}
+                    fixedColumnsLeft={2}
                     formulas={true}
                     contextMenu={false}
                     mergeCells={newMerge}
