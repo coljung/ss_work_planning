@@ -7,8 +7,6 @@ const currentMonth = moment().format('MMM').toLowerCase();
 const splitValue = (value, index) => `${value.substring(0, index)},${value.substring(index)}`;
 
 let currentRow = '';
-let hasMonthsLeft = false;
-let afterThisColumn = '';
 
 const monthsRef = {
     jan: '01',
@@ -25,6 +23,9 @@ const monthsRef = {
     dec: '12',
 };
 
+const disabledMetrics = ['GM$'];
+let metricName = '';
+
 const getCurrentCellCode = (month, year) => year + monthsRef[month];
 
 const columns = (season, rowSpan) => {
@@ -39,14 +40,12 @@ const columns = (season, rowSpan) => {
         cellProperties = {};
         Handsontable.renderers.NumericRenderer.apply(this, arguments);
 
-        if ((row === 0 && col > 0) || (row === 5 && col > 1) || (row === 10 && col > 1)) {
-            // td.style.background = '#eee';
-        }
-
+        // styling border per section
         if (leftBorderCols.indexOf(prop) !== -1) {
             td.className += ' leftCellBorder';
         }
 
+        // styling border for each metric
         if ((row + 1) % rowSpan === 0) {
             td.className += ' bottomCellBorder';
         }
@@ -61,25 +60,31 @@ const columns = (season, rowSpan) => {
 
         if (currentRow !== row) {
             currentRow = row;
+            // do this check once per row
+            metricName = instance.getDataAtCell(row, 0);
         }
 
-        // no more customizations for these fields
+        if (disabledMetrics.indexOf(metricName) !== -1) {
+            instance.setCellMeta(row, col, 'readOnly', true);
+            return td;
+        }
+
+        // no customizations for previous
         if (prop === 'previous') {
             return td;
         }
 
         if (prop === 'future') {
-            if (!instance.getCellMeta(row, col - 1).readOnly) {
-                instance.setCellMeta(row, col, 'readOnly', false);
-            }
+            // for now future is always enabled
+            // checks if prev column is editable, then this one becomes editable too
+            // if (!instance.getCellMeta(row, col - 1).readOnly) {
+            //     instance.setCellMeta(row, col, 'readOnly', false);
+            // }
             return td;
         }
 
-        // const columnMonth = prop.substr(-2);
         const newPropMonth = prop.substring(0, 3);
         const newPropYearCode = prop.substring(3);
-
-        // console.log(newPropMonth, newPropYearCode, currentMonth);
 
         const currentRowSeasonYear = instance.getDataAtCell(row, 1);
         let currentRowYear = parseInt(currentRowSeasonYear.substr(-2), 10);
@@ -92,10 +97,12 @@ const columns = (season, rowSpan) => {
         const cellCode = getCurrentCellCode(newPropMonth, currentRowYear);
         const viewCode = currentYear + monthsRef[currentMonth];
 
-        if (cellCode >= viewCode) {
+        // if code combination of this cell's year + month greater than the actual month / year, then enable field
+        if (parseInt(cellCode, 10) >= parseInt(viewCode, 10)) {
             instance.setCellMeta(row, col, 'readOnly', false);
         }
 
+        // similar logic to 'future', but here we check the next column instead of the previous
         if ((season === 'FW' && prop === 'feb1') || (season === 'SS' && prop === 'aug0')) {
             if (!instance.getCellMeta(row, col).readOnly) {
                 instance.setCellMeta(row, col - 1, 'readOnly', false);
@@ -499,7 +506,7 @@ const columns = (season, rowSpan) => {
             renderer: cellValueRender,
             type: 'numeric',
             format: '$0,000',
-            readOnly: true,
+            readOnly: false,
             colWidths: 100,
         },
     ];
