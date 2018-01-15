@@ -70,8 +70,8 @@ const columns = (season, rowSpan) => {
         }
 
         if (metricName === 'GM%') {
-          instance.setCellMeta(row, col, 'format', '0%');
-          return td;
+            instance.setCellMeta(row, col, 'format', '0%');
+            return td;
         }
 
         // no customizations for previous
@@ -85,6 +85,7 @@ const columns = (season, rowSpan) => {
             // if (!instance.getCellMeta(row, col - 1).readOnly) {
             //     instance.setCellMeta(row, col, 'readOnly', false);
             // }
+            instance.setCellMeta(row, col, 'readOnly', false);
             return td;
         }
 
@@ -138,7 +139,7 @@ const columns = (season, rowSpan) => {
           instance.setCellMeta(row, col, 'format', '0%');
           return td;
         }
-        
+
         return td;
     }
 
