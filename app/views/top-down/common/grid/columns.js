@@ -80,6 +80,7 @@ const columns = (season, rowSpan) => {
             // if (!instance.getCellMeta(row, col - 1).readOnly) {
             //     instance.setCellMeta(row, col, 'readOnly', false);
             // }
+            instance.setCellMeta(row, col, 'readOnly', false);
             return td;
         }
 
