@@ -69,6 +69,11 @@ const columns = (season, rowSpan) => {
             return td;
         }
 
+        if (metricName === 'GM%') {
+          instance.setCellMeta(row, col, 'format', '0%');
+          return td;
+        }
+
         // no customizations for previous
         if (prop === 'previous') {
             return td;
@@ -129,6 +134,11 @@ const columns = (season, rowSpan) => {
             td.className += ' cellNA';
             return td;
         }
+        if (metricName === 'GM%') {
+          instance.setCellMeta(row, col, 'format', '0%');
+          return td;
+        }
+        
         return td;
     }
 
