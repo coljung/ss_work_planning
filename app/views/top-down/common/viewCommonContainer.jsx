@@ -88,6 +88,8 @@ class ViewCommonContainer extends Component {
                     root='hot'
                     data={this.state.grid.data}
                     nestedHeaders={seasonHeaders}
+                    viewportColumnRenderingOffset={100}
+                    viewportRowRenderingOffset={100}
                     colHeaders={true}
                     columns={seasonColumns}
                     formulas={true}
