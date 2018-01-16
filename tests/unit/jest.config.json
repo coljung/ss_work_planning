@@ -1,0 +1,16 @@
+{
+    "modulePaths": [
+      "app"
+    ],
+    "rootDir": "../../",
+    "setupFiles": [
+      "./tests/setupTests.js"
+    ],
+    "transform": {
+      "^.+\\.jsx$": "babel-jest",
+      "^.+\\.js$": "babel-jest"
+    },
+    "moduleNameMapper": {
+      "^.+\\.(s?css|less)$": "./tests/LESSstub.js"
+    }
+}
