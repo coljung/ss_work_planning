@@ -1,54 +1,39 @@
 import moment from 'moment';
 import Handsontable from 'handsontable';
-
-const currentYear = moment().format('YY');
-const currentMonth = moment().format('MMM').toLowerCase();
+import { borderLeft,
+        borderBottom,
+        getCurrentCellCode,
+        getCurrentDateCode,
+        enableCellValidDate,
+    } from '../../../Helpers';
 
 const splitValue = (value, index) => `${value.substring(0, index)},${value.substring(index)}`;
 
 let currentRow = '';
 
-const monthsRef = {
-    jan: '01',
-    feb: '02',
-    mar: '03',
-    apr: '04',
-    may: '05',
-    jun: '06',
-    jul: '07',
-    aug: '08',
-    sep: '09',
-    oct: '10',
-    nov: '11',
-    dec: '12',
-};
+const leftBorderCols = [
+    'seasonyear',
+    'stdpremarkdown',
+    'previous',
+];
 
 const disabledMetrics = ['GM$'];
 let metricName = '';
 
-const getCurrentCellCode = (month, year) => year + monthsRef[month];
+// const getCurrentCellCode = getCellCode(month, year) => year + monthsRef[month];
 
 const columns = (season, rowSpan) => {
-
-    const leftBorderCols = [
-        'stdpremarkdown',
-        'previous',
-    ];
 
     function cellValueRender(instance, td, row, col, prop, value, cellProperties) {
         // console.log(instance);
         cellProperties = {};
         Handsontable.renderers.NumericRenderer.apply(this, arguments);
 
-        // styling border per section
-        if (leftBorderCols.indexOf(prop) !== -1) {
-            td.className += ' leftCellBorder';
-        }
+        // styling border left per section
+        borderLeft(leftBorderCols, prop, td);
 
         // styling border for each metric
-        if ((row + 1) % rowSpan === 0) {
-            td.className += ' bottomCellBorder';
-        }
+        borderBottom(row, rowSpan, td);
 
         // manage error and display N/A instead
         if (isNaN(value)) {
@@ -89,55 +74,24 @@ const columns = (season, rowSpan) => {
             return td;
         }
 
-        const newPropMonth = prop.substring(0, 3);
-        const newPropYearCode = prop.substring(3);
+        // anything as of prior to future columns
+        if (col > 7) {
 
-        const currentRowSeasonYear = instance.getDataAtCell(row, 1);
-        let currentRowYear = parseInt(currentRowSeasonYear.substr(-2), 10);
+            const currentRowSeasonYear = instance.getDataAtCell(row, 1);
+            const compareCodes = enableCellValidDate(prop, currentRowSeasonYear);
 
-        if (newPropYearCode > 1) {
-            currentRowYear += 1;
-        } else if (newPropYearCode < 1) {
-            currentRowYear -= 1;
-        }
-        const cellCode = getCurrentCellCode(newPropMonth, currentRowYear);
-        const viewCode = currentYear + monthsRef[currentMonth];
-
-        // if code combination of this cell's year + month greater than the actual month / year, then enable field
-        if (parseInt(cellCode, 10) >= parseInt(viewCode, 10)) {
-            instance.setCellMeta(row, col, 'readOnly', false);
-        }
-
-        // similar logic to 'future', but here we check the next column instead of the previous
-        if ((season === 'FW' && prop === 'feb1') || (season === 'SS' && prop === 'aug0')) {
-            if (!instance.getCellMeta(row, col).readOnly) {
-                instance.setCellMeta(row, col - 1, 'readOnly', false);
+            // if code combination of this cell's year + month greater than the actual month / year, then enable field
+            if (compareCodes.cellCode >= compareCodes.viewCode) {
+                instance.setCellMeta(row, col, 'readOnly', false);
             }
-        }
 
-        return td;
-    }
+            // similar logic to 'future', but here we check the next column instead of the previous
+            if ((season === 'FW' && prop === 'feb1') || (season === 'SS' && prop === 'aug0')) {
+                if (!instance.getCellMeta(row, col).readOnly) {
+                    instance.setCellMeta(row, col - 1, 'readOnly', false);
+                }
+            }
 
-    function cellValueRenderSums(instance, td, row, col, prop, value, cellProperties) {
-        cellProperties = {};
-        Handsontable.renderers.NumericRenderer.apply(this, arguments);
-
-        // if ((row === 0 && col > 0) || (row === 5 && col > 1) || (row === 10 && col > 1)) {
-        //     td.style.background = '#eee';
-        // }
-
-        if ((row + 1) % rowSpan === 0) {
-            td.className += ' bottomCellBorder';
-        }
-        if (isNaN(value)) {
-            cellProperties.type = 'text';
-            td.innerHTML = 'N/A';
-            td.className += ' cellNA';
-            return td;
-        }
-        if (metricName === 'GM%') {
-          instance.setCellMeta(row, col, 'format', '0%');
-          return td;
         }
 
         return td;
@@ -156,7 +110,7 @@ const columns = (season, rowSpan) => {
         },
         {
             data: 'stdpremarkdown',
-            renderer: cellValueRenderSums,
+            renderer: cellValueRender,
             type: 'numeric',
             format: '$0,000',
             readOnly: true,
@@ -164,7 +118,7 @@ const columns = (season, rowSpan) => {
         },
         {
             data: 'incr_stdpremarkdown',
-            renderer: cellValueRenderSums,
+            renderer: cellValueRender,
             type: 'numeric',
             format: '0%',
             readOnly: true,
@@ -172,7 +126,7 @@ const columns = (season, rowSpan) => {
         },
         {
             data: 'stdpostmarkdown',
-            renderer: cellValueRenderSums,
+            renderer: cellValueRender,
             type: 'numeric',
             format: '$0,000',
             readOnly: true,
@@ -180,7 +134,7 @@ const columns = (season, rowSpan) => {
         },
         {
             data: 'incr_stdpostmarkdown',
-            renderer: cellValueRenderSums,
+            renderer: cellValueRender,
             type: 'numeric',
             format: '0%',
             readOnly: true,
@@ -188,7 +142,7 @@ const columns = (season, rowSpan) => {
         },
         {
             data: 'full',
-            renderer: cellValueRenderSums,
+            renderer: cellValueRender,
             type: 'numeric',
             format: '$0,000',
             readOnly: true,
@@ -196,7 +150,7 @@ const columns = (season, rowSpan) => {
         },
         {
             data: 'full_incr',
-            renderer: cellValueRenderSums,
+            renderer: cellValueRender,
             type: 'numeric',
             format: '0%',
             readOnly: true,
