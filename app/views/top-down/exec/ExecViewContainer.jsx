@@ -55,8 +55,10 @@ class ExecViewContainer extends Component {
                     colHeaders={true}
                     rowHeaders={true}
                     nestedHeaders={headers}
+                    viewportColumnRenderingOffset={100}
+                    viewportRowRenderingOffset={100}
                     fixedRowsTop={0}
-                    fixedColumnsLeft={0}
+                    fixedColumnsLeft={2}
                     formulas={true}
                     columns={columns}
                     contextMenu={false}
