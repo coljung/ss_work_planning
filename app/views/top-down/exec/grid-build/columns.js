@@ -52,8 +52,17 @@ function cellValueRender(instance, td, row, col, prop, value, cellProperties) {
         td.className += ' cellNA';
         return td;
     }
+
     Handsontable.renderers.NumericRenderer.apply(this, arguments);
     cellProperties.type = 'numeric';
+
+    let metricName = instance.getDataAtCell(row, 0);
+
+    if (metricName === 'GM%') {
+      instance.setCellMeta(row, col, 'format', '0%');
+      return td;
+    }
+
     if (percentageCols.indexOf(prop) !== -1) {
         cellProperties.format = '0%';
     }
@@ -67,6 +76,7 @@ function cellValueRender(instance, td, row, col, prop, value, cellProperties) {
 
 function cellMetric(instance, td, row, col, prop, value, cellProperties) {
     // cellProperties = {};
+
 
     Handsontable.renderers.TextRenderer.apply(this, arguments);
     td.className += 'metricCell';
