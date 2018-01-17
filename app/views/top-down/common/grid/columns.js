@@ -1,4 +1,3 @@
-import moment from 'moment';
 import Handsontable from 'handsontable';
 import { borderLeft,
         borderBottom,
