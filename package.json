@@ -11,6 +11,7 @@
     "lint:fix": "./node_modules/.bin/eslint 'app/**' --fix",
     "test": "jest",
     "test:unit": "./node_modules/jest/bin/jest.js --coverage",
+    "test:unit:watch": "./node_modules/jest/bin/jest.js --watch",
     "cover": "npm run cover:unit",
     "cover:unit": "NODE_ENV=test:unit ./node_modules/.bin/nyc --report-dir tests/coverage/unit npm run test:unit",
     "storybook": "start-storybook -p 6006",
