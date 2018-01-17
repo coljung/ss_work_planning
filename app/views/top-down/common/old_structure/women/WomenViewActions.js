@@ -32,8 +32,7 @@ export function fetchBudgetWomenData(budget, version) {
     return (dispatch) => {
         dispatch(requestBudgetWomenViewData());
         return request
-            // .get(`${getApiUrl()}planning/seasons/show/available`)
-            .get(`http://localhost:3001/planning/budgets/${budget}/versions/${version}/women`)
+            .get(`${getApiUrl()}planning/budgets/${budget}/versions/${version}/women`)
             .then(
             res => dispatch(receiveBudgetWomenViewData(res.body)),
             err => dispatch(messages({ content: err, response: err.response, isError: true })),

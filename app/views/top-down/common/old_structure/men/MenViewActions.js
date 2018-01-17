@@ -45,8 +45,7 @@ export function fetchBudgetMenData(budget, version) {
     return (dispatch) => {
         dispatch(requestBudgetMenViewData());
         return request
-            // .get(`${getApiUrl()}planning/seasons/show/available`)
-            .get(`http://localhost:3001/planning/budgets/${budget}/versions/${version}/men`)
+            .get(`${getApiUrl()}planning/budgets/${budget}/versions/${version}/men`)
             .then(
             res => dispatch(receiveBudgetMenViewData(res.body)),
             err => dispatch(messages({ content: err, response: err.response, isError: true })),
@@ -58,8 +57,7 @@ export function saveBudget(budget, id, view, data) {
     return (dispatch) => {
         dispatch(requestBudgetSave());
         return request
-            // .get(`${getApiUrl()}planning/seasons/show/available`)
-            .post(`http://localhost:3001/planning/budgets/${budget}/versions/${id}/${view}`)
+            .post(`${getApiUrl()}planning/budgets/${budget}/versions/${id}/${view}`)
             .send(data)
             .then(
                 res => {

@@ -32,8 +32,7 @@ export function fetchBudgetTotalData(budget, version) {
     return (dispatch) => {
         dispatch(requestBudgetTotalViewData());
         return request
-            // .get(`${getApiUrl()}planning/seasons/show/available`)
-            .get(`http://localhost:3001/planning/budgets/${budget}/versions/${version}/total`)
+            .get(`${getApiUrl()}planning/budgets/${budget}/versions/${version}/total`)
             .then(
             res => dispatch(receiveBudgetTotalViewData(res.body)),
             err => dispatch(messages({ content: err, response: err.response, isError: true })),

@@ -1,7 +1,6 @@
 export default function getApiUrl() {
-    return `http://${process.env.UI_PLANNING_HOST}:${process.env.UI_PLANNING_PORT}/api/`;
+    return `/api/`;
 }
-
 
 export const mergeMetrics = (startRow = 0, rowSpan, totalRows, totalCols, hasGap = false) => {
     const mergeArr = [];
@@ -12,7 +11,6 @@ export const mergeMetrics = (startRow = 0, rowSpan, totalRows, totalCols, hasGap
     // span between gaps
     const emptyRowSpan = hasGap ? rowSpan : null;
 
-
     for (let i = startRow; i < totalRows; ++i) {
         if (i % metricSpan === 0) {
             mergeArr.push({
@@ -21,6 +19,7 @@ export const mergeMetrics = (startRow = 0, rowSpan, totalRows, totalCols, hasGap
                 rowspan: rowSpan,
                 colspan: 1,
             });
+
             if (hasGap) {
                 mergeArr.push({
                     row: i - 1,
@@ -34,7 +33,6 @@ export const mergeMetrics = (startRow = 0, rowSpan, totalRows, totalCols, hasGap
 
     return mergeArr;
 };
-
 
 export const mergeHeadersExecRecap = () => {
     const mergeArr = [
