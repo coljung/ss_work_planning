@@ -42,8 +42,8 @@ FROM base AS release
 COPY . /code
 
 # copy production node_modules
-COPY --from=dependencies /code/prod_node_modules ./node_modules
-COPY --from=dependencies /code/build ./build
+COPY --from=dependencies /code/prod_node_modules /code/node_modules
+COPY --from=dependencies /code/build /code/build
 
 RUN rm -rf ./app
 RUN rm -rf ./scripts
