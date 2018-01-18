@@ -38,11 +38,12 @@ RUN apk del make gcc g++ python bash git openssh
 #
 # ---- Release ----
 FROM base AS release
-# copy production node_modules
-COPY --from=dependencies /code/prod_node_modules ./code/node_modules
-COPY --from=dependencies /code/build ./code/build
 # copy app sources
 COPY . /code
+
+# copy production node_modules
+COPY --from=dependencies /code/prod_node_modules ./node_modules
+COPY --from=dependencies /code/build ./build
 
 RUN rm -rf ./app
 RUN rm -rf ./scripts
