@@ -50,7 +50,7 @@ class ExecViewContainer extends Component {
             <div className="parentDiv">
                 <HotTable
                     root='hot'
-                    ref={'table'}
+                    ref='hot'
                     data={this.state.grid.data}
                     colHeaders={true}
                     rowHeaders={true}

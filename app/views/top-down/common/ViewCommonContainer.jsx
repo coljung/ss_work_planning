@@ -60,6 +60,10 @@ class ViewCommonContainer extends Component {
                     disabledBtn: false,
                 });
             }
+            // @ALSU
+            // this is the correct approach to get cell access within this component
+            // console.log(this.refs.hot.hotInstance);
+            // console.log(this.refs.hot.hotInstance.getCellMeta(row, col));
         }
     }
 
@@ -86,6 +90,7 @@ class ViewCommonContainer extends Component {
             <div className="parentDiv">
                 <HotTable
                     root='hot'
+                    ref='hot'
                     data={this.state.grid.data}
                     nestedHeaders={seasonHeaders}
                     viewportColumnRenderingOffset={100}

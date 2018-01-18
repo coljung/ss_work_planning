@@ -38,7 +38,8 @@ export default class BudgetTest extends Component {
                     <Tabs defaultActiveKey="1">
                         <TabPane tab="Exec Recap" key="1">
                             <HotTable
-                                root="hot"
+                                root='hot'
+                                ref='hot'
                                 data={this.handsontableData}
                                 fixedColumnsLeft={2}
                                 fixedRowsTop={2}
