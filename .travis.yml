@@ -1,0 +1,41 @@
+sudo: false
+language: node_js
+addons:
+  apt:
+    packages:
+    - docker-ce
+cache:
+  yarn: true
+  directories:
+  - node_modules
+node_js:
+- v8.9.1
+before_install:
+- curl -o- -L https://yarnpkg.com/install.sh | bash
+script: npm run test
+after_success:
+- |-
+  if [ ! -z "$TRAVIS_TAG" ]; then
+    docker login -u $DOCKER_USER -p $DOCKER_PASS;
+    docker build --file ./Dockerfile.production -t $DOCKERHUB_REPO:$COMMIT_HASH .
+    docker tag $DOCKERHUB_REPO:$COMMIT_HASH $DOCKERHUB_REPO:$TRAVIS_TAG;
+    docker push $DOCKERHUB_REPO:$TRAVIS_TAG;
+  fi
+notifications:
+  slack:
+    rooms:
+    - ssense:NaXRxZ0oVCeDOrhnc6YUAltp#prism-ci
+    template:
+    - "%{repository_slug}#%{build_number} (%{branch} - %{commit} : %{author}): %{commit_message}"
+    - 'Build: <%{build_url}|#%{build_number}>'
+    - 'Compare: <%{compare_url}|%{commit}>'
+    - 'Duration: %{duration} - Elapsed time: %{elapsed_time}'
+    - 'Result: %{result}: %{message}'
+env:
+  global:
+  - COMMIT_HASH=${TRAVIS_COMMIT::8}
+  - DOCKERHUB_REPO="ssense/$(basename $TRAVIS_REPO_SLUG)"
+  - PATH=$HOME/.yarn/bin:$PATH
+  - secure: nHFStmUa36CiTgUYwSYawNhstP0U44BtcjRitU4NDjCPaFRFgsVts1qqLvfTMyla+nahI/5YWAd7djJCtNb2BtsYKsmvzxOWxYHrEVdAbFDdyHGJG6IqK+vDHDDKN0rN2bbGnkzNpx8pf27wEXxHE/ahL6g6Si3vJoPcskgSHk55SjQAHKYOLjl+aqVXjvUxoN5fI7ZfLq1PSF3m10x4S8ICj9V6E9a61KoC8PfeTevbzU0bkq9pFIiK0jRQZC4O2uA+x/j6aBNxokPuT7EJifMbrYBj/41mBl9w7P2QK1qMAhTDIYuc6rNAhaLH6gYSq3BjXP1eGFt+wOcci+vwsNfmj9Q5CWY1FKrx/pCQ0A8zkJiNZCUUfufLSu1h3GG8sitjSfvk43FonjKr72839xDXFXh1y/bNGuE37+CI03VriRQcEywDAnW7OOIBPgelp5VwzES4mGq9XKAAOMoP9L6IO2eRCfeFGCo8AIrGgK+TRIGqpKfwDT9Z7klnWlUxp+EfXTGQ0vRO2NmKLg1D0YbaQOYTLUyJCfgdZHhaIbB8ufTN0HRKdIp2fpQCfY3BtxFedHpIl0o5gJO9Sw5UnQayK/yu5TWfCU83CiZokAo+86bz8+XR1iIw66F55TIOZbRdcUF6k0xksGwzoH8XVzNDU4lFoOK1u7nSzIOd7JQ=
+  - secure: QlmS2WPtkxpS4yEzcDCTB3LsW4cdaGSz34uoq3dXU/9b+cB8+secTt6ZYuv9VghGXZPt5eomx+PaQQ5JcPzhzf00nkPVFeb9ie8uNaZCNBxwLixLBp8qQP9IHeMl12f0Fpn5ndPtazYt3WUcj5QyXbEwoJLqjcAoFm/BNU1x8kYCKaStV2hU2SIKK7Z1OYnZaPNi7efl+CvF4YzNPbZ9bScB+0V55GVNJm1gIexDDHUDVwJH8h+ZTDp06jtt6xHOtmmeym6nBEiyAMpyQPIJP9MdPlcizK62qyVrjTsPJYy1XcB2fYLn/ITg/abZZNnig8Ywnjzczo3qcfCgNffTc8hnYusXYqW2qunC6pGCsoiRVLyURoIt5rfoaPOlRfzvosm4dROoo5hu1d6W+VRjn6ZFZLtI5WhTGIGXgg5MUNqpMF24QmeBh+eK+46W0a0WTMl+57hoY9/o/nHtP2gyI9CziZrBwUpArLQbjgT79mEhHlM06fFK38fgi1cDPd0DukfKacdxGIBVbO0P0QDaRJrGETeS4+ATz9vV23hga+l6upL9qu6NmUYdaQnE3OkCTjI3RrxEOccNFx4qXjmbvQGMrfkCaqcm4UI7Jy5U2ZMaG04W+JN1XecliRzpBFMYoZQ/KAFUf5bCkUZTbQt516FEQu5DXcWkooTxF1g+W00=
+  - secure: YQkKP0jfH7SJZJwIUyF9zXktx+wNNqD9JKmsE3sa4QXyPklhEe6Fy5r5KRJCbFs7aOz4XuFQMFj/UdJ8VC9UsEjbRd13t5qYhC4VQNXxLcDmmlyg09LQFAMbvyHNpQn7FsDE/yW1SE3KaH69VA4leRqZxII/uIydJFBIlPKFWTFgGv1OGImBWOb/R7kGGmCGg0ZD6dAizTWqlmy9WX77M7fVPxEPnkn1lgn1rGu4F8tBH8ey3TquIARihwmnjKVyoNrAnZuBKtXu8fQ97LUOzaoYKn1DG/mxp9/FgoIwq+tVjhWqSbgM+BCyfCcEcsbqpPJlDogFCHAwwCb9eEktQx2OKNQGi+2EWQcAXiziO0WxMQkBZelvu8IsFRcN4M9GW6WvSZ/KHZ+lQmEwb7EFpuaul+eLXfLbq+4FW5dd+RxIJRdn1RdNae9v4BGRhDHdcyMh96F6PxxIh061NtbuiIfNUAl8PzO//AhmXsyFUOy7L+UhKHVjxBg7BCXsxXmd6ZZDYRwtRbiYUk5Kem9CFOxY8+25KZWdenj/JQ48Hqv/amXHdFyPyNrE6j1uxP8qMma38UmUWfZhWBrHvpJJfOVsLMtE8p7MFSFIH9KkZtIyRRovfs3cOHW/lefOfR+BKtCiNwYNIMcBHN4m4JrRILmJS5rDCcj5LP6LpJ9A/64=
