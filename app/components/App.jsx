@@ -36,9 +36,7 @@ export default class App extends Component {
                 <Layout>
                     <Content>
                         <main style={{ flex: 1, overflowY: 'auto', padding: '0 25px 25px' }}>
-                            {React.cloneElement(this.props.children, {
-                                key: this.props.location.pathname,
-                            })}
+                            {this.props.children}
                             <NotificationManager />
                         </main>
                     </Content>
@@ -56,3 +54,7 @@ App.propTypes = {
         PropTypes.element,
     ]),
 };
+
+//    {React.cloneElement(this.props.children, {
+    //    key: this.props.location.pathname,
+    //})}
