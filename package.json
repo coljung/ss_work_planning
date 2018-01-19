@@ -127,6 +127,6 @@
     "moduleNameMapper": {
       "^.+\\.(s?css|less)$": "<rootDir>/tests/LESSstub.js"
     },
-    "testRegex": "./tests/unit/.*\\.(jsx)$"
+    "testRegex": "./tests/unit/.*\\.jsx?$"
   }
 }
