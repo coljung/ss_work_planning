@@ -42,11 +42,13 @@ function cellValueRender(instance, td, row, col, prop, value, cellProperties) {
     if (leftBorderCols.indexOf(prop) !== -1) {
         td.className += ' leftCellBorder';
     }
+
     const rowSpan = 5;
     if ((row + 1) % rowSpan === 0) {
         td.className += ' bottomCellBorder';
     }
-    if (isNaN(value)) {
+
+    if (isNaN(parseInt(value, 10))) {
         cellProperties.type = 'text';
         td.innerHTML = 'N/A';
         td.className += ' cellNA';
@@ -60,6 +62,7 @@ function cellValueRender(instance, td, row, col, prop, value, cellProperties) {
 
     if (metricName === 'GM%') {
       instance.setCellMeta(row, col, 'format', '0%');
+
       return td;
     }
 
