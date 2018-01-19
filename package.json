@@ -27,6 +27,7 @@
     "express": "^4.16.2",
     "handsontable-pro": "^1.14.3",
     "history": "^4.3.0",
+    "http-proxy-middleware": "^0.17.4",
     "immutability-helper": "^2.4.0",
     "jest": "^21.2.1",
     "lodash": "^4.16.4",
