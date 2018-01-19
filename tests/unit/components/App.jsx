@@ -10,11 +10,11 @@ import HeaderContent from '../../../app/components/common/HeaderContent';
 describe('App', () => {
     it('should render correctly', () => {
         const testRenderer = TestRenderer.create(
-            <App />
+            <App  location={{pathname: 'pathname'}} />
         );
-        // const wrapper = shallow(
-        //     <App />
-        // );
+        const wrapper = shallow(
+            <App  location={{pathname: 'pathname'}} />
+        );
         expect(testRenderer).toMatchSnapshot()
 	});
 })
