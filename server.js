@@ -18,9 +18,15 @@ const proxy = httpProxy({
 
 const app = express();
 
-app.use(basicAuth({
-    admin: config.get('auth.password'),
-}));
+console.log('Basic Auth', config.get('auth.enabled'), {
+    [config.get('auth.user')]: config.get('auth.password'),
+});
+
+if (config.get('auth.enabled')) {
+  app.use(basicAuth({
+      [config.get('auth.user')]: config.get('auth.password'),
+  }));
+}
 
 app.use(cors());
 app.use(express.static(path.resolve(__dirname, 'build')));
