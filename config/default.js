@@ -6,6 +6,8 @@ module.exports = {
         exposedPort: process.env.UI_PLANNING_PORT || 8007
     },
     auth: {
+        enabled: true,
+        user: process.env.HTTP_AUTH_USER || 'admin',
         password: process.env.HTTP_AUTH_PASSWORD || 'admin'
     },
     api: {
