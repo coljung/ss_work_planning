@@ -107,7 +107,9 @@ class ViewCommonContainer extends Component {
                     function={true}
                     observeChanges={true}
                     afterChange={this.changeCell}
-                    hiddenRows={ hidden_rows }
+                    hiddenRows={ hiddenRows={ {
+                      rows: hidden_rows
+                    } } }
                     licenseKey= 'a389a-f2591-70b41-a480d-1911a' />
             </div>
         );
