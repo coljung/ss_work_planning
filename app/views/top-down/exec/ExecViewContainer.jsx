@@ -46,12 +46,13 @@ class ExecViewContainer extends Component {
 
     buildTable = () => {
         const newMerge = this.mergeCells();
+        const { grid: { info, data } } = this.state;
         return (
             <div className="parentDiv">
                 <HotTable
                     root='hot'
                     ref='hot'
-                    data={this.state.grid.data}
+                    data={data}
                     colHeaders={true}
                     rowHeaders={true}
                     nestedHeaders={headers}
@@ -70,6 +71,7 @@ class ExecViewContainer extends Component {
                     function={true}
                     observeChanges={true}
                     stretchH='all'
+                    hiddenRows={ info.hidden_rows }
                     licenseKey= 'a389a-f2591-70b41-a480d-1911a' />
             </div>);
     }

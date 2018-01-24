@@ -82,7 +82,7 @@ class ViewCommonContainer extends Component {
 
     buildTable = () => {
         const newMerge = this.mergeCells();
-        const { currentMonthColumn, season, row_span } = this.state.grid.info;
+        const { currentMonthColumn, season, row_span, hidden_rows } = this.state.grid.info;
         const cols = columns(season, row_span);
         const seasonColumns = season === 'SS' ? cols[0] : cols[1];
         const seasonHeaders = season === 'SS' ? headers[0] : headers[1];
@@ -107,6 +107,7 @@ class ViewCommonContainer extends Component {
                     function={true}
                     observeChanges={true}
                     afterChange={this.changeCell}
+                    hiddenRows={ hidden_rows }
                     licenseKey= 'a389a-f2591-70b41-a480d-1911a' />
             </div>
         );

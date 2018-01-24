@@ -14,7 +14,8 @@ const initialState = {
         season: '',
         start_row: 0,
         total: 0,
-        total_cols: 0
+        total_cols: 0,
+        hidden_rows: []
       }
     },
     viewExecDataFetched: false,
