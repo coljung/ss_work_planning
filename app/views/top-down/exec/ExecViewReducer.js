@@ -14,8 +14,7 @@ const initialState = {
         season: '',
         start_row: 0,
         total: 0,
-        total_cols: 0,
-        hidden_rows: []
+        total_cols: 0
       }
     },
     viewExecDataFetched: false,
@@ -26,14 +25,17 @@ export default (state = initialState, action) => {
         case RESET_BUDGETS_EXEC_VIEW:
             return initialState;
         case REQUEST_BUDGETS_EXEC_VIEW:
-            return Object.assign({}, state, {
-                viewExecData: false,
-            });
+            return {
+              ...state,
+              loading: true
+            };
         case RECEIVE_BUDGETS_EXEC_VIEW: {
-            return Object.assign({}, state, {
-                viewExecData: action.viewData,
-                viewExecDataFetched: true,
-            });
+            return {
+              ...state,
+              viewExecData: action.viewData,
+              viewExecDataFetched: true,
+              loading: false
+            };
         }
         default:
             return state;
