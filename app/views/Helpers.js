@@ -32,6 +32,15 @@ export const borderBottom = (row, rowSpan, td) => {
     return td;
 };
 
+export const GMPercentage = (instance, row, col, td) => {
+    const metricName = instance.getDataAtCell(row, 0);
+
+    if (metricName === 'GM%') {
+        instance.setCellMeta(row, col, 'format', '0%');
+    }
+    return td;
+};
+
 const getCurrentCellCode = (month, year) => year + monthsRef[month];
 const getCurrentDateCode = () => currentYear + monthsRef[currentMonth];
 

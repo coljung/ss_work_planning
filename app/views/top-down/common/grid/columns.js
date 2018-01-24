@@ -1,6 +1,7 @@
 import Handsontable from 'handsontable';
 import { borderLeft,
         borderBottom,
+        GMPercentage,
         getCurrentCellCode,
         getCurrentDateCode,
         enableCellValidDate,
@@ -53,10 +54,8 @@ const columns = (season, rowSpan) => {
             return td;
         }
 
-        if (metricName === 'GM%') {
-            instance.setCellMeta(row, col, 'format', '0%');
-            return td;
-        }
+        // formatting GM%
+        GMPercentage(instance, row, col, td);
 
         // no customizations for previous
         if (prop === 'previous') {
