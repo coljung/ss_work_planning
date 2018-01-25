@@ -41,6 +41,15 @@ export const GMPercentage = (instance, row, col, td) => {
     return td;
 };
 
+export const disableEdit = (instance, row, col, td, disabledMetrics) => {
+    const metricName = instance.getDataAtCell(row, 0);
+
+    if (disabledMetrics.indexOf(metricName) !== -1) {
+        instance.setCellMeta(row, col, 'readOnly', true);
+    }
+    return td;
+};
+
 const getCurrentCellCode = (month, year) => year + monthsRef[month];
 const getCurrentDateCode = () => currentYear + monthsRef[currentMonth];
 

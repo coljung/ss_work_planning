@@ -2,6 +2,7 @@ import Handsontable from 'handsontable';
 import { borderLeft,
         borderBottom,
         GMPercentage,
+        disableEdit,
         getCurrentCellCode,
         getCurrentDateCode,
         enableCellValidDate,
@@ -10,15 +11,13 @@ import { borderLeft,
 const splitValue = (value, index) => `${value.substring(0, index)},${value.substring(index)}`;
 
 let currentRow = '';
+let metricName = '';
 
 const leftBorderCols = [
     'seasonyear',
     'stdpremarkdown',
     'previous',
 ];
-
-const disabledMetrics = ['GM$'];
-let metricName = '';
 
 // const getCurrentCellCode = getCellCode(month, year) => year + monthsRef[month];
 
@@ -49,10 +48,9 @@ const columns = (season, rowSpan) => {
             metricName = instance.getDataAtCell(row, 0);
         }
 
-        if (disabledMetrics.indexOf(metricName) !== -1) {
-            instance.setCellMeta(row, col, 'readOnly', true);
-            return td;
-        }
+        // disable editing for a particular metric in the array
+        const disabledMetrics = ['GM$'];
+        disableEdit(instance, row, col, td, disabledMetrics);
 
         // formatting GM%
         GMPercentage(instance, row, col, td);
