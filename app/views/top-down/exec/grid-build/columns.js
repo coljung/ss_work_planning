@@ -1,4 +1,11 @@
 import Handsontable from 'handsontable';
+import { borderLeft,
+        borderBottom,
+        GMPercentage,
+        // getCurrentCellCode,
+        // getCurrentDateCode,
+        // enableCellValidDate,
+    } from '../../../Helpers';
 
 const leftBorderCols = [
     'total_stdpremarkdown',
@@ -32,6 +39,7 @@ const amountCols = [
     'men_full',
 ];
 
+
 function cellValueRender(instance, td, row, col, prop, value, cellProperties) {
     cellProperties = {};
 
@@ -39,15 +47,14 @@ function cellValueRender(instance, td, row, col, prop, value, cellProperties) {
       td.style.background = '#eee';
     }
 
-    if (leftBorderCols.indexOf(prop) !== -1) {
-        td.className += ' leftCellBorder';
-    }
+    // styling border left per section
+    borderLeft(leftBorderCols, prop, td);
 
+    // styling border for each metric
     const rowSpan = 5;
-    if ((row + 1) % rowSpan === 0) {
-        td.className += ' bottomCellBorder';
-    }
+    borderBottom(row, rowSpan, td);
 
+    // showing N/A instead of error
     if (isNaN(parseInt(value, 10))) {
         cellProperties.type = 'text';
         td.innerHTML = 'N/A';
@@ -58,13 +65,8 @@ function cellValueRender(instance, td, row, col, prop, value, cellProperties) {
     Handsontable.renderers.NumericRenderer.apply(this, arguments);
     cellProperties.type = 'numeric';
 
-    let metricName = instance.getDataAtCell(row, 0);
-
-    if (metricName === 'GM%') {
-      instance.setCellMeta(row, col, 'format', '0%');
-
-      return td;
-    }
+    // formatting GM%
+    GMPercentage(instance, row, col, td);
 
     if (percentageCols.indexOf(prop) !== -1) {
         cellProperties.format = '0%';
