@@ -6,6 +6,7 @@ import Root from './Root.jsx';
 
 OfflinePluginRuntime.install({
   ServiceWorker: {
+    events: true,
     prefetchRequest: {
       credentials: 'same-origin'
     }
