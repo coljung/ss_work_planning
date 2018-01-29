@@ -126,13 +126,16 @@ class ViewCommonContainer extends Component {
 
     render() {
         const budgetListData = this.props.viewData[this.props.view] ? this.buildTable() : this.spinLoad();
+        let buttonStr = this.props.view;
+        buttonStr = `${buttonStr.charAt(0).toUpperCase()}${buttonStr.slice(1)}`;
+
         return (
             <div>
                 <Button
                     icon="save"
                     className="saveBtn"
                     disabled={this.state.disabledBtn}
-                    onClick={() => this.save()}>Save Men's view</Button>
+                    onClick={() => this.save()}>Save {buttonStr}'s view</Button>
                 {budgetListData}
             </div>
         );
