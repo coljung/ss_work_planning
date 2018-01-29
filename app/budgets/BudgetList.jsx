@@ -72,7 +72,7 @@ class BudgetList extends Component {
         this.restOfBudgets = hasVersions.slice(4).map(e =>
             <li key={e.id}>
                 <h4>
-                    <Link to={`${ROUTE_BUDGET}/${e.versions[0].id}`}>
+                    <Link to={`${ROUTE_BUDGET}/${e.season}${e.year}/budget/${e.id}/version/${e.versions[0].name}/${e.versions[0].id}/exec`}>
                         {e.season}{e.year}
                     </Link>
                 </h4>
