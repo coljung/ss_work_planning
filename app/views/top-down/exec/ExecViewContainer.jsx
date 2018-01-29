@@ -54,7 +54,6 @@ class ExecViewContainer extends Component {
                     ref='hot'
                     data={data}
                     colHeaders={true}
-                    rowHeaders={true}
                     nestedHeaders={headers}
                     viewportColumnRenderingOffset={100}
                     viewportRowRenderingOffset={100}
@@ -75,11 +74,21 @@ class ExecViewContainer extends Component {
                       rows: info.hidden_rows
                     } }
                     licenseKey= 'a389a-f2591-70b41-a480d-1911a' />
-            </div>);
+            </div>
+        );
+    }
+
+    spinLoad = () => {
+        const mySpin = <Spin size="large" tip="Loading Exec..." />;
+        return (
+            <div className="spinDiv">
+                {mySpin}
+            </div>
+        );
     }
 
     render() {
-        const budgetListData = this.props.viewExecDataFetched ? this.buildTable() : <Spin size="large" />;
+        const budgetListData = this.props.viewExecDataFetched ? this.buildTable() : this.spinLoad();
         return (
             <div>
                 {budgetListData}
