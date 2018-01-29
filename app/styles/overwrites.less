@@ -81,3 +81,28 @@ h2{
         color: #FFF;
     }
 }
+.ant-layout .ant-tabs-content .parentDiv {
+  height: @view-height;
+  overflow: scroll;
+}
+.ant-layout .ant-tabs-content {
+  height: @view-height;
+  overflow: scroll;
+  div[role=tabpanel] {
+    height: @view-height;
+    overflow: scroll;
+  }
+}
+.wtHolder,
+.wtSpreader,
+table.htCore,
+.ht_master.handsontable {
+  height: @view-height;
+  // overflow: hidden;
+}
+.budgetBody {
+  padding-bottom: 0 !important;
+}
+main {
+  padding-bottom: 0 !important;
+}
