@@ -1,4 +1,6 @@
 import moment from 'moment';
+import BudgetViewsContainer from '../views/BudgetViewsContainer';
+import ViewCommonContainer from '../views/top-down/common/ViewCommonContainer';
 
 const currentYear = moment().format('YY');
 const currentMonth = moment().format('MMM').toLowerCase();
@@ -16,6 +18,15 @@ const monthsRef = {
     oct: '10',
     nov: '11',
     dec: '12',
+};
+
+export const uneditable = (instance, row, col, td, prop) => {
+  console.log(this.props.view);
+    // if (this.props.view === 'total') {
+    //     instance.setCellMeta(row, col, 'readOnly', true);
+    // console.log(TAB_TOTAL);
+    // }
+    // console.log('hi');
 };
 
 export const borderLeft = (columns, prop, td) => {

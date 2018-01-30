@@ -6,7 +6,9 @@ import { borderLeft,
         getCurrentCellCode,
         getCurrentDateCode,
         enableCellValidDate,
+        uneditable,
     } from '../../../Helpers';
+
 
 const splitValue = (value, index) => `${value.substring(0, index)},${value.substring(index)}`;
 
@@ -27,6 +29,9 @@ const columns = (season, rowSpan) => {
         // console.log(instance);
         cellProperties = {};
         Handsontable.renderers.NumericRenderer.apply(this, arguments);
+
+        // read only for the whole total view
+        uneditable(instance, row, col, td, prop);
 
         // styling border left per section
         borderLeft(leftBorderCols, prop, td);
@@ -70,12 +75,13 @@ const columns = (season, rowSpan) => {
             return td;
         }
 
+
         // anything as of prior to future columns
         if (col > 7) {
 
             const currentRowSeasonYear = instance.getDataAtCell(row, 1);
             const compareCodes = enableCellValidDate(prop, currentRowSeasonYear);
-
+            // console.log(compareCodes.viewCode);
             // if code combination of this cell's year + month greater than the actual month / year, then enable field
             if (compareCodes.cellCode >= compareCodes.viewCode) {
                 instance.setCellMeta(row, col, 'readOnly', false);
