@@ -32,11 +32,11 @@ export const borderBottom = (row, rowSpan, td) => {
     return td;
 };
 
-export const GMPercentage = (instance, row, col, td) => {
+export const percentageMetrics = (instance, row, col, td) => {
     const metricName = instance.getDataAtCell(row, 0);
 
     if (metricName === 'GM%' || metricName === 'iGM%' || metricName === 'RECEIPT%') {
-        instance.setCellMeta(row, col, 'format', '0%');
+        instance.setCellMeta(row, col, 'format', '0.00%');
     }
     return td;
 };
