@@ -6,7 +6,7 @@ import { borderLeft,
         getCurrentCellCode,
         getCurrentDateCode,
         enableCellValidDate,
-        uneditable,
+        totalReadOnly,
     } from '../../../Helpers';
 
 
@@ -31,7 +31,7 @@ const columns = (season, rowSpan) => {
         Handsontable.renderers.NumericRenderer.apply(this, arguments);
 
         // read only for the whole total view
-        uneditable(instance, row, col, td, prop);
+        totalReadOnly(instance, row, col, td, prop);
 
         // styling border left per section
         borderLeft(leftBorderCols, prop, td);

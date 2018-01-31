@@ -8,6 +8,7 @@ import { Button, Spin } from 'antd';
 // import { mergeMetrics } from 'helpers';
 import { saveBudget, fetchBudgetData, resetState } from '../common/viewActions';
 import { headers, columns, mergeMetrics } from '../common/grid/index';
+import { totalReadOnly } from '../../../Helpers';
 
 class ViewCommonContainer extends Component {
 
@@ -80,21 +81,24 @@ class ViewCommonContainer extends Component {
         return newMerge;
     }
 
-    // uneditable = () => {
+    uneditable = (instance, row, col, td, prop, value) => {
       // console.log(this.props.view);
       // cellValueRender(instance, td, row, col, prop, value, cellProperties);
       // console.log()
       // console.log();
-        // if (this.props.view == 'total' && !this.refs.hot.hotInstance.getCellMeta(row, col).readOnly) {
-            // console.log('true');
+        if (this.props.view === 'total') {
+            console.log('true');
+            // const newTotal = totalReadOnly(instance, row, col, td, prop);
             // td.className = 'working';
             // this.refs.hot.hotInstance.setCellMeta(row, col, 'readOnly', true);
-        // }
-    // }
+        } else {
+          console.log('false');
+        }
+    }
 
     buildTable = () => {
         const newMerge = this.mergeCells();
-        // const edit = this.uneditable();
+        const edit = this.uneditable();
         const { currentMonthColumn, season, row_span, hidden_rows } = this.state.grid.info;
         const cols = columns(season, row_span);
         const seasonColumns = season === 'SS' ? cols[0] : cols[1];
@@ -114,7 +118,6 @@ class ViewCommonContainer extends Component {
                     formulas={true}
                     contextMenu={false}
                     mergeCells={newMerge}
-
                     persistentState={true}
                     currentRowClassName= {'currentRow'}
                     currentColClassName= {'currentCol'}
