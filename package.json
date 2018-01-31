@@ -121,6 +121,13 @@
       "/node_modules/"
     ],
     "coverageDirectory": "<rootDir>/tests/coverage/unit",
+    "coverageReporters": [
+      "lcov",
+      "json",
+      "html",
+      "text",
+      "text-summary"
+    ],
     "transform": {
       "^.+\\.(css|less|scss)$": "identity-obj-proxy",
       "^.+\\.jsx?$": "babel-jest"
