@@ -10,7 +10,7 @@ let sandbox;
 let props;
 
 describe('<NavigationMain />', () => {
-    before(() => {
+    beforeAll(() => {
         sandbox = sinon.sandbox.create();
     });
 
