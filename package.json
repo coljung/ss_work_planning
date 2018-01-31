@@ -120,7 +120,7 @@
     "testPathIgnorePatterns": [
       "/node_modules/"
     ],
-    "coverageDirectory": "<rootDir>/tests/unit",
+    "coverageDirectory": "<rootDir>/tests/coverage/unit",
     "transform": {
       "^.+\\.(css|less|scss)$": "identity-obj-proxy",
       "^.+\\.jsx?$": "babel-jest"
@@ -151,7 +151,15 @@
       "**/app/**/*.js",
       "!**/__mocks__/**",
       "!**/__tests__/**"
-    ]
+    ],
+    "coverageThreshold": {
+      "global": {
+        "branches": 15,
+        "functions": 15,
+        "lines": 15,
+        "statements": 0
+      }
+    }
   },
   "nyc": {
     "exclude": [
