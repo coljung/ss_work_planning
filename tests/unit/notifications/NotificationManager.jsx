@@ -10,7 +10,7 @@ let props;
 let sandbox;
 
 describe('<NotificationManager />', () => {
-    before(() => {
+    beforeAll(() => {
         sandbox = sinon.sandbox.create();
         props = {clearMessages: sandbox.spy()};
     });

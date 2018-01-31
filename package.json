@@ -63,6 +63,7 @@
     "autoprefixer": "^7.1.5",
     "babel-core": "^6.17.0",
     "babel-eslint": "^7.2.1",
+    "babel-jest": "^22.1.0",
     "babel-loader": "^7.0.0",
     "babel-plugin-add-module-exports": "^0.2.1",
     "babel-plugin-import": "^1.6.2",
@@ -76,6 +77,7 @@
     "chai": "^3.5.0",
     "css-loader": "^0.28.7",
     "enzyme": "^3.3.0",
+    "enzyme-adapter-react-16": "^1.1.1",
     "eslint": "^3.15.0",
     "eslint-config-airbnb": "^15.0.1",
     "eslint-config-ui-core": "^0.2.2",
@@ -87,6 +89,8 @@
     "extract-text-webpack-plugin": "^2.1.0",
     "file-loader": "^0.11.1",
     "html-webpack-plugin": "^2.24.1",
+    "identity-obj-proxy": "^3.0.0",
+    "jest-webpack-alias": "^3.3.3",
     "jsdom": "^10.1.0",
     "less": "^2.7.1",
     "less-loader": "^4.0.2",
@@ -105,9 +109,66 @@
     "webpack-dev-server": "^2.9.2",
     "webpack-hot-middleware": "^2.20.0"
   },
+  "jest-webpack-alias": {
+    "configFile": "webpack.dev.config.js"
+  },
   "jest": {
+    "setupTestFrameworkScriptFile": "<rootDir>/tests/helpers/jestSetup.js",
+    "testMatch": [
+      "<rootDir>/tests/unit/**/*.{js,jsx}"
+    ],
+    "testPathIgnorePatterns": [
+      "/node_modules/"
+    ],
+    "coverageDirectory": "<rootDir>/tests/unit",
+    "transform": {
+      "^.+\\.(css|less|scss)$": "identity-obj-proxy",
+      "^.+\\.jsx?$": "babel-jest"
+    },
+    "moduleFileExtensions": [
+      "js",
+      "jsx"
+    ],
+    "moduleDirectories": [
+      "node_modules"
+    ],
+    "moduleNameMapper": {
+      "\\.(css|less)$": "<rootDir>/tests/helpers/styleMock.js",
+      "^helpers$": "<rootDir>/app/Helpers",
+      "^top_down$": "<rootDir>/app/views/top-down",
+      "notifications(.*)$": "<rootDir>/app/notifications/$1"
+    },
+    "bail": true,
+    "verbose": true,
+    "globals": {
+      "__DEV__": true,
+      "__HOT_BUILD_DATE__": "",
+      "__HOT_PACKAGE_NAME__": "",
+      "__HOT_VERSION__": "",
+      "__HOT_BASE_VERSION__": ""
+    },
     "collectCoverageFrom": [
-      "app/**"
+      "**/app/**/*.js",
+      "!**/__mocks__/**",
+      "!**/__tests__/**"
+    ]
+  },
+  "nyc": {
+    "exclude": [
+      "app/index.jsx"
+    ],
+    "include": [
+      "app/*.js",
+      "app/*.jsx",
+      "app/**/*.js",
+      "app/**/*.jsx"
+    ],
+    "extension": [
+      ".js",
+      ".jsx"
+    ],
+    "require": [
+      "babel-core/register"
     ],
     "coverageThreshold": {
       "global": {
