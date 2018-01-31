@@ -9,7 +9,7 @@ const Item = Menu.Item;
 let sandbox;
 
 describe('<NavigationUser />', () => {
-    before(() => {
+    beforeAll(() => {
         sandbox = sinon.sandbox.create();
     });
 
