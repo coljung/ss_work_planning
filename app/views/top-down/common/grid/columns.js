@@ -1,7 +1,7 @@
 import Handsontable from 'handsontable';
 import { borderLeft,
         borderBottom,
-        GMPercentage,
+        percentageMetrics,
         disableEdit,
         getCurrentCellCode,
         getCurrentDateCode,
@@ -53,7 +53,7 @@ const columns = (season, rowSpan) => {
         disableEdit(instance, row, col, td, disabledMetrics);
 
         // formatting GM%
-        GMPercentage(instance, row, col, td);
+        percentageMetrics(instance, row, col, td);
 
         // no customizations for previous
         if (prop === 'previous') {

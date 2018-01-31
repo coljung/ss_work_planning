@@ -1,7 +1,7 @@
 import Handsontable from 'handsontable';
 import { borderLeft,
         borderBottom,
-        GMPercentage,
+        percentageMetrics,
         // getCurrentCellCode,
         // getCurrentDateCode,
         // enableCellValidDate,
@@ -66,7 +66,7 @@ function cellValueRender(instance, td, row, col, prop, value, cellProperties) {
     cellProperties.type = 'numeric';
 
     // formatting GM%
-    GMPercentage(instance, row, col, td);
+    percentageMetrics(instance, row, col, td);
 
     if (percentageCols.indexOf(prop) !== -1) {
         cellProperties.format = '0%';
