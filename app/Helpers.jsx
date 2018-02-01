@@ -2,6 +2,20 @@ export default function getApiUrl() {
     return process.env.NODE_ENV === 'test' ? `${UI_PLANNING_HOST}/api/` : '/api/';
 }
 
+export const defaultMetricString = () =>
+  [
+    'iGM%',
+    'iRETAIL',
+    'BOM COST',
+    'RECEIPT%',
+    'RECEIVED COST',
+    'GM%',
+    'GM$',
+    'COGS',
+    'SALES'
+  ].join(',');
+
+
 export const mergeMetrics = (startRow = 0, rowSpan, totalRows, totalCols, hasGap = false) => {
     const mergeArr = [];
 
