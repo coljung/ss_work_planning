@@ -1,7 +1,7 @@
 import reducer from '../../../app/budgets/BudgetReducer';
 import * as actions from '../../../app/budgets/BudgetActions';
 
-describe.only('BudgetReducer', () => {
+describe('BudgetReducer', () => {
   it('should return the initial state', () => {
     expect(reducer(undefined, {})).toEqual({
         budgets: [],
