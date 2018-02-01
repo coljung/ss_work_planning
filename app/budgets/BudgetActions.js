@@ -13,40 +13,40 @@ export const RESET_SEASONS_VIEW = 'RESET_SEASONS_VIEW';
 export const REQUEST_CREATE_BUDGET = 'REQUEST_CREATE_BUDGET';
 export const RECEIVE_CREATE_BUDGET = 'RECEIVE_CREATE_BUDGET';
 
-function requestBudgets() {
+export function requestBudgets() {
     return {
         type: REQUEST_BUDGETS,
     };
 }
 
-function receiveBudgets(budgets) {
+export function receiveBudgets(budgets) {
     return {
         type: RECEIVE_BUDGETS,
         budgets,
     };
 }
 
-function requestSeasons() {
+export function requestSeasons() {
     return {
         type: REQUEST_SEASONS,
     };
 }
 
-function receiveSeasons(seasons) {
+export function receiveSeasons(seasons) {
     return {
         type: RECEIVE_SEASONS,
         seasons,
     };
 }
 
-function requestBudgetCreate(budget) {
+export function requestBudgetCreate(budget) {
     return {
         type: REQUEST_CREATE_BUDGET,
         budget,
     };
 }
 
-function receiveBudgetCreate(budget) {
+export function receiveBudgetCreate(budget) {
     return {
         type: RECEIVE_CREATE_BUDGET,
         budget,
@@ -67,7 +67,7 @@ export function fetchBudgets() {
             .query({ page_size: 1000 })
             .then(
                 res => dispatch(receiveBudgets(res.body)),
-                err => dispatch(messages({ content: err, response: err.response, isError: true })),
+                err => dispatch(messages({ content: err, response: err.response, isError: true }))
             );
     };
 }
@@ -95,7 +95,10 @@ export function createBudget(budget) {
                     dispatch(messages({ content: 'Budget created successfully!', response: '', isError: false }));
                     return dispatch(receiveBudgetCreate(res.body));
                 },
-                err => dispatch(messages({ content: err, response: err.response, isError: true })),
+                err => {
+                  console.log('---', err);
+                  dispatch(messages({ content: err, response: err.response, isError: true }));
+                },
             );
     };
 }
