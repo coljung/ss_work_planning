@@ -198,9 +198,6 @@
         "lines": 1
       }
     },
-    "setupFiles": [
-      "<rootDir>/tests/setupTests.js"
-    ],
     "transform": {
       "^.+\\.jsx$": "babel-jest",
       "^.+\\.js$": "babel-jest"
