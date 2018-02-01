@@ -88,6 +88,7 @@ module.exports = {
                 MS_PLANNING_HOST: JSON.stringify(config.get('api.planning.host')),
                 MS_PLANNING_PORT: JSON.stringify(config.get('api.planning.port')),
             },
+            UI_PLANNING_HOST: JSON.stringify(config.get('server.exposedHost')),
         }),
         new webpack.LoaderOptionsPlugin({
             options: {

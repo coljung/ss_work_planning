@@ -1,5 +1,5 @@
 export default function getApiUrl() {
-    return `/api/`;
+    return process.env.NODE_ENV === 'test' ? `${UI_PLANNING_HOST}/api/` : '/api/';
 }
 
 export const mergeMetrics = (startRow = 0, rowSpan, totalRows, totalCols, hasGap = false) => {
