@@ -1,6 +1,6 @@
 import agent from 'superagent';
 import wrap from 'superagent-promise';
-import getApiUrl from 'helpers';
+import getApiUrl, { defaultMetricString } from 'helpers';
 import { messages } from 'notifications/NotificationActions';
 
 const request = wrap(agent, Promise);
@@ -39,6 +39,9 @@ export function fetchBudgetData(budget, version, view) {
         dispatch(requestBudgetViewData());
         return request
             .get(`${getApiUrl()}planning/budgets/${budget}/versions/${version}/${view}`)
+            .query({
+              metricSeq: defaultMetricString()
+            })
             .then(
             res => dispatch(receiveBudgetViewData(res.body, view)),
             err => dispatch(messages({ content: err, response: err.response, isError: true })),
