@@ -4,16 +4,17 @@ export default function getApiUrl() {
 
 export const defaultMetricString = () =>
   [
-    'iGM%',
-    'iRETAIL',
-    'BOM COST',
-    'RECEIPT%',
-    'RECEIVED COST',
-    'GM%',
-    'GM$',
+    'SALES',
     'COGS',
-    'SALES'
+    'GM$',
+    'GM%',
+    'RECEIVED COST',
+    'RECEIPT%',
+    'BOM COST',
+    'iRETAIL',
+    'iGM%'
   ].join(',');
+
 
 
 export const mergeMetrics = (startRow = 0, rowSpan, totalRows, totalCols, hasGap = false) => {
