@@ -38,6 +38,10 @@ export const percentageMetrics = (instance, row, col, td) => {
     if (metricName === 'GM%' || metricName === 'iGM%' || metricName === 'RECEIPT%') {
         instance.setCellMeta(row, col, 'format', '0.00%');
     }
+
+  if (metricName === 'TURNOVER RATE') {
+    instance.setCellMeta(row, col, 'format', '0');
+  }
     return td;
 };
 
