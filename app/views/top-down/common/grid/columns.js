@@ -8,6 +8,7 @@ import { borderLeft,
         enableCellValidDate,
     } from '../../../Helpers';
 
+
 const splitValue = (value, index) => `${value.substring(0, index)},${value.substring(index)}`;
 
 let currentRow = '';
@@ -19,9 +20,11 @@ const leftBorderCols = [
     'previous',
 ];
 
+const VIEW_TOTAL = 'total';
+
 // const getCurrentCellCode = getCellCode(month, year) => year + monthsRef[month];
 
-const columns = (season, rowSpan) => {
+const columns = (season, rowSpan, view) => {
 
     function cellValueRender(instance, td, row, col, prop, value, cellProperties) {
         // console.log(instance);
@@ -57,37 +60,44 @@ const columns = (season, rowSpan) => {
 
         // no customizations for previous
         if (prop === 'previous') {
+            if(view === VIEW_TOTAL) {
+                instance.setCellMeta(row, col, 'readOnly', true);
+            }
+
             return td;
         }
 
         if (prop === 'future') {
-            // for now future is always enabled
-            // checks if prev column is editable, then this one becomes editable too
-            // if (!instance.getCellMeta(row, col - 1).readOnly) {
-            //     instance.setCellMeta(row, col, 'readOnly', false);
-            // }
-            instance.setCellMeta(row, col, 'readOnly', false);
+            // for now future is always enabled if not on total view
+            if(view === VIEW_TOTAL) {
+                instance.setCellMeta(row, col, 'readOnly', true);
+            } else {
+                instance.setCellMeta(row, col, 'readOnly', false);
+            }
             return td;
         }
 
+
         // anything as of prior to future columns
         if (col > 7) {
-
             const currentRowSeasonYear = instance.getDataAtCell(row, 1);
             const compareCodes = enableCellValidDate(prop, currentRowSeasonYear);
-
+            // console.log(compareCodes.viewCode);
             // if code combination of this cell's year + month greater than the actual month / year, then enable field
-            if (compareCodes.cellCode >= compareCodes.viewCode) {
+            if (compareCodes.cellCode >= compareCodes.viewCode && view !== VIEW_TOTAL) {
                 instance.setCellMeta(row, col, 'readOnly', false);
             }
 
             // similar logic to 'future', but here we check the next column instead of the previous
-            if ((season === 'FW' && prop === 'feb1') || (season === 'SS' && prop === 'aug0')) {
+            if (((season === 'FW' && prop === 'feb1') || (season === 'SS' && prop === 'aug0')) && view !== VIEW_TOTAL) {
                 if (!instance.getCellMeta(row, col).readOnly) {
                     instance.setCellMeta(row, col - 1, 'readOnly', false);
                 }
             }
+        }
 
+        if(view === VIEW_TOTAL) {
+          instance.setCellMeta(row, col, 'readOnly', true);
         }
 
         return td;

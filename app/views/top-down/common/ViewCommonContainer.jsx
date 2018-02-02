@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+// import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
@@ -62,10 +63,6 @@ class ViewCommonContainer extends Component {
                     disabledBtn: false,
                 });
             }
-            // @ALSU
-            // this is the correct approach to get cell access within this component
-            // console.log(this.refs.hot.hotInstance);
-            // console.log(this.refs.hot.hotInstance.getCellMeta(row, col));
         }
     }
 
@@ -84,8 +81,9 @@ class ViewCommonContainer extends Component {
 
     buildTable = () => {
         const newMerge = this.mergeCells();
+        const { view } = this.props;
         const { currentMonthColumn, season, row_span, hidden_rows } = this.state.grid.info;
-        const cols = columns(season, row_span);
+        const cols = columns(season, row_span, view);
         const seasonColumns = season === 'SS' ? cols[0] : cols[1];
         const seasonHeaders = season === 'SS' ? headers[0] : headers[1];
         return (
