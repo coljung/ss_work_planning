@@ -2,7 +2,7 @@ export default function getApiUrl() {
     return process.env.NODE_ENV === 'test' ? `${UI_PLANNING_HOST}/api/` : '/api/';
 }
 
-export const defaultMetricString = () =>
+export const defaultMetricSequence = () =>
   [
     'iGM%',
     'iRETAIL',
