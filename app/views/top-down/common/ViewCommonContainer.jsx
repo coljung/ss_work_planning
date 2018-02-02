@@ -62,13 +62,7 @@ class ViewCommonContainer extends Component {
                     disabledBtn: false,
                 });
             }
-
-            // @ALSU
-            // this is the correct approach to get cell access within this component
-            console.log(this.refs.hot.hotInstance);
-            console.log(this.refs.hot.hotInstance.getCellMeta(row, col));
         }
-        console.log(this);
     }
 
     save = () => {
