@@ -84,24 +84,11 @@ class ViewCommonContainer extends Component {
         return newMerge;
     }
 
-    uneditable = (instance, row, col, td, prop, value) => {
-      // console.log(this.props.view);
-      // cellValueRender(instance, td, row, col, prop, value, cellProperties);
-
-        if (this.props.view === 'total') {
-            console.log('true');
-            console.log(this);
-            // this.refs.hot.hotInstance.setCellMeta(row, col, 'readOnly', true);
-        } else {
-          console.log('false');
-        }
-    }
-
     buildTable = () => {
         const newMerge = this.mergeCells();
-        const edit = this.uneditable();
+        const { view } = this.props;
         const { currentMonthColumn, season, row_span, hidden_rows } = this.state.grid.info;
-        const cols = columns(season, row_span);
+        const cols = columns(season, row_span, view);
         const seasonColumns = season === 'SS' ? cols[0] : cols[1];
         const seasonHeaders = season === 'SS' ? headers[0] : headers[1];
         return (

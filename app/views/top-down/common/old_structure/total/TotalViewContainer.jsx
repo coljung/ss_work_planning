@@ -73,7 +73,7 @@ class TotalViewContainer extends Component {
     buildTable = () => {
         const newMerge = this.mergeCells();
         const { currentMonthColumn, season } = this.state.grid.info;
-        const cols = columns(currentMonthColumn, season);
+        const cols = columns(currentMonthColumn, season, 'total');
         const seasonColumns = season === 'SS' ? cols[0] : cols[1];
         const seasonHeaders = season === 'SS' ? headers[0] : headers[1];
         return (<div className="parentDiv">
