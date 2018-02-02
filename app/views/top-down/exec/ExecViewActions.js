@@ -1,6 +1,6 @@
 import agent from 'superagent';
 import wrap from 'superagent-promise';
-import getApiUrl, { defaultMetricString } from 'helpers';
+import getApiUrl, { defaultMetricSequence } from 'helpers';
 import { messages } from 'notifications/NotificationActions';
 
 const request = wrap(agent, Promise);
@@ -33,7 +33,7 @@ export function fetchBudgetExecData(budget, version, query) {
         // merge query with the default if is not defined
         query = {
           ...query,
-          metricSeq: query && query.metricSeq ? query.metricSeq : defaultMetricString()
+          metricSeq: query && query.metricSeq ? query.metricSeq : defaultMetricSequence()
         };
 
         dispatch(requestBudgetExecViewData());
