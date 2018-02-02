@@ -2,7 +2,7 @@ export default function getApiUrl() {
     return `/api/`;
 }
 
-export const defaultMetricString = () =>
+export const defaultMetricSequence = () =>
   [
     'SALES',
     'COGS',
