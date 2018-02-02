@@ -23,11 +23,11 @@ const monthsRef = {
 export const totalReadOnly = (instance, row, col, td, prop) => {
   // console.log(this.props.view);
   // ViewCommonContainer.propTypes.view
-    if (this.props.view === 'total') {
-        instance.setCellMeta(row, col, 'readOnly', true);
-    console.log(TAB_TOTAL);
-    }
-    console.log('hi');
+    // if (this.props.view === 'total') {
+    //     instance.setCellMeta(row, col, 'readOnly', true);
+    // console.log(TAB_TOTAL);
+    // }
+    // console.log('hi');
 };
 
 export const borderLeft = (columns, prop, td) => {

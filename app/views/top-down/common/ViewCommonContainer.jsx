@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+// import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
@@ -61,11 +62,13 @@ class ViewCommonContainer extends Component {
                     disabledBtn: false,
                 });
             }
+
             // @ALSU
             // this is the correct approach to get cell access within this component
-            // console.log(this.refs.hot.hotInstance);
-            // console.log(this.refs.hot.hotInstance.getCellMeta(row, col));
+            console.log(this.refs.hot.hotInstance);
+            console.log(this.refs.hot.hotInstance.getCellMeta(row, col));
         }
+        console.log(this);
     }
 
     save = () => {
@@ -84,12 +87,10 @@ class ViewCommonContainer extends Component {
     uneditable = (instance, row, col, td, prop, value) => {
       // console.log(this.props.view);
       // cellValueRender(instance, td, row, col, prop, value, cellProperties);
-      // console.log()
-      // console.log();
+
         if (this.props.view === 'total') {
             console.log('true');
-            // const newTotal = totalReadOnly(instance, row, col, td, prop);
-            // td.className = 'working';
+            console.log(this);
             // this.refs.hot.hotInstance.setCellMeta(row, col, 'readOnly', true);
         } else {
           console.log('false');
