@@ -34,14 +34,18 @@ export const resetState = () => ({
     type: RESET_BUDGETS_VIEW,
 });
 
-export function fetchBudgetData(budget, version, view) {
+export function fetchBudgetData(budget, version, view, query) {
     return (dispatch) => {
+        // merge query with the default if is not defined
+        query = {
+          ...query,
+          metricSeq: query && query.metricSeq ? query.metricSeq : defaultMetricString()
+        };
+
         dispatch(requestBudgetViewData());
         return request
             .get(`${getApiUrl()}planning/budgets/${budget}/versions/${version}/${view}`)
-            .query({
-              metricSeq: defaultMetricString()
-            })
+            .query(query)
             .then(
             res => dispatch(receiveBudgetViewData(res.body, view)),
             err => dispatch(messages({ content: err, response: err.response, isError: true })),

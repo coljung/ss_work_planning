@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import HotTable from 'react-handsontable';
 import Handsontable from 'handsontable';
 import { Button, Spin } from 'antd';
+import { withRouter } from 'react-router';
 // import { mergeMetrics } from 'helpers';
 import { saveBudget, fetchBudgetData, resetState } from '../common/viewActions';
 import { headers, columns, mergeMetrics } from '../common/grid/index';
@@ -21,7 +22,8 @@ class ViewCommonContainer extends Component {
     }
 
     componentDidMount() {
-        this.props.fetchBudgetData(this.props.budget, this.props.version, this.props.view);
+        const { budget, location, version, view } = this.props;
+        this.props.fetchBudgetData(budget, version, view, location.query);
     }
 
     componentWillUnmount() {
@@ -155,6 +157,7 @@ ViewCommonContainer.propTypes = {
     budget: PropTypes.string.isRequired,
     version: PropTypes.string.isRequired,
     view: PropTypes.string.isRequired,
+    router: PropTypes.object.isRequired,
 };
 
 function mapStateToProps(state) {
@@ -169,4 +172,4 @@ function mapDispatchToProps(dispatch) {
     return bindActionCreators({ fetchBudgetData, resetState, saveBudget }, dispatch);
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ViewCommonContainer);
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(ViewCommonContainer));

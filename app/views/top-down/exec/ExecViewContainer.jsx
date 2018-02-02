@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import HotTable from 'react-handsontable';
 import Handsontable from 'handsontable';
 import { Spin } from 'antd';
+import { withRouter } from 'react-router';
 import { fetchBudgetExecData, resetState } from './ExecViewActions';
 import { headers, columns } from './grid-build/index';
 import { mergeMetrics, mergeHeadersExecRecap } from '../../../Helpers';
@@ -21,7 +22,9 @@ class ExecViewContainer extends Component {
     }
 
     componentDidMount() {
-        this.props.fetchBudgetExecData(this.props.budget, this.props.version);
+        const { budget, location, version } = this.props;
+
+        this.props.fetchBudgetExecData(budget, version, location.query);
     }
 
     componentWillUnmount() {
@@ -108,6 +111,7 @@ ExecViewContainer.propTypes = {
     resetState: PropTypes.func.isRequired,
     budget: PropTypes.string.isRequired,
     version: PropTypes.string.isRequired,
+    router: PropTypes.object.isRequired,
 };
 
 function mapStateToProps(state) {
@@ -122,4 +126,4 @@ function mapDispatchToProps(dispatch) {
     return bindActionCreators({ fetchBudgetExecData, resetState }, dispatch);
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ExecViewContainer);
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(ExecViewContainer));

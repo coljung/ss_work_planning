@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import HotTable from 'react-handsontable';
 import Handsontable from 'handsontable';
 import { Spin } from 'antd';
+import { withRouter } from 'react-router';
 import { mergeMetrics, mergeHeadersExecRecap } from 'helpers';
 import { saveBudget, fetchBudgetData, resetState } from '../common/viewActions';
 import { headers, columns } from '../common/grid/index';
@@ -19,7 +20,9 @@ class WomenViewContainer extends Component {
     }
 
     componentDidMount() {
-        this.props.fetchBudgetData(this.props.budget, this.props.version, 'women');
+        const { budget, location, version } = this.props;
+
+        this.props.fetchBudgetData(budget, version, 'women', location.query);
     }
 
     componentWillUnmount() {
@@ -92,6 +95,7 @@ WomenViewContainer.propTypes = {
     resetState: PropTypes.func.isRequired,
     budget: PropTypes.string.isRequired,
     version: PropTypes.string.isRequired,
+    router: PropTypes.object.isRequired,
 };
 
 function mapStateToProps(state) {
@@ -106,4 +110,4 @@ function mapDispatchToProps(dispatch) {
     return bindActionCreators({ fetchBudgetData, resetState }, dispatch);
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(WomenViewContainer);
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(WomenViewContainer));
