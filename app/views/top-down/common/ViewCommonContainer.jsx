@@ -9,7 +9,6 @@ import { Button, Spin } from 'antd';
 // import { mergeMetrics } from 'helpers';
 import { saveBudget, fetchBudgetData, resetState } from '../common/viewActions';
 import { headers, columns, mergeMetrics } from '../common/grid/index';
-import { totalReadOnly } from '../../../Helpers';
 
 class ViewCommonContainer extends Component {
 
@@ -62,13 +61,7 @@ class ViewCommonContainer extends Component {
                     disabledBtn: false,
                 });
             }
-
-            // @ALSU
-            // this is the correct approach to get cell access within this component
-            console.log(this.refs.hot.hotInstance);
-            console.log(this.refs.hot.hotInstance.getCellMeta(row, col));
         }
-        console.log(this);
     }
 
     save = () => {
