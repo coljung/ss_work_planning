@@ -2,6 +2,21 @@ export default function getApiUrl() {
     return `/api/`;
 }
 
+export const defaultMetricSequence = () =>
+  [
+    'SALES',
+    'COGS',
+    'GM$',
+    'GM%',
+    'RECEIVED COST',
+    'RECEIPT%',
+    'BOM COST',
+    'iRETAIL',
+    'iGM%'
+  ].join(',');
+
+
+
 export const mergeMetrics = (startRow = 0, rowSpan, totalRows, totalCols, hasGap = false) => {
     const mergeArr = [];
 

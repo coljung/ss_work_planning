@@ -1,6 +1,6 @@
 import agent from 'superagent';
 import wrap from 'superagent-promise';
-import getApiUrl from 'helpers';
+import getApiUrl, { defaultMetricSequence } from 'helpers';
 import { messages } from 'notifications/NotificationActions';
 
 const request = wrap(agent, Promise);
@@ -28,14 +28,22 @@ export function resetState() {
     };
 }
 
-export function fetchBudgetExecData(budget, version) {
-    return (dispatch) => {
+export function fetchBudgetExecData(budget, version, query) {
+    return (dispatch, getState) => {
+        // merge query with the default if is not defined
+        query = {
+          ...query,
+          metricSeq: query && query.metricSeq ? query.metricSeq : defaultMetricSequence()
+        };
+
         dispatch(requestBudgetExecViewData());
+
         return request
             .get(`${getApiUrl()}planning/budgets/${budget}/versions/${version}/exec`)
+            .query(query)
             .then(
-            res => dispatch(receiveBudgetExecViewData(res.body)),
-            err => dispatch(messages({ content: err, response: err.response, isError: true })),
+              res => dispatch(receiveBudgetExecViewData(res.body)),
+              err => dispatch(messages({ content: err, response: err.response, isError: true })),
             );
     };
 }
