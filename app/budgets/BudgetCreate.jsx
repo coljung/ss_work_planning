@@ -18,10 +18,6 @@ class BudgetCreate extends Component {
     }
 
     componentWillReceiveProps(props) {
-        this.setState({
-            seasons: props.seasons,
-        });
-
         if (props.visible && !props.seasonsFetched) {
             this.props.fetchSeasons();
         }
@@ -50,7 +46,8 @@ class BudgetCreate extends Component {
     }
 
     createDropdown = () => {
-        const buildSelect = this.state.seasons.map(s =>
+        const { seasons } = this.props;
+        const buildSelect = (seasons || []).map(s =>
             <Option key={s.name} value={`${s.season}-${s.year}`}>{s.name}</Option>,
         );
         return (
