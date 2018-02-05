@@ -2,6 +2,7 @@ import Handsontable from 'handsontable';
 import { borderLeft,
         borderBottom,
         percentageMetrics,
+        numberMetrics,
         // getCurrentCellCode,
         // getCurrentDateCode,
         // enableCellValidDate,
@@ -65,8 +66,11 @@ function cellValueRender(instance, td, row, col, prop, value, cellProperties) {
     Handsontable.renderers.NumericRenderer.apply(this, arguments);
     cellProperties.type = 'numeric';
 
-    // formatting GM%
+    // formatting percentages metrics (GM%, iGM%, Receipt%)
     percentageMetrics(instance, row, col, td);
+
+    // formatting numbers metrics (Turnover Rate)
+    numberMetrics(instance, row, col, td);
 
     if (percentageCols.indexOf(prop) !== -1) {
         cellProperties.format = '0%';
