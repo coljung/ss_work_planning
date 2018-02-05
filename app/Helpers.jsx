@@ -12,7 +12,8 @@ export const defaultMetricSequence = () =>
     'RECEIPT%',
     'BOM COST',
     'iRETAIL',
-    'iGM%'
+    'iGM%',
+    'TURNOVER RATE'
   ].join(',');
 
 

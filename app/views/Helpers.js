@@ -43,6 +43,15 @@ export const percentageMetrics = (instance, row, col, td) => {
     return td;
 };
 
+export const numberMetrics = (instance, row, col, td) => {
+  const metricName = instance.getDataAtCell(row, 0);
+
+  if (metricName === 'TURNOVER RATE') {
+    instance.setCellMeta(row, col, 'format', '0');
+  }
+  return td;
+};
+
 export const disableEdit = (instance, row, col, td, disabledMetrics) => {
     const metricName = instance.getDataAtCell(row, 0);
 
