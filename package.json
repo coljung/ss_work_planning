@@ -160,7 +160,7 @@
       "UI_PLANNING_HOST": "http://127.0.0.1"
     },
     "collectCoverageFrom": [
-      "**/app/**/*.js",
+      "**/app/**/*.{js,jsx}",
       "!**/__mocks__/**",
       "!**/__tests__/**"
     ],
