@@ -1,0 +1,11 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`LinkedButton should render correctly 1`] = `
+<button
+  className="ant-btn"
+  onClick={[Function]}
+  title="mockTitle"
+  type="button"
+  url="mockUrl"
+/>
+`;

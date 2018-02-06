@@ -1,0 +1,13 @@
+[
+  { "year": 2018, "season": "FW", "name": "FW18" },
+  { "year": 2019, "season": "SS", "name": "SS19" },
+  { "year": 2019, "season": "FW", "name": "FW19" },
+  { "year": 2020, "season": "SS", "name": "SS20" },
+  { "year": 2020, "season": "FW", "name": "FW20" },
+  { "year": 2021, "season": "SS", "name": "SS21" },
+  { "year": 2021, "season": "FW", "name": "FW21" },
+  { "year": 2022, "season": "SS", "name": "SS22" },
+  { "year": 2022, "season": "FW", "name": "FW22" },
+  { "year": 2023, "season": "SS", "name": "SS23" },
+  { "year": 2023, "season": "FW", "name": "FW23" }
+]

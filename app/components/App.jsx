@@ -1,11 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Layout, Icon } from 'antd';
+import Layout, { Content, Header } from 'antd/lib/layout';
 import HeaderContent from './common/HeaderContent';
 import NavigationMain from './common/NavigationMain';
 import NotificationManager from '../notifications/NotificationManager';
-
-const { Content, Header, Sider } = Layout;
 
 export default class App extends Component {
 
@@ -36,9 +34,7 @@ export default class App extends Component {
                 <Layout>
                     <Content>
                         <main style={{ flex: 1, overflowY: 'auto', padding: '0 25px 25px' }}>
-                            {React.cloneElement(this.props.children, {
-                                key: this.props.location.pathname,
-                            })}
+                            {this.props.children}
                             <NotificationManager />
                         </main>
                     </Content>
@@ -56,3 +52,7 @@ App.propTypes = {
         PropTypes.element,
     ]),
 };
+
+//    {React.cloneElement(this.props.children, {
+    //    key: this.props.location.pathname,
+    //})}
