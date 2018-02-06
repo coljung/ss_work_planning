@@ -6,7 +6,7 @@ describe('Helpers functions', () => {
 
   it('should get default metric query string', () => {
     expect(defaultMetricSequence()).toEqual(
-      'SALES,COGS,GM$,GM%,RECEIVED COST,RECEIPT%,BOM COST,iRETAIL,iGM%'
+      'SALES,COGS,GM$,GM%,RECEIVED COST,RECEIPT%,BOM COST,iRETAIL,iGM%,TURNOVER RATE'
     );
   });
 });
