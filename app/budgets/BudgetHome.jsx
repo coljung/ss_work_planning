@@ -5,7 +5,6 @@ import BudgetList from './BudgetList';
 import BudgetCreate from './BudgetCreate';
 
 export default class BudgetHome extends Component {
-
     constructor(props) {
         super(props);
         this.state = {
@@ -47,7 +46,6 @@ export default class BudgetHome extends Component {
 
                 </Col>
             </Row>
-
         );
     }
 }
