@@ -3,7 +3,6 @@ import { Route, IndexRoute } from 'react-router';
 import App from './components/App';
 import BudgetViewsContainer from './views/BudgetViewsContainer';
 import Home from './budgets/BudgetHome';
-import Test from './budgets/BudgetTest';
 
 
 const requireAuth = ((next, replace, callback) => {
@@ -30,7 +29,6 @@ export default (
         <Route path={ROUTE_DASHBOARD} component={Home} />
         <Route path={ROUTE_TODO} component={BudgetViewsContainer} />
         <Route path={ROUTE_BUDGET}>
-            <Route path=':id' component={Test} />
             <Route path=':seasonname/budget/:budgetid/version/:vname/:id/:tab' component={BudgetViewsContainer} />
         </Route>
     </Route>
