@@ -1,7 +1,6 @@
 import nock from 'nock';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
-import fetchMock from 'fetch-mock';
 import { join } from 'path';
 import getApiUrl from '../../../app/Helpers';
 import * as actions from '../../../app/budgets/BudgetActions';

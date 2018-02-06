@@ -1,9 +1,12 @@
+import { join } from 'path';
+import nock from 'nock';
 import React from 'react'
-import Enzyme, { mount } from 'enzyme'
+import Enzyme, { mount, shallow } from 'enzyme'
 import Adapter from 'enzyme-adapter-react-16';
 import { Provider } from 'react-redux';
+import thunk from 'redux-thunk'
 import configureStore from 'redux-mock-store'
-import BudgetCreate from '../../../app/budgets/BudgetCreate';
+import BudgetCreate, { BudgetCreate as PureBudgetCreate } from '../../../app/budgets/BudgetCreate';
 
 Enzyme.configure({ adapter: new Adapter() });
 
@@ -18,30 +21,32 @@ function setup() {
     resetState: jest.fn()
   }
 
-  const mockStore = configureStore();
+  const middlewares = [thunk]
+  const mockStore = configureStore(middlewares);
 
   // Could be imported from app/budgets/BudgetReducer.js
   const initialState = {
-  BudgetReducer: {
-    budgets: [],
-    seasons: [
-      { year: 2018, season: 'SS', name: 'SS18' },
-      { year: 2018, season: 'FW', name: 'FW18' },
-      { year: 2019, season: 'SS', name: 'SS19' },
-      { year: 2019, season: 'FW', name: 'FW19' },
-      { year: 2020, season: 'SS', name: 'SS20' },
-      { year: 2020, season: 'FW', name: 'FW20' },
-      { year: 2021, season: 'SS', name: 'SS21' },
-      { year: 2021, season: 'FW', name: 'FW21' },
-      { year: 2022, season: 'SS', name: 'SS22' },
-      { year: 2022, season: 'FW', name: 'FW22' },
-      { year: 2023, season: 'SS', name: 'SS23' },
-      { year: 2023, season: 'FW', name: 'FW23' }
-    ],
-    budgetsFetched: false,
-    seasonsFetched: true
-  }
-};
+    BudgetActions: [],
+    BudgetReducer: {
+      budgets: [],
+      seasons: [
+        { year: 2018, season: 'SS', name: 'SS18' },
+        { year: 2018, season: 'FW', name: 'FW18' },
+        { year: 2019, season: 'SS', name: 'SS19' },
+        { year: 2019, season: 'FW', name: 'FW19' },
+        { year: 2020, season: 'SS', name: 'SS20' },
+        { year: 2020, season: 'FW', name: 'FW20' },
+        { year: 2021, season: 'SS', name: 'SS21' },
+        { year: 2021, season: 'FW', name: 'FW21' },
+        { year: 2022, season: 'SS', name: 'SS22' },
+        { year: 2022, season: 'FW', name: 'FW22' },
+        { year: 2023, season: 'SS', name: 'SS23' },
+        { year: 2023, season: 'FW', name: 'FW23' }
+      ],
+      budgetsFetched: false,
+      seasonsFetched: true
+    }
+  };
 
   let store = mockStore(initialState);
 
@@ -50,6 +55,29 @@ function setup() {
       <BudgetCreate {...props} />
     </Provider>
   );
+
+  return {
+    props,
+    enzymeWrapper,
+    store
+  }
+}
+
+function setupShallow() {
+  const props = {
+    seasons: [
+      { year: 2018, season: 'SS', name: 'SS18' },
+      { year: 2018, season: 'FW', name: 'FW18' }
+    ],
+    seasonsFetched: true,
+    visible: true,
+    onOverlayClick: jest.fn(),
+    fetchSeasons: jest.fn(),
+    createBudget: jest.fn(),
+    resetState: jest.fn()
+  }
+
+  const enzymeWrapper = mount(<PureBudgetCreate {...props} />);
 
   return {
     props,
@@ -80,5 +108,93 @@ describe('BudgetCreate', () => {
     const dropdownWrapper = mount(enzymeWrapper.find('Trigger').instance().getComponent());
     expect(dropdownWrapper.find('MenuItem').length).toBe(12);
     expect(dropdownWrapper.find('MenuItem').at(0).text()).toBe('SS18');
+  });
+
+  it('should close modal', () => {
+    const { enzymeWrapper } = setupShallow();
+    const spyReset = jest.spyOn(enzymeWrapper.props(), 'resetState');
+    const spyOverlay = jest.spyOn(enzymeWrapper.props(), 'onOverlayClick');
+
+    enzymeWrapper.find('.ant-modal-close').simulate('click');
+
+    jest.runAllTimers();
+
+    expect(spyReset).toHaveBeenCalled();
+    expect(spyOverlay).toHaveBeenCalled();
+  });
+
+  it('should save new budget', () => {
+    const { enzymeWrapper } = setupShallow();
+    const budget = {
+      year: 2020,
+      season: 'SS'
+    };
+    const spy = jest.spyOn(enzymeWrapper.props(), 'createBudget');
+
+    nock(UI_PLANNING_HOST)
+      .log(console.log)
+      .post('/api/planning/budgets', budget)
+      .replyWithFile(201, join(__dirname, '..', '..', 'fixtures', 'create_budget.json'), {
+        'Content-Type': 'application/json'
+      });
+
+    enzymeWrapper.setState(budget, () => {
+      enzymeWrapper.find('#createButtonSave').first().simulate('click');
+
+      jest.runAllTimers();
+
+      expect(spy).toHaveBeenCalled();
+    });
+  });
+
+  it('should set new props', () => {
+    const { enzymeWrapper } = setupShallow();
+
+    enzymeWrapper.setProps({
+      visible: false
+    });
+
+    expect(enzymeWrapper.prop('visible')).toBeFalsy();
+  });
+
+  it('should go fetch seasons on receive props', () => {
+    const { enzymeWrapper } = setupShallow();
+    const spy = jest.spyOn(enzymeWrapper.props(), 'fetchSeasons');
+
+    enzymeWrapper.setProps({
+      visible: true,
+      seasonsFetched: false
+    });
+
+    jest.runAllTimers();
+
+    expect(spy).toHaveBeenCalled();
+    expect(enzymeWrapper.prop('visible')).toBeTruthy();
+  });
+
+  it('should handle change', () => {
+    const { enzymeWrapper } = setupShallow();
+
+    enzymeWrapper.instance().handleChange('SS-22');
+
+    const newState = enzymeWrapper.state();
+
+    expect(newState).toEqual({
+      year: '22',
+      season: 'SS'
+    });
+  });
+
+  it('should get an undefined seasons from props', () => {
+    const { enzymeWrapper } = setupShallow();
+
+    enzymeWrapper.setProps({
+      visible: true,
+      seasonsFetched: true,
+      seasons: undefined
+    });
+
+    const dropdownWrapper = mount(enzymeWrapper.find('Trigger').instance().getComponent());
+    expect(dropdownWrapper.find('MenuItem').length).toBe(0);
   });
 });
