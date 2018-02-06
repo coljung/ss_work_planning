@@ -7,7 +7,7 @@ import { createBudget, fetchSeasons, resetState } from './BudgetActions';
 
 const Option = Select.Option;
 
-class BudgetCreate extends Component {
+export class BudgetCreate extends Component {
 
     constructor(props) {
         super(props);
@@ -47,7 +47,8 @@ class BudgetCreate extends Component {
 
     createDropdown = () => {
         const { seasons } = this.props;
-        const buildSelect = (seasons || []).map(s =>
+
+        const buildSelect = (seasons || []).map((s) =>
             <Option key={s.name} value={`${s.season}-${s.year}`}>{s.name}</Option>,
         );
         return (
@@ -58,7 +59,6 @@ class BudgetCreate extends Component {
     }
 
     render() {
-        // this.props.budgetCreated;
         const footerButtons = (<div>
             <Button
                 onClick={this.saveNewBudget.bind(this)}
@@ -82,7 +82,6 @@ class BudgetCreate extends Component {
                 onOk={this.handleOk}
                 onCancel={this.closeModal}
                 footer={footerButtons}>
-
                 {mySelect}
             </Modal>
         );

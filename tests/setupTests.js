@@ -5,6 +5,7 @@ Enzyme.configure({ adapter: new Adapter() });
 
 global.requestAnimationFrame = (callback) => {
     setTimeout(callback, 0);
+    return 0;
 };
 
 // Make Enzyme functions available in all test files without importing
