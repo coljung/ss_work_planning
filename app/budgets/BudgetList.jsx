@@ -13,8 +13,7 @@ class BudgetList extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            modalActive: false,
-            budgets: this.props.budgets || [],
+            modalActive: false
         };
         this.restOfBudgets = '';
     }
@@ -23,15 +22,7 @@ class BudgetList extends Component {
         this.props.fetchBudgets();
     }
 
-    componentWillReceiveProps(nextProps) {
-        if (this.props.budgets.length !== nextProps.budgets.length) {
-            this.setState({
-                budgets: nextProps.budgets,
-            });
-        }
-    }
-
-    enterLoading = (e) => {
+    handleToggleModal = () => {
         this.setState({
             modalActive: !this.state.modalActive,
         });
@@ -41,27 +32,28 @@ class BudgetList extends Component {
         if (a.year > b.year) {
             return -1;
         }
+
         if (a.year < b.year) {
             return 1;
         }
+
         return 0;
     }
 
     createList = () => {
-        const stBudgets = this.state.budgets;
-        const hasVersions = stBudgets.filter(e => e.versions.length);
-
-        // sort by most recent
-        hasVersions.sort(this.orderBudgets);
+        const { budgets } = this.props;
+        const hasVersions = budgets
+          .filter(budget => budget.versions.length)
+          .sort(this.orderBudgets); // sort by most recent
 
         // take latest 4 budgets
-        const recentBudgets = hasVersions.slice(0, 4).map((e) => {
-            const url = `${ROUTE_BUDGET}/${e.season}${e.year}/budget/${e.id}/version/${e.versions[0].name}/${e.versions[0].id}/exec`;
+        const recentBudgets = hasVersions.slice(0, 4).map((budget) => {
+            const url = `${ROUTE_BUDGET}/${budget.season}${budget.year}/budget/${budget.id}/version/${budget.versions[0].name}/${budget.versions[0].id}/exec`;
             return (
-                <li key={e.id}>
+                <li key={budget.id}>
                     <h4>
                         <Link to={url}>
-                            {e.season}{e.year}
+                            {budget.season}{budget.year}
                         </Link>
                     </h4>
                 </li>
@@ -69,11 +61,11 @@ class BudgetList extends Component {
         });
 
         // take rest of  4 budgets
-        this.restOfBudgets = hasVersions.slice(4).map(e =>
-            <li key={e.id}>
+        this.restOfBudgets = hasVersions.slice(4).map(budget =>
+            <li key={budget.id}>
                 <h4>
-                    <Link to={`${ROUTE_BUDGET}/${e.season}${e.year}/budget/${e.id}/version/${e.versions[0].name}/${e.versions[0].id}/exec`}>
-                        {e.season}{e.year}
+                    <Link to={`${ROUTE_BUDGET}/${budget.season}${budget.year}/budget/${budget.id}/version/${budget.versions[0].name}/${budget.versions[0].id}/exec`}>
+                        {budget.season}{budget.year}
                     </Link>
                 </h4>
             </li>,
@@ -88,12 +80,14 @@ class BudgetList extends Component {
 
     render() {
         const budgetListData = this.props.budgetsFetched ? this.createList() : <Spin size="large" />;
-        const footerButtons = (<div>
+        const footerButtons = (
+          <div>
             <Button
-                onClick={this.enterLoading}
+                onClick={this.handleToggleModal}
                 size='large'>Ok
             </Button>
-        </div>);
+          </div>
+        );
 
         return (
             <div>
@@ -102,7 +96,7 @@ class BudgetList extends Component {
                     title="All Previous Budgets"
                     visible={this.props.visible}
                     onCancel={this.props.onOverlayClick}
-                    footer={footerButtons}>
+                    footer={null}>
 
                     <ul className="budgetList">
                         { this.restOfBudgets }
