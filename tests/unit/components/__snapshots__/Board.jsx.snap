@@ -3,11 +3,34 @@
 exports[`Board should render correctly 1`] = `
 <div
   className="board"
-  id=""
+  id="board"
 >
   <h2>
     fsdfsdf
   </h2>
-  Hello dJest!
+  Hello Jest!
+</div>
+`;
+
+exports[`Board should render correctly with btnInTitle 1`] = `
+<div
+  className="board"
+  id="board"
+>
+  <div
+    className="clearfix titleWithButton"
+  >
+    <h2>
+      Hello World!
+    </h2>
+    <Button
+      ghost={false}
+      loading={false}
+      prefixCls="ant-btn"
+    >
+      Foo Bar
+    </Button>
+  </div>
+  Hello Jest!
 </div>
 `;

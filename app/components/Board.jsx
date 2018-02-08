@@ -1,26 +1,24 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-export default class Board extends React.Component {
-    render() {
-        let boardTitle = null;
-        if (this.props.btnInTitle) {
-            boardTitle = (
-                <div className='clearfix titleWithButton'>
-                    <h2>{this.props.title}</h2>
-                    {this.props.btnInTitle}
-                </div>
-            );
-        } else {
-            boardTitle = (<h2>{this.props.title}</h2>);
-        }
-        return (
-            <div className='board' id={this.props.id}>
-                {boardTitle}
-                {this.props.children}
-            </div>
-        );
-    }
+const Board = ({ btnInTitle, title, id, children }) => {
+  let boardTitle = null;
+  if (btnInTitle) {
+      boardTitle =
+          <div className='clearfix titleWithButton'>
+              <h2>{title}</h2>
+              {btnInTitle}
+          </div>;
+  } else {
+      boardTitle = <h2>{title}</h2>;
+  }
+
+  return (
+      <div className='board' id={id || 'board'}>
+          {boardTitle}
+          {children}
+      </div>
+  );
 }
 
 Board.propTypes = {
@@ -37,3 +35,5 @@ Board.defaultProps = {
     btnInTitle: null,
     id: '',
 };
+
+export default Board;
