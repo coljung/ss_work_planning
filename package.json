@@ -147,6 +147,7 @@
       "\\.(css|less)$": "<rootDir>/tests/helpers/styleMock.js",
       "^helpers$": "<rootDir>/app/Helpers",
       "^top_down$": "<rootDir>/app/views/top-down",
+      "^top_down(.*)$": "<rootDir>/app/views/top-down/$1",
       "notifications(.*)$": "<rootDir>/app/notifications/$1"
     },
     "bail": true,
