@@ -7,22 +7,24 @@ const SubMenu = Menu.SubMenu;
 export default class NavigationUser extends Component {
     constructor(props) {
         super(props);
-        this.state = { current: 'setting:1' };
+        this.state = { current: '' };
     }
-    handleClick(e) {}
+
+    handleClick = (e) => {
+      console.log('click ', e);
+      this.setState({
+        current: e.key,
+      });
+    }
 
     render() {
         return (
             <Menu
-                onClick={this.handleClick}
                 selectedKeys={[this.state.current]}
                 mode="horizontal">
-
                 <SubMenu title={<span>User Name <Icon type="setting" /></span>}>
-                    <Menu.Item>
-                        <Link to="/logout">
-                            <Icon type="logout" />Log out
-                        </Link>
+                    <Menu.Item key="logout">
+                        <Icon type="logout" />Log out
                     </Menu.Item>
                 </SubMenu>
             </Menu>

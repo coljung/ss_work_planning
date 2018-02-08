@@ -27,48 +27,6 @@ exports[`App should render correctly 1`] = `
       <h1>
         Merchandise Planning Tool
       </h1>
-      <ul
-        aria-activedescendant=""
-        className="ant-menu ant-menu-light ant-menu-root ant-menu-horizontal"
-        onKeyDown={[Function]}
-        role="menu"
-        style={Object {}}
-        tabIndex="0"
-      >
-        <li
-          className="ant-menu-submenu ant-menu-submenu-horizontal"
-          onMouseEnter={[Function]}
-          onMouseLeave={[Function]}
-          style={undefined}
-        >
-          <div
-            aria-expanded={false}
-            aria-haspopup="true"
-            aria-owns="item_0$Menu"
-            className="ant-menu-submenu-title"
-            onBlur={undefined}
-            onClick={[Function]}
-            onContextMenu={undefined}
-            onFocus={undefined}
-            onMouseDown={undefined}
-            onMouseEnter={[Function]}
-            onMouseLeave={[Function]}
-            onTouchStart={undefined}
-            style={Object {}}
-            title={undefined}
-          >
-            <span>
-              User Name 
-              <i
-                className="anticon anticon-setting"
-              />
-            </span>
-            <i
-              className="ant-menu-submenu-arrow"
-            />
-          </div>
-        </li>
-      </ul>
     </div>
   </div>
   <div

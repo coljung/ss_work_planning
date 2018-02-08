@@ -28,7 +28,7 @@ describe('<NavigationUser />', () => {
     it('simulate click event', () => {
         const wrapper = shallow(<NavigationUser />);
 
-        expect(wrapper.state('current')).to.equal('setting:1');
-        wrapper.find(Menu).simulate('click', { key: 'setting:1' });
+        expect(wrapper.state('current')).to.equal('');
+        wrapper.find(Menu).simulate('click', { key: 'logout' });
     });
 });
