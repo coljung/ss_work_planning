@@ -7,7 +7,7 @@ import { browserHistory } from 'react-router';
 import ExecViewContainer from './top-down/exec/ExecViewContainer';
 import ViewCommonContainer from './top-down/common/ViewCommonContainer';
 import BudgetViewsButtonActions from './BudgetViewsButtonActions';
-import { saveNewBudgetVersion } from './BudgetViewActions';
+import { budgetVersions, saveNewBudgetVersion } from './BudgetViewActions';
 import { ROUTE_BUDGET } from '../Routes';
 
 const TabPane = Tabs.TabPane;
@@ -40,6 +40,12 @@ class BudgetViewsContainer extends Component {
         };
 
         this.dataToSave = [];
+    }
+
+    componentWillMount() {
+        const { budgetVersions } = this.props; // eslint-disable-line no-shadow
+
+        budgetVersions(7);
     }
 
     shouldComponentUpdate(nextProps, nextState) {
@@ -102,11 +108,13 @@ class BudgetViewsContainer extends Component {
         // console.log('---------', this.state.activeTab, this.state);
         const SubMenu = Menu.SubMenu;
         const MenuItemGroup = Menu.ItemGroup;
+        const { versions, params: { seasonname } } = this.props;
         const menuBudget = (
             <Menu>
-                <Menu.Item>SS2018 - V3</Menu.Item>
-                <Menu.Item>SS2018 - V2</Menu.Item>
-                <Menu.Item>SS2018 - V1</Menu.Item>
+                { versions && versions.map(
+                  version =>
+                    <Menu.Item>{ seasonname } - { version.name }</Menu.Item>
+                ) }
             </Menu>
         );
         const menuView = (
@@ -209,17 +217,20 @@ BudgetViewsContainer.propTypes = {
     params: PropTypes.object.isRequired,
     newVersion: PropTypes.object,
     saveNewBudgetVersion: PropTypes.func.isRequired,
+    budgetVersions: PropTypes.func.isRequired,
+    versions: PropTypes.array.isRequired,
 };
 
 function mapStateToProps(state) {
     const { BudgetViewReducer } = state;
     return {
         newVersion: BudgetViewReducer.newVersion,
+        versions: BudgetViewReducer.versions,
     };
 }
 
 function mapDispatchToProps(dispatch) {
-    return bindActionCreators({ saveNewBudgetVersion }, dispatch);
+    return bindActionCreators({ budgetVersions, saveNewBudgetVersion }, dispatch);
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(BudgetViewsContainer);
