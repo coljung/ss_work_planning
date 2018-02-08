@@ -1,4 +1,5 @@
 export default function getApiUrl() {
+    /* istanbul ignore next */
     return process.env.NODE_ENV === 'test' ? `${UI_PLANNING_HOST}/api/` : '/api/';
 }
 
@@ -18,7 +19,7 @@ export const defaultMetricSequence = () =>
 
 
 
-export const mergeMetrics = (startRow = 0, rowSpan, totalRows, totalCols, hasGap = false) => {
+export const mergeMetrics = (startRow, rowSpan, totalRows, totalCols, hasGap = false) => {
     const mergeArr = [];
 
     // span between metrics
@@ -51,11 +52,10 @@ export const mergeMetrics = (startRow = 0, rowSpan, totalRows, totalCols, hasGap
 };
 
 export const mergeHeadersExecRecap = () => {
-    const mergeArr = [
+    return [
         { row: 0, col: 0, rowspan: 1, colspan: 2 },
         { row: 0, col: 2, rowspan: 1, colspan: 6 },
         { row: 0, col: 8, rowspan: 1, colspan: 7 },
         { row: 0, col: 15, rowspan: 1, colspan: 7 },
     ];
-    return mergeArr;
 };

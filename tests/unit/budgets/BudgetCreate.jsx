@@ -63,7 +63,7 @@ function setup() {
   }
 }
 
-function setupShallow() {
+function setupPureComponent() {
   const props = {
     seasons: [
       { year: 2018, season: 'SS', name: 'SS18' },
@@ -111,7 +111,7 @@ describe('BudgetCreate', () => {
   });
 
   it('should close modal', () => {
-    const { enzymeWrapper } = setupShallow();
+    const { enzymeWrapper } = setupPureComponent();
     const spyReset = jest.spyOn(enzymeWrapper.props(), 'resetState');
     const spyOverlay = jest.spyOn(enzymeWrapper.props(), 'onOverlayClick');
 
@@ -124,7 +124,7 @@ describe('BudgetCreate', () => {
   });
 
   it('should save new budget', () => {
-    const { enzymeWrapper } = setupShallow();
+    const { enzymeWrapper } = setupPureComponent();
     const budget = {
       year: 2020,
       season: 'SS'
@@ -148,7 +148,7 @@ describe('BudgetCreate', () => {
   });
 
   it('should set new props', () => {
-    const { enzymeWrapper } = setupShallow();
+    const { enzymeWrapper } = setupPureComponent();
 
     enzymeWrapper.setProps({
       visible: false
@@ -158,7 +158,7 @@ describe('BudgetCreate', () => {
   });
 
   it('should go fetch seasons on receive props', () => {
-    const { enzymeWrapper } = setupShallow();
+    const { enzymeWrapper } = setupPureComponent();
     const spy = jest.spyOn(enzymeWrapper.props(), 'fetchSeasons');
 
     enzymeWrapper.setProps({
@@ -173,7 +173,7 @@ describe('BudgetCreate', () => {
   });
 
   it('should handle change', () => {
-    const { enzymeWrapper } = setupShallow();
+    const { enzymeWrapper } = setupPureComponent();
 
     enzymeWrapper.instance().handleChange('SS-22');
 
@@ -186,7 +186,7 @@ describe('BudgetCreate', () => {
   });
 
   it('should get an undefined seasons from props', () => {
-    const { enzymeWrapper } = setupShallow();
+    const { enzymeWrapper } = setupPureComponent();
 
     enzymeWrapper.setProps({
       visible: true,
