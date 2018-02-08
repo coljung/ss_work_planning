@@ -17,7 +17,7 @@ export default class NavigationUser extends Component {
                 onClick={this.handleClick}
                 selectedKeys={[this.state.current]}
                 mode="horizontal">
-
+                { /*
                 <SubMenu title={<span>User Name <Icon type="setting" /></span>}>
                     <Menu.Item>
                         <Link to="/logout">
@@ -25,6 +25,7 @@ export default class NavigationUser extends Component {
                         </Link>
                     </Menu.Item>
                 </SubMenu>
+                */}
             </Menu>
         );
     }
