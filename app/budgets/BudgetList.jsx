@@ -12,20 +12,11 @@ class BudgetList extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {
-            modalActive: false
-        };
         this.restOfBudgets = '';
     }
 
     componentWillMount() {
         this.props.fetchBudgets();
-    }
-
-    handleToggleModal = () => {
-        this.setState({
-            modalActive: !this.state.modalActive,
-        });
     }
 
     orderBudgets = (a, b) => {
@@ -80,14 +71,6 @@ class BudgetList extends Component {
 
     render() {
         const budgetListData = this.props.budgetsFetched ? this.createList() : <Spin size="large" />;
-        const footerButtons = (
-          <div>
-            <Button
-                onClick={this.handleToggleModal}
-                size='large'>Ok
-            </Button>
-          </div>
-        );
 
         return (
             <div>
