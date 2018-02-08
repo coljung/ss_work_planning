@@ -112,11 +112,13 @@ const columns = (season, rowSpan, view) => {
             data: 'metric',
             type: 'text',
             readOnly: true,
+            colWidths: 80,
         },
         {
             data: 'seasonyear',
             type: 'text',
             readOnly: true,
+            colWidths: 50,
         },
         {
             data: 'stdpremarkdown',
@@ -132,7 +134,7 @@ const columns = (season, rowSpan, view) => {
             type: 'numeric',
             format: '0%',
             readOnly: true,
-            colWidths: 100,
+            colWidths: 50,
         },
         {
             data: 'stdpostmarkdown',
@@ -148,7 +150,7 @@ const columns = (season, rowSpan, view) => {
             type: 'numeric',
             format: '0%',
             readOnly: true,
-            colWidths: 100,
+            colWidths: 50,
         },
         {
             data: 'full',
@@ -164,7 +166,7 @@ const columns = (season, rowSpan, view) => {
             type: 'numeric',
             format: '0%',
             readOnly: true,
-            colWidths: 100,
+            colWidths: 50,
         },
         {
             data: 'previous',

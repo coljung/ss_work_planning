@@ -98,10 +98,12 @@ const columns = [
         data: 'metric',
         type: 'text',
         renderer: cellMetric,
+        colWidths: 70,
     },
     {
         data: 'seasonyear',
         type: 'text',
+        colWidths: 50,
     },
     {
         data: 'total_stdpremarkdown',
@@ -117,7 +119,7 @@ const columns = [
         type: 'numeric',
         format: '0%',
         readOnly: true,
-        colWidths: 100,
+        colWidths: 50,
     },
     {
         data: 'total_stdpostmarkdown',
@@ -133,7 +135,7 @@ const columns = [
         type: 'numeric',
         format: '0%',
         readOnly: true,
-        colWidths: 100,
+        colWidths: 50,
     },
     {
         data: 'total_full',
@@ -149,7 +151,7 @@ const columns = [
         type: 'numeric',
         format: '0%',
         readOnly: true,
-        colWidths: 100,
+        colWidths: 50,
     },
     {
         data: 'women_stdpremarkdown',
@@ -164,7 +166,7 @@ const columns = [
         type: 'numeric',
         format: '0%',
         readOnly: true,
-        colWidths: 100,
+        colWidths: 50,
     },
     {
         data: 'women_stdpostmarkdown',
@@ -179,7 +181,7 @@ const columns = [
         type: 'numeric',
         format: '0%',
         readOnly: true,
-        colWidths: 100,
+        colWidths: 50,
     },
     {
         data: 'women_full',
@@ -194,7 +196,7 @@ const columns = [
         type: 'numeric',
         format: '0%',
         readOnly: true,
-        colWidths: 100,
+        colWidths: 50,
     },
     {
         data: 'women_full_cont',
@@ -202,7 +204,7 @@ const columns = [
         type: 'numeric',
         format: '0%',
         readOnly: true,
-        colWidths: 100,
+        colWidths: 50,
     },
     {
         data: 'men_stdpremarkdown',
@@ -217,7 +219,7 @@ const columns = [
         type: 'numeric',
         format: '0%',
         readOnly: true,
-        colWidths: 100,
+        colWidths: 50,
     },
     {
         data: 'men_stdpostmarkdown',
@@ -232,7 +234,7 @@ const columns = [
         type: 'numeric',
         format: '0%',
         readOnly: true,
-        colWidths: 100,
+        colWidths: 50,
     },
     {
         data: 'men_full',
@@ -247,7 +249,7 @@ const columns = [
         type: 'numeric',
         format: '0%',
         readOnly: true,
-        colWidths: 100,
+        colWidths: 50,
     },
     {
         data: 'men_full_cont',
@@ -255,7 +257,7 @@ const columns = [
         type: 'numeric',
         format: '0%',
         readOnly: true,
-        colWidths: 100,
+        colWidths: 50,
     },
 ];
 
