@@ -1,18 +1,16 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { Button } from 'antd';
 import { browserHistory } from 'react-router';
 
-export default class LinkedButton extends Component {
-    navigate(to) {
-        browserHistory.push(to);
-    }
+const LinkedButton = (props) => {
+  const navigate = (to) => {
+      browserHistory.push(to);
+  }
 
-    render() {
-        return (
-            <Button onClick={this.navigate.bind(this, this.props.to)} {...this.props}>{this.props.children}</Button>
-        );
-    }
+  return (
+      <Button onClick={navigate.bind(null, props.to)} {...props}>{props.children}</Button>
+  );
 }
 
 LinkedButton.propTypes = {
@@ -22,3 +20,5 @@ LinkedButton.propTypes = {
         PropTypes.node,
     ]).isRequired,
 };
+
+export default LinkedButton;
