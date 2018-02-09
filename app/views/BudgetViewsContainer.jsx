@@ -45,9 +45,9 @@ class BudgetViewsContainer extends Component {
     }
 
     componentWillMount() {
-        const { budgetVersions } = this.props; // eslint-disable-line no-shadow
+        const { budgetVersions, params: { id } } = this.props; // eslint-disable-line no-shadow
 
-        budgetVersions(7);
+        budgetVersions(id);
     }
 
     shouldComponentUpdate(nextProps, nextState) {
@@ -212,9 +212,7 @@ class BudgetViewsContainer extends Component {
                         </TabPane>
                     </Tabs>
                 </div>
-
             </div>
-
         );
     }
 }
