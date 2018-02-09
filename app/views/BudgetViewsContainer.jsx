@@ -3,21 +3,23 @@ import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Row, Col, Tabs, Menu, Dropdown, Icon } from 'antd';
-import { browserHistory } from 'react-router';
+import { browserHistory, Link } from 'react-router';
 import ExecViewContainer from './top-down/exec/ExecViewContainer';
 import ViewCommonContainer from './top-down/common/ViewCommonContainer';
 import BudgetViewsButtonActions from './BudgetViewsButtonActions';
 import { budgetVersions, saveNewBudgetVersion } from './BudgetViewActions';
 import { ROUTE_BUDGET } from '../Routes';
 
+// Sub Component
 const TabPane = Tabs.TabPane;
+const SubMenu = Menu.SubMenu;
+const MenuItemGroup = Menu.ItemGroup;
 
 export const TAB_EXEC_RECAP = 'exec';
 export const TAB_TOTAL = 'total';
 export const TAB_WOMEN = 'women';
 export const TAB_MEN = 'men';
 export const TAB_BRAND_GROUPS = 'brand-groups';
-
 
 class BudgetViewsContainer extends Component {
 
@@ -49,14 +51,18 @@ class BudgetViewsContainer extends Component {
     }
 
     shouldComponentUpdate(nextProps, nextState) {
-        // console.log(this.props.newVersion, nextProps.newVersion);
-        if (nextProps.newVersion === null) {
+        const { newVersion } = nextProps;
+        if (newVersion === null) {
             return true;
         }
-        browserHistory.push(`${ROUTE_BUDGET}/${this.state.seasonName}/budget/${this.state.budgetSeasonId}/version/${nextProps.newVersion.name}/${nextProps.newVersion.id}/${this.state.activeTab}`);
-        return false;
 
-        // return nextProps.newVersion === null;
+        const { activeTab, budgetSeasonId, seasonName } = this.state;
+
+        browserHistory.push(
+          `${ROUTE_BUDGET}/${seasonName}/budget/${budgetSeasonId}/version/${newVersion.name}/${nextProps.newVersion.id}/${activeTab}`
+        );
+
+        return false;
     }
 
     save = (budget, version) => {
@@ -91,10 +97,10 @@ class BudgetViewsContainer extends Component {
 
     onTabChange(newTabKey) {
         // set true to load tabbed component
-        const currentKey = this.state.activeTab;
+        const { activeTab } = this.state;
 
         this.setState({
-            [currentKey]: false,
+            [activeTab]: false,
             activeTab: newTabKey,
             [newTabKey]: true,
         });
@@ -103,17 +109,17 @@ class BudgetViewsContainer extends Component {
     }
 
     render() {
-        const currentKey = this.state.activeTab;
-        // const currentTab = this.props.params.tab === currentKey ? currentKey;
-        // console.log('---------', this.state.activeTab, this.state);
-        const SubMenu = Menu.SubMenu;
-        const MenuItemGroup = Menu.ItemGroup;
         const { versions, params: { seasonname } } = this.props;
+        const { budgetSeasonId, activeTab } = this.state;
         const menuBudget = (
             <Menu>
                 { versions && versions.map(
-                  version =>
-                    <Menu.Item>{ seasonname } - { version.name }</Menu.Item>
+                  (version) =>
+                    <Menu.Item key={`l.${version.id}`}>
+                      <Link to={`${ROUTE_BUDGET}/${seasonname}/budget/${budgetSeasonId}/version/${version.name}/${version.id}/${activeTab}`}>
+                        { seasonname } - { version.name }
+                      </Link>
+                    </Menu.Item>
                 ) }
             </Menu>
         );
@@ -148,15 +154,15 @@ class BudgetViewsContainer extends Component {
                             <BudgetViewsButtonActions
                                 saveNew={() => this.saveNewVersion(this.state.budgetSeasonId, this.state.versionId)}
                                 save={() => this.save(this.state.budgetSeasonId, this.state.versionId)}
-                                currentView={this.state.activeTab}
+                                currentView={activeTab}
                             />
                         </Col>
                     </Row>
                 </div>
                 <div className="budgetBody">
-                    <Tabs defaultActiveKey={this.state.activeTab} onChange={this.onTabChange.bind(this)} animated={false}>
+                    <Tabs defaultActiveKey={activeTab} onChange={this.onTabChange.bind(this)} animated={false}>
                         <TabPane tab="Exec Recap" key={TAB_EXEC_RECAP}>
-                            {(currentKey === TAB_EXEC_RECAP || this.state[TAB_EXEC_RECAP]) &&
+                            {(activeTab === TAB_EXEC_RECAP || this.state[TAB_EXEC_RECAP]) &&
                                 <ExecViewContainer
                                     budget={this.state.budgetSeasonId}
                                     version={this.state.versionId}
@@ -164,7 +170,7 @@ class BudgetViewsContainer extends Component {
                             }
                         </TabPane>
                         <TabPane tab="Total" key={TAB_TOTAL}>
-                            {(currentKey === TAB_TOTAL) &&
+                            {(activeTab === TAB_TOTAL) &&
                                 <ViewCommonContainer
                                     budget={this.state.budgetSeasonId}
                                     version={this.state.versionId}
@@ -175,7 +181,7 @@ class BudgetViewsContainer extends Component {
                             }
                         </TabPane>
                         <TabPane tab="Women" key={TAB_WOMEN}>
-                            {(currentKey === TAB_WOMEN) &&
+                            {(activeTab === TAB_WOMEN) &&
                                 <ViewCommonContainer
                                     budget={this.state.budgetSeasonId}
                                     version={this.state.versionId}
@@ -186,7 +192,7 @@ class BudgetViewsContainer extends Component {
                             }
                         </TabPane>
                         <TabPane tab="Men" key={TAB_MEN}>
-                            {(currentKey === TAB_MEN) &&
+                            {(activeTab === TAB_MEN) &&
                                 <ViewCommonContainer
                                     budget={this.state.budgetSeasonId}
                                     version={this.state.versionId}
@@ -197,7 +203,7 @@ class BudgetViewsContainer extends Component {
                             }
                         </TabPane>
                         <TabPane tab="Brand Groups" key={TAB_BRAND_GROUPS}>
-                            {(currentKey === TAB_BRAND_GROUPS || this.state[TAB_BRAND_GROUPS]) &&
+                            {(activeTab === TAB_BRAND_GROUPS || this.state[TAB_BRAND_GROUPS]) &&
                                 <TotalViewContainer
                                     budget={this.state.budgetSeasonId}
                                     version={this.state.versionId}
