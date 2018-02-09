@@ -115,7 +115,7 @@ class BudgetViewsContainer extends Component {
             <Menu>
                 { versions && versions.map(
                   (version) =>
-                    <Menu.Item key={`l.${version.id}`}>
+                    <Menu.Item key={version.id}>
                       <Link to={`${ROUTE_BUDGET}/${seasonname}/budget/${budgetSeasonId}/version/${version.name}/${version.id}/${activeTab}`}>
                         { seasonname } - { version.name }
                       </Link>
