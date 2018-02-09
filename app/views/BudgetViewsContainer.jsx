@@ -4,6 +4,8 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Row, Col, Tabs, Menu, Dropdown, Icon } from 'antd';
 import { browserHistory } from 'react-router';
+// import { BrowserRouter } from 'react-router';
+
 import ExecViewContainer from './top-down/exec/ExecViewContainer';
 import ViewCommonContainer from './top-down/common/ViewCommonContainer';
 import BudgetViewsButtonActions from './BudgetViewsButtonActions';
@@ -20,9 +22,11 @@ export const TAB_BRAND_GROUPS = 'brand-groups';
 
 
 class BudgetViewsContainer extends Component {
-
-    constructor(props) {
-        super(props);
+    static contextTypes = {
+        router: PropTypes.object,
+    }
+    constructor(props, context) {
+        super(props, context);
 
         const { budgetid, id, seasonname, vname, tab } = this.props.params;
 
@@ -43,11 +47,13 @@ class BudgetViewsContainer extends Component {
     }
 
     shouldComponentUpdate(nextProps, nextState) {
-        // console.log(this.props.newVersion, nextProps.newVersion);
+        // console.log('asdasdasd', this.props.newVersion, nextProps.newVersion);
         if (nextProps.newVersion === null) {
             return true;
         }
+
         browserHistory.push(`${ROUTE_BUDGET}/${this.state.seasonName}/budget/${this.state.budgetSeasonId}/version/${nextProps.newVersion.name}/${nextProps.newVersion.id}/${this.state.activeTab}`);
+
         return false;
 
         // return nextProps.newVersion === null;
@@ -94,6 +100,14 @@ class BudgetViewsContainer extends Component {
         });
 
         this.dataToSave = [];
+
+        // Replace URL with react-router
+        console.log('onTabChange', newTabKey, this.props);
+        const { router: { replace } } = this.props;
+
+        replace(`${ROUTE_BUDGET}/${this.state.seasonName}/budget/${this.state.budgetSeasonId}/version/${this.state.versionName}/${this.state.versionId}/${newTabKey}`);
+
+        // history.push(`${ROUTE_BUDGET}/${this.state.seasonName}/budget/${this.state.budgetSeasonId}/version/${this.state.versionName}/${this.state.versionId}/${newTabKey}`);
     }
 
     render() {
@@ -210,6 +224,10 @@ BudgetViewsContainer.propTypes = {
     newVersion: PropTypes.object,
     saveNewBudgetVersion: PropTypes.func.isRequired,
 };
+
+// BudgetViewsContainer.contextTypes = {
+//     router: React.PropTypes.object,
+// };
 
 function mapStateToProps(state) {
     const { BudgetViewReducer } = state;
