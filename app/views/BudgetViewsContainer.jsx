@@ -188,7 +188,7 @@ class BudgetViewsContainer extends Component {
                                 />
                             }
                         </TabPane>
-                        <TabPane tab="Brand Groups" key={TAB_BRAND_GROUPS}>
+                        <TabPane tab="Brand Groups" disabled key={TAB_BRAND_GROUPS}>
                             {(currentKey === TAB_BRAND_GROUPS || this.state[TAB_BRAND_GROUPS]) &&
                                 <TotalViewContainer
                                     budget={this.state.budgetSeasonId}
