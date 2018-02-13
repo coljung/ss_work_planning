@@ -143,7 +143,7 @@ class BudgetViewsContainer extends Component {
                             </Dropdown>
                         </Col>
                         <Col span={4} className="col">
-                            <Dropdown overlay={menuView}>
+                            <Dropdown overlay={menuView} disabled={true}>
                                 <h3><a className="ant-dropdown-link" href="#">
                                     Top Down <Icon type="down" />
                                 </a></h3>
