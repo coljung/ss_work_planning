@@ -4,6 +4,10 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Row, Col, Tabs, Menu, Dropdown, Icon } from 'antd';
 import { browserHistory } from 'react-router';
+// import { Router } from 'react-router-dom';
+// import { withRouter } from 'react-router-dom';
+// import { createBrowserHistory } from 'history';
+
 import ExecViewContainer from './top-down/exec/ExecViewContainer';
 import ViewCommonContainer from './top-down/common/ViewCommonContainer';
 import BudgetViewsButtonActions from './BudgetViewsButtonActions';
@@ -20,9 +24,11 @@ export const TAB_BRAND_GROUPS = 'brand-groups';
 
 
 class BudgetViewsContainer extends Component {
-
-    constructor(props) {
-        super(props);
+    static contextTypes = {
+        router: PropTypes.object,
+    }
+    constructor(props, context) {
+        super(props, context);
 
         const { budgetid, id, seasonname, vname, tab } = this.props.params;
 
@@ -42,15 +48,19 @@ class BudgetViewsContainer extends Component {
         this.dataToSave = [];
     }
 
-    shouldComponentUpdate(nextProps, nextState) {
-        // console.log(this.props.newVersion, nextProps.newVersion);
-        if (nextProps.newVersion === null) {
-            return true;
-        }
-        browserHistory.push(`${ROUTE_BUDGET}/${this.state.seasonName}/budget/${this.state.budgetSeasonId}/version/${nextProps.newVersion.name}/${nextProps.newVersion.id}/${this.state.activeTab}`);
-        return false;
+    componentWillReceiveProps(nextProps) {
+      if(nextProps.params.tab !== this.props.params.tab) {
+        const currentKey = this.state.activeTab;
 
-        // return nextProps.newVersion === null;
+        console.log('go to ', nextProps.params.tab);
+        console.log('currentkey', currentKey);
+
+        this.setState({
+            [currentKey]: false,
+            activeTab: nextProps.params.tab,
+            [nextProps.params.tab]: true,
+        });
+      }
     }
 
     save = (budget, version) => {
@@ -94,12 +104,15 @@ class BudgetViewsContainer extends Component {
         });
 
         this.dataToSave = [];
+
+        // Replace URL with react-router
+        const { router: { push } } = this.props;
+
+        push(`${ROUTE_BUDGET}/${this.state.seasonName}/budget/${this.state.budgetSeasonId}/version/${this.state.versionName}/${this.state.versionId}/${newTabKey}`);
     }
 
     render() {
         const currentKey = this.state.activeTab;
-        // const currentTab = this.props.params.tab === currentKey ? currentKey;
-        // console.log('---------', this.state.activeTab, this.state);
         const SubMenu = Menu.SubMenu;
         const MenuItemGroup = Menu.ItemGroup;
         const menuBudget = (
@@ -146,7 +159,7 @@ class BudgetViewsContainer extends Component {
                     </Row>
                 </div>
                 <div className="budgetBody">
-                    <Tabs defaultActiveKey={this.state.activeTab} onChange={this.onTabChange.bind(this)} animated={false}>
+                    <Tabs activeKey={this.state.activeTab} onChange={this.onTabChange.bind(this)} animated={false}>
                         <TabPane tab="Exec Recap" key={TAB_EXEC_RECAP}>
                             {(currentKey === TAB_EXEC_RECAP || this.state[TAB_EXEC_RECAP]) &&
                                 <ExecViewContainer
