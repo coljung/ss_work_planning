@@ -61,7 +61,7 @@ class BudgetViewsContainer extends Component {
         const { router, params: { tab } } = this.props;
         const {budgetSeasonId, seasonName, versionName} = this.state;
 
-        // ¯\_(ツ)_/¯  this could refactor to use router and/or redux logic
+        // ¯\_(ツ)_/¯  this could be refactor to use router and/or redux logic
         window.location.href = `${ROUTE_BUDGET}/${seasonName}/budget/${budgetSeasonId}/version/${versionName}/${nextProps.newVersion.id}/${tab}`;
       }
     }
