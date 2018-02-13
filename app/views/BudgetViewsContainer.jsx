@@ -52,14 +52,17 @@ class BudgetViewsContainer extends Component {
       if(nextProps.params.tab !== this.props.params.tab) {
         const currentKey = this.state.activeTab;
 
-        console.log('go to ', nextProps.params.tab);
-        console.log('currentkey', currentKey);
-
         this.setState({
             [currentKey]: false,
             activeTab: nextProps.params.tab,
             [nextProps.params.tab]: true,
         });
+      } else if (nextProps.newVersion !== this.props.newVersion) {
+        const { router, params: { tab } } = this.props;
+        const {budgetSeasonId, seasonName, versionName} = this.state;
+
+        // ¯\_(ツ)_/¯  this could refactor to use router and/or redux logic
+        window.location.href = `${ROUTE_BUDGET}/${seasonName}/budget/${budgetSeasonId}/version/${versionName}/${nextProps.newVersion.id}/${tab}`;
       }
     }
 

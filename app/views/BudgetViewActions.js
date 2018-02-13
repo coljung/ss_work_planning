@@ -36,12 +36,12 @@ function receiveBudgetSave(version) {
     };
 }
 
-export function saveNewBudgetVersion(seasonID, id) {
+export function saveNewBudgetVersion(budgetID, id) {
     return (dispatch) => {
         dispatch(requestBudgetSaveNewVersion());
         return request
-            // .get(`${getApiUrl()}planning/seasons/show/available`)
-            .post(`${getApiUrl()}planning/seasons/${seasonID}/versions/${id}/duplicate`)
+            .post(`${getApiUrl()}planning/budgets/${budgetID}/versions/duplicate`)
+            .send({ id })
             .then(
                 res => {
                     dispatch(messages({ content: 'New Version Saved successfully!', response: '', isError: false }));
