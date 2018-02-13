@@ -48,32 +48,18 @@ class BudgetViewsContainer extends Component {
         this.dataToSave = [];
     }
 
-    // shouldComponentUpdate(nextProps, nextState) {
-    //     console.log('asdasdasd', this.props.newVersion, nextProps.newVersion);
-    //     // if (nextProps.newVersion === null) {
-    //         return true;
-    //     // }
-    //
-    //     // browserHistory.push(`${ROUTE_BUDGET}/${this.state.seasonName}/budget/${this.state.budgetSeasonId}/version/${nextProps.newVersion.name}/${nextProps.newVersion.id}/${this.state.activeTab}`);
-    //
-    //     // return false;
-    //
-    //     // return nextProps.newVersion === null;
-    // }
-
     componentWillReceiveProps(nextProps) {
-      console.log(nextProps, 'BudgetViewsContainer');
-
       if(nextProps.params.tab !== this.props.params.tab) {
         const currentKey = this.state.activeTab;
+
         console.log('go to ', nextProps.params.tab);
         console.log('currentkey', currentKey);
+
         this.setState({
             [currentKey]: false,
             activeTab: nextProps.params.tab,
             [nextProps.params.tab]: true,
         });
-        this.onTabChange(nextProps.params.tab);
       }
     }
 
@@ -120,18 +106,13 @@ class BudgetViewsContainer extends Component {
         this.dataToSave = [];
 
         // Replace URL with react-router
-        console.log('onTabChange', newTabKey, this.props);
         const { router: { push } } = this.props;
 
         push(`${ROUTE_BUDGET}/${this.state.seasonName}/budget/${this.state.budgetSeasonId}/version/${this.state.versionName}/${this.state.versionId}/${newTabKey}`);
-
-        // history.push(`${ROUTE_BUDGET}/${this.state.seasonName}/budget/${this.state.budgetSeasonId}/version/${this.state.versionName}/${this.state.versionId}/${newTabKey}`);
     }
 
     render() {
         const currentKey = this.state.activeTab;
-        // const currentTab = this.props.params.tab === currentKey ? currentKey;
-        // console.log('---------', this.state.activeTab, this.state);
         const SubMenu = Menu.SubMenu;
         const MenuItemGroup = Menu.ItemGroup;
         const menuBudget = (
@@ -178,7 +159,7 @@ class BudgetViewsContainer extends Component {
                     </Row>
                 </div>
                 <div className="budgetBody">
-                    <Tabs defaultActiveKey={this.state.activeTab} onChange={this.onTabChange.bind(this)} animated={false}>
+                    <Tabs activeKey={this.state.activeTab} onChange={this.onTabChange.bind(this)} animated={false}>
                         <TabPane tab="Exec Recap" key={TAB_EXEC_RECAP}>
                             {(currentKey === TAB_EXEC_RECAP || this.state[TAB_EXEC_RECAP]) &&
                                 <ExecViewContainer
@@ -242,10 +223,6 @@ BudgetViewsContainer.propTypes = {
     newVersion: PropTypes.object,
     saveNewBudgetVersion: PropTypes.func.isRequired,
 };
-
-// BudgetViewsContainer.contextTypes = {
-//     router: React.PropTypes.object,
-// };
 
 function mapStateToProps(state) {
     const { BudgetViewReducer } = state;
