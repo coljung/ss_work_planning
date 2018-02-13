@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Row, Col, Tabs, Menu, Dropdown, Icon } from 'antd';
-import { browserHistory, Link } from 'react-router';
+import { Link } from 'react-router';
 import ExecViewContainer from './top-down/exec/ExecViewContainer';
 import ViewCommonContainer from './top-down/common/ViewCommonContainer';
 import BudgetViewsButtonActions from './BudgetViewsButtonActions';
@@ -22,9 +22,11 @@ export const TAB_MEN = 'men';
 export const TAB_BRAND_GROUPS = 'brand-groups';
 
 class BudgetViewsContainer extends Component {
-
-    constructor(props) {
-        super(props);
+    static contextTypes = {
+        router: PropTypes.object,
+    }
+    constructor(props, context) {
+        super(props, context);
 
         const { budgetid, id, seasonname, vname, tab } = this.props.params;
 
@@ -50,19 +52,22 @@ class BudgetViewsContainer extends Component {
         budgetVersions(id);
     }
 
-    shouldComponentUpdate(nextProps, nextState) {
-        const { newVersion } = nextProps;
-        if (newVersion === null) {
-            return true;
-        }
+    componentWillReceiveProps(nextProps) {
+      if(nextProps.params.tab !== this.props.params.tab) {
+        const currentKey = this.state.activeTab;
 
-        const { activeTab, budgetSeasonId, seasonName } = this.state;
+        this.setState({
+            [currentKey]: false,
+            activeTab: nextProps.params.tab,
+            [nextProps.params.tab]: true,
+        });
+      } else if (nextProps.newVersion !== this.props.newVersion) {
+        const { router, params: { tab } } = this.props;
+        const {budgetSeasonId, seasonName, versionName} = this.state;
 
-        browserHistory.push(
-          `${ROUTE_BUDGET}/${seasonName}/budget/${budgetSeasonId}/version/${newVersion.name}/${nextProps.newVersion.id}/${activeTab}`
-        );
-
-        return false;
+        // ¯\_(ツ)_/¯  this could be refactor to use router and/or redux logic
+        window.location.href = `${ROUTE_BUDGET}/${seasonName}/budget/${budgetSeasonId}/version/${versionName}/${nextProps.newVersion.id}/${tab}`;
+      }
     }
 
     save = (budget, version) => {
@@ -106,6 +111,11 @@ class BudgetViewsContainer extends Component {
         });
 
         this.dataToSave = [];
+
+        // Replace URL with react-router
+        const { router: { push } } = this.props;
+
+        push(`${ROUTE_BUDGET}/${this.state.seasonName}/budget/${this.state.budgetSeasonId}/version/${this.state.versionName}/${this.state.versionId}/${newTabKey}`);
     }
 
     render() {
@@ -144,7 +154,7 @@ class BudgetViewsContainer extends Component {
                             </Dropdown>
                         </Col>
                         <Col span={4} className="col">
-                            <Dropdown overlay={menuView}>
+                            <Dropdown overlay={menuView} disabled={true}>
                                 <h3><a className="ant-dropdown-link" href="#">
                                     Top Down <Icon type="down" />
                                 </a></h3>
@@ -160,7 +170,7 @@ class BudgetViewsContainer extends Component {
                     </Row>
                 </div>
                 <div className="budgetBody">
-                    <Tabs defaultActiveKey={activeTab} onChange={this.onTabChange.bind(this)} animated={false}>
+                    <Tabs activeKey={this.state.activeTab} onChange={this.onTabChange.bind(this)} animated={false}>
                         <TabPane tab="Exec Recap" key={TAB_EXEC_RECAP}>
                             {(activeTab === TAB_EXEC_RECAP || this.state[TAB_EXEC_RECAP]) &&
                                 <ExecViewContainer
@@ -202,8 +212,8 @@ class BudgetViewsContainer extends Component {
                                 />
                             }
                         </TabPane>
-                        <TabPane tab="Brand Groups" key={TAB_BRAND_GROUPS}>
-                            {(activeTab === TAB_BRAND_GROUPS || this.state[TAB_BRAND_GROUPS]) &&
+                        <TabPane tab="Brand Groups" disabled key={TAB_BRAND_GROUPS}>
+                            {(currentKey === TAB_BRAND_GROUPS || this.state[TAB_BRAND_GROUPS]) &&
                                 <TotalViewContainer
                                     budget={this.state.budgetSeasonId}
                                     version={this.state.versionId}
