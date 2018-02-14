@@ -95,7 +95,7 @@ class BudgetViewsContainer extends Component {
 
     handleVersionClick(event) {
       const { params: { tab } } = this.props;
-      const { seasonName} = this.state;
+      const { seasonName } = this.state;
 
       const { item: { props: { version } } } = event;
 
@@ -104,7 +104,7 @@ class BudgetViewsContainer extends Component {
 
     onTabChange(newTabKey) {
         // set true to load tabbed component
-        const { activeTab } = this.state;
+        const { activeTab, budgetSeasonId, seasonName, versionId, versionName } = this.state;
 
         this.setState({
             [activeTab]: false,
@@ -114,10 +114,9 @@ class BudgetViewsContainer extends Component {
 
         this.dataToSave = [];
 
-        // Replace URL with react-router
         const { router: { push } } = this.props;
 
-        push(`${ROUTE_BUDGET}/${this.state.seasonName}/budget/${this.state.budgetSeasonId}/version/${this.state.versionName}/${this.state.versionId}/${newTabKey}`);
+        push(`${ROUTE_BUDGET}/${seasonName}/budget/${budgetSeasonId}/version/${versionName}/${versionId}/${newTabKey}`);
     }
 
     render() {
