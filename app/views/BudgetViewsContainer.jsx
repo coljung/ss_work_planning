@@ -64,7 +64,7 @@ class BudgetViewsContainer extends Component {
         const { router, params: { tab } } = this.props;
         const {budgetSeasonId, seasonName, versionName} = this.state;
 
-        window.location.href = `${ROUTE_BUDGET}/${seasonName}/budget/${budgetSeasonId}/version/${versionName}/${nextProps.newVersion.id}/${tab}`;
+        window.location.href = `${ROUTE_BUDGET}/${seasonName}/budget/${budgetSeasonId}/version/${nextProps.newVersion.name}/${nextProps.newVersion.id}/${tab}`;
        }
     }
 
