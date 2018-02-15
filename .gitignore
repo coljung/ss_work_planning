@@ -7,3 +7,4 @@ tests/coverage
 .nyc_output
 .DS_Store
 app/.DS_Store
+.env
