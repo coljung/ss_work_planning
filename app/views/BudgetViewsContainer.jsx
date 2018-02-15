@@ -60,7 +60,12 @@ class BudgetViewsContainer extends Component {
             activeTab: nextProps.params.tab,
             [nextProps.params.tab]: true,
         });
-      }
+      } else if (nextProps.newVersion !== this.props.newVersion) {
+        const { router, params: { tab } } = this.props;
+        const {budgetSeasonId, seasonName, versionName} = this.state;
+
+        window.location.href = `${ROUTE_BUDGET}/${seasonName}/budget/${budgetSeasonId}/version/${versionName}/${nextProps.newVersion.id}/${tab}`;
+       }
     }
 
     save = (budget, version) => {
