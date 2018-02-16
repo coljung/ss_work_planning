@@ -14,7 +14,7 @@ module.exports = {
     api: {
         planning: {
             host: process.env.MS_PLANNING_HOST || 'localhost',
-            port: process.env.MS_PLANNING_PORT || '3001',
+            port: process.env.MS_PLANNING_PORT || '3000',
         }
     },
     node_env: {
