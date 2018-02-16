@@ -98,13 +98,13 @@ class ViewCommonContainer extends Component {
                     colHeaders={true}
                     columns={seasonColumns}
                     fixedColumnsLeft={2}
-                    formulas={false}
+                    formulas={true}
                     contextMenu={false}
                     mergeCells={newMerge}
                     persistentState={true}
                     currentRowClassName= {'currentRow'}
                     currentColClassName= {'currentCol'}
-                    function={false}
+                    function={true}
                     observeChanges={true}
                     afterChange={this.changeCell}
                     hiddenRows={ {
