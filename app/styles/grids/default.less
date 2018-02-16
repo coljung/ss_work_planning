@@ -1,88 +1,80 @@
+#app{
 
-.parentDiv{
-    width: 100%;
-    background: white;
-    height: 70vh;
-    overflow: hidden;
-    .handsontable{
-        table.htCore{
-            border: 1px solid #555;
-            .headerCell{
-                padding: 3px 8px;
-                font-weight: bold;
-                font-size: 12px;
-                background: #ccc;
-                border-color:#999;
-                word-wrap: break-word;
-            }
-            thead{
-                // th {
-                //     background: #ddd;
-                //     // border:none;
-                //     padding: 3px 8px;
-                //     font-size: 13px;
-                // }
-                tr:last-child th{
-                    border-bottom: 1px solid #aaa;
+    .parentDiv{
+        width: 100%;
+        background: white;
+        // height: 78vh;
+        overflow: hidden;
+
+        .handsontable{
+
+            table.htCore{
+                border: 1px solid #555;
+                .headerCell{
+                    padding: 3px 8px;
+                    font-weight: bold;
+                    font-size: 12px;
+                    background: #ccc;
+                    border-color:#999;
+                    word-wrap: break-word;
+                }
+                thead{
+                    // th {
+                    //     background: #ddd;
+                    //     // border:none;
+                    //     padding: 3px 8px;
+                    //     font-size: 13px;
+                    // }
+                    tr:last-child th{
+                        border-bottom: 1px solid #aaa;
+                    }
+                }
+                td{
+                    padding: 3px 5px;
+                    font-size: 12px;
+                }
+                th{
+                    border-left: 1px solid #999;
+                    border-bottom: 1px solid #999;
+                    border-top: none;
+
+                    background: #f6f6f6;
+                    font-size: 11px;
+                    font-weight: normal;
+                }
+                thead th{
+                    padding: 0 3px;
+                }
+                tbody th{
+                    padding: 3px 0;
                 }
             }
-            td{
-                padding: 3px 5px;
-                font-size: 12px;
+            .leftCellBorder{
+                border-left: 1px solid #555;
             }
-            th{
-                border-left: 1px solid #999;
-                border-bottom: 1px solid #999;
-                border-top: none;
+            .bottomCellBorder{
+                border-bottom: 1px solid #555;
             }
-            // tr:first-child th,
-            // .handsontable th:first-child,
-            // .handsontable th:nth-child(2),
-            // .handsontable .htNoFrame + th{
-            //     border: 1px solid #999;
-            // }
-        }
-        .leftCellBorder{
-            border-left: 1px solid #555;
-        }
-        .bottomCellBorder{
-            border-bottom: 1px solid #555;
-        }
-        .metricCell{
-            padding-right: 20px !important;
-        }
-        .cellNA{
-            text-align: right;
+            .metricCell{
+                padding-right: 20px !important;
+            }
+            .cellNA{
+                text-align: right;
+            }
         }
     }
-}
 
-.saveBtn{
-    float: right;
-    margin: -35px 25px 0 0;
-}
+    .saveBtn{
+        float: right;
+        margin: -35px 25px 0 0;
+    }
 
-.colHeader, .rowHeader{
-    // font-weight: bold;
-    // font-size: 12px;
-}
-.parentDiv .handsontable table.htCore th{
-    background: #f6f6f6;
-    font-size: 11px;
-    font-weight: normal;
-}
-.parentDiv .handsontable table.htCore thead th{
-    padding: 0 3px;
-}
-.parentDiv .handsontable table.htCore tbody th{
-    padding: 3px 0;
-}
+    .spinDiv{
+        text-align: center;
+        padding: 50px 0;
+    }
 
-.spinDiv{
-    text-align: center;
-    padding: 50px 0;
-}
-
-.hiddenHeader{
-    display: none;
+    .hiddenHeader{
+        display: none;
+    }
 }
