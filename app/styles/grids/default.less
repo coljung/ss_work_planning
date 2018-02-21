@@ -10,6 +10,7 @@
 
             table.htCore{
                 border: 1px solid #555;
+                border-left: none;
                 .headerCell{
                     padding: 3px 8px;
                     font-weight: bold;
@@ -32,6 +33,7 @@
                 td{
                     padding: 3px 5px;
                     font-size: 12px;
+                    white-space: pre;
                 }
                 th{
                     border-left: 1px solid #999;
@@ -47,6 +49,12 @@
                 }
                 tbody th{
                     padding: 3px 0;
+                }
+                .currentRow, .currentCol{
+                    background: #f9f9f9;
+                }
+                .current{
+                    background: #e2f5e0;
                 }
             }
             .leftCellBorder{

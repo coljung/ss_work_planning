@@ -1,4 +1,5 @@
 const path = require('path');
+const fs = require('fs');
 const webpack = require('webpack');
 const autoprefixer = require('autoprefixer');
 const chalk = require('chalk');
@@ -8,6 +9,9 @@ const Visualizer = require('webpack-visualizer-plugin');
 const ProgressBarPlugin = require('progress-bar-webpack-plugin');
 
 const config = require('config');
+
+const lessToJs = require('less-vars-to-js');
+const themeVariables = lessToJs(fs.readFileSync(path.join(__dirname, './app/styles/default-vars.less'), 'utf8'));
 
 module.exports = {
     context: __dirname,
@@ -65,7 +69,12 @@ module.exports = {
                     }],
                     use: [
                         'css-loader',
-                        'less-loader',
+                        {
+                            loader: 'less-loader',
+                            options: {
+                                modifyVars: themeVariables,
+                            },
+                        },
                     ],
                 }),
             },
