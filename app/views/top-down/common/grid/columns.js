@@ -36,7 +36,7 @@ const columns = (season, rowSpan, view) => {
         borderLeft(leftBorderCols, prop, td);
 
         // styling border for each metric
-        borderBottom(row, rowSpan, td);
+        // borderBottom(row, rowSpan, td);
 
         // manage error and display N/A instead
         if (isNaN(value)) {

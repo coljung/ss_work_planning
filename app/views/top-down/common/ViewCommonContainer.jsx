@@ -9,7 +9,7 @@ import { Button, Spin } from 'antd';
 import { withRouter } from 'react-router';
 // import { mergeMetrics } from 'helpers';
 import { saveBudget, fetchBudgetData, resetState } from '../common/viewActions';
-import { headers, columns, mergeMetrics } from '../common/grid/index';
+import { headers, columns, customBorders, mergeMetrics } from '../common/grid/index';
 
 class ViewCommonContainer extends Component {
 
@@ -79,8 +79,18 @@ class ViewCommonContainer extends Component {
         return newMerge;
     }
 
+    customBordersCells = () => {
+        const { start_row, row_span, total, total_cols } = this.state.grid.info;
+        const sample = this.state.grid.data[0];
+        // debugger;
+        const custom = customBorders(start_row, row_span, total, total_cols, sample);
+
+        return custom;
+    }
+
     buildTable = () => {
         const newMerge = this.mergeCells();
+        const newBorders = this.customBordersCells();
         const { view } = this.props;
         const { currentMonthColumn, season, row_span, hidden_rows } = this.state.grid.info;
         const cols = columns(season, row_span, view);
@@ -89,28 +99,27 @@ class ViewCommonContainer extends Component {
         return (
             <div className="parentDiv">
                 <HotTable
-                    root='hot'
-                    ref='hot'
-                    data={this.state.grid.data}
-                    nestedHeaders={seasonHeaders}
-                    viewportColumnRenderingOffset={100}
-                    viewportRowRenderingOffset={100}
-                    colHeaders={true}
-                    columns={seasonColumns}
-                    fixedColumnsLeft={2}
-                    formulas={true}
-                    contextMenu={false}
-                    mergeCells={newMerge}
-                    persistentState={true}
-                    currentRowClassName= {'currentRow'}
-                    currentColClassName= {'currentCol'}
-                    function={true}
-                    observeChanges={true}
                     afterChange={this.changeCell}
-                    hiddenRows={ {
-                      rows: hidden_rows
-                    } }
-                    licenseKey= 'a389a-f2591-70b41-a480d-1911a' />
+                    colHeaders={true}
+                    rowHeaders={true}
+                    columns={seasonColumns}
+                    contextMenu={false}
+                    currentColClassName= {'currentCol'}
+                    currentRowClassName= {'currentRow'}
+                    data={this.state.grid.data}
+                    fixedColumnsLeft={2}
+                    formulas={false}
+                    licenseKey= 'a389a-f2591-70b41-a480d-1911a'
+                    mergeCells={newMerge}
+                    nestedHeaders={seasonHeaders}
+                    observeChanges={true}
+                    persistentState={true}
+                    ref='hot'
+                    root='hot'
+                    viewportColumnRenderingOffset={20}
+                    viewportRowRenderingOffset={20}
+                    customBorders={newBorders}
+                    />
             </div>
         );
     }

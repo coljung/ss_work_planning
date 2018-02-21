@@ -1,6 +1,6 @@
 const commonColums = [
     'Name',
-    'Season',
+    'Season/Year',
     'C-STD Pre Mkd',
     'D-Incr%',
     'E-STD Post Mkd',
