@@ -33,7 +33,7 @@ export default class App extends Component {
                         className="trigger"
                         type={this.state.collapsed ? 'menu-unfold' : 'menu-fold'}
                         onClick={ this.toggle.bind(this) } />
-                        <HeaderContent />
+                    <HeaderContent />
                 </Header>
                 <Layout>
                     <Sider
