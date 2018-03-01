@@ -23,7 +23,7 @@ describe('NotificationReducer', () => {
     });
 
     it('should CLEAR_MESSAGES', () => {
-        const res = NotificationReducer(initialState, { type: CLEAR_MESSAGES, message: 'hi!'});
+        const res = NotificationReducer(initialState, { type: CLEAR_MESSAGES, message: 'hi!' });
         expect(res).to.deep.equal(null);
     });
 });

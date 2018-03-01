@@ -9,10 +9,9 @@ import { browserHistory } from 'react-router';
 jest.mock('react-router');
 
 describe('LinkedButton', () => {
-
     it('should render correctly', () => {
         const output = shallow(
-            <LinkedButton title="mockTitle" to="mockUrl">Foo Bar</LinkedButton>
+            <LinkedButton title="mockTitle" to="mockUrl">Foo Bar</LinkedButton>,
         );
 
         expect(output.find('Button').length).toBe(1);

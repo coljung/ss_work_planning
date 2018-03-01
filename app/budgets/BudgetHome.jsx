@@ -38,8 +38,18 @@ export default class BudgetHome extends Component {
                             onOverlayClick={this.toggleCreateModal.bind(this)} />
                         <Row type="flex" justify="end">
                             <Col>
-                                 <Button size="large" icon="file" type="primary" onClick={this.toggleCreateModal}>Create New Budget</Button>
-                                 <Button style={{ marginLeft: '20px' }} size="large" icon="line-chart" onClick={this.toggleViewArchivedModal}>View Older Budgets</Button>
+                                 <Button size="large"
+                                         icon="file"
+                                         type="primary"
+                                         onClick={this.toggleCreateModal}>
+                                         Create New Budget
+                                 </Button>
+                                 <Button size="large"
+                                         style={{ marginLeft: '20px' }}
+                                         icon="line-chart"
+                                         onClick={this.toggleViewArchivedModal}>
+                                         View Older Budgets
+                                 </Button>
                             </Col>
                         </Row>
                     </Board>

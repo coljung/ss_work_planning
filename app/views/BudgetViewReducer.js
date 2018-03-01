@@ -6,7 +6,7 @@ import { RECEIVE_BUDGETS_SAVE_NEW_VERSION,
 
 const initialState = {
     newVersion: null,
-    versions: []
+    versions: [],
 };
 
 export default (state = initialState, action) => {

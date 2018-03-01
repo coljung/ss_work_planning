@@ -5,18 +5,17 @@ export default function getApiUrl() {
 
 export const defaultMetricSequence = () =>
   [
-    'SALES',
-    'COGS',
-    'GM$',
-    'GM%',
-    'RECEIVED COST',
-    'RECEIPT%',
-    'BOM COST',
-    'iRETAIL',
-    'iGM%',
-    'TURNOVER RATE'
+      'SALES',
+      'COGS',
+      'GM$',
+      'GM%',
+      'RECEIVED COST',
+      'RECEIPT%',
+      'BOM COST',
+      'iRETAIL',
+      'iGM%',
+      'TURNOVER RATE',
   ].join(',');
-
 
 
 export const mergeMetrics = (startRow, rowSpan, totalRows, totalCols, hasGap = false) => {
@@ -51,11 +50,9 @@ export const mergeMetrics = (startRow, rowSpan, totalRows, totalCols, hasGap = f
     return mergeArr;
 };
 
-export const mergeHeadersExecRecap = () => {
-    return [
+export const mergeHeadersExecRecap = () => [
         { row: 0, col: 0, rowspan: 1, colspan: 2 },
         { row: 0, col: 2, rowspan: 1, colspan: 6 },
         { row: 0, col: 8, rowspan: 1, colspan: 7 },
         { row: 0, col: 15, rowspan: 1, colspan: 7 },
-    ];
-};
+];

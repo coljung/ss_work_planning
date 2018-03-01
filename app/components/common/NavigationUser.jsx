@@ -11,9 +11,9 @@ export default class NavigationUser extends Component {
     }
 
     handleClick = (e) => {
-      this.setState({
-        current: e.key,
-      });
+        this.setState({
+            current: e.key,
+        });
     }
 
     render() {

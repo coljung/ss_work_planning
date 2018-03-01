@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Board should render correctly 1`] = `
+exports['Board should render correctly 1'] = `
 <div
   className="board"
   id="board"
@@ -12,7 +12,7 @@ exports[`Board should render correctly 1`] = `
 </div>
 `;
 
-exports[`Board should render correctly with btnInTitle 1`] = `
+exports['Board should render correctly with btnInTitle 1'] = `
 <div
   className="board"
   id="board"

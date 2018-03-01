@@ -1,17 +1,17 @@
 import { expect } from 'chai';
 import { MESSAGES, CLEAR_MESSAGES, messages, clearMessages } from '../../../app/notifications/NotificationActions';
+
 let sandbox;
 
 describe('NotificationActions', () => {
-
     it('should return Notification action (success)', () => {
-        const msg = {content: "I am a message", isError: false, response: { body: { message: 'message'}}};
-        expect(messages(msg)).to.deep.equal({type: MESSAGES, message: {...msg, messageType: 'success'}})
+        const msg = { content: 'I am a message', isError: false, response: { body: { message: 'message' } } };
+        expect(messages(msg)).to.deep.equal({ type: MESSAGES, message: { ...msg, messageType: 'success' } });
     });
 
     it('should return Notification action (error)', () => {
-        const msg = {content: "I am a message", isError: true, response: { body: { message: 'message'}}};
-        expect(messages(msg)).to.deep.equal({type: MESSAGES, message: {...msg, messageType: 'error'}});
+        const msg = { content: 'I am a message', isError: true, response: { body: { message: 'message' } } };
+        expect(messages(msg)).to.deep.equal({ type: MESSAGES, message: { ...msg, messageType: 'error' } });
     });
 
     it('should messages', () => {
@@ -44,4 +44,4 @@ describe('NotificationActions', () => {
         expect(clearMessages()).to.deep.equal({ type: CLEAR_MESSAGES });
     });
 });
-    
+

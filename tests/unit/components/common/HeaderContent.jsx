@@ -17,6 +17,5 @@ describe('<HeaderContent />', () => {
 
         expect(wrapper.render().find('svg')).to.have.lengthOf(1);
         expect(wrapper.find('h1')).to.have.lengthOf(1);
-
     });
 });

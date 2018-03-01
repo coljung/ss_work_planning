@@ -7,7 +7,7 @@ import { createBudget, fetchSeasons, resetState } from './BudgetActions';
 
 const Option = Select.Option;
 
-export class BudgetCreate extends Component {
+class BudgetCreate extends Component {
 
     constructor(props) {
         super(props);
@@ -48,11 +48,14 @@ export class BudgetCreate extends Component {
     createDropdown = () => {
         const { seasons } = this.props;
 
-        const buildSelect = (seasons || []).map((s) =>
+        const buildSelect = (seasons || []).map(s =>
             <Option key={s.name} value={`${s.season}-${s.year}`}>{s.name}</Option>,
         );
         return (
-            <Select placeholder="Select a Season" notFoundContent="No season found" style={{ width: 120 }} onChange={this.handleChange}>
+            <Select placeholder="Select a Season"
+                notFoundContent="No season found"
+                style={{ width: 120 }}
+                onChange={this.handleChange}>
                 {buildSelect}
             </Select>
         );

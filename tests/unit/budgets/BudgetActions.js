@@ -27,11 +27,11 @@ describe('BudgetActions', () => {
 
     it('Should test receiveBudgets', () => {
       const budgets = {
-        foo: 'Bar'
+        foo: 'Bar',
       };
       const expectedAction = {
         type: actions.RECEIVE_BUDGETS,
-        budgets
+        budgets,
       };
       expect(actions.receiveBudgets(budgets)).toEqual(expectedAction);
     });

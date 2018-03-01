@@ -1,3 +1,3 @@
 describe.skip('Top Down common viewCommonContainer', () => {
-  it('should be skipped', () => expect(true).toBeTruthy());
+    it('should be skipped', () => expect(true).toBeTruthy());
 });
