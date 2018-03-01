@@ -20,6 +20,8 @@ export default class BudgetViewsButtonActions extends Component {
                         Back
                     </Button>
                 </Link>
+
+                <Button icon="switcher">Filter</Button>
             </div>
         );
     }
