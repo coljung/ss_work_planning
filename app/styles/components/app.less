@@ -3,7 +3,7 @@
         // height: ~"calc(100% - 64px)";
         min-height: 100%;
         background: #fff;
-        padding-top: 6.4rem;
+        // padding-top: 6.4rem;
     }
 
     .ant-layout-sider .ant-menu {
@@ -29,11 +29,30 @@
     }
 
     .ant-tabs-nav-wrap {
-        height: 45px;
+      height: 45px;
+      margin-bottom: 30px;
     }
-
+    .ant-tabs-nav {
+      display: flex;
+      flex-direction: row;
+    }
     .ant-tabs-nav .ant-tabs-tab {
-        height: 45px !important;
+      height: 45px !important;
+    }
+    .ant-tabs-nav .ant-tabs-tab {
+      color: @ssense_grey;
+      text-transform: uppercase;
+      flex: 1;
+      text-align: center;
+    }
+    .ant-tabs-nav .ant-tabs-tab-active {
+      color: @ssense_black;
+    }
+    .ant-tabs-ink-bar {
+      background-color: @ssense_black;
+    }
+    .ant-tabs-nav .ant-tabs-tab.ant-tabs-tab-disabled {
+      color: tint(@ssense_grey, 50%);
     }
 
     .ant-fullcalendar-header .ant-radio-group {

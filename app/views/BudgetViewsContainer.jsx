@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { Row, Col, Tabs, Menu, Dropdown, Icon } from 'antd';
 import ExecViewContainer from './top-down/exec/ExecViewContainer';
 import ViewCommonContainer from './top-down/common/ViewCommonContainer';
+import HeaderContent from '../components/common/HeaderContent';
 import BudgetViewsButtonActions from './BudgetViewsButtonActions';
 import { budgetVersions, saveNewBudgetVersion } from './BudgetViewActions';
 import { ROUTE_BUDGET } from '../Routes';
@@ -148,21 +149,24 @@ class BudgetViewsContainer extends Component {
             <div>
                 <div className="budgetHeader">
                     <Row type="flex" justify="start" className="innerHeader">
-                        <Col span={4} className="col">
+                        <Col span={8} className="col">
+                            <HeaderContent />
+                        </Col>
+                        <Col span={3} className="col">
                             <Dropdown overlay={menuBudget}>
                                 <h3><a className="ant-dropdown-link" href="#">
                                     {seasonName} - {versionName}<Icon type="down" />
                                 </a></h3>
                             </Dropdown>
                         </Col>
-                        <Col span={4} className="col">
+                        <Col span={3} className="col">
                             <Dropdown overlay={menuView} disabled={true}>
                                 <h3><a className="ant-dropdown-link" href="#">
                                     Top Down <Icon type="down" />
                                 </a></h3>
                             </Dropdown>
                         </Col>
-                        <Col span={16} className="col">
+                        <Col span={10} className="col">
                             <BudgetViewsButtonActions
                                 saveNew={() => this.saveNewVersion(budgetSeasonId, versionId)}
                                 save={() => this.save(budgetSeasonId, versionId)}
@@ -172,7 +176,7 @@ class BudgetViewsContainer extends Component {
                     </Row>
                 </div>
                 <div className="budgetBody">
-                    <Tabs activeKey={activeTab} onChange={this.onTabChange.bind(this)} animated={false}>
+                    <Tabs activeKey={activeTab} onChange={this.onTabChange.bind(this)} animated={true}>
                         <TabPane tab="Exec Recap" key={TAB_EXEC_RECAP}>
                             {(activeTab === TAB_EXEC_RECAP || this.state[TAB_EXEC_RECAP]) &&
                                 <ExecViewContainer

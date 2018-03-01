@@ -7,9 +7,9 @@ import NotificationManager from '../notifications/NotificationManager';
 
 const App = ({ children }) =>
   <div className="store_layout">
-      <Header>
+      {/*<Header>
           <HeaderContent />
-      </Header>
+      </Header> */}
       <Layout>
           <Content>
               <main style={{ flex: 1, overflowY: 'auto', padding: '0 25px 25px' }}>
