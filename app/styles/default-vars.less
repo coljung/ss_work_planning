@@ -2,4 +2,25 @@
 // Available theme variables can be found in
 // https://github.com/ant-design/ant-design/blob/master/components/style/themes/default.less
 
-// @primary-color: cyan;
+
+@ssense_black: #222222;
+@ssense_grey: #757575;
+@primary-color: @ssense_black;
+
+@btn-primary-color: @ssense_black;
+@link-color: @ssense_black;
+@link-hover-color       : tint(@link-color, 50%);
+@link-active-color      : shade(@link-color, 5%);
+@link-hover-decoration  : none;
+
+// ------ Base & Require ------
+@border-radius-base     : 10px;
+@border-radius-sm       : 2px;
+// // Buttons
+// @btn-primary-color      : #fff;
+// @btn-primary-bg         : @ssense_black;
+// @btn-group-border       : shade(@ssense_black, 5%);
+.ant-btn-primary {
+  background-color: @ssense_black;
+}
+

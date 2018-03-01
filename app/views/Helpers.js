@@ -27,12 +27,13 @@ export const borderLeft = (columns, prop, td) => {
     return td;
 };
 
-export const borderBottom = (row, rowSpan, td) => {
+export const borderBottom = (row, rowSpan, td, col) => {
     if ((row + 1) % rowSpan === 0) {
         td.className += ' bottomCellBorder';
     }
     return td;
 };
+
 
 export const percentageMetrics = (instance, row, col, td) => {
     const metricName = instance.getDataAtCell(row, 0);
