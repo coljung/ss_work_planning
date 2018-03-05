@@ -20,7 +20,6 @@ export default class BudgetViewsButtonActions extends Component {
                     <Button type="primary" icon="switcher">Save New Version</Button>
                 </Popconfirm>&nbsp;
 
-
                 <Button icon="switcher">Filter</Button>
             </div>
         );
