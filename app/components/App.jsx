@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import Layout, { Content, Header, Sider, Icon } from 'antd/lib/layout';
+import { Layout, Icon } from 'antd';
 import HeaderContent from './common/HeaderContent';
 import NavigationMain from './common/NavigationMain';
 import NotificationManager from '../notifications/NotificationManager';
 
-// const { Content, Header, Sider } = Layout;
+const { Content, Header, Sider } = Layout;
+
 export default class App extends Component {
     constructor(props) {
         super(props);
@@ -32,7 +33,7 @@ export default class App extends Component {
                         className="trigger"
                         type={this.state.collapsed ? 'menu-unfold' : 'menu-fold'}
                         onClick={ this.toggle.bind(this) } />
-                    <HeaderContent />
+                        <HeaderContent />
                 </Header>
                 <Layout>
                     <Sider
