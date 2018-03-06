@@ -10,7 +10,7 @@
     "lint": "eslint 'app/**'",
     "lint:fix": "eslint 'app/**' --fix",
     "test": "jest",
-    "test:unit": "jest --coverage",
+    "test:unit": "jest --coverage --setupTestFrameworkScriptFile=raf/polyfill",
     "test:unit:watch": "jest --watch",
     "cover": "npm run test:unit",
     "coveralls": "cat tests/coverage/unit/lcov.info | coveralls",
@@ -115,9 +115,7 @@
     "configFile": "webpack.dev.config.js"
   },
   "jest": {
-    "setupFiles": [
-      "<rootDir>/tests/setupTests.js"
-    ],
+    "setupFiles": ["<rootDir>/tests/shim.js", "<rootDir>/tests/setupTests.js"],
     "testMatch": [
       "<rootDir>/tests/unit/**/*.{js,jsx}"
     ],
@@ -173,39 +171,5 @@
         "statements": 0
       }
     }
-  },
-  "nyc": {
-    "exclude": [
-      "app/index.jsx"
-    ],
-    "include": [
-      "app/*.js",
-      "app/*.jsx",
-      "app/**/*.js",
-      "app/**/*.jsx"
-    ],
-    "extension": [
-      ".js",
-      ".jsx"
-    ],
-    "require": [
-      "babel-core/register"
-    ],
-    "coverageThreshold": {
-      "global": {
-        "statements": 1,
-        "branches": 1,
-        "functions": 1,
-        "lines": 1
-      }
-    },
-    "transform": {
-      "^.+\\.jsx$": "babel-jest",
-      "^.+\\.js$": "babel-jest"
-    },
-    "moduleNameMapper": {
-      "^.+\\.(s?css|less)$": "<rootDir>/tests/LESSstub.js"
-    },
-    "testRegex": "./tests/unit/.*\\.jsx?$"
   }
 }

@@ -29,7 +29,7 @@ describe('<NotificationManager />', () => {
         sandbox.stub(antdMessage, 'success');
 
         const wrapper = shallow(<NotificationManager {...props} />);
-        wrapper.instance().componentWillReceiveProps({message: {content: 'foo', messageType: 'success'}});
+        wrapper.instance().componentWillReceiveProps({ message: { content: 'foo', messageType: 'success' } });
         expect(props.clearMessages.callCount).to.equal(0);
         clock.tick(8000);
         expect(props.clearMessages.callCount).to.equal(1);
