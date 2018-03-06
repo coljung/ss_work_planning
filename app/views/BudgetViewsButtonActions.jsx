@@ -15,7 +15,6 @@ export default class BudgetViewsButtonActions extends Component {
                         Back
                     </Button>
                 </Link>
-                
                 <Popconfirm placement="top" title='Create new Budget version'
                     onConfirm={ this.props.saveNew } okText="Yes" cancelText="Cancel">
                     <Button type="primary" icon="switcher">Save New Version</Button>
