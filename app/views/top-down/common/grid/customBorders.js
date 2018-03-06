@@ -16,13 +16,25 @@ const customBorders = (startRow = 0, rowSpan, totalRows, totalCols, sample) => {
                 },
                 top: {
                     width: 1,
-                    color: '#5292F7',
+                    color: '#222',
                 },
             });
         }
     }
+    console.log(sample);
 
-    // for (let i = 0; i < totalCols; ++i) {
+    const len = sample.length;
+    const leftBorderCols = [
+        'seasonyear',
+        'stdpremarkdown',
+        'previous',
+    ];
+    debugger;
+    //
+    // for (let i = 0; i < len; ++i) {
+    //     if (leftBorderCols.indexOf(prop) !== -1) {
+    //         td.className += ' leftCellBorder';
+    //     }
     //     if (i % rowSpan === 0) {
     //         customBorderArr.push({
     //             range: {
