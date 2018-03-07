@@ -28,7 +28,7 @@ describe('<NavigationMain />', () => {
         const wrapper = shallow(<NavigationMain {...props} />);
 
         const items = wrapper.find(Item);
-        expect(items).to.have.lengthOf(4);
+        expect(items).to.have.lengthOf(14);
         expect(wrapper.find(Menu)).to.have.lengthOf(1);
     });
 
