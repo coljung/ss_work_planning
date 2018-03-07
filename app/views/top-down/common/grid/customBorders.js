@@ -21,7 +21,6 @@ const customBorders = (startRow = 0, rowSpan, totalRows, totalCols, sample) => {
             });
         }
     }
-    console.log(sample);
 
     const len = sample.length;
     const leftBorderCols = [
@@ -29,7 +28,7 @@ const customBorders = (startRow = 0, rowSpan, totalRows, totalCols, sample) => {
         'stdpremarkdown',
         'previous',
     ];
-    debugger;
+    // debugger;
     //
     // for (let i = 0; i < len; ++i) {
     //     if (leftBorderCols.indexOf(prop) !== -1) {
