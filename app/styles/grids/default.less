@@ -15,7 +15,8 @@
                     padding: 3px 8px;
                     font-weight: bold;
                     font-size: 12px;
-                    background: #ccc;
+                    color: #fff;
+                    background: #222;
                     border-color:#999;
                     word-wrap: break-word;
                 }
@@ -26,8 +27,12 @@
                     //     padding: 3px 8px;
                     //     font-size: 13px;
                     // }
+                    tr:first-child th {
+                      border: none;
+                      border-bottom: 1px solid @ssense_grey;
+                    }
                     tr:last-child th{
-                        border-bottom: 1px solid #aaa;
+                        border-right: 1px solid @ssense_grey;
                     }
                 }
                 td{
@@ -36,11 +41,11 @@
                     white-space: pre;
                 }
                 th{
-                    border-left: 1px solid #999;
-                    border-bottom: 1px solid #999;
+                    // border-left: 1px solid #999;
+                    // border-bottom: 1px solid #999;
                     border-top: none;
-
-                    background: #f6f6f6;
+                    color: #fff;
+                    background: @ssense_black;
                     font-size: 11px;
                     font-weight: normal;
                 }
@@ -56,6 +61,12 @@
                 .current{
                     background: #e2f5e0;
                 }
+            }
+            .ht_clone_top_left_corner {
+              tr:last-child th{
+                  border-right: 1px solid @ssense_grey;
+                  border-left: none;
+              }
             }
             .leftCellBorder{
                 border-left: 1px solid #555;
@@ -80,6 +91,10 @@
     .spinDiv{
         text-align: center;
         padding: 50px 0;
+        color: @ssense_black;
+        .ant-spin-dot i {
+          background-color: @ssense_black;
+        }
     }
 
     .hiddenHeader{

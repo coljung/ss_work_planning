@@ -53,7 +53,7 @@ function cellValueRender(instance, td, row, col, prop, value, cellProperties) {
 
     // styling border for each metric
     const rowSpan = 5;
-    borderBottom(row, rowSpan, td);
+    borderBottom(row, rowSpan, td, col);
 
     // showing N/A instead of error
     if (isNaN(parseInt(value, 10))) {

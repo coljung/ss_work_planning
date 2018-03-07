@@ -10,7 +10,7 @@ import HeaderContent from '../../../app/components/common/HeaderContent';
 describe('App', () => {
     it('should render correctly', () => {
         const app = renderer.create(
-            <App  location={{pathname: 'pathname'}} />
+            <App location={{ pathname: 'pathname'}} />
         );
         expect(app).toMatchSnapshot()
 	});

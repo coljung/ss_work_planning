@@ -1,13 +1,32 @@
 #app{
-    .ant-layout{
-        // height: ~"calc(100% - 64px)";
-        min-height: 100%;
-        background: #fff;
-        padding-top: 6.4rem;
+    .store_layout {
+      height: 100vh;
+      .ant-layout{
+          // height: ~"calc(100% - 64px)";
+          min-height: 100%;
+          background: #fff;
+          padding-top: 6.4rem;
+      }
+      .ant-layout-header{
+          background-color: @ssense_black;
+          z-index: 100;
+          box-shadow: 0 2px 5px rgba(0, 0, 0, 0.26);
+          padding: 0 20px 0 0;
+          height: 6.4rem;
+          color: white;
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100%;
+          > i{
+              width: 64px;
+              color: #fff;
+          }
+      }
     }
 
     .ant-layout-sider .ant-menu {
-        position: fixed;
+        position: relative;
     }
 
     .ant-menu-dark {
@@ -17,6 +36,19 @@
     			font-size: 13px;
     		}
     	}
+    }
+
+    .ant-menu-submenu .ant-menu-sub {
+      background: @ssense_black !important;
+    }
+    .ant-menu-submenu-popup.ant-menu-dark .ant-menu-item-selected,
+    .ant-menu.ant-menu-dark .ant-menu-item-selected {
+      background-color: @ssense_grey;
+    }
+
+    .ant-menu-dark .ant-menu-inline.ant-menu-sub {
+      background: @ssense_black;
+      box-shadow: none;
     }
 
     .ant-layout-sider-collapsed .anticon {
@@ -29,11 +61,30 @@
     }
 
     .ant-tabs-nav-wrap {
-        height: 45px;
+      height: 45px;
+      margin-bottom: 30px;
     }
-
+    .ant-tabs-nav {
+      display: flex;
+      flex-direction: row;
+    }
     .ant-tabs-nav .ant-tabs-tab {
-        height: 45px !important;
+      height: 45px !important;
+    }
+    .ant-tabs-nav .ant-tabs-tab {
+      color: @ssense_grey;
+      text-transform: uppercase;
+      flex: 1;
+      text-align: center;
+    }
+    .ant-tabs-nav .ant-tabs-tab-active {
+      color: @ssense_black;
+    }
+    .ant-tabs-ink-bar {
+      background-color: @ssense_black;
+    }
+    .ant-tabs-nav .ant-tabs-tab.ant-tabs-tab-disabled {
+      color: tint(@ssense_grey, 50%);
     }
 
     .ant-fullcalendar-header .ant-radio-group {
