@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Layout, Icon } from 'antd';
+import { Content, Header, Sider } from 'antd/lib/layout';
 import HeaderContent from './common/HeaderContent';
 import NavigationMain from './common/NavigationMain';
 import NotificationManager from '../notifications/NotificationManager';
 
-const { Content, Header, Sider } = Layout;
+// const { Content, Header, Sider } = Layout;
 
 export default class App extends Component {
     constructor(props) {
