@@ -12,46 +12,46 @@ export const RECEIVE_BUDGETS_SAVE_NEW_VERSION = 'RECEIVE_BUDGETS_SAVE_NEW_VERSIO
 export const REQUEST_BUDGETS_SAVE_BUDGET = 'REQUEST_BUDGETS_SAVE_BUDGET';
 export const RECEIVE_BUDGETS_SAVE_BUDGET = 'RECEIVE_BUDGETS_SAVE_BUDGET';
 
-function requestBudgetVersions() {
+export function requestBudgetVersions() {
     return {
         type: REQUEST_BUDGETS_VERSIONS,
     };
 }
 
-function receiveBudgetVersions(versions) {
+export function receiveBudgetVersions(versions) {
     return {
         type: RECEIVE_BUDGETS_VERSIONS,
         versions,
     };
 }
 
-function requestBudgetSaveNewVersion() {
+export function requestBudgetSaveNewVersion() {
     return {
         type: REQUEST_BUDGETS_SAVE_NEW_VERSION,
     };
 }
 
-function receiveBudgetSaveNewVersion(version) {
+export function receiveBudgetSaveNewVersion(version) {
     return {
         type: RECEIVE_BUDGETS_SAVE_NEW_VERSION,
         version,
     };
 }
 
-function requestBudgetSave() {
+export function requestBudgetSave() {
     return {
         type: REQUEST_BUDGETS_SAVE_BUDGET,
     };
 }
 
-function receiveBudgetSave(version) {
+export function receiveBudgetSave(version) {
     return {
         type: RECEIVE_BUDGETS_SAVE_BUDGET,
         version,
     };
 }
 
-///api/planning/budgets/8/versions
+// api/planning/budgets/8/versions
 export function budgetVersions(budgetId) {
   return dispatch => {
     dispatch(requestBudgetVersions());

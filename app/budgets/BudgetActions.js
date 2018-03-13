@@ -96,7 +96,6 @@ export function createBudget(budget) {
                     return dispatch(receiveBudgetCreate(res.body));
                 },
                 err => {
-                  console.log('---', err);
                   dispatch(messages({ content: err, response: err.response, isError: true }));
                 },
             );

@@ -116,7 +116,7 @@
   },
   "jest": {
     "setupFiles": [
-      "<rootDir>/tests/shim.js", 
+      "<rootDir>/tests/shim.js",
       "<rootDir>/tests/setupTests.js"
     ],
     "testMatch": [
@@ -163,6 +163,7 @@
     },
     "collectCoverageFrom": [
       "**/app/**/*.{js,jsx}",
+      "!**/app/styles/**",
       "!**/__mocks__/**",
       "!**/__tests__/**"
     ],
@@ -174,39 +175,5 @@
         "statements": 0
       }
     }
-  },
-  "nyc": {
-    "exclude": [
-      "app/index.jsx"
-    ],
-    "include": [
-      "app/*.js",
-      "app/*.jsx",
-      "app/**/*.js",
-      "app/**/*.jsx"
-    ],
-    "extension": [
-      ".js",
-      ".jsx"
-    ],
-    "require": [
-      "babel-core/register"
-    ],
-    "coverageThreshold": {
-      "global": {
-        "statements": 1,
-        "branches": 1,
-        "functions": 1,
-        "lines": 1
-      }
-    },
-    "transform": {
-      "^.+\\.jsx$": "babel-jest",
-      "^.+\\.js$": "babel-jest"
-    },
-    "moduleNameMapper": {
-      "^.+\\.(s?css|less)$": "<rootDir>/tests/LESSstub.js"
-    },
-    "testRegex": "./tests/unit/.*\\.jsx?$"
   }
 }
