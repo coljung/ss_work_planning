@@ -7,4 +7,4 @@ export default () =>
      <Logo />
      <h1>Merchandise Planning Tool</h1>
      {/* <NavigationUser /> */}
-  </div>
+ </div>

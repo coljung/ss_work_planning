@@ -1,5 +1,6 @@
 import React from 'react';
 
+// const App = () =>
 export default () =>
   /* eslint-disable max-len */
   // <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 426.29333 69.986664" height="69.987" width="426.293">

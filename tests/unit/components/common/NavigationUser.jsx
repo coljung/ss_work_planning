@@ -8,7 +8,7 @@ import NavigationUser from '../../../../app/components/common/NavigationUser';
 const Item = Menu.Item;
 let sandbox;
 
-describe('<NavigationUser />', () => {
+describe.skip('<NavigationUser />', () => {
     beforeAll(() => {
         sandbox = sinon.sandbox.create();
     });

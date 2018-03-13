@@ -3,6 +3,6 @@
 lib
 build/*.js
 config/*.js
-tests/coverage
+tests
 *.less
 *.scss
