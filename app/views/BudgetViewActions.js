@@ -53,17 +53,17 @@ export function receiveBudgetSave(version) {
 
 // api/planning/budgets/8/versions
 export function budgetVersions(budgetId) {
-  return dispatch => {
-    dispatch(requestBudgetVersions());
-    return request
-        .get(`${getApiUrl()}planning/budgets/${budgetId}/versions`)
-        .then(
-            res => {
-                dispatch(receiveBudgetVersions(res.body));
-            },
-            err => dispatch(messages({ content: err, response: err.response, isError: true })),
-        );
-  }
+    return dispatch => {
+        dispatch(requestBudgetVersions());
+        return request
+            .get(`${getApiUrl()}planning/budgets/${budgetId}/versions`)
+            .then(
+                res => {
+                    dispatch(receiveBudgetVersions(res.body));
+                },
+                err => dispatch(messages({ content: err, response: err.response, isError: true })),
+            );
+    }
 }
 
 export function saveNewBudgetVersion(budgetID, id) {
