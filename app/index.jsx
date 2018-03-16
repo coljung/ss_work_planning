@@ -5,12 +5,12 @@ import * as OfflinePluginRuntime from 'offline-plugin/runtime';
 import Root from './Root.jsx';
 
 OfflinePluginRuntime.install({
-  ServiceWorker: {
-    events: true,
-    prefetchRequest: {
-      credentials: 'same-origin'
-    }
-  }
+    ServiceWorker: {
+        events: true,
+        prefetchRequest: {
+            credentials: 'same-origin',
+        },
+    },
 });
 
 ReactDOM.render(

@@ -48,7 +48,7 @@ export class BudgetCreate extends Component {
     createDropdown = () => {
         const { seasons } = this.props;
 
-        const buildSelect = (seasons || []).map((s) =>
+        const buildSelect = (seasons || []).map(s =>
             <Option key={s.name} value={`${s.season}-${s.year}`}>{s.name}</Option>,
         );
         return (

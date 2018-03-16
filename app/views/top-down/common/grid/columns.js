@@ -26,7 +26,6 @@ const VIEW_TOTAL = 'total';
 // const getCurrentCellCode = getCellCode(month, year) => year + monthsRef[month];
 
 const columns = (season, rowSpan, view) => {
-
     function cellValueRender(instance, td, row, col, prop, value, cellProperties) {
         // console.log(instance);
         cellProperties = {};
@@ -64,7 +63,7 @@ const columns = (season, rowSpan, view) => {
 
         // no customizations for previous
         if (prop === 'previous') {
-            if(view === VIEW_TOTAL) {
+            if (view === VIEW_TOTAL) {
                 instance.setCellMeta(row, col, 'readOnly', true);
             }
 
@@ -73,7 +72,7 @@ const columns = (season, rowSpan, view) => {
 
         if (prop === 'future') {
             // for now future is always enabled if not on total view
-            if(view === VIEW_TOTAL) {
+            if (view === VIEW_TOTAL) {
                 instance.setCellMeta(row, col, 'readOnly', true);
             } else {
                 instance.setCellMeta(row, col, 'readOnly', false);
@@ -100,8 +99,8 @@ const columns = (season, rowSpan, view) => {
             }
         }
 
-        if(view === VIEW_TOTAL) {
-          instance.setCellMeta(row, col, 'readOnly', true);
+        if (view === VIEW_TOTAL) {
+            instance.setCellMeta(row, col, 'readOnly', true);
         }
 
         return td;

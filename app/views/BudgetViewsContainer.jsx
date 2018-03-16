@@ -53,20 +53,20 @@ class BudgetViewsContainer extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-      if(nextProps.params.tab !== this.props.params.tab) {
-        const currentKey = this.state.activeTab;
+        if (nextProps.params.tab !== this.props.params.tab) {
+            const currentKey = this.state.activeTab;
 
-        this.setState({
-            [currentKey]: false,
-            activeTab: nextProps.params.tab,
-            [nextProps.params.tab]: true,
-        });
-      } else if (nextProps.newVersion !== this.props.newVersion) {
-        const { router, params: { tab } } = this.props;
-        const {budgetSeasonId, seasonName, versionName} = this.state;
+            this.setState({
+                [currentKey]: false,
+                activeTab: nextProps.params.tab,
+                [nextProps.params.tab]: true,
+            });
+        } else if (nextProps.newVersion !== this.props.newVersion) {
+            const { router, params: { tab } } = this.props;
+            const { budgetSeasonId, seasonName, versionName } = this.state;
 
-        window.location.href = `${ROUTE_BUDGET}/${seasonName}/budget/${budgetSeasonId}/version/${nextProps.newVersion.name}/${nextProps.newVersion.id}/${tab}`;
-       }
+            window.location.href = `${ROUTE_BUDGET}/${seasonName}/budget/${budgetSeasonId}/version/${nextProps.newVersion.name}/${nextProps.newVersion.id}/${tab}`;
+        }
     }
 
     save = (budget, version) => {
@@ -100,12 +100,12 @@ class BudgetViewsContainer extends Component {
     }
 
     handleVersionClick(event) {
-      const { params: { tab } } = this.props;
-      const { seasonName } = this.state;
+        const { params: { tab } } = this.props;
+        const { seasonName } = this.state;
 
-      const { item: { props: { version } } } = event;
+        const { item: { props: { version } } } = event;
 
-      window.location.href = `${ROUTE_BUDGET}/${seasonName}/budget/${version.budget_id}/version/${version.name}/${version.id}/${tab}`;
+        window.location.href = `${ROUTE_BUDGET}/${seasonName}/budget/${version.budget_id}/version/${version.name}/${version.id}/${tab}`;
     }
 
     onTabChange(newTabKey) {
@@ -131,8 +131,8 @@ class BudgetViewsContainer extends Component {
         const menuBudget = (
             <Menu onClick={this.handleVersionClick.bind(this)}>
                 { versions && versions.map(
-                  (version) =>
-                    <Menu.Item key={version.id} version={ version }>{ seasonname } - { version.name }</Menu.Item>
+                    version =>
+                    <Menu.Item key={version.id} version={ version }>{ seasonname } - { version.name }</Menu.Item>,
                 ) }
             </Menu>
         );

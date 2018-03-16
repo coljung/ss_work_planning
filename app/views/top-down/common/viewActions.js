@@ -38,8 +38,8 @@ export function fetchBudgetData(budget, version, view, query) {
     return (dispatch) => {
         // merge query with the default if is not defined
         query = {
-          ...query,
-          metricSeq: query && query.metricSeq ? query.metricSeq : defaultMetricSequence()
+            ...query,
+            metricSeq: query && query.metricSeq ? query.metricSeq : defaultMetricSequence(),
         };
 
         dispatch(requestBudgetViewData());
@@ -60,11 +60,11 @@ export function saveBudget(budget, id, view, data) {
             .post(`${getApiUrl()}planning/budgets/${budget}/versions/${id}/${view}`)
             .send(data)
             .then(
-                res => {
-                    dispatch(messages({ content: 'Budget Saved successfully!', response: '', isError: false }));
-                    dispatch(receiveBudgetSave(res.body));
-                },
-                err => dispatch(messages({ content: err, response: err.response, isError: true })),
+            (res) => {
+                dispatch(messages({ content: 'Budget Saved successfully!', response: '', isError: false }));
+                dispatch(receiveBudgetSave(res.body));
+            },
+            err => dispatch(messages({ content: err, response: err.response, isError: true })),
             );
     };
 }

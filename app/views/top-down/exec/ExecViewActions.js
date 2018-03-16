@@ -32,8 +32,8 @@ export function fetchBudgetExecData(budget, version, query) {
     return (dispatch, getState) => {
         // merge query with the default if is not defined
         query = {
-          ...query,
-          metricSeq: query && query.metricSeq ? query.metricSeq : defaultMetricSequence()
+            ...query,
+            metricSeq: query && query.metricSeq ? query.metricSeq : defaultMetricSequence(),
         };
 
         dispatch(requestBudgetExecViewData());
@@ -42,8 +42,8 @@ export function fetchBudgetExecData(budget, version, query) {
             .get(`${getApiUrl()}planning/budgets/${budget}/versions/${version}/exec`)
             .query(query)
             .then(
-              res => dispatch(receiveBudgetExecViewData(res.body)),
-              err => dispatch(messages({ content: err, response: err.response, isError: true })),
+            res => dispatch(receiveBudgetExecViewData(res.body)),
+            err => dispatch(messages({ content: err, response: err.response, isError: true })),
             );
     };
 }

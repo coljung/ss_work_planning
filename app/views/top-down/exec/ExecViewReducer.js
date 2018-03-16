@@ -5,18 +5,18 @@ import { REQUEST_BUDGETS_EXEC_VIEW,
 const initialState = {
     loading: false,
     viewExecData: {
-      data: [],
-      info: {
-        currentMonthColumn: 0,
-        has_gaps: false,
-        metrics: 0,
-        row_span: 0,
-        season: '',
-        start_row: 0,
-        total: 0,
-        total_cols: 0,
-        hidden_rows: []
-      }
+        data: [],
+        info: {
+            currentMonthColumn: 0,
+            has_gaps: false,
+            metrics: 0,
+            row_span: 0,
+            season: '',
+            start_row: 0,
+            total: 0,
+            total_cols: 0,
+            hidden_rows: [],
+        },
     },
     viewExecDataFetched: false,
 };
@@ -27,15 +27,15 @@ export default (state = initialState, action) => {
             return initialState;
         case REQUEST_BUDGETS_EXEC_VIEW:
             return {
-              ...state,
-              loading: true
+                ...state,
+                loading: true,
             };
         case RECEIVE_BUDGETS_EXEC_VIEW: {
             return {
-              ...state,
-              viewExecData: action.viewData,
-              viewExecDataFetched: true,
-              loading: false
+                ...state,
+                viewExecData: action.viewData,
+                viewExecDataFetched: true,
+                loading: false,
             };
         }
         default:

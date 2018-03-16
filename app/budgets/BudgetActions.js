@@ -66,8 +66,8 @@ export function fetchBudgets() {
             .get(`${getApiUrl()}planning/budgets`)
             .query({ page_size: 1000 })
             .then(
-                res => dispatch(receiveBudgets(res.body)),
-                err => dispatch(messages({ content: err, response: err.response, isError: true }))
+            res => dispatch(receiveBudgets(res.body)),
+            err => dispatch(messages({ content: err, response: err.response, isError: true })),
             );
     };
 }
@@ -78,8 +78,8 @@ export function fetchSeasons() {
         return request
             .get(`${getApiUrl()}planning/budgets/show/available`)
             .then(
-                res => dispatch(receiveSeasons(res.body)),
-                err => dispatch(messages({ content: err, response: err.response, isError: true })),
+            res => dispatch(receiveSeasons(res.body)),
+            err => dispatch(messages({ content: err, response: err.response, isError: true })),
             );
     };
 }
@@ -90,14 +90,14 @@ export function createBudget(budget) {
         const req = request.post(`${getApiUrl()}planning/budgets`);
         return req.send(budget)
             .then(
-                (res) => {
-                    fetchBudgets()(dispatch);
-                    dispatch(messages({ content: 'Budget created successfully!', response: '', isError: false }));
-                    return dispatch(receiveBudgetCreate(res.body));
-                },
-                err => {
-                  dispatch(messages({ content: err, response: err.response, isError: true }));
-                },
+            (res) => {
+                fetchBudgets()(dispatch);
+                dispatch(messages({ content: 'Budget created successfully!', response: '', isError: false }));
+                return dispatch(receiveBudgetCreate(res.body));
+            },
+            (err) => {
+                dispatch(messages({ content: err, response: err.response, isError: true }));
+            },
             );
     };
 }

@@ -53,17 +53,17 @@ export function receiveBudgetSave(version) {
 
 // api/planning/budgets/8/versions
 export function budgetVersions(budgetId) {
-    return dispatch => {
+    return (dispatch) => {
         dispatch(requestBudgetVersions());
         return request
             .get(`${getApiUrl()}planning/budgets/${budgetId}/versions`)
             .then(
-                res => {
-                    dispatch(receiveBudgetVersions(res.body));
-                },
-                err => dispatch(messages({ content: err, response: err.response, isError: true })),
+            (res) => {
+                dispatch(receiveBudgetVersions(res.body));
+            },
+            err => dispatch(messages({ content: err, response: err.response, isError: true })),
             );
-    }
+    };
 }
 
 export function saveNewBudgetVersion(budgetID, id) {
@@ -73,11 +73,11 @@ export function saveNewBudgetVersion(budgetID, id) {
             .post(`${getApiUrl()}planning/budgets/${budgetID}/versions/duplicate`)
             .send({ id })
             .then(
-                res => {
-                    dispatch(messages({ content: 'New Version Saved successfully!', response: '', isError: false }));
-                    dispatch(receiveBudgetSaveNewVersion(res.body));
-                },
-                err => dispatch(messages({ content: err, response: err.response, isError: true })),
+            (res) => {
+                dispatch(messages({ content: 'New Version Saved successfully!', response: '', isError: false }));
+                dispatch(receiveBudgetSaveNewVersion(res.body));
+            },
+            err => dispatch(messages({ content: err, response: err.response, isError: true })),
             );
     };
 }
@@ -90,11 +90,11 @@ export function saveBudget(budget, id, view, data) {
             .post(`${getApiUrl()}planning/budgets/${budget}/versions/${id}/${view}`)
             .send(data)
             .then(
-                res => {
-                    dispatch(messages({ content: 'Budget Saved successfully!', response: '', isError: false }));
-                    dispatch(receiveBudgetSave(res.body));
-                },
-                err => dispatch(messages({ content: err, response: err.response, isError: true })),
+            (res) => {
+                dispatch(messages({ content: 'Budget Saved successfully!', response: '', isError: false }));
+                dispatch(receiveBudgetSave(res.body));
+            },
+            err => dispatch(messages({ content: err, response: err.response, isError: true })),
             );
     };
 }
