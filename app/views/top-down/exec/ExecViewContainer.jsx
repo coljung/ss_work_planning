@@ -74,7 +74,7 @@ class ExecViewContainer extends Component {
                     observeChanges={true}
                     stretchH='all'
                     hiddenRows={ {
-                      rows: info.hidden_rows
+                        rows: info.hidden_rows,
                     } }
                     licenseKey= 'a389a-f2591-70b41-a480d-1911a' />
             </div>

@@ -45,12 +45,12 @@ export const percentageMetrics = (instance, row, col, td) => {
 };
 
 export const numberMetrics = (instance, row, col, td) => {
-  const metricName = instance.getDataAtCell(row, 0);
+    const metricName = instance.getDataAtCell(row, 0);
 
-  if (metricName === 'TURNOVER RATE') {
-    instance.setCellMeta(row, col, 'format', '0');
-  }
-  return td;
+    if (metricName === 'TURNOVER RATE') {
+        instance.setCellMeta(row, col, 'format', '0');
+    }
+    return td;
 };
 
 export const disableEdit = (instance, row, col, td, disabledMetrics) => {
@@ -84,5 +84,4 @@ export const enableCellValidDate = (prop, currentRowSeasonYear) => {
     const viewCode = getCurrentDateCode();
 
     return { cellCode, viewCode };
-
 };

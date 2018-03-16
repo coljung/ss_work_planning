@@ -2,24 +2,24 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 const Board = ({ btnInTitle, title, id, children }) => {
-  let boardTitle = null;
-  if (btnInTitle) {
-      boardTitle =
+    let boardTitle = null;
+    if (btnInTitle) {
+        boardTitle =
           <div className='clearfix titleWithButton'>
               <h2>{title}</h2>
               {btnInTitle}
           </div>;
-  } else {
-      boardTitle = <h2>{title}</h2>;
-  }
+    } else {
+        boardTitle = <h2>{title}</h2>;
+    }
 
-  return (
+    return (
       <div className='board' id={id || 'board'}>
           {boardTitle}
           {children}
       </div>
-  );
-}
+    );
+};
 
 Board.propTypes = {
     title: PropTypes.string.isRequired,
