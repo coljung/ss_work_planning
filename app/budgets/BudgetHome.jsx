@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Row, Col, Button } from 'antd';
+import Plot from 'react-plotly.js';
 import Board from '../components/Board';
 import BudgetList from './BudgetList';
 import BudgetCreate from './BudgetCreate';
@@ -43,6 +44,20 @@ export default class BudgetHome extends Component {
                             </Col>
                         </Row>
                     </Board>
+                    <Board>
+                        <Plot
+                            data={[
+                                {
+                                    x: [14295.72, 5912.88, 56506.55, 184026.08, 84662, 124436, 146672],
+                                    y: [10000, 50000, 100000, 150000, 200000],
+                                    type: 'bar',
+                                    mode: 'lines',
+                                    marker: { color: 'red' },
+                                },
+                            ]}
+                            layout={{ width: 320, height: 240, title: 'A Fancy Plot' }}
+                        />
+                        </Board>
 
                 </Col>
             </Row>
