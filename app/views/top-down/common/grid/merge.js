@@ -16,7 +16,7 @@ const mergeMetrics = (startRow = 0, rowSpan, totalRows, totalCols, hasGap = fals
                 rowspan: rowSpan,
                 colspan: 1,
             });
-            if (hasGap) {
+            if (hasGap && i > 0) {
                 mergeArr.push({
                     row: i - 1,
                     col: 0,

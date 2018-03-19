@@ -94,7 +94,6 @@ class BudgetViewsContainer extends Component {
                 const checkDuplicate = this.dataToSave.filter(e => e.row !== row || e.col !== col);
                 checkDuplicate.push(newData);
                 this.dataToSave = checkDuplicate;
-                console.log(this.dataToSave);
             }
         }
     }

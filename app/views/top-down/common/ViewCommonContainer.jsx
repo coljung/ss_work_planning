@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-// import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
@@ -7,7 +6,6 @@ import HotTable from 'react-handsontable';
 import Handsontable from 'handsontable';
 import { Button, Spin } from 'antd';
 import { withRouter } from 'react-router';
-// import { mergeMetrics } from 'helpers';
 import { saveBudget, fetchBudgetData, resetState } from '../common/viewActions';
 import { headers, columns, customBorders, mergeMetrics } from '../common/grid/index';
 
