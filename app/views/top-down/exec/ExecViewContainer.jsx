@@ -29,7 +29,6 @@ class ExecViewContainer extends Component {
 
     componentWillUnmount() {
         this.props.resetState();
-        console.log('gone exec');
     }
 
     componentWillReceiveProps = (nextProps) => {

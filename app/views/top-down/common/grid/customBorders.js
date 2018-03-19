@@ -22,12 +22,12 @@ const customBorders = (startRow = 0, rowSpan, totalRows, totalCols, sample) => {
         }
     }
 
-    const len = sample.length;
-    const leftBorderCols = [
-        'seasonyear',
-        'stdpremarkdown',
-        'previous',
-    ];
+    // const len = sample.length;
+    // const leftBorderCols = [
+    //     'seasonyear',
+    //     'stdpremarkdown',
+    //     'previous',
+    // ];
     // debugger;
     //
     // for (let i = 0; i < len; ++i) {
