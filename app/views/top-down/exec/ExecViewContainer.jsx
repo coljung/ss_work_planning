@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import HotTable from 'react-handsontable';
 import Handsontable from 'handsontable';
 import { Spin } from 'antd';
+// import dataT from './testData';
 import { withRouter } from 'react-router';
 import { fetchBudgetExecData, resetState } from './ExecViewActions';
 import { headers, columns } from './grid-build/index';
@@ -48,7 +49,7 @@ class ExecViewContainer extends Component {
 
     buildTable = () => {
         const newMerge = this.mergeCells();
-        const { grid: { info, data } } = this.state;
+        const { info, data } = this.state.grid;
         return (
             <div className="parentDiv">
                 <HotTable

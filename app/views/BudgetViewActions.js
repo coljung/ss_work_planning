@@ -86,7 +86,6 @@ export function saveBudget(budget, id, view, data) {
     return (dispatch) => {
         dispatch(requestBudgetSave());
         return request
-            // .get(`${getApiUrl()}planning/seasons/show/available`)
             .post(`${getApiUrl()}planning/budgets/${budget}/versions/${id}/${view}`)
             .send(data)
             .then(
@@ -98,6 +97,3 @@ export function saveBudget(budget, id, view, data) {
             );
     };
 }
-
-
-// ${getApiUrl()}planning/budgets/143/versions/1/man
