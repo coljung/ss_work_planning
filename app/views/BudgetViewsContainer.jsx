@@ -8,7 +8,7 @@ import ViewCommonContainer from './top-down/common/ViewCommonContainer';
 import HeaderContent from '../components/common/HeaderContent';
 import BudgetViewsButtonActions from './BudgetViewsButtonActions';
 import { budgetVersions, saveNewBudgetVersion } from './BudgetViewActions';
-import { switchUrls } from '../components/customNavigation/CustomNavigationActions';
+import { switchUrls, clearUrls } from '../components/customNavigation/CustomNavigationActions';
 import { ROUTE_BUDGET } from '../Routes';
 
 // Sub Component
@@ -52,6 +52,10 @@ class BudgetViewsContainer extends Component {
         const { budgetVersions, params: { budgetid } } = this.props; // eslint-disable-line no-shadow
 
         budgetVersions(budgetid);
+    }
+
+    componentWillUnmount() {
+        this.props.clearUrls();
     }
 
     componentWillReceiveProps(nextProps) {
@@ -240,6 +244,7 @@ BudgetViewsContainer.propTypes = {
     saveNewBudgetVersion: PropTypes.func.isRequired,
     budgetVersions: PropTypes.func.isRequired,
     switchUrls: PropTypes.func.isRequired,
+    clearUrls: PropTypes.func.isRequired,
     versions: PropTypes.array.isRequired,
 };
 
@@ -252,7 +257,7 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-    return bindActionCreators({ budgetVersions, saveNewBudgetVersion, switchUrls }, dispatch);
+    return bindActionCreators({ budgetVersions, saveNewBudgetVersion, switchUrls, clearUrls }, dispatch);
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(BudgetViewsContainer);
