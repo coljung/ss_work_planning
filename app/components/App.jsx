@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Layout, Icon } from 'antd';
 import { Content, Header, Sider } from 'antd/lib/layout';
 import HeaderContent from './common/HeaderContent';
-import NavigationMain from './common/NavigationMain';
+import CustomNavigation from './customNavigation/CustomNavigation';
 import NotificationManager from '../notifications/NotificationManager';
 
 // const { Content, Header, Sider } = Layout;
@@ -41,7 +41,7 @@ export default class App extends Component {
                         trigger={null}
                         collapsible
                         collapsed={this.state.collapsed}>
-                        <NavigationMain pathname={this.props.location.pathname} />
+                        <CustomNavigation pathname={this.props.location.pathname} />
                     </Sider>
                     <Content>
                         <main style={{ flex: 1, overflowY: 'auto', padding: '0 25px 25px' }}>

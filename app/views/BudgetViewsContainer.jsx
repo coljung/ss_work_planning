@@ -8,6 +8,7 @@ import ViewCommonContainer from './top-down/common/ViewCommonContainer';
 import HeaderContent from '../components/common/HeaderContent';
 import BudgetViewsButtonActions from './BudgetViewsButtonActions';
 import { budgetVersions, saveNewBudgetVersion } from './BudgetViewActions';
+import { switchUrls } from '../components/customNavigation/CustomNavigationActions';
 import { ROUTE_BUDGET } from '../Routes';
 
 // Sub Component
@@ -44,6 +45,7 @@ class BudgetViewsContainer extends Component {
         };
 
         this.dataToSave = [];
+        this.props.switchUrls(budgetid, id, seasonname, vname, tab);
     }
 
     componentWillMount() {
@@ -237,6 +239,7 @@ BudgetViewsContainer.propTypes = {
     newVersion: PropTypes.object,
     saveNewBudgetVersion: PropTypes.func.isRequired,
     budgetVersions: PropTypes.func.isRequired,
+    switchUrls: PropTypes.func.isRequired,
     versions: PropTypes.array.isRequired,
 };
 
@@ -249,7 +252,7 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-    return bindActionCreators({ budgetVersions, saveNewBudgetVersion }, dispatch);
+    return bindActionCreators({ budgetVersions, saveNewBudgetVersion, switchUrls }, dispatch);
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(BudgetViewsContainer);
