@@ -44,7 +44,7 @@ exports[`App should render correctly 1`] = `
       <div
         className="ant-layout-sider-children"
       >
-        <NavigationMain
+        <CustomNavigation
           pathname="pathname"
         />
       </div>

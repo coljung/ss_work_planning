@@ -9,7 +9,7 @@ const Item = Menu.Item;
 let sandbox;
 let props;
 
-describe('<NavigationMain />', () => {
+describe.skip('<NavigationMain />', () => {
     beforeAll(() => {
         sandbox = sinon.sandbox.create();
     });

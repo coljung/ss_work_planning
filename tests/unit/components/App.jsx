@@ -1,4 +1,4 @@
-jest.mock('../../../app/components/common/NavigationMain', () => 'NavigationMain');
+jest.mock('../../../app/components/customNavigation/CustomNavigation', () => 'CustomNavigation');
 jest.mock('../../../app/notifications/NotificationManager', () => 'NotificationManager12345643');
 
 import React from 'react';
