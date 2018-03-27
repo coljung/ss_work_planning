@@ -145,6 +145,38 @@ describe('BudgetViewActions', () => {
                 expect(store.getActions()).toEqual(expectedActions)
             })
         });
+
+        it('Should fail saveNewBudgetVersion', () => {
+            nock(UI_PLANNING_HOST)
+            .post('/api/planning/budgets/2/versions/duplicate')
+            .query(true)
+            .reply(500, {
+                code: 'Foo Bar',
+                message: 'Foo Bar'
+            }, {
+                'Content-Type': 'application/json'
+            });
+
+            const message = {
+                content: 'Error found',
+                isError: true,
+                messageType: 'error',
+                response: undefined
+            };
+
+            const expectedActions = [
+                { type: actions.REQUEST_BUDGETS_SAVE_NEW_VERSION },
+                { type: 'MESSAGES', message },
+            ];
+
+            const store = mockStore({ BudgetViewActions: [] });
+
+            return store.dispatch(actions.saveNewBudgetVersion()).then(() => {
+                // return of async actions
+                expect(store.getActions()).toEqual(expectedActions)
+            })
+        });
+
         //
         //   it('Should failed to fetchSeasons', () => {
         //     nock(UI_PLANNING_HOST)
