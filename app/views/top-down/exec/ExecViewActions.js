@@ -9,13 +9,13 @@ export const REQUEST_BUDGETS_EXEC_VIEW = 'REQUEST_BUDGETS_EXEC_VIEW';
 export const RECEIVE_BUDGETS_EXEC_VIEW = 'RECEIVE_BUDGETS_EXEC_VIEW';
 export const RESET_BUDGETS_EXEC_VIEW = 'RESET_BUDGETS_EXEC_VIEW';
 
-function requestBudgetExecViewData() {
+export function requestBudgetExecViewData() {
     return {
         type: REQUEST_BUDGETS_EXEC_VIEW,
     };
 }
 
-function receiveBudgetExecViewData(viewData) {
+export function receiveBudgetExecViewData(viewData) {
     return {
         type: RECEIVE_BUDGETS_EXEC_VIEW,
         viewData,

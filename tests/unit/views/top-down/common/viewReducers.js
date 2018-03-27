@@ -1,5 +1,5 @@
-import reducer from '../../../../../app/views/top-down/common/viewReducers';
-import * as actions from '../../../../../app/views/top-down/common/viewActions';
+import reducer from '../../../../../app/views/top-down/common/ViewReducers';
+import * as actions from '../../../../../app/views/top-down/common/ViewActions';
 
 import {
     RECEIVE_BUDGETS_VIEW
