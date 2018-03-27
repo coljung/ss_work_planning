@@ -6,7 +6,7 @@ import HotTable from 'react-handsontable';
 import Handsontable from 'handsontable';
 import { Button, Spin } from 'antd';
 import { withRouter } from 'react-router';
-import { saveBudget, fetchBudgetData, resetState } from '../common/viewActions';
+import { saveBudget, fetchBudgetData, resetState } from '../common/ViewActions';
 import { headers, columns, customBorders, mergeMetrics } from '../common/grid/index';
 
 class ViewCommonContainer extends Component {

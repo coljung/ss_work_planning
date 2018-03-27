@@ -3,7 +3,7 @@ import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import { join } from 'path';
 import getApiUrl from '../../../../../app/Helpers';
-import * as actions from '../../../../../app/views/top-down/common/viewActions';
+import * as actions from '../../../../../app/views/top-down/common/ViewActions';
 
 // import versionsResponse from '../../fixtures/versions.json';
 // import versionsDuplicate from '../../fixtures/versionsDuplicate.json';
