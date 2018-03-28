@@ -5,8 +5,7 @@ import { join } from 'path';
 import getApiUrl from '../../../../../app/Helpers';
 import * as actions from '../../../../../app/views/top-down/exec/ExecViewActions';
 
-// import versionsResponse from '../../fixtures/versions.json';
-// import versionsDuplicate from '../../fixtures/versionsDuplicate.json';
+// import budgetFetch from '../../../../fixtures/budgetFetch.json';
 
 const middlewares = [thunk]
 const mockStore = configureMockStore(middlewares)
@@ -82,22 +81,22 @@ describe('BudgetViewActions', () => {
         //     expect(actions.receiveBudgetSave(version)).toEqual(expectedAction);
         // });
         //
-        // it('Should handle budgetVersions', () => {
+        // it('Should handle fetchBudgetExecData', () => {
         //     nock(UI_PLANNING_HOST)
-        //     .get('/api/planning/budgets/2/versions')
+        //     .get('/api/planning/budgets/2/versions/4/exec')
         //     .query(true)
-        //     .replyWithFile(200, join(__dirname, '..', '..', 'fixtures', 'versions.json'), {
+        //     .replyWithFile(200, join(__dirname, '..', '..', 'fixtures', 'budgetFetch.json'), {
         //         'Content-Type': 'application/json'
         //     });
         //
         //     const expectedActions = [
-        //         { type: actions.REQUEST_BUDGETS_VERSIONS },
-        //         { type: actions.RECEIVE_BUDGETS_VERSIONS, versions: versionsResponse }
+        //         { type: actions.REQUEST_BUDGETS_EXEC_VIEW },
+        //         { type: actions.RECEIVE_BUDGETS_EXEC_VIEW, viewData: budgetFetch }
         //     ];
         //
-        //     const store = mockStore({ BudgetViewActions: [] });
+        //     const store = mockStore({ ExecViewActions: [] });
         //
-        //     return store.dispatch(actions.budgetVersions(2)).then(() => {
+        //     return store.dispatch(actions.budgetVersions(2, 4, '')).then(() => {
         //         // return of async actions
         //         expect(store.getActions()).toEqual(expectedActions)
         //     })

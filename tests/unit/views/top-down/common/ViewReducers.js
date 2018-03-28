@@ -1,10 +1,6 @@
 import reducer from '../../../../../app/views/top-down/common/ViewReducers';
 import * as actions from '../../../../../app/views/top-down/common/ViewActions';
 
-import {
-    RECEIVE_BUDGETS_VIEW
-} from '../../../../../app/views/top-down/common/viewActions';
-
 describe('BudgetViewReducer', () => {
 
   it('should return the initial state', () => {
