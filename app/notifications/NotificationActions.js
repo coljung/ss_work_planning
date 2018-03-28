@@ -13,7 +13,6 @@ export function messages(message) {
             message.content = messageTxt;
         } else if (respTxt && respTxt.error.message) {
             messageTxt = `${messageTxt.message}: ${respTxt.error.message}`;
-            console.log('0000  --', messageTxt);
             message.content = messageTxt;
         } else {
             message.content = 'Error found';
