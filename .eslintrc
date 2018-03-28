@@ -16,6 +16,8 @@
           "arguments": 1
         }
       }
-    ]
+    ],
+    "no-param-reassign": ["error", { "props": false }],
+    "max-len": [1, 150, 2]
   }
 }
