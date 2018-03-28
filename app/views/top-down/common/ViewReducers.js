@@ -1,6 +1,6 @@
 import { REQUEST_BUDGETS_VIEW,
          RECEIVE_BUDGETS_VIEW,
-         RESET_BUDGETS_VIEW } from './viewActions';
+         RESET_BUDGETS_VIEW } from './ViewActions';
 
 const initialState = {
     viewData: [],
