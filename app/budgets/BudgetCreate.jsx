@@ -2,10 +2,11 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { Button, Modal, Select, Spin } from 'antd';
+import { Button, Modal, Select, Spin, Radio } from 'antd';
 import { createBudget, fetchSeasons, resetState } from './BudgetActions';
 
 const Option = Select.Option;
+const RadioGroup = Radio.Group;
 
 export class BudgetCreate extends Component {
 
@@ -73,6 +74,13 @@ export class BudgetCreate extends Component {
             </Button>
         </div>);
 
+        const useData = (
+            <RadioGroup name="radiogroup" defaultValue={1}>
+                <Radio value={'lastyear'}>Use the last year's data</Radio>
+                <Radio disabled value={'suggested'}>Use the suggested data</Radio>
+            </RadioGroup>
+        );
+
         const mySelect = this.props.seasonsFetched ? this.createDropdown() : <Spin size="large" />;
 
         return (
@@ -83,6 +91,7 @@ export class BudgetCreate extends Component {
                 onCancel={this.closeModal}
                 footer={footerButtons}>
                 {mySelect}
+                {useData}
             </Modal>
         );
     }
