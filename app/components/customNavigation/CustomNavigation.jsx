@@ -43,7 +43,7 @@ class CustomNavigation extends Component {
                         </Link>
                     </Tooltip>
                 </Menu.Item>
-
+                <Menu.Divider />
                 <SubMenu
                     key='sub2'
                     disabled={!budgetView}
@@ -74,20 +74,21 @@ class CustomNavigation extends Component {
                         </Menu.Item>
                 </SubMenu>
                 <SubMenu
-                    key="sub7"
+                    key="sub3"
+                    disabled={!budgetView}
                     title={<span><Icon type="team" /><span>Middle Out</span></span>}>
-                    <Menu.Item key="3">Option 3</Menu.Item>
-                    <Menu.Item key="4">Option 4</Menu.Item>
+                    <Menu.Item key="3">Brand Groups</Menu.Item>
                 </SubMenu>
                 <SubMenu
                     key="sub3"
+                    disabled={!budgetView}
                     title={<span><Icon type="file" /><span>Bottom Up</span></span>}
                   >
                     <Menu.Item key="3">Buttom Up 1</Menu.Item>
                     <Menu.Item key="4">Buttom Up 2</Menu.Item>
                     <Menu.Item key="5">Buttom Up 3</Menu.Item>
                 </SubMenu>
-
+                <Menu.Divider />
                 <SubMenu
                     key="sub4"
                     title={<span><Icon type="area-chart" /><span>Reporting</span></span>}>
@@ -120,4 +121,4 @@ function mapDispatchToProps(dispatch) {
     return bindActionCreators({ clearUrls }, dispatch);
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(CustomNavigation);
+export default connect(mapStateToProps, mapDispatchToProps, null, { pure: false })(CustomNavigation);
