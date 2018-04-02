@@ -175,13 +175,14 @@ describe('BudgetCreate', () => {
   it('should handle change', () => {
     const { enzymeWrapper } = setupPureComponent();
 
-    enzymeWrapper.instance().handleChange('SS-22');
+    enzymeWrapper.instance().handleSeasonChange('SS-22');
 
     const newState = enzymeWrapper.state();
 
     expect(newState).toEqual({
       year: '22',
-      season: 'SS'
+      season: 'SS',
+      createNewValue: 'lastyear',
     });
   });
 
