@@ -3,9 +3,10 @@ import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import { join } from 'path';
 import getApiUrl from '../../../../../app/Helpers';
-import * as actions from '../../../../../app/views/top-down/exec/ExecViewActions';
+import * as actions from '../../../../../app/views/top-down/common/ViewActions';
 
-// import budgetFetch from '../../../../fixtures/budgetFetch.json';
+// import versionsResponse from '../../fixtures/versions.json';
+// import versionsDuplicate from '../../fixtures/versionsDuplicate.json';
 
 const middlewares = [thunk]
 const mockStore = configureMockStore(middlewares)
@@ -17,28 +18,45 @@ describe('BudgetViewActions', () => {
 
     describe('Action Creators', () => {
 
-        it('Should handle requestBudgetExecViewData', () => {
+        it('Should handle requestBudgetViewData', () => {
             const expectedAction = {
-                type: actions.REQUEST_BUDGETS_EXEC_VIEW
+                type: actions.REQUEST_BUDGETS_VIEW
             };
-            expect(actions.requestBudgetExecViewData()).toEqual(expectedAction);
+            expect(actions.requestBudgetViewData()).toEqual(expectedAction);
         });
 
-        it('Should handle receiveBudgetExecViewData', () => {
+        it('Should handle receiveBudgetViewData', () => {
             const viewData = {
                 foo: 'Bar'
             };
             const view = 'test';
             const expectedAction = {
-                type: actions.RECEIVE_BUDGETS_EXEC_VIEW,
+                type: actions.RECEIVE_BUDGETS_VIEW,
                 viewData,
+                view
             };
-            expect(actions.receiveBudgetExecViewData(viewData)).toEqual(expectedAction);
+            expect(actions.receiveBudgetViewData(viewData, view)).toEqual(expectedAction);
+        });
+
+        it('Should handle requestBudgetSave', () => {
+            const expectedAction = {
+                type: actions.REQUEST_BUDGETS_SAVE_BUDGET
+            };
+            expect(actions.requestBudgetSave()).toEqual(expectedAction);
+        });
+
+        it('Should handle receiveBudgetSave', () => {
+            const version = 'V2';
+            const expectedAction = {
+                type: actions.RECEIVE_BUDGETS_SAVE_BUDGET,
+                version,
+            };
+            expect(actions.receiveBudgetSave(version)).toEqual(expectedAction);
         });
 
         it('Should handle resetState', () => {
             const expectedAction = {
-                type: actions.RESET_BUDGETS_EXEC_VIEW
+                type: actions.RESET_BUDGETS_VIEW
             };
             expect(actions.resetState()).toEqual(expectedAction);
         });
@@ -81,22 +99,22 @@ describe('BudgetViewActions', () => {
         //     expect(actions.receiveBudgetSave(version)).toEqual(expectedAction);
         // });
         //
-        // it('Should handle fetchBudgetExecData', () => {
+        // it('Should handle budgetVersions', () => {
         //     nock(UI_PLANNING_HOST)
-        //     .get('/api/planning/budgets/2/versions/4/exec')
+        //     .get('/api/planning/budgets/2/versions')
         //     .query(true)
-        //     .replyWithFile(200, join(__dirname, '..', '..', 'fixtures', 'budgetFetch.json'), {
+        //     .replyWithFile(200, join(__dirname, '..', '..', 'fixtures', 'versions.json'), {
         //         'Content-Type': 'application/json'
         //     });
         //
         //     const expectedActions = [
-        //         { type: actions.REQUEST_BUDGETS_EXEC_VIEW },
-        //         { type: actions.RECEIVE_BUDGETS_EXEC_VIEW, viewData: budgetFetch }
+        //         { type: actions.REQUEST_BUDGETS_VERSIONS },
+        //         { type: actions.RECEIVE_BUDGETS_VERSIONS, versions: versionsResponse }
         //     ];
         //
-        //     const store = mockStore({ ExecViewActions: [] });
+        //     const store = mockStore({ BudgetViewActions: [] });
         //
-        //     return store.dispatch(actions.budgetVersions(2, 4, '')).then(() => {
+        //     return store.dispatch(actions.budgetVersions(2)).then(() => {
         //         // return of async actions
         //         expect(store.getActions()).toEqual(expectedActions)
         //     })
@@ -126,38 +144,36 @@ describe('BudgetViewActions', () => {
         //     })
         // });
         //
-        // it('Should fail saveBudget', () => {
-        //     nock(UI_PLANNING_HOST)
-        //     .post('/api/planning/budgets/2/versions/2/men')
-        //     .query(true)
-        //     .reply(500, {
-        //         code: 'Foo Bar',
-        //         message: 'Foo Bar'
-        //     }, {
-        //         'Content-Type': 'application/json'
-        //     });
-        //
-        //     const message = {
-        //         content: 'Error found',
-        //         isError: true,
-        //         messageType: 'error',
-        //         response: undefined
-        //     };
-        //
-        //     const expectedActions = [
-        //         { type: actions.REQUEST_BUDGETS_SAVE_BUDGET },
-        //         { type: 'MESSAGES', message }
-        //     ];
-        //
-        //     const store = mockStore({ viewActions: [] });
-        //
-        //     return store.dispatch(actions.saveBudget()).then(() => {
-        //         // return of async actions
-        //         expect(store.getActions()).toEqual(expectedActions)
-        //     })
-        // });
+        it('Should fail saveBudget', () => {
+            nock(UI_PLANNING_HOST)
+            .post('/api/planning/budgets/2/versions/2/men')
+            .query(true)
+            .reply(500, {
+                code: 'Foo Bar',
+                message: 'Foo Bar'
+            }, {
+                'Content-Type': 'application/json'
+            });
 
+            const message = {
+                content: 'Error found',
+                isError: true,
+                messageType: 'error',
+                response: undefined
+            };
 
+            const expectedActions = [
+                { type: actions.REQUEST_BUDGETS_SAVE_BUDGET },
+                { type: 'MESSAGES', message }
+            ];
+
+            const store = mockStore({ viewActions: [] });
+
+            return store.dispatch(actions.saveBudget()).then(() => {
+                // return of async actions
+                expect(store.getActions()).toEqual(expectedActions)
+            })
+        });
         //
         // it('Should fail saveNewBudgetVersion', () => {
         //     nock(UI_PLANNING_HOST)
