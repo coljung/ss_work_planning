@@ -1,7 +1,7 @@
 import agent from 'superagent';
 import wrap from 'superagent-promise';
 import { messages } from 'notifications/NotificationActions';
-import getApiUrl from '../Helpers.js';
+import getApiUrl from '../Helpers';
 
 const request = wrap(agent, Promise);
 
