@@ -41,15 +41,15 @@ describe('Helper functions', () => {
           'previous',
       ];
       const td = document.createElement("td");
-      const returnedElem =  borderLeft(leftBorderCols, 'stdpremarkdown', td);
-      expect(returnedElem.className).toBe(' leftCellBorder');
+      borderLeft(leftBorderCols, 'stdpremarkdown', td);
+      expect(td.className).toBe(' leftCellBorder');
     });
 
     // borderBottom
     it('should return proper class for borderBottom function', () => {
         const td = document.createElement("td");
-        const returnedElem =  borderBottom(4, 5, td, 10);
-        expect(returnedElem.className).toBe(' bottomCellBorder');
+        borderBottom(4, 5, td, 10);
+        expect(td.className).toBe(' bottomCellBorder');
     });
 
     // borderBottom

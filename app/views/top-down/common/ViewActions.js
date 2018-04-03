@@ -1,8 +1,8 @@
 import agent from 'superagent';
 import wrap from 'superagent-promise';
-import getApiUrl, { defaultMetricSequence } from 'Helpers.js';
 import { messages } from 'notifications/NotificationActions';
-import { fetchColumnData } from 'top_down/ColumnActions';
+import { fetchColumnData } from '../ColumnActions';
+import getApiUrl, { defaultMetricSequence } from '../../../Helpers.js';
 
 const request = wrap(agent, Promise);
 

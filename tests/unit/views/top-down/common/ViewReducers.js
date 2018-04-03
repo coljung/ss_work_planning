@@ -13,7 +13,7 @@ describe('BudgetViewReducer', () => {
   it('should handle RESET_BUDGETS_VIE or REQUEST_BUDGETS_VIEW', () => {
     expect(
       reducer(undefined, {
-          type: actions.RESET_BUDGETS_VIE,
+          type: actions.RESET_BUDGETS_VIEW,
       })
     ).toEqual({
         viewData: [],
