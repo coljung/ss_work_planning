@@ -2,10 +2,11 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { Button, Modal, Select, Spin } from 'antd';
+import { Button, Modal, Select, Spin, Radio } from 'antd';
 import { createBudget, fetchSeasons, resetState } from './BudgetActions';
 
 const Option = Select.Option;
+const RadioGroup = Radio.Group;
 
 export class BudgetCreate extends Component {
 
@@ -14,6 +15,7 @@ export class BudgetCreate extends Component {
         this.state = {
             year: '',
             season: '',
+            createNewValue: 'lastyear',
         };
     }
 
@@ -23,7 +25,7 @@ export class BudgetCreate extends Component {
         }
     }
 
-    handleChange = (value) => {
+    handleSeasonChange = (value) => {
         const splitValue = value.split('-');
         this.setState({
             year: splitValue[1],
@@ -31,10 +33,17 @@ export class BudgetCreate extends Component {
         });
     }
 
+    onChange = (e) => {
+        this.setState({
+            createNewValue: e.target.value,
+        });
+    }
+
     saveNewBudget = () => {
         const budget = {
             year: this.state.year,
             season: this.state.season,
+            // data: this.state.createNewValue,
         };
         this.props.createBudget(budget);
         this.closeModal();
@@ -45,16 +54,35 @@ export class BudgetCreate extends Component {
         this.props.onOverlayClick();
     }
 
-    createDropdown = () => {
+    createModalContent = () => {
         const { seasons } = this.props;
 
         const buildSelect = (seasons || []).map(s =>
             <Option key={s.name} value={`${s.season}-${s.year}`}>{s.name}</Option>,
         );
+
+        const useData = (
+            <RadioGroup name="radiogroup"
+                        className="radioNew"
+                        onChange={this.onChange}
+                        value={this.state.createNewValue}>
+                <Radio selected value='lastyear'>Use the last year's data</Radio>
+                <Radio disabled value='suggested'>Use the suggested data</Radio>
+            </RadioGroup>
+        );
+
         return (
-            <Select placeholder="Select a Season" notFoundContent="No season found" style={{ width: 120 }} onChange={this.handleChange}>
-                {buildSelect}
-            </Select>
+            <div>
+                <Select placeholder="Select a Season"
+                        notFoundContent="No season found"
+                        style={{ width: 180 }}
+                        className="dropdownNew"
+                        onChange={this.handleSeasonChange}>
+                    {buildSelect}
+                </Select>
+                <br />
+                {useData}
+            </div>
         );
     }
 
@@ -73,7 +101,7 @@ export class BudgetCreate extends Component {
             </Button>
         </div>);
 
-        const mySelect = this.props.seasonsFetched ? this.createDropdown() : <Spin size="large" />;
+        const modalContent = this.props.seasonsFetched ? this.createModalContent() : <Spin size="large" />;
 
         return (
             <Modal
@@ -82,7 +110,7 @@ export class BudgetCreate extends Component {
                 onOk={this.handleOk}
                 onCancel={this.closeModal}
                 footer={footerButtons}>
-                {mySelect}
+                {modalContent}
             </Modal>
         );
     }
