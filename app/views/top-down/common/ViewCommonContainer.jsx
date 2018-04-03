@@ -3,12 +3,13 @@ import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import HotTable from 'react-handsontable';
-import { Button, Spin } from 'antd';
+import { Button } from 'antd';
 import { withRouter } from 'react-router';
 import { saveBudget, fetchBudgetData, resetState } from './ViewActions';
 import customBorders from './grid/customBorders';
 import { createColumn, groupBy } from '../../TableHelpers';
 import { mergeMetrics } from '../../../helpers';
+import LoadingSpinner from '../../../components/common/LoadingSpinner';
 
 class ViewCommonContainer extends Component {
     constructor(props) {
@@ -167,17 +168,8 @@ class ViewCommonContainer extends Component {
         );
     }
 
-    spinLoad = () => {
-        const mySpin = <Spin size="large" tip="Loading..." />;
-        return (
-            <div className="spinDiv">
-                {mySpin}
-            </div>
-        );
-    }
-
     render() {
-        const budgetListData = this.props.viewData[this.props.view] ? this.buildTable() : this.spinLoad();
+        const budgetListData = this.props.viewData[this.props.view] ? this.buildTable() : <LoadingSpinner />;
         let buttonStr = this.props.view;
         buttonStr = `${buttonStr.charAt(0).toUpperCase()}${buttonStr.slice(1)}`;
 
