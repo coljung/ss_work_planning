@@ -1,3 +1,4 @@
+// TODO Remove this, not used anymore
 const merge = [
     // headers
     { row: 0, col: 0, rowspan: 1, colspan: 2 },

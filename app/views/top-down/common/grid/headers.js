@@ -1,3 +1,4 @@
+// TODO Remove this, not used anymore
 const commonColums = [
     'Name',
     'Season/Year',

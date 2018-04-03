@@ -4,9 +4,6 @@ const mergeMetrics = (startRow = 0, rowSpan, totalRows, totalCols, hasGap = fals
     // span between metrics
     const metricSpan = hasGap ? rowSpan + 1 : rowSpan;
 
-    // span between gaps
-    const emptyRowSpan = hasGap ? rowSpan : null;
-
 
     for (let i = startRow; i < totalRows; ++i) {
         if (i % metricSpan === 0) {

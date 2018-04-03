@@ -1,3 +1,4 @@
+// TODO Remove this, not used anymore
 import agent from 'superagent';
 import wrap from 'superagent-promise';
 import getApiUrl, { defaultMetricSequence } from 'helpers';

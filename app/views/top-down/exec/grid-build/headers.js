@@ -1,3 +1,4 @@
+// TODO Remove this, not used anymore
 const headers = [
     [
         { label: 'Metrics', colspan: 2 },

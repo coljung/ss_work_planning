@@ -18,46 +18,111 @@ const monthsRef = {
     dec: '12',
 };
 
+export const currencyFormat = {
+    pattern: '$0,000',
+    culture: 'en-US',
+};
+
+export const percentageFormat = {
+    pattern: '0%',
+};
+
+export const currencyColumn = {
+    type: 'numeric',
+    numericFormat: currencyFormat,
+    colWidths: 100,
+};
+
+export const percentageColumn = {
+    type: 'numeric',
+    numericFormat: percentageFormat,
+    colWidths: 50,
+};
+
+export function createColumn(column, renderer) {
+    switch (column.type) {
+        case 'text':
+            return {
+                data: column.name,
+                readOnly: column.isReadOnly,
+                type: 'text',
+            };
+
+        case 'currency':
+            return {
+                ...currencyColumn,
+                data: column.name,
+                readOnly: column.isReadOnly,
+                renderer,
+            };
+
+        case 'percentage':
+            return {
+                ...percentageColumn,
+                data: column.name,
+                readOnly: column.isReadOnly,
+                renderer,
+            };
+
+        default:
+            return {};
+    }
+}
+
+export function groupBy(list, keyGetter) {
+    const map = new Map();
+    list.forEach((item) => {
+        const key = keyGetter(item);
+        const collection = map.get(key);
+        if (!collection) {
+            map.set(key, [item]);
+        } else {
+            collection.push(item);
+        }
+    });
+
+    return map;
+}
+
 export const borderLeft = (columns, prop, td) => {
     if (columns.indexOf(prop) !== -1) {
         td.className += ' leftCellBorder';
     }
-    return td;
 };
 
 export const borderBottom = (row, rowSpan, td, col) => {
     if ((row + 1) % rowSpan === 0) {
         td.className += ' bottomCellBorder';
     }
-    return td;
 };
 
-
-export const percentageMetrics = (instance, row, col, td) => {
+export const percentageRow = (rows, instance, row, col) => {
     const metricName = instance.getDataAtCell(row, 0);
-
-    if (metricName === 'GM%' || metricName === 'iGM%' || metricName === 'RECEIPT%') {
-        instance.setCellMeta(row, col, 'format', '0.00%');
+    if (rows.indexOf(metricName) !== -1) {
+        instance.setCellMeta(row, col, 'numericFormat', percentageFormat);
     }
-    return td;
 };
 
-export const numberMetrics = (instance, row, col, td) => {
+export const disableRowCell = (rows, instance, row, col) => {
     const metricName = instance.getDataAtCell(row, 0);
-
-    if (metricName === 'TURNOVER RATE') {
-        instance.setCellMeta(row, col, 'format', '0');
-    }
-    return td;
-};
-
-export const disableEdit = (instance, row, col, td, disabledMetrics) => {
-    const metricName = instance.getDataAtCell(row, 0);
-
-    if (disabledMetrics.indexOf(metricName) !== -1) {
+    if (rows.indexOf(metricName) !== -1) {
         instance.setCellMeta(row, col, 'readOnly', true);
     }
-    return td;
+};
+
+export const numberRow = (rows, instance, row, col) => {
+    const metricName = instance.getDataAtCell(row, 0);
+    if (rows.indexOf(metricName) !== -1) {
+        instance.setCellMeta(row, col, 'numericFormat', { pattern: '0' });
+    }
+};
+
+export const disableEdit = (instance, row, col) => {
+    instance.setCellMeta(row, col, 'readOnly', true);
+};
+
+export const enableEdit = (instance, row, col) => {
+    instance.setCellMeta(row, col, 'readOnly', false);
 };
 
 const getCurrentCellCode = (month, year) => year + monthsRef[month];
@@ -78,6 +143,7 @@ export const enableCellValidDate = (prop, currentRowSeasonYear) => {
     } else if (newPropCode.year < 1) {
         currentRowYear -= 1;
     }
+
     const cellCode = getCurrentCellCode(newPropCode.month, currentRowYear);
     const viewCode = getCurrentDateCode();
 
