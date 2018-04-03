@@ -1,4 +1,4 @@
-import Handsontable from 'handsontable-pro';
+import Handsontable from 'handsontable';
 import { borderLeft, borderBottom, percentageRow, numberRow, disableEdit } from '../../TableHelpers';
 
 function cellMetric(instance, td, row, col, prop, value, cellProperties) {

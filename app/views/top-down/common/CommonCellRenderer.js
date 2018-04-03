@@ -1,4 +1,4 @@
-import Handsontable from 'handsontable-pro';
+import Handsontable from 'handsontable';
 import { TAB_TOTAL } from '../../BudgetViewsContainer';
 import { borderLeft, enableCellValidDate, percentageRow, numberRow, disableRowCell, disableEdit, enableEdit } from '../../TableHelpers';
 
