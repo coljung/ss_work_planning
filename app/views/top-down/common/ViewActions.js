@@ -1,6 +1,6 @@
 import agent from 'superagent';
 import wrap from 'superagent-promise';
-import getApiUrl, { defaultMetricSequence } from 'helpers';
+import getApiUrl, { defaultMetricSequence } from 'Helpers.js';
 import { messages } from 'notifications/NotificationActions';
 import { fetchColumnData } from 'top_down/ColumnActions';
 

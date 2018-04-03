@@ -6,8 +6,9 @@ import HotTable from 'react-handsontable';
 import { Button, Spin } from 'antd';
 import { withRouter } from 'react-router';
 import { saveBudget, fetchBudgetData, resetState } from './ViewActions';
-import { customBorders, mergeMetrics } from './grid/index';
-import { createColumn, groupBy } from '../../Helpers';
+import customBorders from './grid/customBorders';
+import { createColumn, groupBy } from '../../TableHelpers';
+import { mergeMetrics } from '../../../helpers';
 
 class ViewCommonContainer extends Component {
     constructor(props) {

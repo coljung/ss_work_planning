@@ -1,4 +1,4 @@
-import mergeMetrics from '../../../../../../app/views/top-down/common/grid/merge';
+import mergeMetrics from '../../../../../../app/helpers';
 
 const expectedMergeDataNoGap = [ { row: 0, col: 0, rowspan: 3, colspan: 1 },
       { row: 3, col: 0, rowspan: 3, colspan: 1 },

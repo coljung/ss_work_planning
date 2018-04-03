@@ -1,6 +1,6 @@
 import Handsontable from 'handsontable-pro';
 import { TAB_TOTAL } from '../../BudgetViewsContainer';
-import { borderLeft, enableCellValidDate, percentageRow, numberRow, disableRowCell, disableEdit, enableEdit } from '../../Helpers';
+import { borderLeft, enableCellValidDate, percentageRow, numberRow, disableRowCell, disableEdit, enableEdit } from '../../TableHelpers';
 
 function cellMetric(instance, td, row, col, prop, value, cellProperties) {
     td.className += ' metricCell';

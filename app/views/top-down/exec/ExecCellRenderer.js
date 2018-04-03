@@ -1,5 +1,5 @@
 import Handsontable from 'handsontable-pro';
-import { borderLeft, borderBottom, percentageRow, numberRow, disableEdit } from '../../Helpers';
+import { borderLeft, borderBottom, percentageRow, numberRow, disableEdit } from '../../TableHelpers';
 
 function cellMetric(instance, td, row, col, prop, value, cellProperties) {
     td.className += ' metricCell';
@@ -39,11 +39,11 @@ function cellValueRender(instance, td, row, col, prop, value, cellProperties) {
 
 export function cellRendererFactory(column) {
     if (column.name === 'metric') {
-        return cellMetric;
+        return cellMetric.bind(this);
     }
 
     if (column.type === 'percentage' || column.type === 'currency') {
-        return cellValueRender;
+        return cellValueRender.bind(this);
     }
 
     return undefined;

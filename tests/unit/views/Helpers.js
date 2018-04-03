@@ -1,4 +1,4 @@
-import { borderLeft, borderBottom, percentageMetrics, enableCellValidDate } from '../../../app/views/Helpers';
+import { borderLeft, borderBottom, percentageMetrics, enableCellValidDate } from '../../../app/views/TableHelpers';
 import HotTable from 'react-handsontable';
 import Handsontable from 'handsontable';
 
