@@ -8,7 +8,7 @@ import { withRouter } from 'react-router';
 import { saveBudget, fetchBudgetData, resetState } from './ViewActions';
 import customBorders from './grid/customBorders';
 import { createColumn, groupBy } from '../../TableHelpers';
-import { mergeMetrics } from '../../../helpers';
+import { mergeMetrics } from '../../../Helpers';
 import LoadingSpinner from '../../../components/common/LoadingSpinner';
 
 class ViewCommonContainer extends Component {
