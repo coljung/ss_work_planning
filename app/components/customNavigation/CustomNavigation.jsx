@@ -80,7 +80,7 @@ class CustomNavigation extends Component {
                     <Menu.Item key="3">Brand Groups</Menu.Item>
                 </SubMenu>
                 <SubMenu
-                    key="sub3"
+                    key="sub4"
                     disabled={!budgetView}
                     title={<span><Icon type="file" /><span>Bottom Up</span></span>}
                   >
@@ -90,7 +90,7 @@ class CustomNavigation extends Component {
                 </SubMenu>
                 <Menu.Divider />
                 <SubMenu
-                    key="sub4"
+                    key="sub5"
                     title={<span><Icon type="area-chart" /><span>Reporting</span></span>}>
                     <Menu.Item key="3">Reporting-1</Menu.Item>
                     <Menu.Item key="4">Reporting-2</Menu.Item>
