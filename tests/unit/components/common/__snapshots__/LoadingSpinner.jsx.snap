@@ -1,0 +1,11 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<LoadingSpinner /> should render base layout 1`] = `
+<Spin
+  prefixCls="ant-spin"
+  size="large"
+  spinning={true}
+  tip="Loading..."
+  wrapperClassName=""
+/>
+`;
