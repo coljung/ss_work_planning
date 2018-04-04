@@ -1,497 +1,313 @@
-import Handsontable from 'handsontable';
-import { borderLeft,
-        borderBottom,
-        percentageMetrics,
-        numberMetrics,
-        disableEdit,
-        getCurrentCellCode,
-        getCurrentDateCode,
-        enableCellValidDate,
-    } from '../../../Helpers';
-
-
-const splitValue = (value, index) => `${value.substring(0, index)},${value.substring(index)}`;
-
-let currentRow = '';
-let metricName = '';
-
-const leftBorderCols = [
+export const leftBorderColumns = [
     'seasonyear',
     'stdpremarkdown',
     'previous',
 ];
 
-const VIEW_TOTAL = 'total';
+export const disabledRows = [
+    'GM$',
+];
 
-// const getCurrentCellCode = getCellCode(month, year) => year + monthsRef[month];
+export const percentageRows = [
+    'GM%',
+    'iGM%',
+    'RECEIPT%',
+];
 
-const columns = (season, rowSpan, view) => {
-    function cellValueRender(instance, td, row, col, prop, value, cellProperties) {
-        // console.log(instance);
-        cellProperties = {};
-        Handsontable.renderers.NumericRenderer.apply(this, arguments);
+export const numberRows = [
+    'TURNOVER RATE',
+];
 
-        // styling border left per section
-        borderLeft(leftBorderCols, prop, td);
+// TODO This will come from the api
+const commonColumns = [
+    {
+        label: 'Name',
+        name: 'metric',
+        type: 'text',
+        isReadOnly: true,
+    },
+    {
+        label: 'Season/Year',
+        name: 'seasonyear',
+        type: 'text',
+        isReadOnly: true,
+    },
+    {
+        label: 'C-STD Pre Mkd',
+        name: 'stdpremarkdown',
+        type: 'currency',
+        isReadOnly: true,
+    },
+    {
+        label: 'D-Incr%',
+        name: 'incr_stdpremarkdown',
+        type: 'percentage',
+        isReadOnly: true,
+    },
+    {
+        label: 'E-STD Post Mkd',
+        name: 'stdpostmarkdown',
+        type: 'currency',
+        isReadOnly: true,
+    },
+    {
+        label: 'F-Incr%',
+        name: 'incr_stdpostmarkdown',
+        type: 'percentage',
+        isReadOnly: true,
+    },
+    {
+        label: 'G-Full Season',
+        name: 'full',
+        type: 'currency',
+        isReadOnly: true,
+    },
+    {
+        label: 'H-Incr%',
+        name: 'full_incr',
+        type: 'percentage',
+        isReadOnly: true,
+    },
+    {
+        label: 'I-Previous',
+        name: 'previous',
+        type: 'currency',
+        isReadOnly: true,
+    },
+];
 
-        // styling border for each metric
-        // borderBottom(row, rowSpan, td);
+export const summerSpringColumns = [
+    ...commonColumns,
+    {
+        label: 'J-Aug',
+        name: 'aug0',
+        type: 'currency',
+        isReadOnly: true,
+    },
+    {
+        label: 'K-Sep',
+        name: 'sep0',
+        type: 'currency',
+        isReadOnly: true,
+    },
+    {
+        label: 'L-Oct',
+        name: 'oct0',
+        type: 'currency',
+        isReadOnly: true,
+    },
+    {
+        label: 'M-Nov',
+        name: 'nov0',
+        type: 'currency',
+        isReadOnly: true,
+    },
+    {
+        label: 'N-Dec',
+        name: 'dec0',
+        type: 'currency',
+        isReadOnly: true,
+    },
+    {
+        label: 'O-Jan',
+        name: 'jan1',
+        type: 'currency',
+        isReadOnly: true,
+    },
+    {
+        label: 'P-Feb',
+        name: 'feb1',
+        type: 'currency',
+        isReadOnly: true,
+    },
+    {
+        label: 'Q-Mar',
+        name: 'mar1',
+        type: 'currency',
+        isReadOnly: true,
+    },
+    {
+        label: 'R-Apr',
+        name: 'apr1',
+        type: 'currency',
+        isReadOnly: true,
+    },
+    {
+        label: 'S-May',
+        name: 'may1',
+        type: 'currency',
+        isReadOnly: true,
+    },
+    {
+        label: 'T-Jun',
+        name: 'jun1',
+        type: 'currency',
+        isReadOnly: true,
+    },
+    {
+        label: 'U-Jul',
+        name: 'jul1',
+        type: 'currency',
+        isReadOnly: true,
+    },
+    {
+        label: 'V-Aug',
+        name: 'aug1',
+        type: 'currency',
+        isReadOnly: true,
+    },
+    {
+        label: 'W-Sep',
+        name: 'sep1',
+        type: 'currency',
+        isReadOnly: true,
+    },
+    {
+        label: 'X-Oct',
+        name: 'oct1',
+        type: 'currency',
+        isReadOnly: true,
+    },
+    {
+        label: 'Y-Nov',
+        name: 'nov1',
+        type: 'currency',
+        isReadOnly: true,
+    },
+    {
+        label: 'Z-Dec',
+        name: 'dec1',
+        type: 'currency',
+        isReadOnly: true,
+    },
+    {
+        label: 'AA-Jan',
+        name: 'jan2',
+        type: 'currency',
+        isReadOnly: true,
+    },
+    {
+        label: 'AB-Future',
+        name: 'future',
+        type: 'currency',
+        isReadOnly: false,
+    },
+];
 
-        // manage error and display N/A instead
-        if (isNaN(value)) {
-            cellProperties.type = 'text';
-            td.innerHTML = 'N/A';
-            td.className += ' cellNA';
-            return td;
-        }
-
-        if (currentRow !== row) {
-            currentRow = row;
-            // do this check once per row
-            metricName = instance.getDataAtCell(row, 0);
-        }
-
-        // disable editing for a particular metric in the array
-        const disabledMetrics = ['GM$'];
-        disableEdit(instance, row, col, td, disabledMetrics);
-
-        // formatting percentages metrics (GM%, iGM%, Receipt%)
-        percentageMetrics(instance, row, col, td);
-
-        // formatting numeric metrics (Turnover Rate)
-        numberMetrics(instance, row, col, td);
-
-        // no customizations for previous
-        if (prop === 'previous') {
-            if (view === VIEW_TOTAL) {
-                instance.setCellMeta(row, col, 'readOnly', true);
-            }
-
-            return td;
-        }
-
-        if (prop === 'future') {
-            // for now future is always enabled if not on total view
-            if (view === VIEW_TOTAL) {
-                instance.setCellMeta(row, col, 'readOnly', true);
-            } else {
-                instance.setCellMeta(row, col, 'readOnly', false);
-            }
-            return td;
-        }
-
-
-        // anything as of prior to future columns
-        if (col > 7) {
-            const currentRowSeasonYear = instance.getDataAtCell(row, 1);
-            const compareCodes = enableCellValidDate(prop, currentRowSeasonYear);
-            // console.log(compareCodes.viewCode);
-            // if code combination of this cell's year + month greater than the actual month / year, then enable field
-            if (compareCodes.cellCode >= compareCodes.viewCode && view !== VIEW_TOTAL) {
-                instance.setCellMeta(row, col, 'readOnly', false);
-            }
-
-            // similar logic to 'future', but here we check the next column instead of the previous
-            if (((season === 'FW' && prop === 'feb1') || (season === 'SS' && prop === 'aug0')) && view !== VIEW_TOTAL) {
-                if (!instance.getCellMeta(row, col).readOnly) {
-                    instance.setCellMeta(row, col - 1, 'readOnly', false);
-                }
-            }
-        }
-
-        if (view === VIEW_TOTAL) {
-            instance.setCellMeta(row, col, 'readOnly', true);
-        }
-
-        return td;
-    }
-
-    const commonColums = [
-        {
-            data: 'metric',
-            type: 'text',
-            readOnly: true,
-            colWidths: 80,
-        },
-        {
-            data: 'seasonyear',
-            type: 'text',
-            readOnly: true,
-            colWidths: 50,
-        },
-        {
-            data: 'stdpremarkdown',
-            renderer: cellValueRender,
-            type: 'numeric',
-            format: '$0,000',
-            readOnly: true,
-            colWidths: 100,
-        },
-        {
-            data: 'incr_stdpremarkdown',
-            renderer: cellValueRender,
-            type: 'numeric',
-            format: '0%',
-            readOnly: true,
-            colWidths: 50,
-        },
-        {
-            data: 'stdpostmarkdown',
-            renderer: cellValueRender,
-            type: 'numeric',
-            format: '$0,000',
-            readOnly: true,
-            colWidths: 100,
-        },
-        {
-            data: 'incr_stdpostmarkdown',
-            renderer: cellValueRender,
-            type: 'numeric',
-            format: '0%',
-            readOnly: true,
-            colWidths: 50,
-        },
-        {
-            data: 'full',
-            renderer: cellValueRender,
-            type: 'numeric',
-            format: '$0,000',
-            readOnly: true,
-            colWidths: 100,
-        },
-        {
-            data: 'full_incr',
-            renderer: cellValueRender,
-            type: 'numeric',
-            format: '0%',
-            readOnly: true,
-            colWidths: 50,
-        },
-        {
-            data: 'previous',
-            renderer: cellValueRender,
-            type: 'numeric',
-            format: '$0,000',
-            readOnly: true,
-            colWidths: 100,
-        },
-    ];
-
-    const SS = [
-        {
-            data: 'aug0',
-            renderer: cellValueRender,
-            type: 'numeric',
-            format: '$0,000',
-            readOnly: true,
-            colWidths: 100,
-        },
-        {
-            data: 'sep0',
-            renderer: cellValueRender,
-            type: 'numeric',
-            format: '$0,000',
-            readOnly: true,
-            colWidths: 100,
-        },
-        {
-            data: 'oct0',
-            renderer: cellValueRender,
-            type: 'numeric',
-            format: '$0,000',
-            readOnly: true,
-            colWidths: 100,
-        },
-        {
-            data: 'nov0',
-            renderer: cellValueRender,
-            type: 'numeric',
-            format: '$0,000',
-            readOnly: true,
-            colWidths: 100,
-        },
-        {
-            data: 'dec0',
-            renderer: cellValueRender,
-            type: 'numeric',
-            format: '$0,000',
-            readOnly: true,
-            colWidths: 100,
-        },
-        {
-            data: 'jan1',
-            renderer: cellValueRender,
-            type: 'numeric',
-            format: '$0,000',
-            readOnly: true,
-            colWidths: 100,
-        },
-        {
-            data: 'feb1',
-            renderer: cellValueRender,
-            type: 'numeric',
-            format: '$0,000',
-            readOnly: true,
-            colWidths: 100,
-        },
-        {
-            data: 'mar1',
-            renderer: cellValueRender,
-            type: 'numeric',
-            format: '$0,000',
-            readOnly: true,
-            colWidths: 100,
-        },
-        {
-            data: 'apr1',
-            renderer: cellValueRender,
-            type: 'numeric',
-            format: '$0,000',
-            readOnly: true,
-            colWidths: 100,
-        },
-        {
-            data: 'may1',
-            renderer: cellValueRender,
-            type: 'numeric',
-            format: '$0,000',
-            readOnly: true,
-            colWidths: 100,
-        },
-        {
-            data: 'jun1',
-            renderer: cellValueRender,
-            type: 'numeric',
-            format: '$0,000',
-            readOnly: true,
-            colWidths: 100,
-        },
-        {
-            data: 'jul1',
-            renderer: cellValueRender,
-            type: 'numeric',
-            format: '$0,000',
-            readOnly: true,
-            colWidths: 100,
-        },
-        {
-            data: 'aug1',
-            renderer: cellValueRender,
-            type: 'numeric',
-            format: '$0,000',
-            readOnly: true,
-            colWidths: 100,
-        },
-        {
-            data: 'sep1',
-            renderer: cellValueRender,
-            type: 'numeric',
-            format: '$0,000',
-            readOnly: true,
-            colWidths: 100,
-        },
-        {
-            data: 'oct1',
-            renderer: cellValueRender,
-            type: 'numeric',
-            format: '$0,000',
-            readOnly: true,
-            colWidths: 100,
-        },
-        {
-            data: 'nov1',
-            renderer: cellValueRender,
-            type: 'numeric',
-            format: '$0,000',
-            readOnly: true,
-            colWidths: 100,
-        },
-        {
-            data: 'dec1',
-            renderer: cellValueRender,
-            type: 'numeric',
-            format: '$0,000',
-            readOnly: true,
-            colWidths: 100,
-        },
-        {
-            data: 'jan2',
-            renderer: cellValueRender,
-            type: 'numeric',
-            format: '$0,000',
-            readOnly: true,
-            colWidths: 100,
-        },
-        {
-            data: 'future',
-            renderer: cellValueRender,
-            type: 'numeric',
-            format: '$0,000',
-            readOnly: true,
-            colWidths: 100,
-        },
-    ];
-
-    const FW = [
-        {
-            data: 'feb1',
-            renderer: cellValueRender,
-            type: 'numeric',
-            format: '$0,000',
-            readOnly: true,
-            colWidths: 100,
-        },
-        {
-            data: 'mar1',
-            renderer: cellValueRender,
-            type: 'numeric',
-            format: '$0,000',
-            readOnly: true,
-            colWidths: 100,
-        },
-        {
-            data: 'apr1',
-            renderer: cellValueRender,
-            type: 'numeric',
-            format: '$0,000',
-            readOnly: true,
-            colWidths: 100,
-        },
-        {
-            data: 'may1',
-            renderer: cellValueRender,
-            type: 'numeric',
-            format: '$0,000',
-            readOnly: true,
-            colWidths: 100,
-        },
-        {
-            data: 'jun1',
-            renderer: cellValueRender,
-            type: 'numeric',
-            format: '$0,000',
-            readOnly: true,
-            colWidths: 100,
-        },
-        {
-            data: 'jul1',
-            renderer: cellValueRender,
-            type: 'numeric',
-            format: '$0,000',
-            readOnly: true,
-            colWidths: 100,
-        },
-        {
-            data: 'aug1',
-            renderer: cellValueRender,
-            type: 'numeric',
-            format: '$0,000',
-            readOnly: true,
-            colWidths: 100,
-        },
-        {
-            data: 'sep1',
-            renderer: cellValueRender,
-            type: 'numeric',
-            format: '$0,000',
-            readOnly: true,
-            colWidths: 100,
-        },
-        {
-            data: 'oct1',
-            renderer: cellValueRender,
-            type: 'numeric',
-            format: '$0,000',
-            readOnly: true,
-            colWidths: 100,
-        },
-        {
-            data: 'nov1',
-            renderer: cellValueRender,
-            type: 'numeric',
-            format: '$0,000',
-            readOnly: true,
-            colWidths: 100,
-        },
-        {
-            data: 'dec1',
-            renderer: cellValueRender,
-            type: 'numeric',
-            format: '$0,000',
-            readOnly: true,
-            colWidths: 100,
-        },
-        {
-            data: 'jan2',
-            renderer: cellValueRender,
-            type: 'numeric',
-            format: '$0,000',
-            readOnly: true,
-            colWidths: 100,
-        },
-        {
-            data: 'feb2',
-            renderer: cellValueRender,
-            type: 'numeric',
-            format: '$0,000',
-            readOnly: true,
-            colWidths: 100,
-        },
-        {
-            data: 'mar2',
-            renderer: cellValueRender,
-            type: 'numeric',
-            format: '$0,000',
-            readOnly: true,
-            colWidths: 100,
-        },
-        {
-            data: 'apr2',
-            renderer: cellValueRender,
-            type: 'numeric',
-            format: '$0,000',
-            readOnly: true,
-            colWidths: 100,
-        },
-        {
-            data: 'may2',
-            renderer: cellValueRender,
-            type: 'numeric',
-            format: '$0,000',
-            readOnly: true,
-            colWidths: 100,
-        },
-        {
-            data: 'jun2',
-            renderer: cellValueRender,
-            type: 'numeric',
-            format: '$0,000',
-            readOnly: true,
-            colWidths: 100,
-        },
-        {
-            data: 'jul2',
-            renderer: cellValueRender,
-            type: 'numeric',
-            format: '$0,000',
-            readOnly: true,
-            colWidths: 100,
-        },
-        {
-            data: 'future',
-            renderer: cellValueRender,
-            type: 'numeric',
-            format: '$0,000',
-            readOnly: false,
-            colWidths: 100,
-        },
-    ];
-
-    const SSData = commonColums.concat(SS);
-    const FWData = commonColums.concat(FW);
-
-    const columnData = [SSData, FWData];
-    return columnData;
-};
-
-export default columns;
+export const fallWinterColumns = [
+    ...commonColumns,
+    {
+        label: 'J-Feb',
+        name: 'feb1',
+        type: 'currency',
+        isReadOnly: true,
+    },
+    {
+        label: 'K-Mar',
+        name: 'mar1',
+        type: 'currency',
+        isReadOnly: true,
+    },
+    {
+        label: 'L-Apr',
+        name: 'apr1',
+        type: 'currency',
+        isReadOnly: true,
+    },
+    {
+        label: 'M-May',
+        name: 'may1',
+        type: 'currency',
+        isReadOnly: true,
+    },
+    {
+        label: 'N-Jun',
+        name: 'jun1',
+        type: 'currency',
+        isReadOnly: true,
+    },
+    {
+        label: 'O-Jul',
+        name: 'jul1',
+        type: 'currency',
+        isReadOnly: true,
+    },
+    {
+        label: 'P-Aug',
+        name: 'aug1',
+        type: 'currency',
+        isReadOnly: true,
+    },
+    {
+        label: 'Q-Sep',
+        name: 'sep1',
+        type: 'currency',
+        isReadOnly: true,
+    },
+    {
+        label: 'R-Oct',
+        name: 'oct1',
+        type: 'currency',
+        isReadOnly: true,
+    },
+    {
+        label: 'S-Nov',
+        name: 'nov1',
+        type: 'currency',
+        isReadOnly: true,
+    },
+    {
+        label: 'T-Dec',
+        name: 'dec1',
+        type: 'currency',
+        isReadOnly: true,
+    },
+    {
+        label: 'U-Jan',
+        name: 'jan2',
+        type: 'currency',
+        isReadOnly: true,
+    },
+    {
+        label: 'V-Feb',
+        name: 'feb2',
+        type: 'currency',
+        isReadOnly: true,
+    },
+    {
+        label: 'W-Mar',
+        name: 'mar2',
+        type: 'currency',
+        isReadOnly: true,
+    },
+    {
+        label: 'X-Apr',
+        name: 'apr2',
+        type: 'currency',
+        isReadOnly: true,
+    },
+    {
+        label: 'Y-May',
+        name: 'may2',
+        type: 'currency',
+        isReadOnly: true,
+    },
+    {
+        label: 'Z-Jun',
+        name: 'jun2',
+        type: 'currency',
+        isReadOnly: true,
+    },
+    {
+        label: 'AA-Jul',
+        name: 'jul2',
+        type: 'currency',
+        isReadOnly: true,
+    },
+    {
+        label: 'AB-Future',
+        name: 'future',
+        type: 'currency',
+        isReadOnly: false,
+    },
+];

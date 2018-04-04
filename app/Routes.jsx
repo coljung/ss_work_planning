@@ -4,7 +4,6 @@ import App from './components/App';
 import BudgetViewsContainer from './views/BudgetViewsContainer';
 import Home from './budgets/BudgetHome';
 
-
 const requireAuth = ((next, replace, callback) => {
     // @todo NEED TO AUTHENTICATE/AUTHORIZE HERE
     callback();

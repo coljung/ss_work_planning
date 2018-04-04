@@ -3,13 +3,14 @@ import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Row, Col, Tabs, Menu, Dropdown, Icon } from 'antd';
-import ExecViewContainer from './top-down/exec/ExecViewContainer';
 import ViewCommonContainer from './top-down/common/ViewCommonContainer';
 import HeaderContent from '../components/common/HeaderContent';
 import BudgetViewsButtonActions from './BudgetViewsButtonActions';
 import { budgetVersions, saveNewBudgetVersion } from './BudgetViewActions';
 import { switchUrls, clearUrls } from '../components/customNavigation/CustomNavigationActions';
 import { ROUTE_BUDGET } from '../Routes';
+import { cellRendererFactory as commonCellRendererFactory } from './top-down/common/CommonCellRenderer';
+import { cellRendererFactory as execCellRendererFactory } from './top-down/exec/ExecCellRenderer';
 
 // Sub Component
 const TabPane = Tabs.TabPane;
@@ -26,6 +27,7 @@ class BudgetViewsContainer extends Component {
     static contextTypes = {
         router: PropTypes.object,
     }
+
     constructor(props, context) {
         super(props, context);
 
@@ -45,7 +47,11 @@ class BudgetViewsContainer extends Component {
         };
 
         this.dataToSave = [];
+
         this.props.switchUrls(budgetid, id, seasonname, vname, tab);
+
+        this.onTabChange = this.onTabChange.bind(this);
+        this.handleVersionClick = this.handleVersionClick.bind(this);
     }
 
     componentWillMount() {
@@ -134,7 +140,7 @@ class BudgetViewsContainer extends Component {
         const { versions, params: { seasonname } } = this.props;
         const { activeTab, budgetSeasonId, seasonName, versionId, versionName } = this.state;
         const menuBudget = (
-            <Menu onClick={this.handleVersionClick.bind(this)}>
+            <Menu onClick={this.handleVersionClick}>
                 { versions && versions.map(
                     version =>
                     <Menu.Item key={version.id} version={ version }>{ seasonname } - { version.name }</Menu.Item>,
@@ -181,12 +187,15 @@ class BudgetViewsContainer extends Component {
                     </Row>
                 </div>
                 <div className="budgetBody">
-                    <Tabs activeKey={activeTab} onChange={this.onTabChange.bind(this)} animated={true}>
+                    <Tabs activeKey={activeTab} onChange={this.onTabChange} animated={true}>
                         <TabPane tab="Exec Recap" key={TAB_EXEC_RECAP}>
                             {(activeTab === TAB_EXEC_RECAP || this.state[TAB_EXEC_RECAP]) &&
-                                <ExecViewContainer
+                                <ViewCommonContainer
                                     budget={budgetSeasonId}
                                     version={versionId}
+                                    cellRendererFactory={execCellRendererFactory}
+                                    key={TAB_EXEC_RECAP}
+                                    view={TAB_EXEC_RECAP}
                                 />
                             }
                         </TabPane>
@@ -195,9 +204,10 @@ class BudgetViewsContainer extends Component {
                                 <ViewCommonContainer
                                     budget={budgetSeasonId}
                                     version={versionId}
+                                    cellRendererFactory={commonCellRendererFactory}
                                     updateData={this.changeCell}
                                     key={TAB_TOTAL}
-                                    view='total'
+                                    view={TAB_TOTAL}
                                 />
                             }
                         </TabPane>
@@ -206,9 +216,10 @@ class BudgetViewsContainer extends Component {
                                 <ViewCommonContainer
                                     budget={budgetSeasonId}
                                     version={versionId}
+                                    cellRendererFactory={commonCellRendererFactory}
                                     updateData={this.changeCell}
                                     key={TAB_WOMEN}
-                                    view='women'
+                                    view={TAB_WOMEN}
                                 />
                             }
                         </TabPane>
@@ -217,9 +228,10 @@ class BudgetViewsContainer extends Component {
                                 <ViewCommonContainer
                                     budget={budgetSeasonId}
                                     version={versionId}
+                                    cellRendererFactory={commonCellRendererFactory}
                                     updateData={this.changeCell}
                                     key={TAB_MEN}
-                                    view='men'
+                                    view={TAB_MEN}
                                 />
                             }
                         </TabPane>
