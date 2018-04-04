@@ -1,5 +1,6 @@
 import React from 'react';
 import { shallow } from 'enzyme';
+import { shallowToJson } from 'enzyme-to-json';
 import { Spin } from 'antd';
 import LoadingSpinner from '../../../../app/components/common/LoadingSpinner';
 
@@ -9,7 +10,8 @@ describe('<LoadingSpinner />', () => {
             <LoadingSpinner />
         );
 
-        expect(wrapper).toMatchSnapshot();
+        const spin = wrapper.find(Spin).first();
+        expect(shallowToJson(spin)).toMatchSnapshot();
     });
 
     it('should render base layout with default text', () => {
