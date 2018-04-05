@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { Row, Col, Tabs, Menu, Dropdown, Icon } from 'antd';
+import { Row, Col, Tabs, Dropdown, Icon } from 'antd';
 import ViewCommonContainer from './top-down/common/ViewCommonContainer';
 import HeaderContent from '../components/common/HeaderContent';
 import BudgetViewsButtonActions from './BudgetViewsButtonActions';
@@ -11,11 +11,10 @@ import { switchUrls, clearUrls } from '../components/customNavigation/CustomNavi
 import { ROUTE_BUDGET } from '../Routes';
 import { cellRendererFactory as commonCellRendererFactory } from './top-down/common/CommonCellRenderer';
 import { cellRendererFactory as execCellRendererFactory } from './top-down/exec/ExecCellRenderer';
+import BudgetVersionMenu from './BudgetVersionMenu';
 
 // Sub Component
 const TabPane = Tabs.TabPane;
-const SubMenu = Menu.SubMenu;
-const MenuItemGroup = Menu.ItemGroup;
 
 export const TAB_EXEC_RECAP = 'exec';
 export const TAB_TOTAL = 'total';
@@ -77,7 +76,7 @@ class BudgetViewsContainer extends Component {
             const { router, params: { tab } } = this.props;
             const { budgetSeasonId, seasonName, versionName } = this.state;
 
-            window.location.href = `${ROUTE_BUDGET}/${seasonName}/budget/${budgetSeasonId}/version/${nextProps.newVersion.name}/${nextProps.newVersion.id}/${tab}`;
+            router.push(`${ROUTE_BUDGET}/${seasonName}/budget/${budgetSeasonId}/version/${nextProps.newVersion.name}/${nextProps.newVersion.id}/${tab}`);
         }
     }
 
@@ -111,12 +110,21 @@ class BudgetViewsContainer extends Component {
     }
 
     handleVersionClick(event) {
-        const { params: { tab } } = this.props;
-        const { seasonName } = this.state;
-
         const { item: { props: { version } } } = event;
 
-        window.location.href = `${ROUTE_BUDGET}/${seasonName}/budget/${version.budget_id}/version/${version.name}/${version.id}/${tab}`;
+        if (version.id !== this.state.versionId) {
+            this.setState({
+                versionId: version.id,
+                versionName: version.name,
+            });
+
+            const { params: { tab } } = this.props;
+            const { seasonName } = this.state;
+
+            const { router } = this.props;
+
+            router.push(`${ROUTE_BUDGET}/${seasonName}/budget/${version.budget_id}/version/${version.name}/${version.id}/${tab}`);
+        }
     }
 
     onTabChange(newTabKey) {
@@ -131,31 +139,20 @@ class BudgetViewsContainer extends Component {
 
         this.dataToSave = [];
 
-        const { router: { push } } = this.props;
+        const { router } = this.props;
 
-        push(`${ROUTE_BUDGET}/${seasonName}/budget/${budgetSeasonId}/version/${versionName}/${versionId}/${newTabKey}`);
+        router.push(`${ROUTE_BUDGET}/${seasonName}/budget/${budgetSeasonId}/version/${versionName}/${versionId}/${newTabKey}`);
     }
 
     render() {
-        const { versions, params: { seasonname } } = this.props;
-        const { activeTab, budgetSeasonId, seasonName, versionId, versionName } = this.state;
-        const menuBudget = (
-            <Menu onClick={this.handleVersionClick}>
-                { versions && versions.map(
-                    version =>
-                    <Menu.Item key={version.id} version={ version }>{ seasonname } - { version.name }</Menu.Item>,
-                ) }
-            </Menu>
-        );
-        const menuView = (
-            <Menu>
-                <Menu.Item>Top Down</Menu.Item>
-                <SubMenu title="Bottom Up">
-                    <Menu.Item>Receipt Planning</Menu.Item>
-                    <Menu.Item>Delivery Planning</Menu.Item>
-                </SubMenu>
-            </Menu>
-        );
+        const { activeTab, budgetSeasonId, versionId, seasonName, versionName } = this.state;
+        const menuBudget =
+            <BudgetVersionMenu
+                versions={this.props.versions}
+                currentSeason={this.state.seasonName}
+                currentVersion={this.state.versionName}
+                handleClick={this.handleVersionClick} />;
+
         return (
             <div>
                 <div className="budgetHeader">
@@ -164,10 +161,13 @@ class BudgetViewsContainer extends Component {
                             <HeaderContent />
                         </Col> */}
                         <Col span={12} className="col">
+                            {menuBudget}
                             <Dropdown overlay={menuBudget}>
-                                <h3><a className="ant-dropdown-link" href="#">
-                                    {seasonName} - {versionName}<Icon type="down" />
-                                </a></h3>
+                                <h3>
+                                    <a className="ant-dropdown-link" href="#">
+                                        {seasonName} - {versionName}<Icon type="down" />
+                                    </a>
+                                </h3>
                             </Dropdown>
                         </Col>
 {/*                        <Col span={3} className="col">
@@ -258,6 +258,7 @@ BudgetViewsContainer.propTypes = {
     switchUrls: PropTypes.func.isRequired,
     clearUrls: PropTypes.func.isRequired,
     versions: PropTypes.array.isRequired,
+    router: PropTypes.object,
 };
 
 function mapStateToProps(state) {
