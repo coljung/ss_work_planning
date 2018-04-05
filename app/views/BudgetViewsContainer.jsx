@@ -157,9 +157,6 @@ class BudgetViewsContainer extends Component {
             <div>
                 <div className="budgetHeader">
                     <Row type="flex" justify="start" className="innerHeader">
-                        {/* <Col span={8} className="col">
-                            <HeaderContent />
-                        </Col> */}
                         <Col span={12} className="col">
                             {menuBudget}
                             <Dropdown overlay={menuBudget}>
@@ -170,13 +167,6 @@ class BudgetViewsContainer extends Component {
                                 </h3>
                             </Dropdown>
                         </Col>
-{/*                        <Col span={3} className="col">
-                            <Dropdown overlay={menuView} disabled={true}>
-                                <h3><a className="ant-dropdown-link" href="#">
-                                    Top Down <Icon type="down" />
-                                </a></h3>
-                            </Dropdown>
-                        </Col> */}
                         <Col span={12} className="col">
                             <BudgetViewsButtonActions
                                 saveNew={() => this.saveNewVersion(budgetSeasonId, versionId)}

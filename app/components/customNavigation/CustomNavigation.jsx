@@ -27,7 +27,7 @@ class CustomNavigation extends Component {
 
     render() {
         const { budgetView, budgetId, versionId, seasonName, versionName, view } = this.props;
-        console.log(budgetView);
+        const season = seasonName ? seasonName.split('2') : '';
         return (
             <Menu
                 onClick={this.handleClick}
@@ -48,26 +48,26 @@ class CustomNavigation extends Component {
                     key='sub2'
                     disabled={!budgetView}
                     title={<span><Icon type="mail" /><span>Top Down</span></span>}>
-                        <Menu.Item key="3">
-                            <Link to={`${ROUTE_BUDGET}/SS/budget/${budgetId}/version/${versionName}/${versionId}/exec`}>
+                        <Menu.Item key="sub2-1">
+                            <Link to={`${ROUTE_BUDGET}/${season[0]}/budget/${budgetId}/version/${versionName}/${versionId}/exec`}>
                                 <Icon type="calendar" />
                                 <span className="nav-text">Exec Recap</span>
                             </Link>
                         </Menu.Item>
-                        <Menu.Item key="4">
-                            <Link to={`${ROUTE_BUDGET}/SS/budget/${budgetId}/version/${versionName}/${versionId}/total`}>
+                        <Menu.Item key="sub2-2">
+                            <Link to={`${ROUTE_BUDGET}/${season[0]}/budget/${budgetId}/version/${versionName}/${versionId}/total`}>
                                 <Icon type="calendar" />
                                 <span className="nav-text">Total</span>
                             </Link>
                         </Menu.Item>
-                        <Menu.Item key="5">
-                            <Link to={`${ROUTE_BUDGET}/SS/budget/${budgetId}/version/${versionName}/${versionId}/women`}>
+                        <Menu.Item key="sub2-3">
+                            <Link to={`${ROUTE_BUDGET}/${season[0]}/budget/${budgetId}/version/${versionName}/${versionId}/women`}>
                                 <Icon type="calendar" />
                                 <span className="nav-text">Women</span>
                             </Link>
                         </Menu.Item>
-                        <Menu.Item key="6">
-                            <Link to={`${ROUTE_BUDGET}/SS/budget/${budgetId}/version/${versionName}/${versionId}/men`}>
+                        <Menu.Item key="sub2-4">
+                            <Link to={`${ROUTE_BUDGET}/${season[0]}/budget/${budgetId}/version/${versionName}/${versionId}/men`}>
                                 <Icon type="calendar" />
                                 <span className="nav-text">Men</span>
                             </Link>
@@ -77,24 +77,80 @@ class CustomNavigation extends Component {
                     key="sub3"
                     disabled={!budgetView}
                     title={<span><Icon type="team" /><span>Middle Out</span></span>}>
-                    <Menu.Item key="3">Brand Groups</Menu.Item>
+                    <Menu.Item key="sub3-1">
+                        <Link to={`${ROUTE_BUDGET}/${season[0]}/budget/${budgetId}/version/${versionName}/${versionId}/bgw`}>
+                            <Icon type="calendar" />
+                            <span className="nav-text">BG Women</span>
+                        </Link>
+                    </Menu.Item>
+                    <Menu.Item key="sub3-2">
+                        <Link to={`${ROUTE_BUDGET}/${season[0]}/budget/${budgetId}/version/${versionName}/${versionId}/bgm`}>
+                            <Icon type="calendar" />
+                            <span className="nav-text">BG Men</span>
+                        </Link>
+                    </Menu.Item>
+                    <Menu.Item key="sub3-3">
+                        <Link to={`${ROUTE_BUDGET}/${season[0]}/budget/${budgetId}/version/${versionName}/${versionId}/department`}>
+                            <Icon type="calendar" />
+                            <span className="nav-text">Department</span>
+                        </Link>
+                    </Menu.Item>
+                    <Menu.Item key="sub3-4">
+                        <Link to={`${ROUTE_BUDGET}/${season[0]}/budget/${budgetId}/version/${versionName}/${versionId}/width-depth`}>
+                            <Icon type="calendar" />
+                            <span className="nav-text">Width vs Depth</span>
+                        </Link>
+                    </Menu.Item>
                 </SubMenu>
                 <SubMenu
                     key="sub4"
                     disabled={!budgetView}
                     title={<span><Icon type="file" /><span>Bottom Up</span></span>}
                   >
-                    <Menu.Item key="3">Buttom Up 1</Menu.Item>
-                    <Menu.Item key="4">Buttom Up 2</Menu.Item>
-                    <Menu.Item key="5">Buttom Up 3</Menu.Item>
+                  <Menu.Item key="sub4-1">
+                      <Link to={`${ROUTE_BUDGET}/${season[0]}/budget/${budgetId}/version/${versionName}/${versionId}/receipts`}>
+                          <Icon type="calendar" />
+                          <span className="nav-text">Receipts</span>
+                      </Link>
+                  </Menu.Item>
+                  <Menu.Item key="sub4-2">
+                      <Link to={`${ROUTE_BUDGET}/${season[0]}/budget/${budgetId}/version/${versionName}/${versionId}/delivery`}>
+                          <Icon type="calendar" />
+                          <span className="nav-text">Delivery</span>
+                      </Link>
+                  </Menu.Item>
+                  <Menu.Item key="sub4-3">
+                      <Link to={`${ROUTE_BUDGET}/${season[0]}/budget/${budgetId}/version/${versionName}/${versionId}/unit`}>
+                          <Icon type="calendar" />
+                          <span className="nav-text">Unit</span>
+                      </Link>
+                  </Menu.Item>
+                  <Menu.Item key="sub4-4">
+                      <Link to={`${ROUTE_BUDGET}/${season[0]}/budget/${budgetId}/version/${versionName}/${versionId}/department2`}>
+                          <Icon type="calendar" />
+                          <span className="nav-text">Department</span>
+                      </Link>
+                  </Menu.Item>
+                  <Menu.Item key="sub4-5">
+                      <Link to={`${ROUTE_BUDGET}/${season[0]}/budget/${budgetId}/version/${versionName}/${versionId}/sales-margin`}>
+                          <Icon type="calendar" />
+                          <span className="nav-text">Sales & Margin</span>
+                      </Link>
+                  </Menu.Item>
+                  <Menu.Item key="sub4-6">
+                      <Link to={`${ROUTE_BUDGET}/${season[0]}/budget/${budgetId}/version/${versionName}/${versionId}/shrink`}>
+                          <Icon type="calendar" />
+                          <span className="nav-text">Shrink</span>
+                      </Link>
+                  </Menu.Item>
                 </SubMenu>
                 <Menu.Divider />
                 <SubMenu
                     key="sub5"
                     title={<span><Icon type="area-chart" /><span>Reporting</span></span>}>
-                    <Menu.Item key="3">Reporting-1</Menu.Item>
-                    <Menu.Item key="4">Reporting-2</Menu.Item>
-                    <Menu.Item key="5">Reporting-3</Menu.Item>
+                    <Menu.Item key="sub5-1">Reporting-1</Menu.Item>
+                    <Menu.Item key="sub5-2">Reporting-2</Menu.Item>
+                    <Menu.Item key="sub5-2">Reporting-3</Menu.Item>
                 </SubMenu>
             </Menu>
         );
@@ -103,6 +159,12 @@ class CustomNavigation extends Component {
 
 CustomNavigation.propTypes = {
     pathname: PropTypes.string.isRequired,
+    budgetView: PropTypes.bool.isRequired,
+    budgetId: PropTypes.string,
+    versionId: PropTypes.string,
+    seasonName: PropTypes.string,
+    versionName: PropTypes.string,
+    view: PropTypes.string,
 };
 
 function mapStateToProps(state) {
