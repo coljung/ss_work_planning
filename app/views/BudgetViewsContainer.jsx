@@ -4,7 +4,6 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Row, Col, Tabs, Dropdown, Icon } from 'antd';
 import ViewCommonContainer from './top-down/common/ViewCommonContainer';
-import HeaderContent from '../components/common/HeaderContent';
 import BudgetViewsButtonActions from './BudgetViewsButtonActions';
 import { budgetVersions, saveNewBudgetVersion } from './BudgetViewActions';
 import { switchUrls, clearUrls } from '../components/customNavigation/CustomNavigationActions';
@@ -25,7 +24,7 @@ export const TAB_BRAND_GROUPS = 'brand-groups';
 class BudgetViewsContainer extends Component {
     static contextTypes = {
         router: PropTypes.object,
-    }
+    };
 
     constructor(props, context) {
         super(props, context);
@@ -74,19 +73,15 @@ class BudgetViewsContainer extends Component {
             });
         } else if (nextProps.newVersion !== this.props.newVersion) {
             const { router, params: { tab } } = this.props;
-            const { budgetSeasonId, seasonName, versionName } = this.state;
+            const { budgetSeasonId, seasonName } = this.state;
 
             router.push(`${ROUTE_BUDGET}/${seasonName}/budget/${budgetSeasonId}/version/${nextProps.newVersion.name}/${nextProps.newVersion.id}/${tab}`);
         }
     }
 
-    save = (budget, version) => {
-        this.props.saveNewBudgetVersion(budget, version);
-    }
-
     saveNewVersion = (budget, version) => {
         this.props.saveNewBudgetVersion(budget, version);
-    }
+    };
 
     changeCell = (cellEdits) => {
         // on load this is called, hence the check
@@ -107,7 +102,7 @@ class BudgetViewsContainer extends Component {
                 this.dataToSave = checkDuplicate;
             }
         }
-    }
+    };
 
     handleVersionClick(event) {
         const { item: { props: { version } } } = event;
@@ -161,7 +156,6 @@ class BudgetViewsContainer extends Component {
                             <HeaderContent />
                         </Col> */}
                         <Col span={12} className="col">
-                            {menuBudget}
                             <Dropdown overlay={menuBudget}>
                                 <h3>
                                     <a className="ant-dropdown-link" href="#">
@@ -178,11 +172,7 @@ class BudgetViewsContainer extends Component {
                             </Dropdown>
                         </Col> */}
                         <Col span={12} className="col">
-                            <BudgetViewsButtonActions
-                                saveNew={() => this.saveNewVersion(budgetSeasonId, versionId)}
-                                save={() => this.save(budgetSeasonId, versionId)}
-                                currentView={activeTab}
-                            />
+                            <BudgetViewsButtonActions saveNew={() => this.saveNewVersion(budgetSeasonId, versionId)} />
                         </Col>
                     </Row>
                 </div>
