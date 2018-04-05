@@ -158,7 +158,6 @@ class BudgetViewsContainer extends Component {
                 <div className="budgetHeader">
                     <Row type="flex" justify="start" className="innerHeader">
                         <Col span={12} className="col">
-                            {menuBudget}
                             <Dropdown overlay={menuBudget}>
                                 <h3>
                                     <a className="ant-dropdown-link" href="#">
