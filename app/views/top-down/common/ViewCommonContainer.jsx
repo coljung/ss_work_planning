@@ -16,9 +16,9 @@ class ViewCommonContainer extends Component {
         super(props);
 
         this.state = {
-            grid: [],
-            disabledBtn: true,
-            columnData: {},
+            data: [],
+            canSave: true,
+            headers: {},
             season: '',
         };
         this.dataToSave = [];
@@ -37,12 +37,12 @@ class ViewCommonContainer extends Component {
         const setData = nextProps.viewData[nextProps.view];
         if (this.props.viewData.length !== setData && !!setData) {
             this.setState({
-                columnData: setData.columnData,
-                grid: setData,
+                headers: setData.header,
+                data: setData.data,
                 season: setData.info.season,
             });
         }
-    }
+    };
 
     changeCell = (cellEdits) => {
         // on load this is called, hence the check
@@ -62,39 +62,39 @@ class ViewCommonContainer extends Component {
                 checkDuplicate.push(newData);
                 this.dataToSave = checkDuplicate;
             }
-            if (this.state.disabledBtn) {
+            if (this.state.canSave) {
                 this.setState({
-                    disabledBtn: false,
+                    canSave: false,
                 });
             }
         }
-    }
+    };
 
     save = () => {
         const dataToSend = {};
         dataToSend.data = this.dataToSave;
         this.props.saveBudget(this.props.budget, this.props.version, this.props.view, dataToSend);
-    }
+    };
 
+    /*
     // TODO Move this to specific renderers
     mergeCells = () => {
         const { start_row, row_span, total, total_cols, has_gaps } = this.state.grid.info;
-        const newMerge = mergeMetrics(start_row, row_span, total, total_cols, has_gaps);
 
-        return newMerge;
-    }
+        return mergeMetrics(start_row, row_span, total, total_cols, has_gaps);
+    };
 
     // TODO Move this to specific renderers
     customBordersCells = () => {
         const { start_row, row_span, total, total_cols } = this.state.grid.info;
         const sample = this.state.grid.data[0];
-        // debugger;
-        const custom = customBorders(start_row, row_span, total, total_cols, sample);
 
-        return custom;
-    }
+        return customBorders(start_row, row_span, total, total_cols, sample);
+    };
+    */
 
-    createColumnTitles(columns) {
+    /*
+    createColumnTitles = (columns) => {
         let columnGroupTitles = [];
         if (columns.some(column => column.grouping)) {
             const columnGroups = groupBy(columns, column => column.grouping);
@@ -121,25 +121,25 @@ class ViewCommonContainer extends Component {
         }
 
         return columnTitles;
-    }
+    };
+    */
 
     createColumnInfos(columns, cellRendererFactory) {
         const factory = cellRendererFactory ? cellRendererFactory.bind(this) : undefined;
-        const columnInfos = columns.map((column) => {
+
+        return columns.map((column) => {
             const renderer = factory ? factory(column) : undefined;
 
             return createColumn(column, renderer);
         });
-
-        return columnInfos;
     }
 
     buildTable = () => {
-        const newMerge = this.mergeCells();
-        const newBorders = this.customBordersCells();
+        // const newMerge = this.mergeCells();
+        // const newBorders = this.customBordersCells();
 
-        const columnTitles = this.createColumnTitles(this.state.columnData.columns);
-        const columnInfos = this.createColumnInfos(this.state.columnData.columns, this.props.cellRendererFactory);
+        const columnTitles = this.state.headers; // this.createColumnTitles(this.state.headers);
+        const columnInfos = this.createColumnInfos(Object.getOwnPropertyNames(this.state.data[0]), this.props.cellRendererFactory);
 
         return (
             <div className="parentDiv">
@@ -151,11 +151,11 @@ class ViewCommonContainer extends Component {
                     contextMenu={false}
                     currentColClassName={'currentCol'}
                     currentRowClassName={'currentRow'}
-                    data={this.state.grid.data}
+                    data={this.state.data}
                     fixedColumnsLeft={2}
                     formulas={false}
                     licenseKey='a389a-f2591-70b41-a480d-1911a'
-                    mergeCells={newMerge}
+                    // mergeCells={newMerge}
                     nestedHeaders={columnTitles}
                     observeChanges={true}
                     persistentState={true}
@@ -163,10 +163,18 @@ class ViewCommonContainer extends Component {
                     root='hot'
                     viewportColumnRenderingOffset={20}
                     viewportRowRenderingOffset={20}
-                    customBorders={newBorders} />
+                    // cells={function (r, c, prop) {
+                        // if (r === 0 && c === 0) {
+                        //     this.renderer = greenRenderer;
+                        // }
+                        // this.renderer = cellRendererFactory();
+                        // this.instance.setCellMeta(r, c, 'propertyPath', prop);
+                    // }}
+                    // customBorders={newBorders}
+                />
             </div>
         );
-    }
+    };
 
     render() {
         const budgetListData = this.props.viewData[this.props.view] ? this.buildTable() : <LoadingSpinner />;
@@ -178,14 +186,13 @@ class ViewCommonContainer extends Component {
                 <Button
                     icon="save"
                     className="saveBtn"
-                    disabled={this.state.disabledBtn}
+                    disabled={this.state.canSave}
                     onClick={() => this.save()}>Save {buttonStr}'s view</Button>
                 {budgetListData}
             </div>
         );
     }
 }
-
 
 ViewCommonContainer.propTypes = {
     viewData: PropTypes.oneOfType([

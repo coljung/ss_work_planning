@@ -65,7 +65,12 @@ export function createColumn(column, renderer) {
             };
 
         default:
-            return {};
+            return {
+                data: `${column}.value`,
+                readOnly: false,
+                type: 'text',
+                renderer,
+            };
     }
 }
 

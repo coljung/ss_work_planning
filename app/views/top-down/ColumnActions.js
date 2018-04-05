@@ -21,12 +21,50 @@ export function fetchColumnData(view, data) {
             break;
 
         case TAB_EXEC_RECAP:
-            columnData = {
-                columns: execColumns,
-                leftBorderColumns: execLeftBorderColumns,
-                percentageRows: execPercentageRows,
-                numberRows: execNumberRows,
-            };
+            columnData = [
+                [
+                    {
+                        label: 'Metrics',
+                        colspan: 2,
+                    },
+                    {
+                        label: 'Total',
+                        colspan: 6,
+                    },
+                    {
+                        label: 'Women',
+                        colspan: 7,
+                    },
+                    {
+                        label: 'Men',
+                        colspan: 7,
+                    },
+                ],
+                [
+                    "Name",
+                    "Season",
+                    "C-STD Pre Mkd",
+                    "D-Incr %",
+                    "E-STD Post Mkd",
+                    "F-Incr %",
+                    "G-Full Season",
+                    "H-Incr %",
+                    "I-STD Pre Mkd",
+                    "J-Incr %",
+                    "K-STD Post Mkd",
+                    "L-Incr %",
+                    "M-Full Season",
+                    "N-Incr %",
+                    "O-Cont %",
+                    "P-STD Pre Mkd",
+                    "Q-Incr %",
+                    "R-STD Post Mkd",
+                    "S-Incr %",
+                    "T-Full Season",
+                    "U-Incr %",
+                    "V-Cont %",
+                ],
+            ];
             break;
 
         default:

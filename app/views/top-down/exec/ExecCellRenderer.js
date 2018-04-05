@@ -12,8 +12,16 @@ function cellValueRender(instance, td, row, col, prop, value, cellProperties) {
         td.style.background = '#eee';
     }
 
+    const propertyPath = prop;
+    const split = propertyPath.split('.');
+    const metricInformation = this.state.data[row][split[0]];
+
+    if (metricInformation && metricInformation.readOnly !== undefined) {
+        instance.setCellMeta(row, col, 'readOnly', metricInformation.readOnly);
+    }
+
     // styling border left per section
-    borderLeft(this.state.columnData.leftBorderColumns, prop, td);
+    // borderLeft(this.state.columnData.leftBorderColumns, prop, td);
 
     // styling border for each metric
     const rowSpan = 5;
@@ -29,15 +37,29 @@ function cellValueRender(instance, td, row, col, prop, value, cellProperties) {
         return td;
     }
 
-    percentageRow(this.state.columnData.percentageRows, instance, row, col);
-    numberRow(this.state.columnData.numberRows, instance, row, col);
+    // percentageRow(this.state.columnData.percentageRows, instance, row, col);
+    // numberRow(this.state.columnData.numberRows, instance, row, col);
 
     Handsontable.renderers.NumericRenderer.apply(this, arguments);
 
     return td;
 }
 
+function cellRenderer(instance, td, row, col, prop, value, cellProperties) {
+    const data = instance.getDataAtCell(row, col);
+
+    if (typeof data === 'number') {
+        return cellValueRender(this, instance, td, row, col, prop, value, cellProperties);
+    } else if (typeof data === 'string') {
+        return cellMetric(instance, td, row, col, prop, value, cellProperties);
+    }
+
+    return undefined;
+}
+
 export function cellRendererFactory(column) {
+    return cellValueRender.bind(this);
+
     if (column.name === 'metric') {
         return cellMetric.bind(this);
     }
