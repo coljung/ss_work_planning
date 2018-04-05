@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import { Button, Modal, Spin, Row, Col } from 'antd';
 import { fetchBudgets } from './BudgetActions';
-import PopoverbudgetLink from './PopoverbudgetLink';
+import PopoverBudgetLink from './PopoverBudgetLink';
 
 import { ROUTE_BUDGET } from '../Routes';
 
@@ -44,7 +44,7 @@ class BudgetList extends Component {
             return (
                 <li key={budget.id}>
                     <h4 className="budgetListLink">
-                        <PopoverbudgetLink
+                        <PopoverBudgetLink
                             budgetId={budget.id}
                             seasonName={`${budget.season}${budget.year}`}
                             versionId={budget.versions[0].id}
