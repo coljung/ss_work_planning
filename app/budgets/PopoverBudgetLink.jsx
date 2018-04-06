@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
-import { Button, Popover } from 'antd';
+import { Popover } from 'antd';
 
 import { ROUTE_BUDGET } from '../Routes';
 
@@ -12,32 +12,17 @@ const viewsBottom = ['delivery', 'unit', 'department', 'sales-margin', 'shrink-p
 const PopoverbudgetLink = ({ budgetId, seasonName, versionId, versionName }) => {
     const text = <span>{seasonName} views</span>;
 
-    const top = viewsTop.map((url, index) =>
+    const displayLinkFunction = (url, index) =>
         <li key={`${seasonName}-${index}-${url}`}>
             <Link id={`${seasonName}-${index}-${url}`}
-                to={`${ROUTE_BUDGET}/${seasonName}/budget/${budgetId}/version/${versionName}/${versionId}/${url}`}>
+                  to={`${ROUTE_BUDGET}/${seasonName}/budget/${budgetId}/version/${versionName}/${versionId}/${url}`}>
                 {url}
             </Link>
-        </li>,
-    );
+        </li>;
 
-    const middle = viewsMiddle.map((url, index) =>
-        <li key={`${seasonName}-${index}-${url}`}>
-            <Link id={`${seasonName}-${index}-${url}`}
-                to={`${ROUTE_BUDGET}/${seasonName}/budget/${budgetId}/version/${versionName}/${versionId}/${url}`}>
-                {url}
-            </Link>
-        </li>,
-    );
-
-    const bottom = viewsBottom.map((url, index) =>
-        <li key={`${seasonName}-${index}-${url}`}>
-            <Link id={`${seasonName}-${index}-${url}`}
-                to={`${ROUTE_BUDGET}/${seasonName}/budget/${budgetId}/version/${versionName}/${versionId}/${url}`}>
-                {url}
-            </Link>
-        </li>,
-    );
+    const top = viewsTop.map(displayLinkFunction);
+    const middle = viewsMiddle.map(displayLinkFunction);
+    const bottom = viewsBottom.map(displayLinkFunction);
 
     const content = (
       <ul className='popover-main-ul'>

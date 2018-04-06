@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { clearMessages } from './NotificationActions';
 
-export class NotificationManager extends Component {
+class NotificationManager extends Component {
     componentWillReceiveProps(props) {
         if (props.message) {
             setTimeout(this.props.clearMessages, 7000);
@@ -22,7 +22,6 @@ NotificationManager.propTypes = {
     message: PropTypes.object,
     clearMessages: PropTypes.func,
 };
-
 
 function mapStateToProps(state) {
     return {

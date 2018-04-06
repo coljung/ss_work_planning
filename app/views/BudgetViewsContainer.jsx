@@ -9,7 +9,7 @@ import { budgetVersions, saveNewBudgetVersion } from './BudgetViewActions';
 import { switchUrls, clearUrls } from '../components/customNavigation/CustomNavigationActions';
 import { ROUTE_BUDGET } from '../Routes';
 import { cellRendererFactory as commonCellRendererFactory } from './top-down/common/CommonCellRenderer';
-import { cellRendererFactory as execCellRendererFactory } from './top-down/exec/ExecCellRenderer';
+import { cellValueRenderer as execCellValueRenderer } from './top-down/exec/ExecCellRenderer';
 import BudgetVersionMenu from './BudgetVersionMenu';
 
 // Sub Component
@@ -173,7 +173,7 @@ class BudgetViewsContainer extends Component {
                                 <ViewCommonContainer
                                     budget={budgetSeasonId}
                                     version={versionId}
-                                    cellRendererFactory={execCellRendererFactory}
+                                    cellRenderer={execCellValueRenderer}
                                     key={TAB_EXEC_RECAP}
                                     view={TAB_EXEC_RECAP}
                                 />

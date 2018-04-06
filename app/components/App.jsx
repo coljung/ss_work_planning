@@ -1,12 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Layout, Icon } from 'antd';
-import { Content, Header, Sider } from 'antd/lib/layout';
 import HeaderContent from './common/HeaderContent';
 import CustomNavigation from './customNavigation/CustomNavigation';
 import NotificationManager from '../notifications/NotificationManager';
-
-// const { Content, Header, Sider } = Layout;
 
 export default class App extends Component {
     constructor(props) {
@@ -26,29 +23,30 @@ export default class App extends Component {
             }, 80000);
         }
     }
+
     render() {
         return (
             <div className="store_layout">
-                <Header>
+                <Layout.Header>
                     <Icon
                         className="trigger"
                         type={this.state.collapsed ? 'menu-unfold' : 'menu-fold'}
                         onClick={ this.toggle.bind(this) } />
                         <HeaderContent />
-                </Header>
+                </Layout.Header>
                 <Layout>
-                    <Sider
+                    <Layout.Sider
                         trigger={null}
                         collapsible
                         collapsed={this.state.collapsed}>
                         <CustomNavigation pathname={this.props.location.pathname} />
-                    </Sider>
-                    <Content>
+                    </Layout.Sider>
+                    <Layout.Content>
                         <main style={{ flex: 1, overflowY: 'auto', padding: '0 25px 25px' }}>
                             {this.props.children}
                             <NotificationManager />
                         </main>
-                    </Content>
+                    </Layout.Content>
                 </Layout>
             </div>
         );
