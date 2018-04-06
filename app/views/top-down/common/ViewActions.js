@@ -38,7 +38,7 @@ export const resetState = () => ({
 export function fetchBudgetData(budget, version, view, query) {
     return (dispatch) => {
         // merge query with the default if is not defined
-        query = {
+        const queryToSend = {
             ...query,
             metricSeq: query && query.metricSeq ? query.metricSeq : defaultMetricSequence(),
         };
@@ -46,7 +46,7 @@ export function fetchBudgetData(budget, version, view, query) {
         dispatch(requestBudgetViewData());
         return request
             .get(`${getApiUrl()}planning/budgets/${budget}/versions/${version}/${view}`)
-            .query(query)
+            .query(queryToSend)
             .then(
             res => dispatch(receiveBudgetViewData(budgetData, view)),
             err => dispatch(messages({ content: err, response: err.response, isError: true })),

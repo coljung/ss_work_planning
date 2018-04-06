@@ -149,6 +149,7 @@ ViewCommonContainer.propTypes = {
     resetState: PropTypes.func.isRequired,
     budget: PropTypes.string.isRequired,
     version: PropTypes.string.isRequired,
+    location: PropTypes.string.isRequired,
     view: PropTypes.string.isRequired,
     router: PropTypes.object.isRequired,
     cellRenderer: PropTypes.func,
