@@ -56,8 +56,5 @@ describe('<BudgetVersionMenu />', () => {
 
         wrapper.find(Menu).simulate('click', { key: versions[0].key });
         expect(onVersionClick.called).to.equal(true);
-
-        var spyCall = onVersionClick.returnValues;
-        console.log(JSON.stringify(spyCall));
     });
 });

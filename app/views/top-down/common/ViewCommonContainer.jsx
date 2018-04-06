@@ -6,7 +6,6 @@ import HotTable from 'react-handsontable';
 import { Button } from 'antd';
 import { withRouter } from 'react-router';
 import { saveBudget, fetchBudgetData, resetState } from './ViewActions';
-import { createColumn } from '../../TableHelpers';
 import LoadingSpinner from '../../../components/common/LoadingSpinner';
 
 class ViewCommonContainer extends Component {
@@ -76,15 +75,24 @@ class ViewCommonContainer extends Component {
         this.props.saveBudget(this.props.budget, this.props.version, this.props.view, dataToSend);
     };
 
-    createColumnInfos(columns, cellRenderer) {
-        const renderer = cellRenderer ? cellRenderer.bind(this) : undefined;
+    createColumn = (column, renderer) => {
+        return {
+            data: `${column}.value`,
+            readOnly: false,
+            type: 'text',
+            renderer,
+        };
+    }
 
-        return columns.map(column => createColumn(column, renderer));
+    createColumnInfos(columns) {
+        const renderer = this.props.cellRenderer ? this.props.cellRenderer.bind(this) : undefined;
+
+        return columns.map(column => this.createColumn(column, renderer));
     }
 
     buildTable = () => {
         const columnTitles = this.state.headers;
-        const columnInfos = this.createColumnInfos(Object.getOwnPropertyNames(this.state.data[0]), this.props.cellRenderer);
+        const columnInfos = this.createColumnInfos(Object.getOwnPropertyNames(this.state.data[0]));
 
         return (
             <div className="parentDiv">

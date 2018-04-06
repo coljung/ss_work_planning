@@ -27,53 +27,6 @@ export const percentageFormat = {
     pattern: '0%',
 };
 
-export const currencyColumn = {
-    type: 'numeric',
-    numericFormat: currencyFormat,
-    colWidths: 100,
-};
-
-export const percentageColumn = {
-    type: 'numeric',
-    numericFormat: percentageFormat,
-    colWidths: 50,
-};
-
-export function createColumn(column, renderer) {
-    switch (column.type) {
-        case 'text':
-            return {
-                data: column.name,
-                readOnly: column.isReadOnly,
-                type: 'text',
-            };
-
-        case 'currency':
-            return {
-                ...currencyColumn,
-                data: column.name,
-                readOnly: column.isReadOnly,
-                renderer,
-            };
-
-        case 'percentage':
-            return {
-                ...percentageColumn,
-                data: column.name,
-                readOnly: column.isReadOnly,
-                renderer,
-            };
-
-        default:
-            return {
-                data: `${column}.value`,
-                readOnly: false,
-                type: 'text',
-                renderer,
-            };
-    }
-}
-
 export const borderLeft = (columns, prop, td) => {
     if (columns.indexOf(prop) !== -1) {
         td.className += ' leftCellBorder';
@@ -86,6 +39,7 @@ export const borderBottom = (row, rowSpan, td) => {
     }
 };
 
+/*
 export const percentageRow = (rows, instance, row, col) => {
     const metricName = instance.getDataAtCell(row, 0);
     if (rows.indexOf(metricName) !== -1) {
@@ -106,6 +60,7 @@ export const numberRow = (rows, instance, row, col) => {
         instance.setCellMeta(row, col, 'numericFormat', { pattern: '0' });
     }
 };
+*/
 
 export const disableEdit = (instance, row, col) => {
     instance.setCellMeta(row, col, 'readOnly', true);
@@ -140,6 +95,7 @@ export const enableCellValidDate = (prop, currentRowSeasonYear) => {
     return { cellCode, viewCode };
 };
 
+/*
 export const customBorders = (startRow = 0, rowSpan, totalRows, totalCols) => {
     const customBorderArr = [];
 
@@ -195,6 +151,7 @@ export const mergeMetrics = (startRow, rowSpan, totalRows, totalCols, hasGap = f
 
     return mergeArr;
 };
+*/
 
 // showing N/A instead of error
 export const emptyCell = (instance, td, row, col) => {

@@ -1,81 +1,116 @@
-import { borderLeft, borderBottom, mergeMetrics, enableCellValidDate } from '../../../app/views/TableHelpers';
+import { expect } from 'chai';
 import Handsontable from 'handsontable';
-
-const data = [
-    {
-      metric: 123,
-      test: 222,
-    },
-    {
-      metric: 456,
-      test: 333,
-    },
-    {
-        metric: 123,
-        test: 222,
-    },
-    {
-        metric: 456,
-        test: 333,
-    },
-    {
-      metric: 123,
-      test: 222,
-    },
-    {
-      metric: 456,
-      test: 333,
-    }
-];
-const myDiv = document.createElement("div");
+import * as sinon from 'sinon';
+import {
+    borderLeft, borderBottom, enableCellValidDate,
+    currencyFormat, percentageFormat, enableEdit, disableEdit, emptyCell
+} from '../../../app/views/TableHelpers';
 
 describe('Helper functions', () => {
-    // borderLeft
-    it('should return proper class for borderLeft function', () => {
-      const leftBorderCols = [
-          'seasonyear',
-          'stdpremarkdown',
-          'previous',
-      ];
-      const td = document.createElement("td");
-      borderLeft(leftBorderCols, 'stdpremarkdown', td);
-      expect(td.className).toBe(' leftCellBorder');
+    describe('Currency Format', () => {
+        it('should return a currency format', () => {
+            expect(currencyFormat).to.be.an('object');
+            expect(currencyFormat.pattern).to.contain('$');
+        });
     });
 
-    // borderBottom
-    it('should return proper class for borderBottom function', () => {
-        const td = document.createElement("td");
-        borderBottom(4, 5, td, 10);
-        expect(td.className).toBe(' bottomCellBorder');
+    describe('Percentage Format', () => {
+        it('should return a percentage format', () => {
+            expect(percentageFormat).to.be.an('object');
+            expect(percentageFormat.pattern).to.contain('%');
+        });
     });
 
-    // borderBottom
-    it('should return proper class for percentageMetrics function', () => {
-        const td = document.createElement("td");
-        var hot = new Handsontable(myDiv, {
-            data: data,
-            rowHeaders: true,
-            colHeaders: true,
-            columns: [
-                {data: "metric"},
-                {data: "test", renderer: coverRenderer}
-            ]
+    describe('Border Left', () => {
+        it('should return proper class for borderLeft function', () => {
+            const leftBorderCols = [
+                'seasonyear',
+                'stdpremarkdown',
+                'previous',
+            ];
+            const td = document.createElement("td");
+            borderLeft(leftBorderCols, 'stdpremarkdown', td);
+            expect(td.className).to.contain(' leftCellBorder');
+        });
+    });
+
+    describe('Border Bottom', () => {
+        it('should return proper class for borderBottom function', () => {
+            const td = document.createElement("td");
+            borderBottom(4, 5, td, 10);
+            expect(td.className).to.contain(' bottomCellBorder');
+        });
+    });
+
+    describe('Cell Valid Date', () => {
+        it('should return proper cell code', () => {
+            const nextYear = `SS${((new Date()).getFullYear() + 1).toString().substr(-2)}`;
+            const returnedElem = enableCellValidDate('dec1', nextYear);
+            expect(parseInt(returnedElem.cellCode)).to.be.greaterThan(parseInt(returnedElem.viewCode));
+        });
+    });
+
+
+    describe('Cell readonly', () => {
+        it('enableEdit should set readonly meta to true', () => {
+            const instance = new Handsontable(document.createElement("div"));
+
+            const spy = sinon.spy(instance, 'setCellMeta');
+
+            enableEdit(instance, 0, 0);
+
+            expect(spy.called).to.equal(true);
+            expect(spy.getCall(0).args[2]).to.equal('readOnly');
+            expect(spy.getCall(0).args[3]).to.equal(false);
         });
 
-        function coverRenderer (instance, td, row, col, prop, value, cellProperties) {
-           console.log(value);
+        it('disableEdit should set readonly meta to true', () => {
+            const instance = new Handsontable(document.createElement("div"));
 
-           return td;
-         }
-         console.log(myDiv.innerHTML);
+            const spy = sinon.spy(instance, 'setCellMeta');
+
+            disableEdit(instance, 0, 0);
+
+            expect(spy.called).to.equal(true);
+            expect(spy.getCall(0).args[2]).to.equal('readOnly');
+            expect(spy.getCall(0).args[3]).to.equal(true);
+        });
     });
 
-    it('should return proper class for bottom border', () => {
-        const nextYear = `SS${((new Date()).getFullYear() + 1).toString().substr(-2)}`;
-        const returnedElem = enableCellValidDate('dec1', nextYear);
-        expect(parseInt(returnedElem.cellCode)).toBeGreaterThan(parseInt(returnedElem.viewCode));
+    describe('Empty cell', () => {
+        it('should return a cell with N/A', () => {
+            const instance = new Handsontable(document.createElement("div"));
+            let td = new Handsontable(document.createElement("td"));
+
+            td = emptyCell(instance, td, 0, 0);
+
+            expect(td.innerHTML).to.equal('N/A');
+        });
+
+        it('should return a cell with proper class', () => {
+            const instance = new Handsontable(document.createElement("div"));
+            let td = new Handsontable(document.createElement("td"));
+
+            td = emptyCell(instance, td, 0, 0);
+
+            expect(td.className).to.contain(' cellNA');
+        });
+
+        it('should return a disabled cell', () => {
+            const instance = new Handsontable(document.createElement("div"));
+            let td = new Handsontable(document.createElement("td"));
+
+            const spy = sinon.spy(instance, 'setCellMeta');
+
+            emptyCell(instance, td, 0, 0);
+
+            expect(spy.called).to.equal(true);
+            expect(spy.getCall(0).args[2]).to.equal('readOnly');
+            expect(spy.getCall(0).args[3]).to.equal(true);
+        });
     });
 
+    /*
     it('should merge metrics', () => {
         const start_row = 0;
         const row_span = 1;
@@ -128,4 +163,5 @@ describe('Helper functions', () => {
             { row: 9, col: 0, rowspan: 1, colspan: 1 }
         ]);
     });
+    */
 });
