@@ -18,6 +18,6 @@
       }
     ],
     "no-param-reassign": ["error", { "props": false }],
-    "max-len": [1, 150, 2]
+    "max-len": [1, 180, 2]
   }
 }
