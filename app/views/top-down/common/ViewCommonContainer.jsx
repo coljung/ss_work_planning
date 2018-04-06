@@ -6,7 +6,7 @@ import HotTable from 'react-handsontable';
 import { Button } from 'antd';
 import { withRouter } from 'react-router';
 import { saveBudget, fetchBudgetData, resetState } from './ViewActions';
-import { createColumn, customBorders, mergeMetrics } from '../../TableHelpers';
+import { createColumn } from '../../TableHelpers';
 import LoadingSpinner from '../../../components/common/LoadingSpinner';
 
 class ViewCommonContainer extends Component {
@@ -76,20 +76,6 @@ class ViewCommonContainer extends Component {
         this.props.saveBudget(this.props.budget, this.props.version, this.props.view, dataToSend);
     };
 
-    // TODO Move this to specific renderers
-    mergeCells = () => {
-        const { start_row, row_span, total, total_cols, has_gaps } = this.state.info;
-
-        return mergeMetrics(start_row, row_span, 60, total_cols, has_gaps);
-    };
-
-    // TODO Move this to specific renderers
-    customBordersCells = () => {
-        const { start_row, row_span, total, total_cols } = this.state.info;
-
-        return customBorders(start_row, row_span, total, total_cols);
-    };
-
     createColumnInfos(columns, cellRenderer) {
         const renderer = cellRenderer ? cellRenderer.bind(this) : undefined;
 
@@ -97,9 +83,6 @@ class ViewCommonContainer extends Component {
     }
 
     buildTable = () => {
-        const newMerge = this.mergeCells();
-        const newBorders = this.customBordersCells();
-
         const columnTitles = this.state.headers;
         const columnInfos = this.createColumnInfos(Object.getOwnPropertyNames(this.state.data[0]), this.props.cellRenderer);
 
@@ -117,8 +100,6 @@ class ViewCommonContainer extends Component {
                     fixedColumnsLeft={2}
                     formulas={false}
                     licenseKey='a389a-f2591-70b41-a480d-1911a'
-                    mergeCells={newMerge}
-                    customBorders={newBorders}
                     nestedHeaders={columnTitles}
                     observeChanges={true}
                     persistentState={true}

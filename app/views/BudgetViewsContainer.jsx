@@ -8,7 +8,7 @@ import BudgetViewsButtonActions from './BudgetViewsButtonActions';
 import { budgetVersions, saveNewBudgetVersion } from './BudgetViewActions';
 import { switchUrls, clearUrls } from '../components/customNavigation/CustomNavigationActions';
 import { ROUTE_BUDGET } from '../Routes';
-import { cellRendererFactory as commonCellRendererFactory } from './top-down/common/CommonCellRenderer';
+import { cellValueRenderer as commonCellValueRenderer } from './top-down/common/CommonCellRenderer';
 import { cellValueRenderer as execCellValueRenderer } from './top-down/exec/ExecCellRenderer';
 import BudgetVersionMenu from './BudgetVersionMenu';
 
@@ -184,7 +184,7 @@ class BudgetViewsContainer extends Component {
                                 <ViewCommonContainer
                                     budget={budgetSeasonId}
                                     version={versionId}
-                                    cellRendererFactory={commonCellRendererFactory}
+                                    cellRenderer={commonCellValueRenderer}
                                     updateData={this.changeCell}
                                     key={TAB_TOTAL}
                                     view={TAB_TOTAL}
@@ -196,7 +196,7 @@ class BudgetViewsContainer extends Component {
                                 <ViewCommonContainer
                                     budget={budgetSeasonId}
                                     version={versionId}
-                                    cellRendererFactory={commonCellRendererFactory}
+                                    cellRenderer={commonCellValueRenderer}
                                     updateData={this.changeCell}
                                     key={TAB_WOMEN}
                                     view={TAB_WOMEN}
@@ -208,7 +208,7 @@ class BudgetViewsContainer extends Component {
                                 <ViewCommonContainer
                                     budget={budgetSeasonId}
                                     version={versionId}
-                                    cellRendererFactory={commonCellRendererFactory}
+                                    cellRenderer={commonCellValueRenderer}
                                     updateData={this.changeCell}
                                     key={TAB_MEN}
                                     view={TAB_MEN}

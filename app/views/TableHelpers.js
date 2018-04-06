@@ -195,3 +195,13 @@ export const mergeMetrics = (startRow, rowSpan, totalRows, totalCols, hasGap = f
 
     return mergeArr;
 };
+
+// showing N/A instead of error
+export const emptyCell = (instance, td, row, col) => {
+    td.innerHTML = 'N/A';
+    td.className += ' cellNA';
+
+    disableEdit(instance, row, col);
+
+    return td;
+};

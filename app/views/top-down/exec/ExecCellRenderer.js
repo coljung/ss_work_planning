@@ -1,15 +1,5 @@
 import Handsontable from 'handsontable';
-import { borderBottom, disableEdit, percentageFormat, currencyFormat } from '../../TableHelpers';
-
-// showing N/A instead of error
-function emptyCell(instance, td, row, col) {
-    td.innerHTML = 'N/A';
-    td.className += ' cellNA';
-
-    disableEdit(instance, row, col);
-
-    return td;
-}
+import { borderBottom, percentageFormat, currencyFormat, emptyCell } from '../../TableHelpers';
 
 export function cellValueRenderer(instance, td, row, col, prop, value, cellProperties) {
     if ((row === 0 && col > 0) || (row === 5 && col > 1) || (row === 10 && col > 1)) {
@@ -19,6 +9,9 @@ export function cellValueRenderer(instance, td, row, col, prop, value, cellPrope
     // styling border for each metric
     const rowSpan = 5;
     borderBottom(row, rowSpan, td, col);
+
+    // styling border left per section
+    // borderLeft(this.state.columnData.leftBorderColumns, prop, td);
 
     const propertyPath = prop;
     const split = propertyPath.split('.');
@@ -57,15 +50,8 @@ export function cellValueRenderer(instance, td, row, col, prop, value, cellPrope
         return emptyCell(instance, td, row, col);
     }
 
-    // styling border left per section
-    // borderLeft(this.state.columnData.leftBorderColumns, prop, td);
-
     // percentageRow(this.state.columnData.percentageRows, instance, row, col);
     // numberRow(this.state.columnData.numberRows, instance, row, col);
 
     return td;
-}
-
-export function cellRendererFactory() {
-    return cellValueRenderer.bind(this);
 }
