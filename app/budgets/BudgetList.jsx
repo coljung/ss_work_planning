@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import { Button, Modal, Spin, Row, Col } from 'antd';
 import { fetchBudgets } from './BudgetActions';
+import PopoverBudgetLink from './PopoverBudgetLink';
 
 import { ROUTE_BUDGET } from '../Routes';
 
@@ -42,14 +43,17 @@ class BudgetList extends Component {
             const url = `${ROUTE_BUDGET}/${budget.season}${budget.year}/budget/${budget.id}/version/${budget.versions[0].name}/${budget.versions[0].id}/exec`;
             return (
                 <li key={budget.id}>
-                    <h4>
-                        <Link id={`${budget.season}-${budget.year}`} to={url}>
-                            {budget.season}{budget.year}
-                        </Link>
+                    <h4 className="budgetListLink">
+                        <PopoverBudgetLink
+                            budgetId={budget.id}
+                            seasonName={`${budget.season}${budget.year}`}
+                            versionId={budget.versions[0].id}
+                            versionName={budget.versions[0].name} />
                     </h4>
                 </li>
             );
         });
+
 
         // take rest of  4 budgets
         this.restOfBudgets = hasVersions.slice(4).map(budget =>

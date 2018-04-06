@@ -3,6 +3,7 @@ import { Route, IndexRoute } from 'react-router';
 import App from './components/App';
 import BudgetViewsContainer from './views/BudgetViewsContainer';
 import Home from './budgets/BudgetHome';
+import NotFound from './components/NotFound';
 
 const requireAuth = ((next, replace, callback) => {
     // @todo NEED TO AUTHENTICATE/AUTHORIZE HERE
@@ -30,5 +31,6 @@ export default (
         <Route path={ROUTE_BUDGET}>
             <Route path=':seasonname/budget/:budgetid/version/:vname/:id/:tab' component={BudgetViewsContainer} />
         </Route>
+        <Route path='*' component={NotFound} />
     </Route>
 );
