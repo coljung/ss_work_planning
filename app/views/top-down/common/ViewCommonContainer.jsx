@@ -15,7 +15,7 @@ class ViewCommonContainer extends Component {
         this.state = {
             data: [],
             canSave: true,
-            headers: {},
+            headers: [],
             info: {},
             season: '',
         };
@@ -23,7 +23,7 @@ class ViewCommonContainer extends Component {
     }
 
     componentDidMount() {
-        const { budget, location, version, view } = this.props;
+        const { budget, version, view, router: { route: { location } } } = this.props;
         this.props.fetchBudgetData(budget, version, view, location.query);
     }
 
@@ -32,7 +32,7 @@ class ViewCommonContainer extends Component {
     }
 
     componentWillReceiveProps = (nextProps) => {
-        const setData = nextProps.viewData[nextProps.view];
+        const setData = nextProps.viewData ? nextProps.viewData[nextProps.view] : {};
         if (this.props.viewData.length !== setData && !!setData) {
             this.setState({
                 headers: setData.header,
@@ -92,7 +92,7 @@ class ViewCommonContainer extends Component {
 
     buildTable = () => {
         const columnTitles = this.state.headers;
-        const columnInfos = this.createColumnInfos(Object.getOwnPropertyNames(this.state.data[0]));
+        const columnInfos = this.createColumnInfos(Object.getOwnPropertyNames(this.state.data.length ? this.state.data[0] : []));
 
         return (
             <div className="parentDiv">
@@ -151,7 +151,7 @@ ViewCommonContainer.propTypes = {
     version: PropTypes.string.isRequired,
     view: PropTypes.string.isRequired,
     router: PropTypes.object.isRequired,
-    cellRenderer: PropTypes.func.isRequired,
+    cellRenderer: PropTypes.func,
 };
 
 function mapStateToProps(state) {

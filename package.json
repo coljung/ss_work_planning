@@ -99,6 +99,7 @@
     "optimize-css-assets-webpack-plugin": "^3.2.0",
     "postcss-loader": "^2.1.0",
     "progress-bar-webpack-plugin": "^1.11.0",
+    "react-router-dom": "^4.2.2",
     "react-test-renderer": "^16.2.0",
     "redux-mock-store": "^1.5.1",
     "remote-redux-devtools": "^0.5.7",
