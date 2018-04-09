@@ -3,9 +3,22 @@ import PropTypes from 'prop-types';
 import { Button, Popconfirm } from 'antd';
 import { Link } from 'react-router';
 import { ROUTE_DASHBOARD } from '../Routes';
+import Filter from '../components/filters/Filter';
 
 
 export default class BudgetViewsButtonActions extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            filterModalActive: false,
+        };
+    }
+
+    toggleFilterModal = () => {
+        this.setState({
+            filterModalActive: !this.state.filterModalActive,
+        });
+    }
 
     render() {
         return (
@@ -19,8 +32,11 @@ export default class BudgetViewsButtonActions extends Component {
                     onConfirm={ this.props.saveNew } okText="Yes" cancelText="Cancel">
                     <Button type="primary" icon="switcher">Save New Version</Button>
                 </Popconfirm>&nbsp;
+                <Filter
+                    visible={this.state.filterModalActive}
+                    onOverlayClick={this.toggleFilterModal.bind(this)} />
 
-                <Button icon="switcher">Filter</Button>
+                <Button icon="switcher" onClick={this.toggleFilterModal}>Filter</Button>
             </div>
         );
     }

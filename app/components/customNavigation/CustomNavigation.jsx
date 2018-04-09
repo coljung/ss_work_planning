@@ -74,13 +74,13 @@ class CustomNavigation extends Component {
                         </Menu.Item>
                 </SubMenu>
                 <SubMenu
-                    key="sub3"
+                    key="sub5"
                     disabled={!budgetView}
                     title={<span><Icon type="team" /><span>Middle Out</span></span>}>
                     <Menu.Item key="3">Brand Groups</Menu.Item>
                 </SubMenu>
                 <SubMenu
-                    key="sub3"
+                    key="sub6"
                     disabled={!budgetView}
                     title={<span><Icon type="file" /><span>Bottom Up</span></span>}
                   >
