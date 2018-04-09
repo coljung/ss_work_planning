@@ -13,8 +13,7 @@ export function cellValueRenderer(instance, td, row, col, prop, value, cellPrope
     // styling border left per section
     // borderLeft(this.state.columnData.leftBorderColumns, prop, td);
 
-    const propertyPath = prop;
-    const split = propertyPath.split('.');
+    const split = prop.split('.');
     const metricInformation = this.state.data[row][split[0]];
 
     if (metricInformation && metricInformation.readOnly !== undefined) {
