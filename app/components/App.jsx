@@ -6,8 +6,6 @@ import HeaderContent from './common/HeaderContent';
 import CustomNavigation from './customNavigation/CustomNavigation';
 import NotificationManager from '../notifications/NotificationManager';
 
-// const { Content, Header, Sider } = Layout;
-
 export default class App extends Component {
     constructor(props) {
         super(props);
@@ -26,6 +24,7 @@ export default class App extends Component {
             }, 80000);
         }
     }
+
     render() {
         return (
             <div className="store_layout">

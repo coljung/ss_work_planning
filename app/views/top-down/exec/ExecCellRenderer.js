@@ -1,50 +1,56 @@
 import Handsontable from 'handsontable';
-import { borderLeft, borderBottom, percentageRow, numberRow, disableEdit } from '../../TableHelpers';
+import { borderBottom, percentageFormat, currencyFormat, emptyCell } from '../../TableHelpers';
 
-function cellMetric(instance, td, row, col, prop, value, cellProperties) {
-    td.className += ' metricCell';
-
-    return td;
-}
-
-function cellValueRender(instance, td, row, col, prop, value, cellProperties) {
+export function cellValueRenderer(instance, td, row, col, prop, value, cellProperties) {
     if ((row === 0 && col > 0) || (row === 5 && col > 1) || (row === 10 && col > 1)) {
         td.style.background = '#eee';
     }
-
-    // styling border left per section
-    borderLeft(this.state.columnData.leftBorderColumns, prop, td);
 
     // styling border for each metric
     const rowSpan = 5;
     borderBottom(row, rowSpan, td, col);
 
-    // showing N/A instead of error
-    if (isNaN(parseInt(value, 10))) {
-        td.innerHTML = 'N/A';
-        td.className += ' cellNA';
+    // styling border left per section
+    // borderLeft(this.state.columnData.leftBorderColumns, prop, td);
 
-        disableEdit(instance, row, col);
+    const split = prop.split('.');
+    const metricInformation = this.state.data[row][split[0]];
 
-        return td;
+    if (metricInformation && metricInformation.readOnly !== undefined) {
+        instance.setCellMeta(row, col, 'readOnly', metricInformation.readOnly);
     }
 
-    percentageRow(this.state.columnData.percentageRows, instance, row, col);
-    numberRow(this.state.columnData.numberRows, instance, row, col);
+    if (metricInformation && metricInformation.dataType !== undefined) {
+        if ((metricInformation.dataType === 'currency'
+            || metricInformation.dataType === 'percentage'
+            || metricInformation.dataType === 'number')
+            && isNaN(parseInt(value, 10))) {
+            return emptyCell(instance, td, row, col);
+        }
 
-    Handsontable.renderers.NumericRenderer.apply(this, arguments);
+        switch (metricInformation.dataType) {
+            case 'currency':
+                instance.setCellMeta(row, col, 'numericFormat', currencyFormat);
+                Handsontable.renderers.NumericRenderer.apply(this, arguments);
+                break;
+
+            case 'percentage':
+                instance.setCellMeta(row, col, 'numericFormat', percentageFormat);
+                Handsontable.renderers.NumericRenderer.apply(this, arguments);
+                break;
+
+            case 'text':
+            default:
+                instance.setCellMeta(row, col, 'numericFormat', null);
+                Handsontable.renderers.TextRenderer.apply(this, arguments);
+                break;
+        }
+    } else {
+        return emptyCell(instance, td, row, col);
+    }
+
+    // percentageRow(this.state.columnData.percentageRows, instance, row, col);
+    // numberRow(this.state.columnData.numberRows, instance, row, col);
 
     return td;
-}
-
-export function cellRendererFactory(column) {
-    if (column.name === 'metric') {
-        return cellMetric.bind(this);
-    }
-
-    if (column.type === 'percentage' || column.type === 'currency') {
-        return cellValueRender.bind(this);
-    }
-
-    return undefined;
 }

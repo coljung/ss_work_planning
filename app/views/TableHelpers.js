@@ -27,75 +27,19 @@ export const percentageFormat = {
     pattern: '0%',
 };
 
-export const currencyColumn = {
-    type: 'numeric',
-    numericFormat: currencyFormat,
-    colWidths: 100,
-};
-
-export const percentageColumn = {
-    type: 'numeric',
-    numericFormat: percentageFormat,
-    colWidths: 50,
-};
-
-export function createColumn(column, renderer) {
-    switch (column.type) {
-        case 'text':
-            return {
-                data: column.name,
-                readOnly: column.isReadOnly,
-                type: 'text',
-            };
-
-        case 'currency':
-            return {
-                ...currencyColumn,
-                data: column.name,
-                readOnly: column.isReadOnly,
-                renderer,
-            };
-
-        case 'percentage':
-            return {
-                ...percentageColumn,
-                data: column.name,
-                readOnly: column.isReadOnly,
-                renderer,
-            };
-
-        default:
-            return {};
-    }
-}
-
-export function groupBy(list, keyGetter) {
-    const map = new Map();
-    list.forEach((item) => {
-        const key = keyGetter(item);
-        const collection = map.get(key);
-        if (!collection) {
-            map.set(key, [item]);
-        } else {
-            collection.push(item);
-        }
-    });
-
-    return map;
-}
-
 export const borderLeft = (columns, prop, td) => {
     if (columns.indexOf(prop) !== -1) {
         td.className += ' leftCellBorder';
     }
 };
 
-export const borderBottom = (row, rowSpan, td, col) => {
+export const borderBottom = (row, rowSpan, td) => {
     if ((row + 1) % rowSpan === 0) {
         td.className += ' bottomCellBorder';
     }
 };
 
+/*
 export const percentageRow = (rows, instance, row, col) => {
     const metricName = instance.getDataAtCell(row, 0);
     if (rows.indexOf(metricName) !== -1) {
@@ -116,6 +60,7 @@ export const numberRow = (rows, instance, row, col) => {
         instance.setCellMeta(row, col, 'numericFormat', { pattern: '0' });
     }
 };
+*/
 
 export const disableEdit = (instance, row, col) => {
     instance.setCellMeta(row, col, 'readOnly', true);
@@ -148,4 +93,72 @@ export const enableCellValidDate = (prop, currentRowSeasonYear) => {
     const viewCode = getCurrentDateCode();
 
     return { cellCode, viewCode };
+};
+
+/*
+export const customBorders = (startRow = 0, rowSpan, totalRows, totalCols) => {
+    const customBorderArr = [];
+
+    for (let i = startRow; i < totalRows; ++i) {
+        if (i % rowSpan === 0) {
+            customBorderArr.push({
+                range: {
+                    from: {
+                        row: i,
+                        col: 0,
+                    },
+                    to: {
+                        row: i,
+                        col: totalCols - 1,
+                    },
+                },
+                top: {
+                    width: 1,
+                    color: '#222',
+                },
+            });
+        }
+    }
+
+    return customBorderArr;
+};
+
+export const mergeMetrics = (startRow, rowSpan, totalRows, totalCols, hasGap = false) => {
+    const mergeArr = [];
+
+    // span between metrics
+    const metricSpan = hasGap ? rowSpan + 1 : rowSpan;
+
+    for (let i = startRow; i < totalRows; ++i) {
+        if (i % metricSpan === 0) {
+            mergeArr.push({
+                row: i + startRow,
+                col: 0,
+                rowspan: rowSpan,
+                colspan: 1,
+            });
+
+            if (hasGap) {
+                mergeArr.push({
+                    row: i - 1,
+                    col: 0,
+                    rowspan: 1,
+                    colspan: totalCols,
+                });
+            }
+        }
+    }
+
+    return mergeArr;
+};
+*/
+
+// showing N/A instead of error
+export const emptyCell = (instance, td, row, col) => {
+    td.innerHTML = 'N/A';
+    td.className += ' cellNA';
+
+    disableEdit(instance, row, col);
+
+    return td;
 };

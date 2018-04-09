@@ -1,8 +1,8 @@
 import agent from 'superagent';
 import wrap from 'superagent-promise';
 import { messages } from 'notifications/NotificationActions';
-import { fetchColumnData } from '../ColumnActions';
 import getApiUrl, { defaultMetricSequence } from '../../../Helpers.js';
+import budgetData from './grid/budgetData.json';
 
 const request = wrap(agent, Promise);
 
@@ -48,7 +48,7 @@ export function fetchBudgetData(budget, version, view, query) {
             .get(`${getApiUrl()}planning/budgets/${budget}/versions/${version}/${view}`)
             .query(query)
             .then(
-            res => dispatch(receiveBudgetViewData(Object.assign({}, res.body, { columnData: fetchColumnData(view, res.body) }), view)),
+            res => dispatch(receiveBudgetViewData(budgetData, view)),
             err => dispatch(messages({ content: err, response: err.response, isError: true })),
         );
     };
