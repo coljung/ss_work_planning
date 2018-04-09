@@ -23,7 +23,7 @@ class ViewCommonContainer extends Component {
     }
 
     componentDidMount() {
-        const { budget, version, view, router: { route: { location } } } = this.props;
+        const { budget, version, view, router: { location } } = this.props;
         this.props.fetchBudgetData(budget, version, view, location.query);
     }
 

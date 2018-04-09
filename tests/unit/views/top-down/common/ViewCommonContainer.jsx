@@ -20,6 +20,9 @@ const initialProps = {
     saveBudget: jest.fn(),
     fetchBudgetData: jest.fn(),
     resetState: jest.fn(),
+    router: {
+        location: {},
+    },
 };
 
 const initialState = {
