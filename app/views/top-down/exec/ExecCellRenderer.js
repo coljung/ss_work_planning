@@ -32,12 +32,14 @@ function cellValueRender(instance, td, row, col, prop, value, cellProperties) {
     percentageRow(this.state.columnData.percentageRows, instance, row, col);
     numberRow(this.state.columnData.numberRows, instance, row, col);
 
+    // eslint-disable-next-line prefer-rest-params
     Handsontable.renderers.NumericRenderer.apply(this, arguments);
 
     return td;
 }
 
-export function cellRendererFactory(column) {
+const cellRendererFactory = (column) => {
+// export function cellRendererFactory(column) {
     if (column.name === 'metric') {
         return cellMetric.bind(this);
     }
@@ -47,4 +49,6 @@ export function cellRendererFactory(column) {
     }
 
     return undefined;
-}
+};
+
+export default cellRendererFactory;
