@@ -1,24 +1,29 @@
+/* istanbul ignore next */
 export const leftBorderColumns = [
     'seasonyear',
     'stdpremarkdown',
     'previous',
 ];
 
+/* istanbul ignore next */
 export const disabledRows = [
     'GM$',
 ];
 
+/* istanbul ignore next */
 export const percentageRows = [
     'GM%',
     'iGM%',
     'RECEIPT%',
 ];
 
+/* istanbul ignore next */
 export const numberRows = [
     'TURNOVER RATE',
 ];
 
 // TODO This will come from the api
+/* istanbul ignore next */
 const commonColumns = [
     {
         label: 'Name',

@@ -1,20 +1,24 @@
+/* istanbul ignore next */
 export const leftBorderColumns = [
     'total_stdpremarkdown',
     'women_stdpremarkdown',
     'men_stdpremarkdown',
 ];
 
+/* istanbul ignore next */
 export const percentageRows = [
     'GM%',
     'iGM%',
     'RECEIPT%',
 ];
 
+/* istanbul ignore next */
 export const numberRows = [
     'TURNOVER RATE',
 ];
 
 // TODO This would come from the api
+/* istanbul ignore next */
 export const columns = [
     {
         grouping: 'Metrics',

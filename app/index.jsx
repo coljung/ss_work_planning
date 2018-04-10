@@ -4,6 +4,7 @@ import { AppContainer } from 'react-hot-loader';
 import * as OfflinePluginRuntime from 'offline-plugin/runtime';
 import Root from './Root.jsx';
 
+/* istanbul ignore next */
 OfflinePluginRuntime.install({
     ServiceWorker: {
         events: true,

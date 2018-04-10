@@ -37,6 +37,5 @@ describe.skip('BudgetViewsContainer', () => {
     it('should render base layout', () => {
         const { enzymeWrapper } = setup();
         expect(enzymeWrapper.find('h1')).to.have.lengthOf(1);
-
     });
 });
