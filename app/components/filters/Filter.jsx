@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { Button, Modal, List, Checkbox, Row, Col } from 'antd';
+import { Button, Icon, Modal, List, Checkbox, Row, Col } from 'antd';
 import { resetState } from '../../budgets/BudgetActions';
 
 const CheckboxGroup = Checkbox.Group;
@@ -178,6 +178,29 @@ const initialData = [
     },
 ];
 
+const filterLabels = {
+    filterMetrics: [
+        { label: 'SALES', value: 'sales' },
+        { label: 'COGS', value: 'cogs' },
+        { label: 'GM$', value: 'gm_dollar' },
+        { label: 'GM%', value: 'gm_percentage' },
+    ],
+
+    filterSeasons: [
+        { label: 'ss19', value: 'ss19' },
+        { label: 'ss18', value: 'ss18' },
+        { label: 'ss17', value: 'ss17' },
+        { label: 'ss16', value: 'ss16' },
+    ],
+    filterOptions: [
+        { label: 'WP', value: 'WP' },
+        { label: 'OP', value: 'OP' },
+        { label: 'ACT', value: 'ACT' },
+        { label: 'PRJ', value: 'PRJ' },
+        { label: 'BUDGET', value: 'BUD' },
+    ],
+};
+
 export class Filter extends Component {
 
     constructor(props) {
@@ -187,8 +210,9 @@ export class Filter extends Component {
             season: '',
             metric: '',
             dataMetrics: initialData[0].metrics,
-            dataSeason: initialData[0].seasons,
+            dataSeasons: initialData[0].seasons,
             dataOptions: initialData[0].options,
+            defaultValues: this.returnDefaultValues(initialData[0].metrics, 0),
         };
     }
 
@@ -196,15 +220,15 @@ export class Filter extends Component {
         if (props.visible && !props.seasonsFetched) {}
     }
 
-    filterView = () => {
-        const filter = {
-            year: this.state.year,
-            season: this.state.season,
-            data: this.state.metric,
-        };
-        this.props.setFilter(filter);
-        this.closeModal();
-    }
+    // filterView = () => {
+    //     const filter = {
+    //         year: this.state.year,
+    //         season: this.state.season,
+    //         data: this.state.metric,
+    //     };
+    //     this.props.setFilter(filter);
+    //     this.closeModal();
+    // }
 
     closeModal = () => {
         this.props.resetState();
@@ -222,19 +246,40 @@ export class Filter extends Component {
         );
     }
 
+    returnDefaultValues = (obj, index, parentArr = ['', '', '']) => {
+        const arr = [];
+        Object.entries(obj).forEach(([key, value]) => {
+            if (value) {
+                arr.push(key);
+            }
+        });
+        parentArr[index] = arr;
+        return parentArr;
+    };
+
     onChange = (checkedValues) => {
-        // console.log('checked = ', checkedValues);
+        console.log('checked = ', checkedValues);
     }
 
-    viewNext = () => {
-
+    viewNext = (val) => {
+        const defaultValues = [...this.state.defaultValues];
+        // 2. Make a shallow copy of the item you want to mutate
+        let item = { ...defaultValues[1] };
+        // 3. Replace the property you're intested in
+        item = ['ss19', 'ss18'];
+        // 4. Put it back into our array. N.B. we *are* mutating the array here, but that's why we made a copy first
+        defaultValues[1] = item;
+        // 5. Set the state to our new copy
+        this.setState({ defaultValues });
+        //
+        // this.setState({
+        //     arrayvar: [...this.state.arrayvar, newelement]
+        // })
     }
 
     render() {
-        // console.log(this.state.dataMetrics);
         const footerButtons = (<div>
             <Button
-                onClick={this.filterView.bind(this)}
                 type='primary'
                 size='large'
                 id='filterButton' >Set Filters
@@ -248,87 +293,58 @@ export class Filter extends Component {
 
         // const modalContent = this.createModalContent;
 
-        const filterMetrics = [
-            { label: 'sales', value: 'sales' },
-            { label: 'cogs', value: 'cogs' },
-            { label: 'gm$', value: 'gm_dollar' },
-            { label: 'gm%', value: 'gm_percentage' },
-        ];
 
-        const filterSeasons = [
-            { label: 'ss19', value: 'ss19' },
-            { label: 'ss18', value: 'ss18' },
-            { label: 'ss17', value: 'ss17' },
-            { label: 'ss16', value: 'ss16' },
-        ];
-        const filterOptions = [
-            { label: 'WP', value: 'WP' },
-            { label: 'OP', value: 'OP' },
-            { label: 'ACT', value: 'ACT' },
-            { label: 'PRJ', value: 'PRJ' },
-        ];
-
-        const displayLinkFunctionMetrics = (test) => {
-            // console.log(this.state.dataMetrics);
-            // console.log(test.value);
-            // console.log(typeof this.state.dataMetrics['sales']);
-            // console.log(typeof this.state.dataMetrics[test.value]);
-            return (<div>
-                <Checkbox value={test.value} defaultChecked={true}>{test.label}</Checkbox>
-                <Button onClick={this.viewNext}>view</Button>
-            </div>);
-        };
+        // const displayLinkFunctionMetrics = test =>
+        //     <div>
+        //         <Checkbox value={test.value}>{test.label}</Checkbox>
+        //         <Button onClick={this.viewNext}>view</Button>
+        //     </div>;
 
         const displayLinkFunction = test =>
-            <div>
+            <div className='test' >
                 <Checkbox value={test.value}>{test.label}</Checkbox>
-                <Button onClick={this.viewNext}>view</Button>
+                <Button
+                    className='filterButton'
+                    type='ghost'
+                    icon='right'
+                    shape='circle'
+                    onClick={() => this.viewNext(test.value)}>
+                </Button>
             </div>;
 
-        const metrics = filterMetrics.map(displayLinkFunctionMetrics);
-        const seasons = filterSeasons.map(displayLinkFunction);
-        const options = filterOptions.map(displayLinkFunction);
-        //debugger;
-
+        const buildCheckboxGroup = (column, stateData, defaultIndex) => {
+            const data = column.map(displayLinkFunction);
+            const defaultVal = [];
+            // defaultVal[defaultIndex] = returnDefaultValues(stateData);
+            console.log('---------------------- ', this.state.defaultValues);
+            return (
+                <CheckboxGroup
+                    style={{ width: '100%' }}
+                    defaultValue={this.state.defaultValues[defaultIndex] || null}
+                    value={this.state.defaultValues[defaultIndex] || null}
+                    onChange={this.onChange}>
+                    <List
+                        size='small'
+                        header={<div>Title</div>}
+                        footer={null}
+                        bordered
+                        dataSource={data}
+                        renderItem={item => (<List.Item>{item}</List.Item>)}
+                        />
+                </CheckboxGroup>);
+        };
 
         const modalContent = (
             <div>
-                <Row>
-                    <Col span={8}>
-                        <CheckboxGroup defaultValue={['sales']} style={{ width: '100%' }} onChange={this.onChange}>
-                            <List
-                                size="small"
-                                header={null}
-                                footer={null}
-                                bordered
-                                dataSource={metrics}
-                                renderItem={item => (<List.Item>{item}</List.Item>)}
-                                />
-                        </CheckboxGroup>
+                <Row type='flex' justify='start' className='filterRow'>
+                    <Col span={8} className='filterCol'>
+                        {buildCheckboxGroup(filterLabels.filterMetrics, this.state.dataMetrics, 0)}
                     </Col>
-                    <Col span={8}>
-                        <CheckboxGroup style={{ width: '100%' }} onChange={this.onChange}>
-                            <List
-                                size="small"
-                                header={null}
-                                footer={null}
-                                bordered
-                                dataSource={seasons}
-                                renderItem={item => (<List.Item>{item}</List.Item>)}
-                                />
-                        </CheckboxGroup>
+                    <Col span={8} className='filterCol'>
+                        {buildCheckboxGroup(filterLabels.filterSeasons, this.state.dataSeasons, 1)}
                     </Col>
-                    <Col span={8}>
-                        <CheckboxGroup style={{ width: '100%' }} onChange={this.onChange}>
-                            <List
-                                size="small"
-                                header={null}
-                                footer={null}
-                                bordered
-                                dataSource={options}
-                                renderItem={item => (<List.Item>{item}</List.Item>)}
-                                />
-                        </CheckboxGroup>
+                    <Col span={8} className='filterCol'>
+                        {buildCheckboxGroup(filterLabels.filterOptions, this.state.dataOptions, 2)}
                     </Col>
                 </Row>
             </div>
@@ -337,13 +353,14 @@ export class Filter extends Component {
 
         return (
             <Modal
-                title='Filter'
+                title='Filters'
                 visible={true}
+                className='filterModal'
                 onOk={this.handleOk}
-                width={600}
+                width={800}
                 onCancel={this.closeModal}
                 footer={footerButtons}>
-                {modalContent}
+                    {modalContent}
             </Modal>
         );
     }
