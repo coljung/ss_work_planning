@@ -2,383 +2,380 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { Button, Icon, Modal, List, Checkbox, Row, Col } from 'antd';
+import { Button, Icon, Modal, List, Checkbox, Row, Col, Tree } from 'antd';
 import { resetState } from '../../budgets/BudgetActions';
 
-const CheckboxGroup = Checkbox.Group;
+const TreeNode = Tree.TreeNode;
 
-const initialData = [
+const treeData = [
     {
-        metrics: {
-            sales: true,
-            cogs: false,
-            gm_percentage: true,
-            gm_dollar: false,
-        },
-        seasons: {
-            sales: {
-                ss19: true,
-                ss18: true,
-                ss16: true,
-                ss15: true,
-                ss14: true,
+        title: 'Sales',
+        key: 'sales',
+        children: [
+            {
+                title: 'ss19',
+                key: 'sales_ss19',
+                children: [
+                { title: 'TD WP', key: 'sales_ss19_TD_WP' },
+                { title: 'BU WP', key: 'sales_ss19_BU_WP' },
+                { title: 'TD OP', key: 'sales_ss19_TD_OP' },
+                { title: 'BU OP', key: 'sales_ss19_BU_OP' },
+                { title: 'Actuals', key: 'sales_ss19_actuals' },
+                { title: 'Exec. Proj.', key: 'sales_ss19_proj' },
+                { title: 'Sugg.', key: 'sales_ss19_sugg' },
+                ],
             },
-            cogs: {
-                ss19: true,
-                ss18: true,
-                ss16: true,
-                ss15: true,
-                ss14: true,
+            {
+                title: 'ss18',
+                key: 'sales_ss18',
+                children: [
+                { title: 'TD WP', key: 'sales_ss18_TD_WP' },
+                { title: 'BU WP', key: 'sales_ss18_BU_WP' },
+                { title: 'TD OP', key: 'sales_ss18_TD_OP' },
+                { title: 'BU OP', key: 'sales_ss18_BU_OP' },
+                { title: 'Actuals', key: 'sales_ss18_actuals' },
+                { title: 'Exec. Proj.', key: 'sales_ss18_proj' },
+                { title: 'Sugg.', key: 'sales_ss18_sugg' },
+                ],
             },
-            gm_percentage: {
-                ss19: true,
-                ss18: true,
-                ss16: true,
-                ss15: true,
-                ss14: true,
+            {
+                title: 'ss17',
+                key: 'sales_ss17',
+                children: [
+                { title: 'TD WP', key: 'sales_ss17_TD_WP' },
+                { title: 'BU WP', key: 'sales_ss17_BU_WP' },
+                { title: 'TD OP', key: 'sales_ss17_TD_OP' },
+                { title: 'BU OP', key: 'sales_ss17_BU_OP' },
+                { title: 'Actuals', key: 'sales_ss17_actuals' },
+                { title: 'Exec. Proj.', key: 'sales_ss17_proj' },
+                { title: 'Sugg.', key: 'sales_ss17_sugg' },
+                ],
             },
-            gm_dollar: {
-                ss19: true,
-                ss18: true,
-                ss16: true,
-                ss15: true,
-                ss14: true,
+            {
+                title: 'ss16',
+                key: 'sales_ss16',
+                children: [
+                { title: 'TD WP', key: 'sales_ss16_TD_WP' },
+                { title: 'BU WP', key: 'sales_ss16_BU_WP' },
+                { title: 'TD OP', key: 'sales_ss16_TD_OP' },
+                { title: 'BU OP', key: 'sales_ss16_BU_OP' },
+                { title: 'Actuals', key: 'sales_ss16_actuals' },
+                { title: 'Exec. Proj.', key: 'sales_ss16_proj' },
+                { title: 'Sugg.', key: 'sales_ss16_sugg' },
+                ],
             },
-        },
-        options: {
-            sales: {
-                ss19: {
-                    WP: true,
-                    OP: true,
-                    ACT: true,
-                    PRJ: true,
-                },
-                ss18: {
-                    WP: true,
-                    OP: false,
-                    ACT: false,
-                    PRJ: false,
-                },
-                ss16: {
-                    WP: true,
-                    OP: false,
-                    ACT: false,
-                    PRJ: false,
-                },
-                ss15: {
-                    WP: true,
-                    OP: false,
-                    ACT: false,
-                    PRJ: false,
-                },
-                ss14: {
-                    WP: true,
-                    OP: false,
-                    ACT: false,
-                    PRJ: false,
-                },
+            {
+                title: 'ss15',
+                key: 'sales_ss15',
+                children: [
+                { title: 'TD WP', key: 'sales_ss15_TD_WP' },
+                { title: 'BU WP', key: 'sales_ss15_BU_WP' },
+                { title: 'TD OP', key: 'sales_ss15_TD_OP' },
+                { title: 'BU OP', key: 'sales_ss15_BU_OP' },
+                { title: 'Actuals', key: 'sales_ss15_actuals' },
+                { title: 'Exec. Proj.', key: 'sales_ss15_proj' },
+                { title: 'Sugg.', key: 'sales_ss15_sugg' },
+                ],
             },
-            cogs: {
-                ss19: {
-                    WP: true,
-                    OP: true,
-                    ACT: true,
-                    PRJ: true,
-                },
-                ss18: {
-                    WP: true,
-                    OP: false,
-                    ACT: false,
-                    PRJ: false,
-                },
-                ss16: {
-                    WP: true,
-                    OP: false,
-                    ACT: false,
-                    PRJ: false,
-                },
-                ss15: {
-                    WP: true,
-                    OP: false,
-                    ACT: false,
-                    PRJ: false,
-                },
-                ss14: {
-                    WP: true,
-                    OP: false,
-                    ACT: false,
-                    PRJ: false,
-                },
+        ],
+    },
+    {
+        title: 'COGS',
+        key: 'cogs',
+        children: [
+            {
+                title: 'ss19',
+                key: 'cogs_ss19',
+                children: [
+                { title: 'TD WP', key: 'cogs_ss19_TD_WP' },
+                { title: 'BU WP', key: 'cogs_ss19_BU_WP' },
+                { title: 'TD OP', key: 'cogs_ss19_TD_OP' },
+                { title: 'BU OP', key: 'cogs_ss19_BU_OP' },
+                { title: 'Actuals', key: 'cogs_ss19_actuals' },
+                { title: 'Exec. Proj.', key: 'cogs_ss19_proj' },
+                { title: 'Sugg.', key: 'cogs_ss19_sugg' },
+                ],
             },
-            gm_percentage: {
-                ss19: {
-                    WP: true,
-                    OP: true,
-                    ACT: true,
-                    PRJ: true,
-                },
-                ss18: {
-                    WP: true,
-                    OP: false,
-                    ACT: false,
-                    PRJ: false,
-                },
-                ss16: {
-                    WP: true,
-                    OP: false,
-                    ACT: false,
-                    PRJ: false,
-                },
-                ss15: {
-                    WP: true,
-                    OP: false,
-                    ACT: false,
-                    PRJ: false,
-                },
-                ss14: {
-                    WP: true,
-                    OP: false,
-                    ACT: false,
-                    PRJ: false,
-                },
+            {
+                title: 'ss18',
+                key: 'cogs_ss18',
+                children: [
+                { title: 'TD WP', key: 'cogs_ss18_TD_WP' },
+                { title: 'BU WP', key: 'cogs_ss18_BU_WP' },
+                { title: 'TD OP', key: 'cogs_ss18_TD_OP' },
+                { title: 'BU OP', key: 'cogs_ss18_BU_OP' },
+                { title: 'Actuals', key: 'cogs_ss18_actuals' },
+                { title: 'Exec. Proj.', key: 'cogs_ss18_proj' },
+                { title: 'Sugg.', key: 'cogs_ss18_sugg' },
+                ],
             },
-            gm_dollar: {
-                ss19: {
-                    WP: true,
-                    OP: true,
-                    ACT: true,
-                    PRJ: true,
-                },
-                ss18: {
-                    WP: true,
-                    OP: false,
-                    ACT: false,
-                    PRJ: false,
-                },
-                ss16: {
-                    WP: true,
-                    OP: false,
-                    ACT: false,
-                    PRJ: false,
-                },
-                ss15: {
-                    WP: true,
-                    OP: false,
-                    ACT: false,
-                    PRJ: false,
-                },
-                ss14: {
-                    WP: true,
-                    OP: false,
-                    ACT: false,
-                    PRJ: false,
-                },
+            {
+                title: 'ss17',
+                key: 'cogs_ss17',
+                children: [
+                { title: 'TD WP', key: 'cogs_ss17_TD_WP' },
+                { title: 'BU WP', key: 'cogs_ss17_BU_WP' },
+                { title: 'TD OP', key: 'cogs_ss17_TD_OP' },
+                { title: 'BU OP', key: 'cogs_ss17_BU_OP' },
+                { title: 'Actuals', key: 'cogs_ss17_actuals' },
+                { title: 'Exec. Proj.', key: 'cogs_ss17_proj' },
+                { title: 'Sugg.', key: 'cogs_ss17_sugg' },
+                ],
             },
-        },
+            {
+                title: 'ss16',
+                key: 'cogs_ss16',
+                children: [
+                { title: 'TD WP', key: 'cogs_ss16_TD_WP' },
+                { title: 'BU WP', key: 'cogs_ss16_BU_WP' },
+                { title: 'TD OP', key: 'cogs_ss16_TD_OP' },
+                { title: 'BU OP', key: 'cogs_ss16_BU_OP' },
+                { title: 'Actuals', key: 'cogs_ss16_actuals' },
+                { title: 'Exec. Proj.', key: 'cogs_ss16_proj' },
+                { title: 'Sugg.', key: 'cogs_ss16_sugg' },
+                ],
+            },
+            {
+                title: 'ss15',
+                key: 'cogs_ss15',
+                children: [
+                { title: 'TD WP', key: 'cogs_ss15_TD_WP' },
+                { title: 'BU WP', key: 'cogs_ss15_BU_WP' },
+                { title: 'TD OP', key: 'cogs_ss15_TD_OP' },
+                { title: 'BU OP', key: 'cogs_ss15_BU_OP' },
+                { title: 'Actuals', key: 'cogs_ss15_actuals' },
+                { title: 'Exec. Proj.', key: 'cogs_ss15_proj' },
+                { title: 'Sugg.', key: 'cogs_ss15_sugg' },
+                ],
+            },
+        ],
+    },
+    {
+        title: 'GM%',
+        key: 'gm_percentage',
+        children: [
+            {
+                title: 'ss19',
+                key: 'gm_percentage_ss19',
+                children: [
+                { title: 'TD WP', key: 'gm_percentage_ss19_TD_WP' },
+                { title: 'BU WP', key: 'gm_percentage_ss19_BU_WP' },
+                { title: 'TD OP', key: 'gm_percentage_ss19_TD_OP' },
+                { title: 'BU OP', key: 'gm_percentage_ss19_BU_OP' },
+                { title: 'Actuals', key: 'gm_percentage_ss19_actuals' },
+                { title: 'Exec. Proj.', key: 'gm_percentage_ss19_proj' },
+                { title: 'Sugg.', key: 'gm_percentage_ss19_sugg' },
+                ],
+            },
+            {
+                title: 'ss18',
+                key: 'gm_percentage_ss18',
+                children: [
+                { title: 'TD WP', key: 'gm_percentage_ss18_TD_WP' },
+                { title: 'BU WP', key: 'gm_percentage_ss18_BU_WP' },
+                { title: 'TD OP', key: 'gm_percentage_ss18_TD_OP' },
+                { title: 'BU OP', key: 'gm_percentage_ss18_BU_OP' },
+                { title: 'Actuals', key: 'gm_percentage_ss18_actuals' },
+                { title: 'Exec. Proj.', key: 'gm_percentage_ss18_proj' },
+                { title: 'Sugg.', key: 'gm_percentage_ss18_sugg' },
+                ],
+            },
+            {
+                title: 'ss17',
+                key: 'gm_percentage_ss17',
+                children: [
+                { title: 'TD WP', key: 'gm_percentage_ss17_TD_WP' },
+                { title: 'BU WP', key: 'gm_percentage_ss17_BU_WP' },
+                { title: 'TD OP', key: 'gm_percentage_ss17_TD_OP' },
+                { title: 'BU OP', key: 'gm_percentage_ss17_BU_OP' },
+                { title: 'Actuals', key: 'gm_percentage_ss17_actuals' },
+                { title: 'Exec. Proj.', key: 'gm_percentage_ss17_proj' },
+                { title: 'Sugg.', key: 'gm_percentage_ss17_sugg' },
+                ],
+            },
+            {
+                title: 'ss16',
+                key: 'gm_percentage_ss16',
+                children: [
+                { title: 'TD WP', key: 'gm_percentage_ss16_TD_WP' },
+                { title: 'BU WP', key: 'gm_percentage_ss16_BU_WP' },
+                { title: 'TD OP', key: 'gm_percentage_ss16_TD_OP' },
+                { title: 'BU OP', key: 'gm_percentage_ss16_BU_OP' },
+                { title: 'Actuals', key: 'gm_percentage_ss16_actuals' },
+                { title: 'Exec. Proj.', key: 'gm_percentage_ss16_proj' },
+                { title: 'Sugg.', key: 'gm_percentage_ss16_sugg' },
+                ],
+            },
+            {
+                title: 'ss15',
+                key: 'gm_percentage_ss15',
+                children: [
+                { title: 'TD WP', key: 'gm_percentage_ss15_TD_WP' },
+                { title: 'BU WP', key: 'gm_percentage_ss15_BU_WP' },
+                { title: 'TD OP', key: 'gm_percentage_ss15_TD_OP' },
+                { title: 'BU OP', key: 'gm_percentage_ss15_BU_OP' },
+                { title: 'Actuals', key: 'gm_percentage_ss15_actuals' },
+                { title: 'Exec. Proj.', key: 'gm_percentage_ss15_proj' },
+                { title: 'Sugg.', key: 'gm_percentage_ss15_sugg' },
+                ],
+            },
+        ],
+    },
+    {
+        title: 'GM$',
+        key: 'gm_dollar',
+        children: [
+            {
+                title: 'ss19',
+                key: 'gm_dollar_ss19',
+                children: [
+                { title: 'TD WP', key: 'gm_dollar_ss19_TD_WP' },
+                { title: 'BU WP', key: 'gm_dollar_ss19_BU_WP' },
+                { title: 'TD OP', key: 'gm_dollar_ss19_TD_OP' },
+                { title: 'BU OP', key: 'gm_dollar_ss19_BU_OP' },
+                { title: 'Actuals', key: 'gm_dollar_ss19_actuals' },
+                { title: 'Exec. Proj.', key: 'gm_dollar_ss19_proj' },
+                { title: 'Sugg.', key: 'gm_dollar_ss19_sugg' },
+                ],
+            },
+            {
+                title: 'ss18',
+                key: 'gm_dollar_ss18',
+                children: [
+                { title: 'TD WP', key: 'gm_dollar_ss18_TD_WP' },
+                { title: 'BU WP', key: 'gm_dollar_ss18_BU_WP' },
+                { title: 'TD OP', key: 'gm_dollar_ss18_TD_OP' },
+                { title: 'BU OP', key: 'gm_dollar_ss18_BU_OP' },
+                { title: 'Actuals', key: 'gm_dollar_ss18_actuals' },
+                { title: 'Exec. Proj.', key: 'gm_dollar_ss18_proj' },
+                { title: 'Sugg.', key: 'gm_dollar_ss18_sugg' },
+                ],
+            },
+            {
+                title: 'ss17',
+                key: 'gm_dollar_ss17',
+                children: [
+                { title: 'TD WP', key: 'gm_dollar_ss17_TD_WP' },
+                { title: 'BU WP', key: 'gm_dollar_ss17_BU_WP' },
+                { title: 'TD OP', key: 'gm_dollar_ss17_TD_OP' },
+                { title: 'BU OP', key: 'gm_dollar_ss17_BU_OP' },
+                { title: 'Actuals', key: 'gm_dollar_ss17_actuals' },
+                { title: 'Exec. Proj.', key: 'gm_dollar_ss17_proj' },
+                { title: 'Sugg.', key: 'gm_dollar_ss17_sugg' },
+                ],
+            },
+            {
+                title: 'ss16',
+                key: 'gm_dollar_ss16',
+                children: [
+                { title: 'TD WP', key: 'gm_dollar_ss16_TD_WP' },
+                { title: 'BU WP', key: 'gm_dollar_ss16_BU_WP' },
+                { title: 'TD OP', key: 'gm_dollar_ss16_TD_OP' },
+                { title: 'BU OP', key: 'gm_dollar_ss16_BU_OP' },
+                { title: 'Actuals', key: 'gm_dollar_ss16_actuals' },
+                { title: 'Exec. Proj.', key: 'gm_dollar_ss16_proj' },
+                { title: 'Sugg.', key: 'gm_dollar_ss16_sugg' },
+                ],
+            },
+            {
+                title: 'ss15',
+                key: 'gm_dollar_ss15',
+                children: [
+                { title: 'TD WP', key: 'gm_dollar_ss15_TD_WP' },
+                { title: 'BU WP', key: 'gm_dollar_ss15_BU_WP' },
+                { title: 'TD OP', key: 'gm_dollar_ss15_TD_OP' },
+                { title: 'BU OP', key: 'gm_dollar_ss15_BU_OP' },
+                { title: 'Actuals', key: 'gm_dollar_ss15_actuals' },
+                { title: 'Exec. Proj.', key: 'gm_dollar_ss15_proj' },
+                { title: 'Sugg.', key: 'gm_dollar_ss15_sugg' },
+                ],
+            },
+        ],
     },
 ];
 
-const filterLabels = {
-    filterMetrics: [
-        { label: 'SALES', value: 'sales' },
-        { label: 'COGS', value: 'cogs' },
-        { label: 'GM$', value: 'gm_dollar' },
-        { label: 'GM%', value: 'gm_percentage' },
-    ],
-
-    filterSeasons: [
-        { label: 'ss19', value: 'ss19' },
-        { label: 'ss18', value: 'ss18' },
-        { label: 'ss17', value: 'ss17' },
-        { label: 'ss16', value: 'ss16' },
-    ],
-    filterOptions: [
-        { label: 'WP', value: 'WP' },
-        { label: 'OP', value: 'OP' },
-        { label: 'ACT', value: 'ACT' },
-        { label: 'PRJ', value: 'PRJ' },
-        { label: 'BUDGET', value: 'BUD' },
-    ],
-};
-
-export class Filter extends Component {
-
-    constructor(props) {
-        super(props);
-        this.state = {
-            year: '',
-            season: '',
-            metric: '',
-            dataMetrics: initialData[0].metrics,
-            dataSeasons: initialData[0].seasons,
-            dataOptions: initialData[0].options,
-            defaultValues: this.returnDefaultValues(initialData[0].metrics, 0),
-        };
-    }
-
-    componentWillReceiveProps(props) {
-        if (props.visible && !props.seasonsFetched) {}
-    }
-
-    // filterView = () => {
-    //     const filter = {
-    //         year: this.state.year,
-    //         season: this.state.season,
-    //         data: this.state.metric,
-    //     };
-    //     this.props.setFilter(filter);
-    //     this.closeModal();
-    // }
-
-    closeModal = () => {
-        this.props.resetState();
-        this.props.onOverlayClick();
-    }
-
-    createModalContent = () => {
-        const { seasons } = this.props;
-
-        const hardCodedContent = (
-            <div>
-                <h1>hey</h1>
-                <p>the seasons will be here</p>
-            </div>
-        );
-    }
-
-    returnDefaultValues = (obj, index, parentArr = ['', '', '']) => {
-        const arr = [];
-        Object.entries(obj).forEach(([key, value]) => {
-            if (value) {
-                arr.push(key);
-            }
-        });
-        parentArr[index] = arr;
-        return parentArr;
+export class Filter extends React.Component {
+    state = {
+        expandedKeys: ['sales_ss19', 'cogs'],
+        autoExpandParent: true,
+        checkedKeys: ['sales_ss19_BU_OP'],
+        selectedKeys: []
     };
-
-    onChange = (checkedValues) => {
-        console.log('checked = ', checkedValues);
-    }
-
-    viewNext = (val) => {
-        const defaultValues = [...this.state.defaultValues];
-        // 2. Make a shallow copy of the item you want to mutate
-        let item = { ...defaultValues[1] };
-        // 3. Replace the property you're intested in
-        item = ['ss19', 'ss18'];
-        // 4. Put it back into our array. N.B. we *are* mutating the array here, but that's why we made a copy first
-        defaultValues[1] = item;
-        // 5. Set the state to our new copy
-        this.setState({ defaultValues });
-        //
-        // this.setState({
-        //     arrayvar: [...this.state.arrayvar, newelement]
-        // })
-    }
-
-    render() {
-        const footerButtons = (<div>
-            <Button
-                type='primary'
-                size='large'
-                id='filterButton' >Set Filters
-            </Button>
-            <Button
-                onClick={this.closeModal}
-                size='large'
-                id='filterButton' >Cancel
-            </Button>
-        </div>);
-
-        // const modalContent = this.createModalContent;
-
-
-        // const displayLinkFunctionMetrics = test =>
-        //     <div>
-        //         <Checkbox value={test.value}>{test.label}</Checkbox>
-        //         <Button onClick={this.viewNext}>view</Button>
-        //     </div>;
-
-        const displayLinkFunction = test =>
-            <div className='test' >
-                <Checkbox value={test.value}>{test.label}</Checkbox>
-                <Button
-                    className='filterButton'
-                    type='ghost'
-                    icon='right'
-                    shape='circle'
-                    onClick={() => this.viewNext(test.value)}>
-                </Button>
-            </div>;
-
-        const buildCheckboxGroup = (column, stateData, defaultIndex) => {
-            const data = column.map(displayLinkFunction);
-            const defaultVal = [];
-            // defaultVal[defaultIndex] = returnDefaultValues(stateData);
-            console.log('---------------------- ', this.state.defaultValues);
+    onExpand = expandedKeys => {
+        console.log("onExpand", arguments);
+        // if not set autoExpandParent to false, if children expanded, parent can not collapse.
+        // or, you can remove all expanded children keys.
+        this.setState({
+        expandedKeys,
+        autoExpandParent: false
+        });
+    };
+    onCheck = checkedKeys => {
+        console.log("onCheck", checkedKeys);
+        this.setState({ checkedKeys });
+    };
+    onSelect = (selectedKeys, info) => {
+        console.log("onSelect", info);
+        this.setState({ selectedKeys });
+    };
+    renderTreeNodes = data => {
+        return data.map(item => {
+        if (item.children) {
             return (
-                <CheckboxGroup
-                    style={{ width: '100%' }}
-                    defaultValue={this.state.defaultValues[defaultIndex] || null}
-                    value={this.state.defaultValues[defaultIndex] || null}
-                    onChange={this.onChange}>
-                    <List
-                        size='small'
-                        header={<div>Title</div>}
-                        footer={null}
-                        bordered
-                        dataSource={data}
-                        renderItem={item => (<List.Item>{item}</List.Item>)}
-                        />
-                </CheckboxGroup>);
-        };
-
-        const modalContent = (
-            <div>
-                <Row type='flex' justify='start' className='filterRow'>
-                    <Col span={8} className='filterCol'>
-                        {buildCheckboxGroup(filterLabels.filterMetrics, this.state.dataMetrics, 0)}
-                    </Col>
-                    <Col span={8} className='filterCol'>
-                        {buildCheckboxGroup(filterLabels.filterSeasons, this.state.dataSeasons, 1)}
-                    </Col>
-                    <Col span={8} className='filterCol'>
-                        {buildCheckboxGroup(filterLabels.filterOptions, this.state.dataOptions, 2)}
-                    </Col>
-                </Row>
-            </div>
-
+            <TreeNode title={item.title} key={item.key} dataRef={item}>
+                {this.renderTreeNodes(item.children)}
+            </TreeNode>
+            );
+        }
+        return <TreeNode {...item} />;
+        });
+    };
+    render() {
+        const footerButtons = (
+        <div>
+            <Button type="primary" size="large" id="filterButton">
+            Set Filters
+            </Button>
+            <Button onClick={this.closeModal} size="large" id="filterButton">
+            Cancel
+            </Button>
+        </div>
         );
-
+        const modalContent = (
+        <Tree
+            checkable
+            onExpand={this.onExpand}
+            expandedKeys={this.state.expandedKeys}
+            autoExpandParent={this.state.autoExpandParent}
+            onCheck={this.onCheck}
+            checkedKeys={this.state.checkedKeys}
+            onSelect={this.onSelect}
+            selectedKeys={this.state.selectedKeys}
+        >
+            {this.renderTreeNodes(treeData)}
+        </Tree>
+        );
         return (
-            <Modal
-                title='Filters'
-                visible={true}
-                className='filterModal'
-                onOk={this.handleOk}
-                width={800}
-                onCancel={this.closeModal}
-                footer={footerButtons}>
-                    {modalContent}
-            </Modal>
+        <Modal
+            title="Filters"
+            visible={true}
+            className="filterModal"
+            onOk={this.handleOk}
+            width={800}
+            onCancel={this.closeModal}
+            footer={footerButtons}
+        >
+            {modalContent}
+        </Modal>
         );
     }
-}
-
-Filter.propTypes = {
-    visible: PropTypes.bool.isRequired,
-    onOverlayClick: PropTypes.func.isRequired,
-    resetState: PropTypes.func.isRequired,
-    setFilter: PropTypes.func.isRequired,
-    seasonsFetched: PropTypes.func.isRequired,
-};
+    }
 
 function mapStateToProps(state) {
     const { BudgetReducer } = state;
     return {
         seasons: BudgetReducer.seasons,
-        seasonsFetched: BudgetReducer.seasonsFetched,
+        seasonsFetched: BudgetReducer.seasonsFetched
     };
 }
 
