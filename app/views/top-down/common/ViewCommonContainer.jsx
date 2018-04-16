@@ -75,14 +75,12 @@ class ViewCommonContainer extends Component {
         this.props.saveBudget(this.props.budget, this.props.version, this.props.view, dataToSend);
     };
 
-    createColumn = (column, renderer) => {
-        return {
-            data: `${column}.value`,
-            readOnly: false,
-            type: 'text',
-            renderer,
-        };
-    }
+    createColumn = (column, renderer) => ({
+        data: `${column}.value`,
+        readOnly: false,
+        type: 'text',
+        renderer,
+    })
 
     createColumnInfos(columns) {
         const renderer = this.props.cellRenderer ? this.props.cellRenderer.bind(this) : undefined;

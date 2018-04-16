@@ -45,17 +45,20 @@ export function cellValueRenderer(instance, td, row, col, prop, value, cellPrope
         switch (metricInformation.dataType) {
             case 'currency':
                 instance.setCellMeta(row, col, 'numericFormat', currencyFormat);
+                // eslint-disable-next-line prefer-rest-params
                 Handsontable.renderers.NumericRenderer.apply(this, arguments);
                 break;
 
             case 'percentage':
                 instance.setCellMeta(row, col, 'numericFormat', percentageFormat);
+                // eslint-disable-next-line prefer-rest-params
                 Handsontable.renderers.NumericRenderer.apply(this, arguments);
                 break;
 
             case 'text':
             default:
                 instance.setCellMeta(row, col, 'numericFormat', null);
+                // eslint-disable-next-line prefer-rest-params
                 Handsontable.renderers.TextRenderer.apply(this, arguments);
                 break;
         }
