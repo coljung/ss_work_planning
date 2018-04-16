@@ -74,7 +74,7 @@ class CustomNavigation extends Component {
                         </Menu.Item>
                 </SubMenu>
                 <SubMenu
-                    key="sub3"
+                    key="sub5"
                     disabled={!budgetView}
                     title={<span><Icon type="team" /><span>Middle Out</span></span>}>
                     <Menu.Item key="sub3-1">
