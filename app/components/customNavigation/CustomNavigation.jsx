@@ -103,11 +103,7 @@ class CustomNavigation extends Component {
                     </Menu.Item>
                 </SubMenu>
                 <SubMenu
-<<<<<<< HEAD
                     key="sub4"
-=======
-                    key="sub6"
->>>>>>> PLANSOFT-525: filters
                     disabled={!budgetView}
                     title={<span><Icon type="file" /><span>Bottom Up</span></span>}
                   >
