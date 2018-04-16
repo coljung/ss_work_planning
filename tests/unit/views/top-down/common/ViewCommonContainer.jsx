@@ -18,7 +18,7 @@ const initialProps = {
     viewData: {},
     viewDataFetched: false,
     saveBudget: jest.fn(),
-    fetchBudgetData: jest.fn(),
+    fetchBudgetMetricData: jest.fn(),
     resetState: jest.fn(),
     router: {
         location: {},

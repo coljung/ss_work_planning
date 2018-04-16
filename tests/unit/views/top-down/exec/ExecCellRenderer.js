@@ -68,7 +68,7 @@ describe('Exec view cell rendering', () => {
 
         const spy = sinon.spy(instance, 'setCellMeta');
 
-        createCell(instance, 0, 0, { prop: { readOnly: true } });
+        createCell(instance, 0, 0, { prop: { isReadOnly: true } });
 
         expect(spy.called).to.equal(true);
         expect(spy.getCall(0).args[2]).to.equal('readOnly');
@@ -80,7 +80,7 @@ describe('Exec view cell rendering', () => {
 
         const spy = sinon.spy(instance, 'setCellMeta');
 
-        createCell(instance, 0, 0, { prop: { readOnly: false } });
+        createCell(instance, 0, 0, { prop: { isReadOnly: false } });
 
         expect(spy.called).to.equal(true);
         expect(spy.getCall(0).args[2]).to.equal('readOnly');

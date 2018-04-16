@@ -54,6 +54,19 @@ export function fetchBudgetData(budget, version, view, query) {
     };
 }
 
+export function fetchBudgetMetricData(budget, version, view, metric, query) {
+    return (dispatch) => {
+        dispatch(requestBudgetViewData());
+        return request
+            .get(`${getApiUrl()}planning/budgets/${budget}/versions/${version}/${view}/${metric}`)
+            .query(query)
+            .then(
+            res => dispatch(receiveBudgetViewData(res.body, view)),
+            err => dispatch(messages({ content: err, response: err.response, isError: true })),
+        );
+    };
+}
+
 export function saveBudget(budget, id, view, data) {
     return (dispatch) => {
         dispatch(requestBudgetSave());

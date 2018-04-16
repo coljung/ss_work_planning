@@ -16,8 +16,8 @@ export function cellValueRenderer(instance, td, row, col, prop, value, cellPrope
     const split = prop.split('.');
     const metricInformation = this.state.data[row][split[0]];
 
-    if (metricInformation && metricInformation.readOnly !== undefined) {
-        instance.setCellMeta(row, col, 'readOnly', metricInformation.readOnly);
+    if (metricInformation && metricInformation.isReadOnly !== undefined) {
+        instance.setCellMeta(row, col, 'readOnly', metricInformation.isReadOnly);
     }
 
     if (metricInformation && metricInformation.dataType !== undefined) {
