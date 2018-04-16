@@ -6,3 +6,4 @@ config/*.js
 tests
 *.less
 *.scss
+.vscode

@@ -1,11 +1,10 @@
-// Dependencies
 import React, { Component } from 'react';
 import { Router, browserHistory } from 'react-router';
 import { Provider } from 'react-redux';
 import Routes from './Routes';
 
 // Global Styles
-import './styles/styles.css';
+import './styles/styles';
 
 // Store
 import configureStore from './ConfigureStore';

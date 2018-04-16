@@ -2,7 +2,7 @@
   "extends": "ui-core/client-react",
   "plugins": ["react"],
   "settings": {
-    'import/resolver': ['webpack', 'handsontable']
+    'import/resolver': ['webpack']
   },
   "rules": {
     "indent": [
