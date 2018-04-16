@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import HotTable from 'react-handsontable';
 import { Button } from 'antd';
 import { withRouter } from 'react-router';
-import { saveBudget, fetchBudgetData, resetState } from './ViewActions';
+import { saveBudget, fetchBudgetMetricData, resetState } from './ViewActions';
 import LoadingSpinner from '../../../components/common/LoadingSpinner';
 
 class ViewCommonContainer extends Component {
@@ -24,7 +24,7 @@ class ViewCommonContainer extends Component {
 
     componentDidMount() {
         const { budget, version, view, router: { location } } = this.props;
-        this.props.fetchBudgetData(budget, version, view, location.query);
+        this.props.fetchBudgetMetricData(budget, version, view, 'SALES', location.query);
     }
 
     componentWillUnmount() {
@@ -35,7 +35,7 @@ class ViewCommonContainer extends Component {
         const setData = nextProps.viewData ? nextProps.viewData[nextProps.view] : {};
         if (this.props.viewData.length !== setData && !!setData) {
             this.setState({
-                headers: setData.header,
+                headers: setData.headers,
                 data: setData.data,
                 info: setData.info,
                 season: setData.info.season,
@@ -129,7 +129,7 @@ class ViewCommonContainer extends Component {
                     icon="save"
                     className="saveBtn"
                     disabled={this.state.canSave}
-                    onClick={() => this.save()}>Save {buttonStr}'s view</Button>
+                    onClick={() => this.save()}>Save {buttonStr} view</Button>
                 {budgetListData}
             </div>
         );
@@ -143,7 +143,7 @@ ViewCommonContainer.propTypes = {
     ]).isRequired,
     viewDataFetched: PropTypes.bool.isRequired,
     saveBudget: PropTypes.func.isRequired,
-    fetchBudgetData: PropTypes.func.isRequired,
+    fetchBudgetMetricData: PropTypes.func.isRequired,
     resetState: PropTypes.func.isRequired,
     budget: PropTypes.string.isRequired,
     version: PropTypes.string.isRequired,
@@ -162,7 +162,7 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-    return bindActionCreators({ fetchBudgetData, resetState, saveBudget }, dispatch);
+    return bindActionCreators({ fetchBudgetMetricData, resetState, saveBudget }, dispatch);
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(ViewCommonContainer));

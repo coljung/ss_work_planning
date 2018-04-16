@@ -14,7 +14,7 @@ export function cellValueRenderer(instance, td, row, col, prop, value, cellPrope
     const metricInformation = this.state.data[row][split[0]];
 
     if (metricInformation && metricInformation.readOnly !== undefined) {
-        instance.setCellMeta(row, col, 'readOnly', metricInformation.readOnly);
+        instance.setCellMeta(row, col, 'readOnly', metricInformation.isReadOnly);
     }
 
     if (this.props.view === TAB_TOTAL) {
