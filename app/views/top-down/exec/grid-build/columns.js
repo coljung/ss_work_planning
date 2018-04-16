@@ -1,264 +1,173 @@
-import Handsontable from 'handsontable';
-import { borderLeft,
-        borderBottom,
-        percentageMetrics,
-        numberMetrics,
-        // getCurrentCellCode,
-        // getCurrentDateCode,
-        // enableCellValidDate,
-    } from '../../../Helpers';
-
-const leftBorderCols = [
+export const leftBorderColumns = [
     'total_stdpremarkdown',
     'women_stdpremarkdown',
     'men_stdpremarkdown',
 ];
 
-const percentageCols = [
-    'total_incr_stdpremarkdown',
-    'total_incr_stdpostmarkdown',
-    'total_full_incr',
-    'women_incr_stdpremarkdown',
-    'women_incr_stdpostmarkdown',
-    'women_full_incr',
-    'women_full_cont',
-    'men_incr_stdpremarkdown',
-    'men_incr_stdpostmarkdown',
-    'men_full_incr',
-    'men_full_cont',
+export const percentageRows = [
+    'GM%',
+    'iGM%',
+    'RECEIPT%',
 ];
 
-const amountCols = [
-    'total_stdpremarkdown',
-    'total_stdpostmarkdown',
-    'total_full',
-    'women_stdpremarkdown',
-    'women_stdpostmarkdown',
-    'women_full',
-    'men_stdpremarkdown',
-    'men_stdpostmarkdown',
-    'men_full',
+export const numberRows = [
+    'TURNOVER RATE',
 ];
 
-
-function cellValueRender(instance, td, row, col, prop, value, cellProperties) {
-    cellProperties = {};
-
-    if ((row === 0 && col > 0) || (row === 5 && col > 1) || (row === 10 && col > 1)) {
-        td.style.background = '#eee';
-    }
-
-    // styling border left per section
-    borderLeft(leftBorderCols, prop, td);
-
-    // styling border for each metric
-    const rowSpan = 5;
-    borderBottom(row, rowSpan, td, col);
-
-    // showing N/A instead of error
-    if (isNaN(parseInt(value, 10))) {
-        cellProperties.type = 'text';
-        td.innerHTML = 'N/A';
-        td.className += ' cellNA';
-        return td;
-    }
-
-    Handsontable.renderers.NumericRenderer.apply(this, arguments);
-    cellProperties.type = 'numeric';
-
-    // formatting percentages metrics (GM%, iGM%, Receipt%)
-    percentageMetrics(instance, row, col, td);
-
-    // formatting numbers metrics (Turnover Rate)
-    numberMetrics(instance, row, col, td);
-
-    if (percentageCols.indexOf(prop) !== -1) {
-        cellProperties.format = '0%';
-    }
-    if (amountCols.indexOf(prop) !== -1) {
-        cellProperties.format = '$0,000';
-        cellProperties.editor = true;
-    }
-
-    return td;
-}
-
-function cellMetric(instance, td, row, col, prop, value, cellProperties) {
-    // cellProperties = {};
-
-
-    Handsontable.renderers.TextRenderer.apply(this, arguments);
-    td.className += 'metricCell';
-
-    return td;
-}
-
-const columns = [
+// TODO This would come from the api
+export const columns = [
     {
-        data: 'metric',
+        grouping: 'Metrics',
+        label: 'Name',
+        name: 'metric',
         type: 'text',
-        renderer: cellMetric,
-        colWidths: 70,
+        isReadOnly: true,
     },
     {
-        data: 'seasonyear',
+        grouping: 'Metrics',
+        label: 'Season',
+        name: 'seasonyear',
         type: 'text',
-        colWidths: 50,
+        isReadOnly: true,
     },
     {
-        data: 'total_stdpremarkdown',
-        renderer: cellValueRender,
-        type: 'numeric',
-        format: '$0,000',
-        readOnly: true,
-        colWidths: 100,
+        grouping: 'Total',
+        label: 'C-STD Pre Mkd',
+        name: 'total_stdpremarkdown',
+        type: 'currency',
+        isReadOnly: false,
     },
     {
-        data: 'total_incr_stdpremarkdown',
-        renderer: cellValueRender,
-        type: 'numeric',
-        format: '0%',
-        readOnly: true,
-        colWidths: 50,
+        grouping: 'Total',
+        label: 'D-Incr %',
+        name: 'total_incr_stdpremarkdown',
+        type: 'percentage',
+        isReadOnly: true,
     },
     {
-        data: 'total_stdpostmarkdown',
-        renderer: cellValueRender,
-        type: 'numeric',
-        format: '$0,000',
-        readOnly: true,
-        colWidths: 100,
+        grouping: 'Total',
+        label: 'E-STD Post Mkd',
+        name: 'total_stdpostmarkdown',
+        type: 'currency',
+        isReadOnly: false,
     },
     {
-        data: 'total_incr_stdpostmarkdown',
-        renderer: cellValueRender,
-        type: 'numeric',
-        format: '0%',
-        readOnly: true,
-        colWidths: 50,
+        grouping: 'Total',
+        label: 'F-Incr %',
+        name: 'total_incr_stdpostmarkdown',
+        type: 'percentage',
+        isReadOnly: true,
     },
     {
-        data: 'total_full',
-        renderer: cellValueRender,
-        type: 'numeric',
-        format: '$0,000',
-        readOnly: true,
-        colWidths: 100,
+        grouping: 'Total',
+        label: 'G-Full Season',
+        name: 'total_full',
+        type: 'currency',
+        isReadOnly: false,
     },
     {
-        data: 'total_full_incr',
-        renderer: cellValueRender,
-        type: 'numeric',
-        format: '0%',
-        readOnly: true,
-        colWidths: 50,
+        grouping: 'Total',
+        label: 'H-Incr %',
+        name: 'total_full_incr',
+        type: 'percentage',
+        isReadOnly: true,
     },
     {
-        data: 'women_stdpremarkdown',
-        renderer: cellValueRender,
-        type: 'numeric',
-        format: '$0,000',
-        colWidths: 100,
+        grouping: 'Women',
+        label: 'I-STD Pre Mkd',
+        name: 'women_stdpremarkdown',
+        type: 'currency',
+        isReadOnly: false,
     },
     {
-        data: 'women_incr_stdpremarkdown',
-        renderer: cellValueRender,
-        type: 'numeric',
-        format: '0%',
-        readOnly: true,
-        colWidths: 50,
+        grouping: 'Women',
+        label: 'J-Incr %',
+        name: 'women_incr_stdpremarkdown',
+        type: 'percentage',
+        isReadOnly: true,
     },
     {
-        data: 'women_stdpostmarkdown',
-        renderer: cellValueRender,
-        type: 'numeric',
-        format: '$0,000',
-        colWidths: 100,
+        grouping: 'Women',
+        label: 'K-STD Post Mkd',
+        name: 'women_stdpostmarkdown',
+        type: 'currency',
+        isReadOnly: false,
     },
     {
-        data: 'women_incr_stdpostmarkdown',
-        renderer: cellValueRender,
-        type: 'numeric',
-        format: '0%',
-        readOnly: true,
-        colWidths: 50,
+        grouping: 'Women',
+        label: 'L-Incr %',
+        name: 'women_incr_stdpostmarkdown',
+        type: 'percentage',
+        isReadOnly: true,
     },
     {
-        data: 'women_full',
-        renderer: cellValueRender,
-        type: 'numeric',
-        format: '$0,000',
-        colWidths: 100,
+        grouping: 'Women',
+        label: 'M-Full Season',
+        name: 'women_full',
+        type: 'currency',
+        isReadOnly: false,
     },
     {
-        data: 'women_full_incr',
-        renderer: cellValueRender,
-        type: 'numeric',
-        format: '0%',
-        readOnly: true,
-        colWidths: 50,
+        grouping: 'Women',
+        label: 'N-Incr %',
+        name: 'women_full_incr',
+        type: 'percentage',
+        isReadOnly: true,
     },
     {
-        data: 'women_full_cont',
-        renderer: cellValueRender,
-        type: 'numeric',
-        format: '0%',
-        readOnly: true,
-        colWidths: 50,
+        grouping: 'Women',
+        label: 'O-Cont %',
+        name: 'women_full_cont',
+        type: 'percentage',
+        isReadOnly: true,
     },
     {
-        data: 'men_stdpremarkdown',
-        renderer: cellValueRender,
-        type: 'numeric',
-        format: '$0,000',
-        colWidths: 100,
+        grouping: 'Men',
+        label: 'P-STD Pre Mkd',
+        name: 'men_stdpremarkdown',
+        type: 'currency',
+        isReadOnly: false,
     },
     {
-        data: 'men_incr_stdpremarkdown',
-        renderer: cellValueRender,
-        type: 'numeric',
-        format: '0%',
-        readOnly: true,
-        colWidths: 50,
+        grouping: 'Men',
+        label: 'Q-Incr %',
+        name: 'men_incr_stdpremarkdown',
+        type: 'percentage',
+        isReadOnly: true,
     },
     {
-        data: 'men_stdpostmarkdown',
-        renderer: cellValueRender,
-        type: 'numeric',
-        format: '$0,000',
-        colWidths: 100,
+        grouping: 'Men',
+        label: 'R-STD Post Mkd',
+        name: 'men_stdpostmarkdown',
+        type: 'currency',
+        isReadOnly: false,
     },
     {
-        data: 'men_incr_stdpostmarkdown',
-        renderer: cellValueRender,
-        type: 'numeric',
-        format: '0%',
-        readOnly: true,
-        colWidths: 50,
+        grouping: 'Men',
+        label: 'S-Incr %',
+        name: 'men_incr_stdpostmarkdown',
+        type: 'percentage',
+        isReadOnly: true,
     },
     {
-        data: 'men_full',
-        renderer: cellValueRender,
-        type: 'numeric',
-        format: '$0,000',
-        colWidths: 100,
+        grouping: 'Men',
+        label: 'T-Full Season',
+        name: 'men_full',
+        type: 'currency',
+        isReadOnly: false,
     },
     {
-        data: 'men_full_incr',
-        renderer: cellValueRender,
-        type: 'numeric',
-        format: '0%',
-        readOnly: true,
-        colWidths: 50,
+        grouping: 'Men',
+        label: 'U-Incr %',
+        name: 'men_full_incr',
+        type: 'percentage',
+        isReadOnly: true,
     },
     {
-        data: 'men_full_cont',
-        renderer: cellValueRender,
-        type: 'numeric',
-        format: '0%',
-        readOnly: true,
-        colWidths: 50,
+        grouping: 'Men',
+        label: 'V-Cont %',
+        name: 'men_full_cont',
+        type: 'percentage',
+        isReadOnly: true,
     },
 ];
-
-export default columns;

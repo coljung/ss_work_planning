@@ -23,7 +23,6 @@ NotificationManager.propTypes = {
     clearMessages: PropTypes.func,
 };
 
-
 function mapStateToProps(state) {
     return {
         message: state.Message,

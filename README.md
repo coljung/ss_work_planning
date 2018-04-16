@@ -1,6 +1,6 @@
-# ui-boilerplate
+# ui-planning
 
-> React/Redux boilerplate for dashboards
+> React UI interface for the Merchandise Planning Tool
 
 ## Development
 
@@ -10,9 +10,3 @@ npm run dev
 ```
 ## Static Build
 
-``` bash
-# Build static files
-npm run build
-# Start server localhost:8080
-npm start
-```

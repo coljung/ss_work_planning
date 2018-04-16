@@ -2,19 +2,18 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { Row, Col, Tabs, Menu, Dropdown, Icon } from 'antd';
-import ExecViewContainer from './top-down/exec/ExecViewContainer';
+import { Row, Col, Tabs, Dropdown, Icon } from 'antd';
 import ViewCommonContainer from './top-down/common/ViewCommonContainer';
-import HeaderContent from '../components/common/HeaderContent';
 import BudgetViewsButtonActions from './BudgetViewsButtonActions';
 import { budgetVersions, saveNewBudgetVersion } from './BudgetViewActions';
 import { switchUrls, clearUrls } from '../components/customNavigation/CustomNavigationActions';
 import { ROUTE_BUDGET } from '../Routes';
+import { cellValueRenderer as commonCellValueRenderer } from './top-down/common/CommonCellRenderer';
+import { cellValueRenderer as execCellValueRenderer } from './top-down/exec/ExecCellRenderer';
+import BudgetVersionMenu from './BudgetVersionMenu';
 
 // Sub Component
 const TabPane = Tabs.TabPane;
-const SubMenu = Menu.SubMenu;
-const MenuItemGroup = Menu.ItemGroup;
 
 export const TAB_EXEC_RECAP = 'exec';
 export const TAB_TOTAL = 'total';
@@ -25,7 +24,8 @@ export const TAB_BRAND_GROUPS = 'brand-groups';
 class BudgetViewsContainer extends Component {
     static contextTypes = {
         router: PropTypes.object,
-    }
+    };
+
     constructor(props, context) {
         super(props, context);
 
@@ -45,7 +45,11 @@ class BudgetViewsContainer extends Component {
         };
 
         this.dataToSave = [];
+
         this.props.switchUrls(budgetid, id, seasonname, vname, tab);
+
+        this.onTabChange = this.onTabChange.bind(this);
+        this.handleVersionClick = this.handleVersionClick.bind(this);
     }
 
     componentWillMount() {
@@ -69,19 +73,15 @@ class BudgetViewsContainer extends Component {
             });
         } else if (nextProps.newVersion !== this.props.newVersion) {
             const { router, params: { tab } } = this.props;
-            const { budgetSeasonId, seasonName, versionName } = this.state;
+            const { budgetSeasonId, seasonName } = this.state;
 
-            window.location.href = `${ROUTE_BUDGET}/${seasonName}/budget/${budgetSeasonId}/version/${nextProps.newVersion.name}/${nextProps.newVersion.id}/${tab}`;
+            router.push(`${ROUTE_BUDGET}/${seasonName}/budget/${budgetSeasonId}/version/${nextProps.newVersion.name}/${nextProps.newVersion.id}/${tab}`);
         }
-    }
-
-    save = (budget, version) => {
-        this.props.saveNewBudgetVersion(budget, version);
     }
 
     saveNewVersion = (budget, version) => {
         this.props.saveNewBudgetVersion(budget, version);
-    }
+    };
 
     changeCell = (cellEdits) => {
         // on load this is called, hence the check
@@ -102,15 +102,24 @@ class BudgetViewsContainer extends Component {
                 this.dataToSave = checkDuplicate;
             }
         }
-    }
+    };
 
     handleVersionClick(event) {
-        const { params: { tab } } = this.props;
-        const { seasonName } = this.state;
-
         const { item: { props: { version } } } = event;
 
-        window.location.href = `${ROUTE_BUDGET}/${seasonName}/budget/${version.budget_id}/version/${version.name}/${version.id}/${tab}`;
+        if (version.id !== this.state.versionId) {
+            this.setState({
+                versionId: version.id,
+                versionName: version.name,
+            });
+
+            const { params: { tab } } = this.props;
+            const { seasonName } = this.state;
+
+            const { router } = this.props;
+
+            router.push(`${ROUTE_BUDGET}/${seasonName}/budget/${version.budget_id}/version/${version.name}/${version.id}/${tab}`);
+        }
     }
 
     onTabChange(newTabKey) {
@@ -125,68 +134,48 @@ class BudgetViewsContainer extends Component {
 
         this.dataToSave = [];
 
-        const { router: { push } } = this.props;
+        const { router } = this.props;
 
-        push(`${ROUTE_BUDGET}/${seasonName}/budget/${budgetSeasonId}/version/${versionName}/${versionId}/${newTabKey}`);
+        router.push(`${ROUTE_BUDGET}/${seasonName}/budget/${budgetSeasonId}/version/${versionName}/${versionId}/${newTabKey}`);
     }
 
     render() {
-        const { versions, params: { seasonname } } = this.props;
-        const { activeTab, budgetSeasonId, seasonName, versionId, versionName } = this.state;
-        const menuBudget = (
-            <Menu onClick={this.handleVersionClick.bind(this)}>
-                { versions && versions.map(
-                    version =>
-                    <Menu.Item key={version.id} version={ version }>{ seasonname } - { version.name }</Menu.Item>,
-                ) }
-            </Menu>
-        );
-        const menuView = (
-            <Menu>
-                <Menu.Item>Top Down</Menu.Item>
-                <SubMenu title="Bottom Up">
-                    <Menu.Item>Receipt Planning</Menu.Item>
-                    <Menu.Item>Delivery Planning</Menu.Item>
-                </SubMenu>
-            </Menu>
-        );
+        const { activeTab, budgetSeasonId, versionId, seasonName, versionName } = this.state;
+        const menuBudget =
+            <BudgetVersionMenu
+                versions={this.props.versions}
+                currentSeason={this.state.seasonName}
+                currentVersion={this.state.versionName}
+                handleClick={this.handleVersionClick} />;
+
         return (
             <div>
                 <div className="budgetHeader">
                     <Row type="flex" justify="start" className="innerHeader">
-                        {/* <Col span={8} className="col">
-                            <HeaderContent />
-                        </Col> */}
                         <Col span={12} className="col">
                             <Dropdown overlay={menuBudget}>
-                                <h3><a className="ant-dropdown-link" href="#">
-                                    {seasonName} - {versionName}<Icon type="down" />
-                                </a></h3>
+                                <h3>
+                                    <a className="ant-dropdown-link" href="#">
+                                        {seasonName} - {versionName}<Icon type="down" />
+                                    </a>
+                                </h3>
                             </Dropdown>
                         </Col>
-{/*                        <Col span={3} className="col">
-                            <Dropdown overlay={menuView} disabled={true}>
-                                <h3><a className="ant-dropdown-link" href="#">
-                                    Top Down <Icon type="down" />
-                                </a></h3>
-                            </Dropdown>
-                        </Col> */}
                         <Col span={12} className="col">
-                            <BudgetViewsButtonActions
-                                saveNew={() => this.saveNewVersion(budgetSeasonId, versionId)}
-                                save={() => this.save(budgetSeasonId, versionId)}
-                                currentView={activeTab}
-                            />
+                            <BudgetViewsButtonActions saveNew={() => this.saveNewVersion(budgetSeasonId, versionId)} />
                         </Col>
                     </Row>
                 </div>
                 <div className="budgetBody">
-                    <Tabs activeKey={activeTab} onChange={this.onTabChange.bind(this)} animated={true}>
+                    <Tabs activeKey={activeTab} onChange={this.onTabChange} animated={true}>
                         <TabPane tab="Exec Recap" key={TAB_EXEC_RECAP}>
                             {(activeTab === TAB_EXEC_RECAP || this.state[TAB_EXEC_RECAP]) &&
-                                <ExecViewContainer
+                                <ViewCommonContainer
                                     budget={budgetSeasonId}
                                     version={versionId}
+                                    cellRenderer={execCellValueRenderer}
+                                    key={TAB_EXEC_RECAP}
+                                    view={TAB_EXEC_RECAP}
                                 />
                             }
                         </TabPane>
@@ -195,9 +184,10 @@ class BudgetViewsContainer extends Component {
                                 <ViewCommonContainer
                                     budget={budgetSeasonId}
                                     version={versionId}
+                                    cellRenderer={commonCellValueRenderer}
                                     updateData={this.changeCell}
                                     key={TAB_TOTAL}
-                                    view='total'
+                                    view={TAB_TOTAL}
                                 />
                             }
                         </TabPane>
@@ -206,9 +196,10 @@ class BudgetViewsContainer extends Component {
                                 <ViewCommonContainer
                                     budget={budgetSeasonId}
                                     version={versionId}
+                                    cellRenderer={commonCellValueRenderer}
                                     updateData={this.changeCell}
                                     key={TAB_WOMEN}
-                                    view='women'
+                                    view={TAB_WOMEN}
                                 />
                             }
                         </TabPane>
@@ -217,9 +208,10 @@ class BudgetViewsContainer extends Component {
                                 <ViewCommonContainer
                                     budget={budgetSeasonId}
                                     version={versionId}
+                                    cellRenderer={commonCellValueRenderer}
                                     updateData={this.changeCell}
                                     key={TAB_MEN}
-                                    view='men'
+                                    view={TAB_MEN}
                                 />
                             }
                         </TabPane>
@@ -246,6 +238,7 @@ BudgetViewsContainer.propTypes = {
     switchUrls: PropTypes.func.isRequired,
     clearUrls: PropTypes.func.isRequired,
     versions: PropTypes.array.isRequired,
+    router: PropTypes.object,
 };
 
 function mapStateToProps(state) {

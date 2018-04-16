@@ -15,7 +15,7 @@ export default (state = initialState, action) => {
         case RECEIVE_BUDGETS_VIEW: {
             const setData = [];
             setData[action.view] = action.viewData;
-            console.log(setData);
+
             return Object.assign({}, state, {
                 viewData: setData,
                 viewDataFetched: true,

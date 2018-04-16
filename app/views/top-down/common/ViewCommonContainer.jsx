@@ -3,25 +3,27 @@ import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import HotTable from 'react-handsontable';
-import Handsontable from 'handsontable';
-import { Button, Spin } from 'antd';
+import { Button } from 'antd';
 import { withRouter } from 'react-router';
-import { saveBudget, fetchBudgetData, resetState } from '../common/ViewActions';
-import { headers, columns, customBorders, mergeMetrics } from '../common/grid/index';
+import { saveBudget, fetchBudgetData, resetState } from './ViewActions';
+import LoadingSpinner from '../../../components/common/LoadingSpinner';
 
 class ViewCommonContainer extends Component {
-
     constructor(props) {
         super(props);
+
         this.state = {
-            grid: [],
-            disabledBtn: true,
+            data: [],
+            canSave: true,
+            headers: [],
+            info: {},
+            season: '',
         };
         this.dataToSave = [];
     }
 
     componentDidMount() {
-        const { budget, location, version, view } = this.props;
+        const { budget, version, view, router: { location } } = this.props;
         this.props.fetchBudgetData(budget, version, view, location.query);
     }
 
@@ -30,13 +32,16 @@ class ViewCommonContainer extends Component {
     }
 
     componentWillReceiveProps = (nextProps) => {
-        const setData = nextProps.viewData[nextProps.view];
-        if (this.props.viewData.length !== setData) {
+        const setData = nextProps.viewData ? nextProps.viewData[nextProps.view] : {};
+        if (this.props.viewData.length !== setData && !!setData) {
             this.setState({
-                grid: setData,
+                headers: setData.header,
+                data: setData.data,
+                info: setData.info,
+                season: setData.info.season,
             });
         }
-    }
+    };
 
     changeCell = (cellEdits) => {
         // on load this is called, hence the check
@@ -56,83 +61,67 @@ class ViewCommonContainer extends Component {
                 checkDuplicate.push(newData);
                 this.dataToSave = checkDuplicate;
             }
-            if (this.state.disabledBtn) {
+            if (this.state.canSave) {
                 this.setState({
-                    disabledBtn: false,
+                    canSave: false,
                 });
             }
         }
-    }
+    };
 
     save = () => {
         const dataToSend = {};
         dataToSend.data = this.dataToSave;
         this.props.saveBudget(this.props.budget, this.props.version, this.props.view, dataToSend);
+    };
+
+    createColumn = (column, renderer) => {
+        return {
+            data: `${column}.value`,
+            readOnly: false,
+            type: 'text',
+            renderer,
+        };
     }
 
-    mergeCells = () => {
-        const { start_row, row_span, total, total_cols, has_gaps } = this.state.grid.info;
-        const newMerge = mergeMetrics(start_row, row_span, total, total_cols, has_gaps);
+    createColumnInfos(columns) {
+        const renderer = this.props.cellRenderer ? this.props.cellRenderer.bind(this) : undefined;
 
-        return newMerge;
-    }
-
-    customBordersCells = () => {
-        const { start_row, row_span, total, total_cols } = this.state.grid.info;
-        const sample = this.state.grid.data[0];
-        // debugger;
-        const custom = customBorders(start_row, row_span, total, total_cols, sample);
-
-        return custom;
+        return columns.map(column => this.createColumn(column, renderer));
     }
 
     buildTable = () => {
-        const newMerge = this.mergeCells();
-        const newBorders = this.customBordersCells();
-        const { view } = this.props;
-        const { currentMonthColumn, season, row_span, hidden_rows } = this.state.grid.info;
-        const cols = columns(season, row_span, view);
-        const seasonColumns = season === 'SS' ? cols[0] : cols[1];
-        const seasonHeaders = season === 'SS' ? headers[0] : headers[1];
+        const columnTitles = this.state.headers;
+        const columnInfos = this.createColumnInfos(Object.getOwnPropertyNames(this.state.data.length ? this.state.data[0] : []));
+
         return (
             <div className="parentDiv">
                 <HotTable
                     afterChange={this.changeCell}
                     colHeaders={true}
                     rowHeaders={true}
-                    columns={seasonColumns}
+                    columns={columnInfos}
                     contextMenu={false}
-                    currentColClassName= {'currentCol'}
-                    currentRowClassName= {'currentRow'}
-                    data={this.state.grid.data}
+                    currentColClassName={'currentCol'}
+                    currentRowClassName={'currentRow'}
+                    data={this.state.data}
                     fixedColumnsLeft={2}
                     formulas={false}
-                    licenseKey= 'a389a-f2591-70b41-a480d-1911a'
-                    mergeCells={newMerge}
-                    nestedHeaders={seasonHeaders}
+                    licenseKey='a389a-f2591-70b41-a480d-1911a'
+                    nestedHeaders={columnTitles}
                     observeChanges={true}
                     persistentState={true}
                     ref='hot'
                     root='hot'
                     viewportColumnRenderingOffset={20}
                     viewportRowRenderingOffset={20}
-                    customBorders={newBorders}
-                    />
+                />
             </div>
         );
-    }
-
-    spinLoad = () => {
-        const mySpin = <Spin size="large" tip="Loading..." />;
-        return (
-            <div className="spinDiv">
-                {mySpin}
-            </div>
-        );
-    }
+    };
 
     render() {
-        const budgetListData = this.props.viewData[this.props.view] ? this.buildTable() : this.spinLoad();
+        const budgetListData = this.props.viewData[this.props.view] ? this.buildTable() : <LoadingSpinner />;
         let buttonStr = this.props.view;
         buttonStr = `${buttonStr.charAt(0).toUpperCase()}${buttonStr.slice(1)}`;
 
@@ -141,14 +130,13 @@ class ViewCommonContainer extends Component {
                 <Button
                     icon="save"
                     className="saveBtn"
-                    disabled={this.state.disabledBtn}
+                    disabled={this.state.canSave}
                     onClick={() => this.save()}>Save {buttonStr}'s view</Button>
                 {budgetListData}
             </div>
         );
     }
 }
-
 
 ViewCommonContainer.propTypes = {
     viewData: PropTypes.oneOfType([
@@ -163,6 +151,7 @@ ViewCommonContainer.propTypes = {
     version: PropTypes.string.isRequired,
     view: PropTypes.string.isRequired,
     router: PropTypes.object.isRequired,
+    cellRenderer: PropTypes.func,
 };
 
 function mapStateToProps(state) {
