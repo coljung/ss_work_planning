@@ -4,7 +4,7 @@ import { Provider } from 'react-redux';
 import Routes from './Routes';
 
 // Global Styles
-import './styles/styles';
+import './styles/styles.less';
 
 // Store
 import configureStore from './ConfigureStore';

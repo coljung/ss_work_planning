@@ -302,33 +302,31 @@ export default class Filter extends Component {
         selectedKeys: [],
     };
     onExpand = (expandedKeys) => {
-        console.log('onExpand', arguments);
+        // console.log('onExpand', arguments);
         // if not set autoExpandParent to false, if children expanded, parent can not collapse.
         // or, you can remove all expanded children keys.
         this.setState({
             expandedKeys,
-            autoExpandParent: false
+            autoExpandParent: false,
         });
     };
     onCheck = (checkedKeys) => {
         this.setState({ checkedKeys });
     };
     onSelect = (selectedKeys, info) => {
-        console.log('onSelect', info);
+        // console.log('onSelect', info);
         this.setState({ selectedKeys });
     };
-    renderTreeNodes = (data) => {
-        return data.map((item) => {
-            if (item.children) {
-                return (
+    renderTreeNodes = data => data.map((item) => {
+        if (item.children) {
+            return (
                 <TreeNode title={item.title} key={item.key} dataRef={item}>
                     {this.renderTreeNodes(item.children)}
                 </TreeNode>
-                );
-            }
-            return <TreeNode {...item} />;
-        });
-    };
+            );
+        }
+        return <TreeNode {...item} />;
+    });
 
     render() {
         const footerButtons = (

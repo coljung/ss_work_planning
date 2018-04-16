@@ -233,7 +233,7 @@ export class Filter extends Component {
     };
 
     onChange = (checkedValues) => {
-        console.log('checked = ', checkedValues);
+        // console.log('checked = ', checkedValues);
     }
 
     viewNext = (val, i) => {
@@ -272,8 +272,7 @@ export class Filter extends Component {
             </Button>
         </div>);
 
-        const displayLinkFunction = (item, index, def) => {
-            return (
+        const displayLinkFunction = (item, index, def) => (
             <div className={index} >
                 <Checkbox value={item.value}>{item.label}</Checkbox>
                 <Button
@@ -283,7 +282,6 @@ export class Filter extends Component {
                     onClick={() => this.viewNext(item.value, def)}>
                 </Button>
             </div>);
-        };
 
         const buildCheckboxGroup = (column, stateData, defaultIndex) => {
             const data = column.map((item, index, arr) => displayLinkFunction(item, index, defaultIndex));
