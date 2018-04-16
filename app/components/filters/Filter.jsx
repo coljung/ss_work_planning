@@ -294,93 +294,78 @@ const treeData = [
     },
 ];
 
-export class Filter extends Component {
+export default class Filter extends Component {
     state = {
         expandedKeys: ['sales_ss19', 'cogs'],
         autoExpandParent: true,
         checkedKeys: ['sales_ss19_BU_OP'],
-        selectedKeys: []
+        selectedKeys: [],
     };
-    onExpand = expandedKeys => {
-        console.log("onExpand", arguments);
+    onExpand = (expandedKeys) => {
+        console.log('onExpand', arguments);
         // if not set autoExpandParent to false, if children expanded, parent can not collapse.
         // or, you can remove all expanded children keys.
         this.setState({
-        expandedKeys,
-        autoExpandParent: false
+            expandedKeys,
+            autoExpandParent: false
         });
     };
-    onCheck = checkedKeys => {
-        console.log("onCheck", checkedKeys);
+    onCheck = (checkedKeys) => {
         this.setState({ checkedKeys });
     };
     onSelect = (selectedKeys, info) => {
-        console.log("onSelect", info);
+        console.log('onSelect', info);
         this.setState({ selectedKeys });
     };
-    renderTreeNodes = data => {
-        return data.map(item => {
-        if (item.children) {
-            return (
-            <TreeNode title={item.title} key={item.key} dataRef={item}>
-                {this.renderTreeNodes(item.children)}
-            </TreeNode>
-            );
-        }
-        return <TreeNode {...item} />;
+    renderTreeNodes = (data) => {
+        return data.map((item) => {
+            if (item.children) {
+                return (
+                <TreeNode title={item.title} key={item.key} dataRef={item}>
+                    {this.renderTreeNodes(item.children)}
+                </TreeNode>
+                );
+            }
+            return <TreeNode {...item} />;
         });
     };
+
     render() {
         const footerButtons = (
-        <div>
-            <Button type="primary" size="large" id="filterButton">
-            Set Filters
-            </Button>
-            <Button onClick={this.closeModal} size="large" id="filterButton">
-            Cancel
-            </Button>
-        </div>
+            <div>
+                <Button type='primary' size='large' id='filterButton'>
+                    Set Filters
+                </Button>
+                <Button onClick={this.closeModal} size='large' id='filterButton'>
+                    Cancel
+                </Button>
+            </div>
         );
         const modalContent = (
-        <Tree
-            checkable
-            onExpand={this.onExpand}
-            expandedKeys={this.state.expandedKeys}
-            autoExpandParent={this.state.autoExpandParent}
-            onCheck={this.onCheck}
-            checkedKeys={this.state.checkedKeys}
-            onSelect={this.onSelect}
-            selectedKeys={this.state.selectedKeys}
-        >
-            {this.renderTreeNodes(treeData)}
-        </Tree>
+            <Tree
+                checkable
+                onExpand={this.onExpand}
+                expandedKeys={this.state.expandedKeys}
+                autoExpandParent={this.state.autoExpandParent}
+                onCheck={this.onCheck}
+                checkedKeys={this.state.checkedKeys}
+                onSelect={this.onSelect}
+                selectedKeys={this.state.selectedKeys}>
+                {this.renderTreeNodes(treeData)}
+            </Tree>
         );
         return (
-        <Modal
-            title="Filters"
-            visible={true}
-            className="filterModal"
-            onOk={this.handleOk}
-            width={800}
-            onCancel={this.closeModal}
-            footer={footerButtons}
-        >
+            <Modal
+                title='Filters'
+                visible={true}
+                className='filterModal'
+                onOk={this.handleOk}
+                width={800}
+                onCancel={this.closeModal}
+                footer={footerButtons}
+            >
             {modalContent}
         </Modal>
         );
     }
-    }
-
-function mapStateToProps(state) {
-    const { BudgetReducer } = state;
-    return {
-        seasons: BudgetReducer.seasons,
-        seasonsFetched: BudgetReducer.seasonsFetched
-    };
 }
-
-function mapDispatchToProps(dispatch) {
-    return bindActionCreators({ resetState }, dispatch);
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(Filter);
