@@ -295,12 +295,17 @@ const treeData = [
 ];
 
 export default class Filter extends Component {
-    state = {
-        expandedKeys: ['sales_ss19', 'cogs'],
-        autoExpandParent: true,
-        checkedKeys: ['sales_ss19_BU_OP'],
-        selectedKeys: [],
-    };
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            expandedKeys: ['sales_ss19', 'cogs'],
+            autoExpandParent: true,
+            checkedKeys: ['sales_ss19_BU_OP'],
+            selectedKeys: [],
+        };
+    }
+
     onExpand = (expandedKeys) => {
         // console.log('onExpand', arguments);
         // if not set autoExpandParent to false, if children expanded, parent can not collapse.
@@ -327,6 +332,10 @@ export default class Filter extends Component {
         }
         return <TreeNode {...item} />;
     });
+
+    closeModal = () => {
+        this.props.onOverlayClick();
+    }
 
     render() {
         const footerButtons = (
@@ -355,15 +364,19 @@ export default class Filter extends Component {
         return (
             <Modal
                 title='Filters'
-                visible={true}
+                visible={this.props.visible}
                 className='filterModal'
                 onOk={this.handleOk}
                 width={800}
                 onCancel={this.closeModal}
-                footer={footerButtons}
-            >
+                footer={footerButtons}>
             {modalContent}
         </Modal>
         );
     }
 }
+
+Filter.propTypes = {
+    visible: PropTypes.bool.isRequired,
+    onOverlayClick: PropTypes.func.isRequired,
+};
