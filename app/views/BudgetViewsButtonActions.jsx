@@ -24,12 +24,14 @@ export default class BudgetViewsButtonActions extends Component {
         return (
             <div className="budgetBtns">
                 <Link to={ROUTE_DASHBOARD} >
-                    <Button icon="arrow-left">
-                        Back
-                    </Button>
+                    <Button icon="arrow-left">Back</Button>
                 </Link>
-                <Popconfirm placement="top" title='Create new Budget version'
-                    onConfirm={ this.props.saveNew } okText="Yes" cancelText="Cancel">
+                <Popconfirm
+                    placement="top"
+                    title='Create new Budget version'
+                    okText="Yes"
+                    cancelText="Cancel"
+                    onConfirm={ this.props.saveNew }>
                     <Button type="primary" icon="switcher">Save New Version</Button>
                 </Popconfirm>&nbsp;
                 <Filter
@@ -44,10 +46,4 @@ export default class BudgetViewsButtonActions extends Component {
 
 BudgetViewsButtonActions.propTypes = {
     saveNew: PropTypes.func.isRequired,
-    save: PropTypes.func.isRequired,
-    currentView: PropTypes.string.isRequired,
 };
-
-// <Button className="undo" >Save {this.props.currentView} view</Button>
-                // <Button className="undo" >Undo</Button>
-                // <Button className="redo" >Redo</Button>
