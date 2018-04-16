@@ -84,6 +84,7 @@
     "fetch-mock": "^6.3.0",
     "file-loader": "^0.11.1",
     "html-webpack-plugin": "^2.24.1",
+    "husky": "^1.0.0-rc.1",
     "identity-obj-proxy": "^3.0.0",
     "istanbul": "^0.4.5",
     "istanbul-api": "1.2.2",
@@ -174,6 +175,11 @@
         "lines": 15,
         "statements": 0
       }
+    }
+ },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run lint",
     }
   }
 }
