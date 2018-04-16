@@ -2,7 +2,7 @@ import agent from 'superagent';
 import wrap from 'superagent-promise';
 import { messages } from 'notifications/NotificationActions';
 import getApiUrl, { defaultMetricSequence } from '../../../Helpers.js';
-import budgetData from './grid/budgetData.json';
+import budgetData from '../brand-groups/grid/budgetData.json';
 
 const request = wrap(agent, Promise);
 

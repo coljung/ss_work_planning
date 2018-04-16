@@ -10,6 +10,7 @@ import { switchUrls, clearUrls } from '../components/customNavigation/CustomNavi
 import { ROUTE_BUDGET } from '../Routes';
 import { cellValueRenderer as commonCellValueRenderer } from './top-down/common/CommonCellRenderer';
 import { cellValueRenderer as execCellValueRenderer } from './top-down/exec/ExecCellRenderer';
+import { cellValueRenderer as brandGroupsCellValueRenderer } from './top-down/brand-groups/BrandGroupsCellRenderer';
 import BudgetVersionMenu from './BudgetVersionMenu';
 
 // Sub Component
@@ -215,11 +216,15 @@ class BudgetViewsContainer extends Component {
                                 />
                             }
                         </TabPane>
-                        <TabPane tab="Brand Groups" disabled key={TAB_BRAND_GROUPS}>
-                            {(activeTab === TAB_BRAND_GROUPS || this.state[TAB_BRAND_GROUPS]) &&
-                                <TotalViewContainer
+                        <TabPane tab="Brand Groups" key={TAB_BRAND_GROUPS}>
+                            {(activeTab === TAB_BRAND_GROUPS) &&
+                                <ViewCommonContainer
                                     budget={budgetSeasonId}
                                     version={versionId}
+                                    cellRenderer={brandGroupsCellValueRenderer}
+                                    updateData={this.changeCell}
+                                    key={TAB_BRAND_GROUPS}
+                                    view={TAB_BRAND_GROUPS}
                                 />
                             }
                         </TabPane>

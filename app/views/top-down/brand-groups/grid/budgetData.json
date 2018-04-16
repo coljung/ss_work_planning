@@ -1,0 +1,167 @@
+{
+    "info": {
+        "total": 200,
+        "metrics": 10,
+        "start_row": 0,
+        "row_span": 20,
+        "total_cols": 6,
+        "has_gaps": false,
+        "currentMonthColumn": 0,
+        "season": "FW",
+        "hidden_rows": []
+    },
+    "data": [
+        {
+            "metric": {
+                "value": "# Brands SS19",
+                "dataType": "text"
+            },
+            "bg_1": {
+                "property": "Act",
+                "key": 0,
+                "value": "12",
+                "dataType": "text"
+            },
+            "bg_2": {
+                "property": "Act",
+                "key": 0,
+                "value": "42",
+                "dataType": "text"
+            },
+            "bg_3": {
+                "property": "Act",
+                "key": 0,
+                "value": "32",
+                "dataType": "text"
+            },
+            "bg_4": {
+                "property": "Act",
+                "key": 0,
+                "value": "52",
+                "dataType": "text"
+            },
+            "bg_5": {
+                "property": "Act",
+                "key": 0,
+                "value": "2",
+                "dataType": "text"
+            }
+        },
+        {
+            "metric": {
+                "value": "Receipts SS19 TD WP",
+                "dataType": "text"
+            },
+            "bg_1": {
+                "property": "WP",
+                "key": 0,
+                "value": 12123,
+                "dataType": "currency"
+            },
+            "bg_2": {
+                "property": "WP",
+                "key": 0,
+                "value": 45132,
+                "dataType": "currency"
+            },
+            "bg_3": {
+                "property": "WP",
+                "key": 0,
+                "value": 363462,
+                "dataType": "currency"
+            },
+            "bg_4": {
+                "property": "WP",
+                "key": 0,
+                "value": 523462,
+                "dataType": "currency"
+            },
+            "bg_5": {
+                "property": "WP",
+                "key": 0,
+                "value": 23455,
+                "dataType": "currency"
+            }
+        },
+        {
+            "metric": {
+                "value": "Receipts SS19 TD WP",
+                "dataType": "text"
+            },
+            "bg_1": {
+                "property": "WP",
+                "key": 0,
+                "value": 0.34525,
+                "dataType": "percentage"
+            },
+            "bg_2": {
+                "property": "WP",
+                "key": 0,
+                "value": 0.34525,
+                "dataType": "percentage"
+            },
+            "bg_3": {
+                "property": "WP",
+                "key": 0,
+                "value": 0.34525,
+                "dataType": "percentage"
+            },
+            "bg_4": {
+                "property": "WP",
+                "key": 0,
+                "value": 0.34525,
+                "dataType": "percentage"
+            },
+            "bg_5": {
+                "property": "WP",
+                "key": 0,
+                "value": 0.34525,
+                "dataType": "percentage"
+            }
+        }
+    ],
+    "header": [
+        [
+            {
+                "label": "Metrics",
+                "colspan": 2
+            },
+            {
+                "label": "Total",
+                "colspan": 6
+            },
+            {
+                "label": "Women",
+                "colspan": 7
+            },
+            {
+                "label": "Men",
+                "colspan": 7
+            }
+        ],
+        [
+            "Name",
+            "Season",
+            "C-STD Pre Mkd",
+            "D-Incr %",
+            "E-STD Post Mkd",
+            "F-Incr %",
+            "G-Full Season",
+            "H-Incr %",
+            "I-STD Pre Mkd",
+            "J-Incr %",
+            "K-STD Post Mkd",
+            "L-Incr %",
+            "M-Full Season",
+            "N-Incr %",
+            "O-Cont %",
+            "P-STD Pre Mkd",
+            "Q-Incr %",
+            "R-STD Post Mkd",
+            "S-Incr %",
+            "T-Full Season",
+            "U-Incr %",
+            "V-Cont %"
+        ]
+    ]
+}
