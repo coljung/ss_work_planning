@@ -1,0 +1,32 @@
+.filterModal{
+    .ant-checkbox-group-item{
+            display: block;
+    }
+    .ant-list-bordered{
+        border-radius: 0;
+        border: none;
+    }
+    .ant-list-item{
+        border: none !important;
+    }
+    .filterRow{
+        border: 1px solid #ddd;
+        border-left: none;
+    }
+    .filterCol{
+        border-left: 1px solid #ddd;
+        &:last-child{
+            .filterButton{
+                display: none;
+            }
+        }
+    }
+    .ant-list-item-content{
+        > div {
+            width: 100%;
+        }
+    }
+    .filterButton{
+        float: right;
+    }
+}

@@ -294,7 +294,7 @@ const treeData = [
     },
 ];
 
-export class Filter extends React.Component {
+export class Filter extends Component {
     state = {
         expandedKeys: ['sales_ss19', 'cogs'],
         autoExpandParent: true,
