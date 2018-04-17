@@ -24,7 +24,9 @@ class ViewCommonContainer extends Component {
 
     componentDidMount() {
         const { budget, version, view, router: { location } } = this.props;
-        this.props.fetchBudgetMetricData(budget, version, view, 'SALES', location.query);
+
+        // TODO Use filters to select metrics
+        this.props.fetchBudgetMetricData(budget, version, view, ['SALES'], location.query);
     }
 
     componentWillUnmount() {
