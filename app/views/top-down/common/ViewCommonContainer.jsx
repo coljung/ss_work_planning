@@ -84,7 +84,6 @@ class ViewCommonContainer extends Component {
 
     createColumnInfos(columns) {
         const renderer = this.props.cellRenderer ? this.props.cellRenderer.bind(this) : undefined;
-
         return columns.map(column => this.createColumn(column, renderer));
     }
 
