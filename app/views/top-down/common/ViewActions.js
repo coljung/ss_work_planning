@@ -56,10 +56,15 @@ export function fetchBudgetData(budget, version, view, query) {
 
 export function fetchBudgetMetricData(budget, version, view, metric, query) {
     return (dispatch) => {
+        const queryToSend = {
+            ...query,
+            metrics: query && query.metrics ? query.metrics : metric.join(','),
+        };
+
         dispatch(requestBudgetViewData());
         return request
-            .get(`${getApiUrl()}planning/budgets/${budget}/versions/${version}/${view}/${metric}`)
-            .query(query)
+            .get(`${getApiUrl()}planning/budgets/${budget}/versions/${version}/${view}/metrics`)
+            .query(queryToSend)
             .then(
             res => dispatch(receiveBudgetViewData(res.body, view)),
             err => dispatch(messages({ content: err, response: err.response, isError: true })),
