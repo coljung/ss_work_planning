@@ -32,7 +32,7 @@ export const receiveBudgetSave = version => ({
 });
 
 export const resetState = () => ({
-    type: RESET_BUDGETS_VIEW
+    type: RESET_BUDGETS_VIEW,
 });
 
 export function fetchBudgetData(budget, version, view, query) {
