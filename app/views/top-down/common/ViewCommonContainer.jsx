@@ -7,6 +7,8 @@ import { Button } from 'antd';
 import { withRouter } from 'react-router';
 import { saveBudget, fetchBudgetMetricData, resetState } from './ViewActions';
 import LoadingSpinner from '../../../components/common/LoadingSpinner';
+// temp
+import { messages } from '../../../notifications/NotificationActions';
 
 class ViewCommonContainer extends Component {
     constructor(props) {
@@ -49,26 +51,37 @@ class ViewCommonContainer extends Component {
         // on load this is called, hence the check
         if (cellEdits) {
             const row = cellEdits[0][0];
-            const col = cellEdits[0][1];
-            const prevValue = cellEdits[0][2];
-            const newValue = cellEdits[0][3];
-            if (prevValue !== newValue) {
-                const newData = {
-                    row,
-                    col,
-                    value: newValue,
-                };
-                // check if cell has been modified already
-                const checkDuplicate = this.dataToSave.filter(e => e.row !== row || e.col !== col);
-                checkDuplicate.push(newData);
-                this.dataToSave = checkDuplicate;
-            }
-            if (this.state.canSave) {
-                this.setState({
-                    canSave: false,
-                });
-            }
+            const col = cellEdits[0][1].split('.');
+            const dataCell = this.state.data[row][col[0]];
+
+            // temp
+            this.props.messages({ content: dataCell.value });
+
+            // TODO
+            // local store changes for save event
         }
+        // if (cellEdits) {
+        //     const row = cellEdits[0][0];
+        //     const col = cellEdits[0][1];
+        //     const prevValue = cellEdits[0][2];
+        //     const newValue = cellEdits[0][3];
+        //     if (prevValue !== newValue) {
+        //         const newData = {
+        //             row,
+        //             col,
+        //             value: newValue,
+        //         };
+        //         // check if cell has been modified already
+        //         const checkDuplicate = this.dataToSave.filter(e => e.row !== row || e.col !== col);
+        //         checkDuplicate.push(newData);
+        //         this.dataToSave = checkDuplicate;
+        //     }
+        //     if (this.state.canSave) {
+        //         this.setState({
+        //             canSave: false,
+        //         });
+        //     }
+        // }
     };
 
     save = () => {
@@ -164,7 +177,8 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-    return bindActionCreators({ fetchBudgetMetricData, resetState, saveBudget }, dispatch);
+    // temp messages
+    return bindActionCreators({ fetchBudgetMetricData, resetState, saveBudget, messages }, dispatch);
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(ViewCommonContainer));
