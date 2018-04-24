@@ -7,7 +7,7 @@ import { Button } from 'antd';
 import { withRouter } from 'react-router';
 import { saveBudget, fetchBudgetMetricData, resetState } from './ViewActions';
 import LoadingSpinner from '../../../components/common/LoadingSpinner';
-// temp
+// temp code before save is enabled
 import { messages } from '../../../notifications/NotificationActions';
 
 class ViewCommonContainer extends Component {
@@ -54,7 +54,7 @@ class ViewCommonContainer extends Component {
             const col = cellEdits[0][1].split('.');
             const dataCell = this.state.data[row][col[0]];
 
-            // temp
+            // temp code before save is enabled
             this.props.messages({ content: dataCell.value });
 
             // TODO
@@ -177,7 +177,7 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-    // temp messages
+    // temp code before save is enabled ( messages )
     return bindActionCreators({ fetchBudgetMetricData, resetState, saveBudget, messages }, dispatch);
 }
 
