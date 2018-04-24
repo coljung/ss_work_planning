@@ -242,7 +242,7 @@ export class Filter extends Component {
         let item = { ...defaultValues[i + 1] };
         // 3. Replace the property you're intested in
         const test = this.state.defaultValues;
-        debugger;
+        // debugger;
         item = this.returnValues(i === 0 ? this.state.dataSeasons[val] : this.state.dataOptions[val], i + 1, test);
 
         // debugger;
