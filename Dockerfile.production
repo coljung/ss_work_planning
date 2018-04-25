@@ -1,4 +1,4 @@
-FROM node:8.9-alpine as base
+FROM node:8.11-alpine as base
 
 RUN mkdir /code
 WORKDIR /code
@@ -50,50 +50,3 @@ RUN rm -rf ./scripts
 RUN rm -rf ./tests
 
 CMD ["npm", "start"]
-
-
-
-
-
-
-
-# RUN npm install --loglevel error
-#
-# COPY . /code
-#
-# RUN npm run build
-#
-# # RUN apk del make gcc g++ python git
-# RUN apk del make gcc g++ python bash git openssh
-#
-# RUN rm -rf ./node_modules
-# # RUN rm -rf ./app
-# # RUN rm -rf ./scripts
-# # RUN rm -rf ./tests
-#
-# FROM node:8.9-alpine
-#
-# ARG NODE_ENV=production
-# ENV NODE_ENV $NODE_ENV
-# ENV NPM_CONFIG_LOGLEVEL=warn
-#
-# # default to port 80 for node, and 5858 or 9229 for debug
-# ARG PORT=80
-# ENV PORT $PORT
-# EXPOSE $PORT 5858 9229
-#
-# RUN mkdir /code
-# WORKDIR /code
-#
-# COPY --from=builder /code .
-#
-# # RUN ls -a ./
-#
-# RUN apk update && apk upgrade && \
-#     apk add --no-cache make gcc g++ python bash git openssh
-#
-# RUN npm install --only=production --loglevel error
-#
-# RUN apk del make gcc g++ python bash git openssh
-#
-# CMD ["npm", "start"]
