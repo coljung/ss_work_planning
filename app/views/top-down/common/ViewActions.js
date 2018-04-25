@@ -68,6 +68,7 @@ export function fetchBudgetData(budget, version, view, query) {
 export function fetchBudgetConfigData() {
     return (dispatch) => {
         dispatch(requestBudgetConfigData());
+        console.log('testttt');
         return request
             .get(`${getApiUrl()}planning/config`)
             .then(

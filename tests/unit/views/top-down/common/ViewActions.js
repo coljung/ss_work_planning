@@ -1,9 +1,11 @@
 import nock from 'nock';
 import configureMockStore from 'redux-mock-store';
-import thunk from 'redux-thunk';
+import thunk from "redux-thunk";
+import { join } from "path";
+import getApiUrl from "../../../../../app/Helpers";
 import * as actions from '../../../../../app/views/top-down/common/ViewActions';
 
-// import versionsResponse from '../../fixtures/versions.json';
+import configResponse from '../../../../fixtures/config.json';
 // import versionsDuplicate from '../../fixtures/versionsDuplicate.json';
 
 const middlewares = [thunk]
@@ -57,6 +59,41 @@ describe('BudgetViewActions', () => {
                 type: actions.RESET_BUDGETS_VIEW
             };
             expect(actions.resetState()).toEqual(expectedAction);
+        });
+
+        it('Should handle requestBudgetConfigData', () => {
+            const expectedAction = {
+                type: actions.REQUEST_BUDGETS_CONFIG_DATA
+            };
+            expect(actions.requestBudgetConfigData()).toEqual(expectedAction);
+        });
+
+        it('Should handle receiveBudgetConfigData', () => {
+            const config = 'test';
+            const expectedAction = {
+                type: actions.RECEIVE_BUDGETS_CONFIG_DATA, 
+                config
+            };
+            expect(actions.receiveBudgetConfigData(config)).toEqual(expectedAction);
+        });
+
+        it('Should handle fetchBudgetConfigData', () => {
+            nock(UI_PLANNING_HOST)
+            .get('/api/planning/config')
+            .replyWithFile(200, join(__dirname, '..', '..', 'fixtures', 'config.json'), {
+                'Content-Type': 'application/json'
+            });
+
+            const expectedActions = [
+                { type: actions.REQUEST_BUDGETS_CONFIG_DATA },
+                { type: actions.RECEIVE_BUDGETS_CONFIG_DATA, config: configResponse.available_metrics }
+            ];
+            console.log(configResponse);
+            const store = mockStore({ ViewActions: [] });
+
+            return store.dispatch(actions.fetchBudgetConfigData()).then(() =>{
+                expect(store.getActions()).toEqual(expectedActions);
+            });
         });
 
 
