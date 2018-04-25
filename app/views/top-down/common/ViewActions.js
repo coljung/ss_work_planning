@@ -79,11 +79,11 @@ export function fetchBudgetConfigData() {
 
 export function fetchBudgetMetricData(budget, version, view, metric, query) {
     return (dispatch) => {
+        const metricList = metric.length > 1 ? metric.join(',') : metric;
         const queryToSend = {
             ...query,
-            metrics: query && query.metrics ? query.metrics : metric.join(','),
+            metrics: query && query.metrics ? query.metrics : metricList,
         };
-
         dispatch(requestBudgetViewData());
         return request
             .get(`${getApiUrl()}planning/budgets/${budget}/versions/${version}/${view}/metrics`)

@@ -57,9 +57,7 @@ export function budgetVersions(budgetId) {
         return request
             .get(`${getApiUrl()}planning/budgets/${budgetId}/versions`)
             .then(
-            (res) => {
-                dispatch(receiveBudgetVersions(res.body));
-            },
+            res => dispatch(receiveBudgetVersions(res.body)),
             err => dispatch(messages({ content: err, response: err.response, isError: true })),
             );
     };
