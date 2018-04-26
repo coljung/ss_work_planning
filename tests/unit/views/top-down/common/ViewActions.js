@@ -80,13 +80,11 @@ describe('BudgetViewActions', () => {
         it('Should handle fetchBudgetConfigData', () => {
             nock(UI_PLANNING_HOST)
             .get('/api/planning/config')
-            .replyWithFile(200, join(__dirname, '..', '..', 'fixtures', 'config.json'), {
-                'Content-Type': 'application/json'
-            });
+            .reply(200, configResponse);
 
             const expectedActions = [
                 { type: actions.REQUEST_BUDGETS_CONFIG_DATA },
-                { type: actions.RECEIVE_BUDGETS_CONFIG_DATA, config: configResponse.available_metrics }
+                { type: actions.RECEIVE_BUDGETS_CONFIG_DATA, config: configResponse }
             ];
             console.log(configResponse);
             const store = mockStore({ ViewActions: [] });

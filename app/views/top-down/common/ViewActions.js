@@ -12,7 +12,7 @@ export const RESET_BUDGETS_VIEW = 'RESET_BUDGETS_VIEW';
 export const REQUEST_BUDGETS_SAVE_BUDGET = 'REQUEST_BUDGETS_SAVE_BUDGET';
 export const RECEIVE_BUDGETS_SAVE_BUDGET = 'RECEIVE_BUDGETS_SAVE_BUDGET';
 export const REQUEST_BUDGETS_CONFIG_DATA = 'REQUEST_BUDGETS_CONFIG_DATA';
-export const RECEIVE_BUDGETS_CONGIG_DATA = 'RECEIVE_BUDGETS_CONGIG_DATA';
+export const RECEIVE_BUDGETS_CONFIG_DATA = 'RECEIVE_BUDGETS_CONFIG_DATA';
 
 export const requestBudgetViewData = () => ({
     type: REQUEST_BUDGETS_VIEW,
@@ -42,7 +42,7 @@ export const requestBudgetConfigData = () => ({
 });
 
 export const receiveBudgetConfigData = config => ({
-    type: RECEIVE_BUDGETS_CONGIG_DATA,
+    type: RECEIVE_BUDGETS_CONFIG_DATA,
     config,
 });
 

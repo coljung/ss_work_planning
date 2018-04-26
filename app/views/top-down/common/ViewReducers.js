@@ -2,7 +2,7 @@ import { REQUEST_BUDGETS_VIEW,
          RECEIVE_BUDGETS_VIEW,
          RESET_BUDGETS_VIEW,
          REQUEST_BUDGETS_CONFIG_DATA,
-         RECEIVE_BUDGETS_CONGIG_DATA } from './ViewActions';
+         RECEIVE_BUDGETS_CONFIG_DATA } from './ViewActions';
 
 const initialState = {
     viewData: [],
@@ -25,7 +25,7 @@ export default (state = initialState, action) => {
                 viewDataFetched: true,
             });
         }
-        case RECEIVE_BUDGETS_CONGIG_DATA: {
+        case RECEIVE_BUDGETS_CONFIG_DATA: {
             return Object.assign({}, state, {
                 config: action.config.available_metrics,
             });
