@@ -26,7 +26,6 @@ export default (state = initialState, action) => {
             });
         }
         case RECEIVE_BUDGETS_CONFIG_DATA: {
-            // console.log(action);
             return Object.assign({}, state, {
                 config: action.config,
             });
