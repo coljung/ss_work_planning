@@ -5,7 +5,12 @@ import { connect } from 'react-redux';
 import HotTable from 'react-handsontable';
 import { Button } from 'antd';
 import { withRouter } from 'react-router';
-import { saveBudget, fetchBudgetMetricData, resetState } from './ViewActions';
+import {
+  saveBudget,
+  fetchBudgetMetricData,
+  resetState,
+  fetchBudgetConfigData,
+} from './ViewActions';
 import LoadingSpinner from '../../../components/common/LoadingSpinner';
 
 class ViewCommonContainer extends Component {
@@ -23,10 +28,13 @@ class ViewCommonContainer extends Component {
     }
 
     componentDidMount() {
-        const { budget, version, view, router: { location } } = this.props;
+        const promise = this.props.fetchBudgetConfigData();
+        promise.then(this.metricData);
+    }
 
-        // TODO Use filters to select metrics
-        this.props.fetchBudgetMetricData(budget, version, view, ['SALES'], location.query);
+    metricData = () => {
+        const { budget, version, view, config, router: { location } } = this.props;
+        this.props.fetchBudgetMetricData(budget, version, view, config, location.query);
     }
 
     componentWillUnmount() {
@@ -121,6 +129,7 @@ class ViewCommonContainer extends Component {
     };
 
     render() {
+        console.log(this.props.config);
         const budgetListData = this.props.viewData[this.props.view] ? this.buildTable() : <LoadingSpinner />;
         let buttonStr = this.props.view;
         buttonStr = `${buttonStr.charAt(0).toUpperCase()}${buttonStr.slice(1)}`;
@@ -139,10 +148,7 @@ class ViewCommonContainer extends Component {
 }
 
 ViewCommonContainer.propTypes = {
-    viewData: PropTypes.oneOfType([
-        PropTypes.array,
-        PropTypes.object,
-    ]).isRequired,
+    viewData: PropTypes.oneOfType([PropTypes.array, PropTypes.object]).isRequired,
     viewDataFetched: PropTypes.bool.isRequired,
     saveBudget: PropTypes.func.isRequired,
     fetchBudgetMetricData: PropTypes.func.isRequired,
@@ -153,6 +159,8 @@ ViewCommonContainer.propTypes = {
     view: PropTypes.string.isRequired,
     router: PropTypes.object.isRequired,
     cellRenderer: PropTypes.func,
+    fetchBudgetConfigData: PropTypes.func.isRequired,
+    config: PropTypes.array,
 };
 
 function mapStateToProps(state) {
@@ -160,11 +168,16 @@ function mapStateToProps(state) {
     return {
         viewData: ViewReducers.viewData,
         viewDataFetched: ViewReducers.viewDataFetched,
+        config: ViewReducers.config.available_metrics,
     };
 }
 
 function mapDispatchToProps(dispatch) {
-    return bindActionCreators({ fetchBudgetMetricData, resetState, saveBudget }, dispatch);
+    return bindActionCreators({
+        fetchBudgetMetricData,
+        resetState,
+        saveBudget,
+        fetchBudgetConfigData }, dispatch);
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(ViewCommonContainer));

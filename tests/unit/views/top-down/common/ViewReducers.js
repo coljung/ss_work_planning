@@ -6,30 +6,48 @@ describe('BudgetViewReducer', () => {
   it('should return the initial state', () => {
     expect(reducer(undefined, {})).toEqual({
         viewData: [],
+        config: [],
         viewDataFetched: false,
     })
   });
 
-  it('should handle RESET_BUDGETS_VIE or REQUEST_BUDGETS_VIEW', () => {
+  it('should handle RESET_BUDGETS_VIE, REQUEST_BUDGETS_VIEW or REQUEST_BUDGETS_CONFIG_DATA', () => {
     expect(
       reducer(undefined, {
           type: actions.RESET_BUDGETS_VIEW,
       })
     ).toEqual({
         viewData: [],
+        config: [],
         viewDataFetched: false,
     });
 
     expect(
         reducer(undefined, {
         type: actions.REQUEST_BUDGETS_VIEW,
+        type: actions.REQUEST_BUDGETS_CONFIG_DATA,
     })
     ).toEqual({
         viewData: [],
+        config: [],
         viewDataFetched: false,
     });
   });
 
+  it('should handle RECEIVE_BUDGETS_CONFIG_DATA', () => {
+    const state = {
+        config: null,
+    };
+
+    expect(
+      reducer(state, {
+        type: actions.RECEIVE_BUDGETS_CONFIG_DATA,
+        config: { available_metrics: 'SALES' }
+      })
+    ).toEqual({
+        config: { available_metrics: 'SALES' },
+    })
+  });
 
   // it('should handle RECEIVE_BUDGETS_VIEW', () => {
   //   const setData = [];
