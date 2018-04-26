@@ -9,6 +9,8 @@ const request = wrap(agent, Promise);
 export const REQUEST_BUDGETS_VIEW = 'REQUEST_BUDGETS_VIEW';
 export const RECEIVE_BUDGETS_VIEW = 'RECEIVE_BUDGETS_VIEW';
 export const RESET_BUDGETS_VIEW = 'RESET_BUDGETS_VIEW';
+export const REQUEST_REFRESH_GRID_DATA = 'REQUEST_REFRESH_GRID_DATA';
+export const RECEIVE_REFRESH_GRID_DATA = 'RECEIVE_REFRESH_GRID_DATA';
 export const REQUEST_BUDGETS_SAVE_BUDGET = 'REQUEST_BUDGETS_SAVE_BUDGET';
 export const RECEIVE_BUDGETS_SAVE_BUDGET = 'RECEIVE_BUDGETS_SAVE_BUDGET';
 
@@ -31,9 +33,28 @@ export const receiveBudgetSave = version => ({
     version,
 });
 
+export function requestRefreshGridData(updatedObj) {
+    return {
+        type: REQUEST_REFRESH_GRID_DATA,
+        updatedObj,
+    };
+}
+
 export const resetState = () => ({
     type: RESET_BUDGETS_VIEW,
 });
+
+export function refreshGridData(updatedObj) {
+    return (dispatch) => {
+        dispatch(requestRefreshGridData(updatedObj));
+        const req = request.post(`${getApiUrl()}planning/budgets`);
+        return req.send(updatedObj)
+            .then(
+            res => dispatch(receiveRefreshGridData(res.body)),
+            err => dispatch(messages({ content: err, response: err.response, isError: true })),
+            );
+    };
+}
 
 export function fetchBudgetData(budget, version, view, query) {
     return (dispatch) => {
