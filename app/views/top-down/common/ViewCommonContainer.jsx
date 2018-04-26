@@ -52,10 +52,10 @@ class ViewCommonContainer extends Component {
         if (cellEdits) {
             const row = cellEdits[0][0];
             const col = cellEdits[0][1].split('.');
-            const dataCell = this.state.data[row][col[0]];
+            const dataToSend = this.state.data[row][col[0]];
 
             // temp code before save is enabled
-            this.props.messages({ content: dataCell.value });
+            this.props.messages({ content: dataToSend.value });
 
             // TODO
             // local store changes for save event
