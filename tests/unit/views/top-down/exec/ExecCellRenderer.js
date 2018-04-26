@@ -53,14 +53,12 @@ describe('Exec view cell rendering', () => {
         expect(createCell(instance, 0, 0).className).to.not.contain('bottomCellBorder');
         expect(createCell(instance, 1, 0).className).to.not.contain('bottomCellBorder');
         expect(createCell(instance, 2, 0).className).to.not.contain('bottomCellBorder');
-        expect(createCell(instance, 3, 0).className).to.not.contain('bottomCellBorder');
-        expect(createCell(instance, 4, 0).className).to.contain('bottomCellBorder');
+        expect(createCell(instance, 3, 0).className).to.contain('bottomCellBorder');
 
+        expect(createCell(instance, 4, 0).className).to.not.contain('bottomCellBorder');
         expect(createCell(instance, 5, 0).className).to.not.contain('bottomCellBorder');
         expect(createCell(instance, 6, 0).className).to.not.contain('bottomCellBorder');
-        expect(createCell(instance, 7, 0).className).to.not.contain('bottomCellBorder');
-        expect(createCell(instance, 8, 0).className).to.not.contain('bottomCellBorder');
-        expect(createCell(instance, 9, 0).className).to.contain('bottomCellBorder');
+        expect(createCell(instance, 7, 0).className).to.contain('bottomCellBorder');
     });
 
     it('should set readonly based on data', () => {
