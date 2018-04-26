@@ -1,23 +1,5 @@
 import moment from 'moment';
 
-const currentYear = moment().format('YY');
-const currentMonth = moment().format('MMM').toLowerCase();
-
-const monthsRef = {
-    jan: '01',
-    feb: '02',
-    mar: '03',
-    apr: '04',
-    may: '05',
-    jun: '06',
-    jul: '07',
-    aug: '08',
-    sep: '09',
-    oct: '10',
-    nov: '11',
-    dec: '12',
-};
-
 export const currencyFormat = {
     pattern: '$0,000',
     culture: 'en-US',
@@ -70,6 +52,25 @@ export const enableEdit = (instance, row, col) => {
     instance.setCellMeta(row, col, 'readOnly', false);
 };
 
+/*
+const currentYear = moment().format('YY');
+const currentMonth = moment().format('MMM').toLowerCase();
+
+const monthsRef = {
+    jan: '01',
+    feb: '02',
+    mar: '03',
+    apr: '04',
+    may: '05',
+    jun: '06',
+    jul: '07',
+    aug: '08',
+    sep: '09',
+    oct: '10',
+    nov: '11',
+    dec: '12',
+};
+
 const getCurrentCellCode = (month, year) => year + monthsRef[month];
 const getCurrentDateCode = () => currentYear + monthsRef[currentMonth];
 
@@ -95,7 +96,6 @@ export const enableCellValidDate = (prop, currentRowSeasonYear) => {
     return { cellCode, viewCode };
 };
 
-/*
 export const customBorders = (startRow = 0, rowSpan, totalRows, totalCols) => {
     const customBorderArr = [];
 
