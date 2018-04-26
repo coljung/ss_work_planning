@@ -34,6 +34,20 @@ describe('BudgetViewReducer', () => {
     });
   });
 
+  it('should handle RECEIVE_BUDGETS_CONFIG_DATA', () => {
+    const state = {
+        config: null,
+    };
+
+    expect(
+      reducer(state, {
+        type: actions.RECEIVE_BUDGETS_CONFIG_DATA,
+        config: { available_metrics: 'SALES' }
+      })
+    ).toEqual({
+        config: { available_metrics: 'SALES' },
+    })
+  });
 
   // it('should handle RECEIVE_BUDGETS_VIEW', () => {
   //   const setData = [];

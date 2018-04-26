@@ -129,6 +129,7 @@ class ViewCommonContainer extends Component {
     };
 
     render() {
+        console.log(this.props.config);
         const budgetListData = this.props.viewData[this.props.view] ? this.buildTable() : <LoadingSpinner />;
         let buttonStr = this.props.view;
         buttonStr = `${buttonStr.charAt(0).toUpperCase()}${buttonStr.slice(1)}`;
@@ -159,7 +160,7 @@ ViewCommonContainer.propTypes = {
     router: PropTypes.object.isRequired,
     cellRenderer: PropTypes.func,
     fetchBudgetConfigData: PropTypes.func.isRequired,
-    config: PropTypes.array.isRequired,
+    config: PropTypes.array,
 };
 
 function mapStateToProps(state) {
@@ -167,7 +168,7 @@ function mapStateToProps(state) {
     return {
         viewData: ViewReducers.viewData,
         viewDataFetched: ViewReducers.viewDataFetched,
-        config: ViewReducers.config,
+        config: ViewReducers.config.available_metrics,
     };
 }
 

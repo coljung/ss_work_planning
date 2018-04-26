@@ -6,7 +6,7 @@ import getApiUrl from "../../../../../app/Helpers";
 import * as actions from '../../../../../app/views/top-down/common/ViewActions';
 
 import configResponse from '../../../../fixtures/config.json';
-// import versionsDuplicate from '../../fixtures/versionsDuplicate.json';
+import versionsDuplicate from '../../../../fixtures/versionsDuplicate.json';
 
 const middlewares = [thunk]
 const mockStore = configureMockStore(middlewares)
@@ -80,20 +80,102 @@ describe('BudgetViewActions', () => {
         it('Should handle fetchBudgetConfigData', () => {
             nock(UI_PLANNING_HOST)
             .get('/api/planning/config')
-            .replyWithFile(200, join(__dirname, '..', '..', 'fixtures', 'config.json'), {
+            .replyWithFile(200, join(__dirname, '../../../..', 'fixtures', 'config.json'), {
                 'Content-Type': 'application/json'
             });
 
             const expectedActions = [
                 { type: actions.REQUEST_BUDGETS_CONFIG_DATA },
-                { type: actions.RECEIVE_BUDGETS_CONFIG_DATA, config: configResponse.available_metrics }
+                { type: actions.RECEIVE_BUDGETS_CONFIG_DATA, config: configResponse }
             ];
-            console.log(configResponse);
             const store = mockStore({ ViewActions: [] });
 
             return store.dispatch(actions.fetchBudgetConfigData()).then(() =>{
                 expect(store.getActions()).toEqual(expectedActions);
             });
+        });
+
+        it('Should fail to fetchBudgetConfigData', () => {
+            nock(UI_PLANNING_HOST)
+            .get('/api/planning/config')
+            .reply(500, {
+                code: 'Foo Bar',
+                message: 'Foo Bar'
+            }, {
+                'Content-Type': 'application/json'
+            });
+
+            const expectedActions = [
+                { type: actions.REQUEST_BUDGETS_CONFIG_DATA },
+                { type: 'MESSAGES' }
+            ];
+
+            const store = mockStore({ ViewActions: [] });
+
+            return store.dispatch(actions.fetchBudgetConfigData()).then(() =>{
+                expect(store.getActions()).toMatchObject(expectedActions)
+            })
+        });
+
+        // it('Should handle saveBudget', () => {
+        //     nock(UI_PLANNING_HOST)
+        //     .post('/api/planning/budgets/2/versions/2/men')
+        //     .query(true)
+        //     .replyWithFile(200, join(__dirname, '../../../..', 'fixtures', 'create_budget.json'), {
+        //         'Content-Type': 'application/json'
+        //     });
+        //     // console.log('----', join(__dirname, '../../../..', 'fixtures', 'create_budget.json'))
+
+        //     const message = {
+        //         content: 'Budget Saved successfully!',
+        //         isError: false,
+        //         messageType: 'success',
+        //         response: ''
+        //     };
+
+        //     const expectedActions = [
+        //         { type: actions.REQUEST_BUDGETS_SAVE_BUDGET },
+        //         { type: 'MESSAGES', message},
+        //         { type: actions.RECEIVE_BUDGETS_SAVE_BUDGET, version: versionsDuplicate },
+        //     ];
+
+        //     const store = mockStore({ BudgetViewActions: [] });
+
+        //     return store.dispatch(actions.saveBudget()).then(() => {
+        //         // return of async actions
+        //         expect(store.getActions()).toEqual(expectedActions)
+        //     })
+        // });
+
+        it('Should fail saveBudget', () => {
+            nock(UI_PLANNING_HOST)
+            .post('/api/planning/budgets/2/versions/2/men')
+            .query(true)
+            .reply(500, {
+                code: 'Foo Bar',
+                message: 'Foo Bar'
+            }, {
+                'Content-Type': 'application/json'
+            });
+
+            const message = {
+                content: 'Error found',
+                isError: true,
+                messageType: 'error',
+                response: undefined
+            };
+
+            const expectedActions = [
+                { type: actions.REQUEST_BUDGETS_SAVE_BUDGET },
+                { type: 'MESSAGES', message }
+            ];
+
+            const store = mockStore({ viewActions: [] });
+
+            return store.dispatch(actions.saveBudget()).then(() => {
+                // return of async actions
+                expect(store.getActions()).toEqual(expectedActions)
+            })
         });
 
 
@@ -179,36 +261,7 @@ describe('BudgetViewActions', () => {
         //     })
         // });
         //
-        it('Should fail saveBudget', () => {
-            nock(UI_PLANNING_HOST)
-            .post('/api/planning/budgets/2/versions/2/men')
-            .query(true)
-            .reply(500, {
-                code: 'Foo Bar',
-                message: 'Foo Bar'
-            }, {
-                'Content-Type': 'application/json'
-            });
 
-            const message = {
-                content: 'Error found',
-                isError: true,
-                messageType: 'error',
-                response: undefined
-            };
-
-            const expectedActions = [
-                { type: actions.REQUEST_BUDGETS_SAVE_BUDGET },
-                { type: 'MESSAGES', message }
-            ];
-
-            const store = mockStore({ viewActions: [] });
-
-            return store.dispatch(actions.saveBudget()).then(() => {
-                // return of async actions
-                expect(store.getActions()).toEqual(expectedActions)
-            })
-        });
         //
         // it('Should fail saveNewBudgetVersion', () => {
         //     nock(UI_PLANNING_HOST)
