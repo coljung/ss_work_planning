@@ -8,94 +8,104 @@ exports[`PopoverBudgetLink should render correctly 1`] = `
     >
       <li>
         <h4>
-          Top
+          Top Down
         </h4>
         <ul>
           <li>
             <Link
-              id="undefined-0-exec"
+              id="undefined-undefined-exec"
               onlyActiveOnIndex={false}
               style={Object {}}
               to="/season/undefined/budget/undefined/version/undefined/undefined/exec"
             >
-              exec
+              Executive Recap
             </Link>
           </li>
           <li>
             <Link
-              id="undefined-1-total"
+              id="undefined-undefined-total"
               onlyActiveOnIndex={false}
               style={Object {}}
               to="/season/undefined/budget/undefined/version/undefined/undefined/total"
             >
-              total
+              OTB Total
             </Link>
           </li>
           <li>
             <Link
-              id="undefined-2-women"
+              id="undefined-undefined-women"
               onlyActiveOnIndex={false}
               style={Object {}}
               to="/season/undefined/budget/undefined/version/undefined/undefined/women"
             >
-              women
+              OTB Women
             </Link>
           </li>
           <li>
             <Link
-              id="undefined-3-men"
+              id="undefined-undefined-men"
               onlyActiveOnIndex={false}
               style={Object {}}
               to="/season/undefined/budget/undefined/version/undefined/undefined/men"
             >
-              men
+              OTB Men
             </Link>
           </li>
         </ul>
       </li>
       <li>
         <h4>
-          Middle Out
+          Middle Out Summary
         </h4>
         <ul>
           <li>
             <Link
-              id="undefined-0-bg-women"
+              id="undefined-undefined-bg-women"
               onlyActiveOnIndex={false}
               style={Object {}}
               to="/season/undefined/budget/undefined/version/undefined/undefined/bg-women"
             >
-              bg-women
+              Brand Group Targets Women
             </Link>
           </li>
           <li>
             <Link
-              id="undefined-1-bg-men"
+              id="undefined-undefined-bg-men"
               onlyActiveOnIndex={false}
               style={Object {}}
               to="/season/undefined/budget/undefined/version/undefined/undefined/bg-men"
             >
-              bg-men
+              Brand Group Targets Men
             </Link>
           </li>
           <li>
             <Link
-              id="undefined-2-department"
+              id="undefined-undefined-department"
               onlyActiveOnIndex={false}
               style={Object {}}
               to="/season/undefined/budget/undefined/version/undefined/undefined/department"
             >
-              department
+              Department Targets Women
             </Link>
           </li>
           <li>
             <Link
-              id="undefined-3-width-depth"
+              id="undefined-undefined-department2"
+              onlyActiveOnIndex={false}
+              style={Object {}}
+              to="/season/undefined/budget/undefined/version/undefined/undefined/department2"
+            >
+              Department Targets Men
+            </Link>
+          </li>
+          <li>
+            <Link
+              id="undefined-undefined-width-depth"
               onlyActiveOnIndex={false}
               style={Object {}}
               to="/season/undefined/budget/undefined/version/undefined/undefined/width-depth"
             >
-              width-depth
+              Width and Depth Targets
             </Link>
           </li>
         </ul>
@@ -107,52 +117,62 @@ exports[`PopoverBudgetLink should render correctly 1`] = `
         <ul>
           <li>
             <Link
-              id="undefined-0-delivery"
+              id="undefined-undefined-delivery"
               onlyActiveOnIndex={false}
               style={Object {}}
               to="/season/undefined/budget/undefined/version/undefined/undefined/delivery"
             >
-              delivery
+              Delivery
             </Link>
           </li>
           <li>
             <Link
-              id="undefined-1-unit"
+              id="undefined-undefined-unit"
               onlyActiveOnIndex={false}
               style={Object {}}
               to="/season/undefined/budget/undefined/version/undefined/undefined/unit"
             >
-              unit
+              Unit
             </Link>
           </li>
           <li>
             <Link
-              id="undefined-2-department"
+              id="undefined-undefined-department3"
               onlyActiveOnIndex={false}
               style={Object {}}
-              to="/season/undefined/budget/undefined/version/undefined/undefined/department"
+              to="/season/undefined/budget/undefined/version/undefined/undefined/department3"
             >
-              department
+              Department
             </Link>
           </li>
           <li>
             <Link
-              id="undefined-3-sales-margin"
+              id="undefined-undefined-department4"
+              onlyActiveOnIndex={false}
+              style={Object {}}
+              to="/season/undefined/budget/undefined/version/undefined/undefined/department4"
+            >
+              Department
+            </Link>
+          </li>
+          <li>
+            <Link
+              id="undefined-undefined-sales-margin"
               onlyActiveOnIndex={false}
               style={Object {}}
               to="/season/undefined/budget/undefined/version/undefined/undefined/sales-margin"
             >
-              sales-margin
+              Sales Margin
             </Link>
           </li>
           <li>
             <Link
-              id="undefined-4-shrink-planning"
+              id="undefined-undefined-shrink-planning"
               onlyActiveOnIndex={false}
               style={Object {}}
               to="/season/undefined/budget/undefined/version/undefined/undefined/shrink-planning"
             >
-              shrink-planning
+              Shrink Planning
             </Link>
           </li>
         </ul>
