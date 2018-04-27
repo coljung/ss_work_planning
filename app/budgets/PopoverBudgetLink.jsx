@@ -5,18 +5,36 @@ import { Popover } from 'antd';
 
 import { ROUTE_BUDGET } from '../Routes';
 
-const viewsTop = ['exec', 'total', 'women', 'men'];
-const viewsMiddle = ['bg-women', 'bg-men', 'department', 'width-depth'];
-const viewsBottom = ['delivery', 'unit', 'department', 'sales-margin', 'shrink-planning'];
+const viewsTop = [
+    { name: 'Executive Recap', url: 'exec' },
+    { name: 'OTB Total', url: 'total' },
+    { name: 'OTB Women', url: 'women' },
+    { name: 'OTB Men', url: 'men' },
+];
+const viewsMiddle = [
+    { name: 'Brand Group Targets Women', url: 'bg-women' },
+    { name: 'Brand Group Targets Men', url: 'bg-men' },
+    { name: 'Department Targets Women', url: 'department' },
+    { name: 'Department Targets Men', url: 'department2' },
+    { name: 'Width and Depth Targets', url: 'width-depth' },
+];
+const viewsBottom = [
+    { name: 'Delivery', url: 'delivery' },
+    { name: 'Unit', url: 'unit' },
+    { name: 'Department', url: 'department3' },
+    { name: 'Department', url: 'department4' },
+    { name: 'Sales Margin', url: 'sales-margin' },
+    { name: 'Shrink Planning', url: 'shrink-planning' },
+];
 
 const PopoverbudgetLink = ({ budgetId, seasonName, versionId, versionName }) => {
     const text = <span>{seasonName} views</span>;
 
-    const displayLinkFunction = (url, index) =>
-        <li key={`${seasonName}-${index}-${url}`}>
-            <Link id={`${seasonName}-${index}-${url}`}
-                  to={`${ROUTE_BUDGET}/${seasonName}/budget/${budgetId}/version/${versionName}/${versionId}/${url}`}>
-                {url}
+    const displayLinkFunction = link =>
+        <li key={`${seasonName}-${link.index}-${link.url}`}>
+            <Link id={`${seasonName}-${link.index}-${link.url}`}
+                  to={`${ROUTE_BUDGET}/${seasonName}/budget/${budgetId}/version/${versionName}/${versionId}/${link.url}`}>
+                {link.name}
             </Link>
         </li>;
 
@@ -27,11 +45,11 @@ const PopoverbudgetLink = ({ budgetId, seasonName, versionId, versionName }) => 
     const content = (
       <ul className='popover-main-ul'>
           <li>
-              <h4>Top</h4>
+              <h4>Top Down</h4>
               <ul>{top}</ul>
           </li>
           <li>
-              <h4>Middle Out</h4>
+              <h4>Middle Out Summary</h4>
               <ul>{middle}</ul>
           </li>
           <li>
