@@ -19,6 +19,7 @@ export function cellValueRenderer(instance, td, row, col, prop, value, cellPrope
 
     if (this.props.view === TAB_TOTAL) {
         disableEdit(instance, row, col);
+        /*
     } else if (col > 7) {
         const currentRowSeasonYear = instance.getDataAtCell(row, 1);
         const compareCodes = enableCellValidDate(prop, currentRowSeasonYear);
@@ -32,6 +33,7 @@ export function cellValueRenderer(instance, td, row, col, prop, value, cellPrope
         if (((this.state.season === 'FW' && prop === 'feb1') || (this.state.season === 'SS' && prop === 'aug0')) && this.props.view !== TAB_TOTAL) {
             enableEdit(instance, row, col - 1);
         }
+        */
     }
 
     if (metricInformation && metricInformation.dataType !== undefined) {

@@ -7,7 +7,7 @@ export function cellValueRenderer(instance, td, row, col, prop, value, cellPrope
     }
 
     // styling border for each metric
-    const rowSpan = 5;
+    const rowSpan = 4;
     borderBottom(row, rowSpan, td, col);
 
     // styling border left per section
