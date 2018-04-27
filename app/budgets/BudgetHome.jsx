@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Row, Col, Button } from 'antd';
 import Board from '../components/Board';
 import BudgetList from './BudgetList';
-import { BudgetCreate } from './BudgetCreate';
+import BudgetCreate from './BudgetCreate';
 
 export default class BudgetHome extends Component {
     constructor(props) {

@@ -2,7 +2,7 @@ import { expect } from 'chai';
 import Handsontable from 'handsontable';
 import * as sinon from 'sinon';
 import {
-    borderLeft, borderBottom, enableCellValidDate,
+    borderLeft, borderBottom,
     currencyFormat, percentageFormat, enableEdit, disableEdit, emptyCell
 } from '../../../app/views/TableHelpers';
 
@@ -41,15 +41,6 @@ describe('Helper functions', () => {
             expect(td.className).to.contain(' bottomCellBorder');
         });
     });
-
-    describe('Cell Valid Date', () => {
-        it('should return proper cell code', () => {
-            const nextYear = `SS${((new Date()).getFullYear() + 1).toString().substr(-2)}`;
-            const returnedElem = enableCellValidDate('dec1', nextYear);
-            expect(parseInt(returnedElem.cellCode)).to.be.greaterThan(parseInt(returnedElem.viewCode));
-        });
-    });
-
 
     describe('Cell readonly', () => {
         it('enableEdit should set readonly meta to true', () => {

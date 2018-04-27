@@ -23,6 +23,7 @@ const initialProps = {
     router: {
         location: {},
     },
+    config: [],
 };
 
 const initialState = {
@@ -33,6 +34,7 @@ const initialState = {
     season: '',
     viewData: {},
     viewDataFetched: false,
+    config: [],
 };
 
 function setup(props = {}) {
@@ -41,6 +43,7 @@ function setup(props = {}) {
         ViewReducers: {
             viewData: props.viewData,
             viewDataFetched: props.viewDataFetched,
+            config: props.config,
         },
     });
 

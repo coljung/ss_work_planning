@@ -84,7 +84,6 @@ describe('BudgetViewActions', () => {
                 { type: actions.REQUEST_BUDGETS_VERSIONS },
                 { type: actions.RECEIVE_BUDGETS_VERSIONS, versions: versionsResponse }
             ];
-
             const store = mockStore({ BudgetViewActions: [] });
 
             return store.dispatch(actions.budgetVersions(2)).then(() => {
