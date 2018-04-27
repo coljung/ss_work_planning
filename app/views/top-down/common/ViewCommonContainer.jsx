@@ -10,6 +10,7 @@ import {
   fetchBudgetMetricData,
   resetState,
   fetchBudgetConfigData,
+  refreshGridData,
 } from './ViewActions';
 import LoadingSpinner from '../../../components/common/LoadingSpinner';
 // temp code before save is enabled
@@ -53,6 +54,10 @@ class ViewCommonContainer extends Component {
                 season: setData.info.season,
             });
         }
+
+        if (nextProps.refreshData) {
+            this.metricData();
+        }
     };
 
     changeCell = (cellEdits) => {
@@ -64,7 +69,7 @@ class ViewCommonContainer extends Component {
 
             // temp code before save is enabled
             this.props.messages({ content: dataToSend.value });
-
+            this.props.refreshGridData(dataToSend);
             // TODO
             // local store changes for save event
         }
@@ -142,7 +147,8 @@ class ViewCommonContainer extends Component {
     };
 
     render() {
-        const budgetListData = this.props.viewData[this.props.view] ? this.buildTable() : <LoadingSpinner />;
+        // && !this.props.refreshData
+        const budgetListData = this.props.viewData[this.props.view] && !this.props.refreshData ? this.buildTable() : <LoadingSpinner />;
         let buttonStr = this.props.view;
         buttonStr = `${buttonStr.charAt(0).toUpperCase()}${buttonStr.slice(1)}`;
 
@@ -181,6 +187,7 @@ function mapStateToProps(state) {
         viewData: ViewReducers.viewData,
         viewDataFetched: ViewReducers.viewDataFetched,
         config: ViewReducers.config.available_metrics,
+        refreshData: ViewReducers.refreshData,
     };
 }
 
@@ -190,6 +197,7 @@ function mapDispatchToProps(dispatch) {
         resetState,
         saveBudget,
         fetchBudgetConfigData,
+        refreshGridData,
         messages }, dispatch);
 }
 

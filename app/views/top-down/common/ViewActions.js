@@ -35,28 +35,19 @@ export const receiveBudgetSave = version => ({
     version,
 });
 
-export function requestRefreshGridData(updatedObj) {
-    return {
-        type: REQUEST_REFRESH_GRID_DATA,
-        updatedObj,
-    };
-}
+export const requestRefreshGridData = updatedObj => ({
+    type: REQUEST_REFRESH_GRID_DATA,
+    updatedObj,
+});
+
+export const receiveRefreshGridData = () => ({
+    type: RECEIVE_REFRESH_GRID_DATA,
+});
 
 export const resetState = () => ({
     type: RESET_BUDGETS_VIEW,
 });
 
-export function refreshGridData(updatedObj) {
-    return (dispatch) => {
-        dispatch(requestRefreshGridData(updatedObj));
-        const req = request.post(`${getApiUrl()}planning/budgets`);
-        return req.send(updatedObj)
-            .then(
-            res => dispatch(receiveRefreshGridData(res.body)),
-            err => dispatch(messages({ content: err, response: err.response, isError: true })),
-            );
-    };
-}
 export const requestBudgetConfigData = () => ({
     type: REQUEST_BUDGETS_CONFIG_DATA,
 });
@@ -112,6 +103,27 @@ export function fetchBudgetMetricData(budget, version, view, metric, query) {
             res => dispatch(receiveBudgetViewData(res.body, view)),
             err => dispatch(messages({ content: err, response: err.response, isError: true })),
         );
+    };
+}
+
+export function refreshGridData(updatedObj) {
+    return (dispatch) => {
+        dispatch(requestRefreshGridData(updatedObj));
+        const req = request.post(`${getApiUrl()}planning/config`);
+        // return req.send(updatedObj)
+        //     .then(
+        //     res => dispatch(receiveRefreshGridData(res.body)),
+        //     err => dispatch(messages({ content: err, response: err.response, isError: true })),
+        //     );
+        return request
+            .get(`${getApiUrl()}planning/config`)
+            .then(
+            (res) => {
+                console.log(res);
+                return dispatch(receiveRefreshGridData());
+            },
+            err => dispatch(messages({ content: err, response: err.response, isError: true })),
+            );
     };
 }
 
