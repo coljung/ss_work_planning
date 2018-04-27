@@ -51,54 +51,60 @@ class CustomNavigation extends Component {
                         <Menu.Item key="sub2-1">
                             <Link to={`${ROUTE_BUDGET}/${season[0]}/budget/${budgetId}/version/${versionName}/${versionId}/exec`}>
                                 <Icon type="calendar" />
-                                <span className="nav-text">Exec Recap</span>
+                                <span className="nav-text">Executive Recap</span>
                             </Link>
                         </Menu.Item>
                         <Menu.Item key="sub2-2">
                             <Link to={`${ROUTE_BUDGET}/${season[0]}/budget/${budgetId}/version/${versionName}/${versionId}/total`}>
                                 <Icon type="calendar" />
-                                <span className="nav-text">Total</span>
+                                <span className="nav-text">OTB Total</span>
                             </Link>
                         </Menu.Item>
                         <Menu.Item key="sub2-3">
                             <Link to={`${ROUTE_BUDGET}/${season[0]}/budget/${budgetId}/version/${versionName}/${versionId}/women`}>
                                 <Icon type="calendar" />
-                                <span className="nav-text">Women</span>
+                                <span className="nav-text">OTB Women</span>
                             </Link>
                         </Menu.Item>
                         <Menu.Item key="sub2-4">
                             <Link to={`${ROUTE_BUDGET}/${season[0]}/budget/${budgetId}/version/${versionName}/${versionId}/men`}>
                                 <Icon type="calendar" />
-                                <span className="nav-text">Men</span>
+                                <span className="nav-text">OTB Men</span>
                             </Link>
                         </Menu.Item>
                 </SubMenu>
                 <SubMenu
                     key="sub3"
                     disabled={!budgetView}
-                    title={<span><Icon type="team" /><span>Middle Out</span></span>}>
+                    title={<span><Icon type="team" /><span>Middle Out Summary</span></span>}>
                     <Menu.Item key="sub3-1">
                         <Link to={`${ROUTE_BUDGET}/${season[0]}/budget/${budgetId}/version/${versionName}/${versionId}/bgw`}>
                             <Icon type="calendar" />
-                            <span className="nav-text">BG Women</span>
+                            <span className="nav-text">Brand Group Targets Women</span>
                         </Link>
                     </Menu.Item>
                     <Menu.Item key="sub3-2">
                         <Link to={`${ROUTE_BUDGET}/${season[0]}/budget/${budgetId}/version/${versionName}/${versionId}/bgm`}>
                             <Icon type="calendar" />
-                            <span className="nav-text">BG Men</span>
+                            <span className="nav-text">Brand Group Targets Men</span>
                         </Link>
                     </Menu.Item>
                     <Menu.Item key="sub3-3">
                         <Link to={`${ROUTE_BUDGET}/${season[0]}/budget/${budgetId}/version/${versionName}/${versionId}/department`}>
                             <Icon type="calendar" />
-                            <span className="nav-text">Department</span>
+                            <span className="nav-text">Department Targets Women</span>
                         </Link>
                     </Menu.Item>
                     <Menu.Item key="sub3-4">
+                        <Link to={`${ROUTE_BUDGET}/${season[0]}/budget/${budgetId}/version/${versionName}/${versionId}/department`}>
+                            <Icon type="calendar" />
+                            <span className="nav-text">Department Targets Men</span>
+                        </Link>
+                    </Menu.Item>
+                    <Menu.Item key="sub3-5">
                         <Link to={`${ROUTE_BUDGET}/${season[0]}/budget/${budgetId}/version/${versionName}/${versionId}/width-depth`}>
                             <Icon type="calendar" />
-                            <span className="nav-text">Width vs Depth</span>
+                            <span className="nav-text">Width and Depth Targets</span>
                         </Link>
                     </Menu.Item>
                 </SubMenu>

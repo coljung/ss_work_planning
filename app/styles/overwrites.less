@@ -10,8 +10,11 @@
     .ant-layout-sider, .ant-menu-dark{
         background-color: @ssense_black;
     }
-    .ant-layout-sider{
-        // border-top: 1px solid #666;
+    .ant-layout-sider:not(.ant-layout-sider-collapsed) {
+        flex: 0 0 260px !important;
+        max-width: 260px !important;
+        min-width: 200px !important;
+        width: 260px !important;
     }
     .ant-table table{
         margin: 10px 0;
