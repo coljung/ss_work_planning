@@ -30,9 +30,9 @@ const viewsBottom = [
 const PopoverbudgetLink = ({ budgetId, seasonName, versionId, versionName }) => {
     const text = <span>{seasonName} views</span>;
 
-    const displayLinkFunction = link =>
-        <li key={`${seasonName}-${link.index}-${link.url}`}>
-            <Link id={`${seasonName}-${link.index}-${link.url}`}
+    const displayLinkFunction = (link, index) =>
+        <li key={`${seasonName}-${index}-${link.url}`}>
+            <Link id={`${seasonName}-${index}-${link.url}`}
                   to={`${ROUTE_BUDGET}/${seasonName}/budget/${budgetId}/version/${versionName}/${versionId}/${link.url}`}>
                 {link.name}
             </Link>
