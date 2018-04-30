@@ -33,15 +33,20 @@ class ViewCommonContainer extends Component {
     componentDidMount() {
         const promise = this.props.fetchBudgetConfigData();
         promise.then(this.metricData);
-    }
 
-    metricData = () => {
-        const { budget, version, view, config, router: { location } } = this.props;
-        this.props.fetchBudgetMetricData(budget, version, view, config, location.query);
+        // refresh grid on window resize
+        let resizeTimeout = '';
+        window.addEventListener('resize', (event) => {
+            clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(() => {
+                this.resize();
+            }, 500);
+        });
     }
 
     componentWillUnmount() {
         this.props.resetState();
+        window.removeEventListener('resize', this.resize);
     }
 
     componentWillReceiveProps = (nextProps) => {
@@ -59,6 +64,13 @@ class ViewCommonContainer extends Component {
             this.metricData();
         }
     };
+
+    resize = () => this.metricData();
+
+    metricData = () => {
+        const { budget, version, view, config, router: { location } } = this.props;
+        this.props.fetchBudgetMetricData(budget, version, view, config, location.query);
+    }
 
     changeCell = (cellEdits) => {
         // on load this is called, hence the check

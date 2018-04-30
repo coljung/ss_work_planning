@@ -7,7 +7,7 @@ const LoadingSpinner = ({ text }) => {
 
     return (
         <div className="spinDiv">
-            <Spin size="large" tip={loadingText}/>
+            <Spin size="large" style={{ fontSize: 20, color: '#777' }} tip={loadingText}/>
         </div>
     );
 };
