@@ -1,9 +1,5 @@
 sudo: false
 language: node_js
-addons:
-  apt:
-    packages:
-    - docker-ce
 cache:
   yarn: true
   directories:
