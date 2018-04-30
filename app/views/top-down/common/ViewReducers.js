@@ -14,7 +14,6 @@ const initialState = {
 };
 
 export default (state = initialState, action) => {
-    // console.log('--------------', action, state);
     switch (action.type) {
         case RESET_BUDGETS_VIEW:
         case REQUEST_BUDGETS_CONFIG_DATA:
@@ -28,7 +27,6 @@ export default (state = initialState, action) => {
         case RECEIVE_BUDGETS_VIEW: {
             const setData = [];
             setData[action.view] = action.viewData;
-
             return Object.assign({}, state, {
                 viewData: setData,
                 viewDataFetched: true,
@@ -40,7 +38,6 @@ export default (state = initialState, action) => {
                 config: action.config,
             });
         case RECEIVE_REFRESH_GRID_DATA:
-            console.log(state);
             return Object.assign({}, state, {
                 refreshData: true,
             });

@@ -71,8 +71,8 @@ describe('BudgetViewActions', () => {
         it('Should handle receiveBudgetConfigData', () => {
             const config = 'test';
             const expectedAction = {
-                type: actions.RECEIVE_BUDGETS_CONFIG_DATA, 
-                config
+                type: actions.RECEIVE_BUDGETS_CONFIG_DATA,
+                config  
             };
             expect(actions.receiveBudgetConfigData(config)).toEqual(expectedAction);
         });
