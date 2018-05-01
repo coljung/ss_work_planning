@@ -167,7 +167,7 @@ class BudgetViewsContainer extends Component {
                     </Row>
                 </div>
                 <div className="budgetBody">
-                    <Tabs activeKey={activeTab} onChange={this.onTabChange} animated={true}>
+                    <Tabs activeKey={activeTab} onChange={this.onTabChange} animated={false}>
                         <TabPane tab="Exec Recap" key={TAB_EXEC_RECAP}>
                             {(activeTab === TAB_EXEC_RECAP || this.state[TAB_EXEC_RECAP]) &&
                                 <ViewCommonContainer

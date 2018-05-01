@@ -10,8 +10,11 @@ import {
   fetchBudgetMetricData,
   resetState,
   fetchBudgetConfigData,
+  refreshGridData,
 } from './ViewActions';
 import LoadingSpinner from '../../../components/common/LoadingSpinner';
+// temp code before save is enabled
+import { messages } from '../../../notifications/NotificationActions';
 
 class ViewCommonContainer extends Component {
     constructor(props) {
@@ -30,15 +33,20 @@ class ViewCommonContainer extends Component {
     componentDidMount() {
         const promise = this.props.fetchBudgetConfigData();
         promise.then(this.metricData);
-    }
 
-    metricData = () => {
-        const { budget, version, view, config, router: { location } } = this.props;
-        this.props.fetchBudgetMetricData(budget, version, view, config, location.query);
+        // refresh grid on window resize
+        let resizeTimeout = '';
+        window.addEventListener('resize', (event) => {
+            clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(() => {
+                this.resize();
+            }, 500);
+        });
     }
 
     componentWillUnmount() {
         this.props.resetState();
+        window.removeEventListener('resize', this.resize);
     }
 
     componentWillReceiveProps = (nextProps) => {
@@ -51,32 +59,54 @@ class ViewCommonContainer extends Component {
                 season: setData.info.season,
             });
         }
+
+        if (nextProps.refreshData) {
+            this.metricData();
+        }
     };
+
+    resize = () => this.metricData();
+
+    metricData = () => {
+        const { budget, version, view, config, router: { location } } = this.props;
+        this.props.fetchBudgetMetricData(budget, version, view, config, location.query);
+    }
 
     changeCell = (cellEdits) => {
         // on load this is called, hence the check
         if (cellEdits) {
             const row = cellEdits[0][0];
-            const col = cellEdits[0][1];
-            const prevValue = cellEdits[0][2];
-            const newValue = cellEdits[0][3];
-            if (prevValue !== newValue) {
-                const newData = {
-                    row,
-                    col,
-                    value: newValue,
-                };
-                // check if cell has been modified already
-                const checkDuplicate = this.dataToSave.filter(e => e.row !== row || e.col !== col);
-                checkDuplicate.push(newData);
-                this.dataToSave = checkDuplicate;
-            }
-            if (this.state.canSave) {
-                this.setState({
-                    canSave: false,
-                });
-            }
+            const col = cellEdits[0][1].split('.');
+            const dataToSend = this.state.data[row][col[0]];
+
+            // temp code before save is enabled
+            this.props.messages({ content: dataToSend.value });
+            this.props.refreshGridData(dataToSend);
+            // TODO
+            // local store changes for save event
         }
+        // if (cellEdits) {
+        //     const row = cellEdits[0][0];
+        //     const col = cellEdits[0][1];
+        //     const prevValue = cellEdits[0][2];
+        //     const newValue = cellEdits[0][3];
+        //     if (prevValue !== newValue) {
+        //         const newData = {
+        //             row,
+        //             col,
+        //             value: newValue,
+        //         };
+        //         // check if cell has been modified already
+        //         const checkDuplicate = this.dataToSave.filter(e => e.row !== row || e.col !== col);
+        //         checkDuplicate.push(newData);
+        //         this.dataToSave = checkDuplicate;
+        //     }
+        //     if (this.state.canSave) {
+        //         this.setState({
+        //             canSave: false,
+        //         });
+        //     }
+        // }
     };
 
     save = () => {
@@ -129,8 +159,8 @@ class ViewCommonContainer extends Component {
     };
 
     render() {
-        console.log(this.props.config);
-        const budgetListData = this.props.viewData[this.props.view] ? this.buildTable() : <LoadingSpinner />;
+        // && !this.props.refreshData
+        const budgetListData = this.props.viewData[this.props.view] && !this.props.refreshData ? this.buildTable() : <LoadingSpinner />;
         let buttonStr = this.props.view;
         buttonStr = `${buttonStr.charAt(0).toUpperCase()}${buttonStr.slice(1)}`;
 
@@ -169,6 +199,7 @@ function mapStateToProps(state) {
         viewData: ViewReducers.viewData,
         viewDataFetched: ViewReducers.viewDataFetched,
         config: ViewReducers.config.available_metrics,
+        refreshData: ViewReducers.refreshData,
     };
 }
 
@@ -177,7 +208,9 @@ function mapDispatchToProps(dispatch) {
         fetchBudgetMetricData,
         resetState,
         saveBudget,
-        fetchBudgetConfigData }, dispatch);
+        fetchBudgetConfigData,
+        refreshGridData,
+        messages }, dispatch);
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(ViewCommonContainer));

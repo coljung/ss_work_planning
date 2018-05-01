@@ -9,6 +9,7 @@ const createCell = (instance, row, col, data = {}, value = '', props = {}) => {
     const stateContainer = {
         state: {
             data: [],
+            info: [],
         },
         props
     };
@@ -32,6 +33,7 @@ describe('Common view cell rendering', () => {
 
         expect(spy.called).to.equal(true);
         expect(spy.getCall(0).args[2]).to.equal('readOnly');
+        // temp change for cell change forcing radonly = false
         expect(spy.getCall(0).args[3]).to.equal(true);
     });
 
@@ -44,6 +46,7 @@ describe('Common view cell rendering', () => {
 
         expect(spy.called).to.equal(true);
         expect(spy.getCall(0).args[2]).to.equal('readOnly');
+        // temp change for cell change forcing radonly = false
         expect(spy.getCall(0).args[3]).to.equal(false);
     });
 

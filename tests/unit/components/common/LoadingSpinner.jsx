@@ -7,7 +7,7 @@ import LoadingSpinner from '../../../../app/components/common/LoadingSpinner';
 describe('<LoadingSpinner />', () => {
     it('should render base layout', () => {
         const wrapper = shallow(
-            <LoadingSpinner />
+            <LoadingSpinner style={{ fontSize: 20, color: '#777' }} />
         );
 
         const spin = wrapper.find(Spin).first();
