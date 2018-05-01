@@ -5,6 +5,12 @@ exports[`<LoadingSpinner /> should render base layout 1`] = `
   prefixCls="ant-spin"
   size="large"
   spinning={true}
+  style={
+    Object {
+      "color": "#777",
+      "fontSize": 20,
+    }
+  }
   tip="Loading..."
   wrapperClassName=""
 />
