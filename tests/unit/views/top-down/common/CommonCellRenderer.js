@@ -9,6 +9,7 @@ const createCell = (instance, row, col, data = {}, value = '', props = {}) => {
     const stateContainer = {
         state: {
             data: [],
+            info: [],
         },
         props
     };
