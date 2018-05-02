@@ -149,6 +149,7 @@ class ViewCommonContainer extends Component {
                     currentColClassName={'currentCol'}
                     currentRowClassName={'currentRow'}
                     data={this.state.data}
+                    minRows={40}
                     fixedColumnsLeft={1}
                     formulas={false}
                     licenseKey='a389a-f2591-70b41-a480d-1911a'
