@@ -150,6 +150,7 @@ class ViewCommonContainer extends Component {
                     currentRowClassName={'currentRow'}
                     data={this.state.data}
                     fixedColumnsLeft={1}
+                    fixedRowsTop={0}
                     formulas={false}
                     licenseKey='a389a-f2591-70b41-a480d-1911a'
                     nestedHeaders={columnTitles}
