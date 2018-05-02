@@ -40,7 +40,7 @@ class ViewCommonContainer extends Component {
             clearTimeout(resizeTimeout);
             resizeTimeout = setTimeout(() => {
                 this.resize();
-            }, 500);
+            }, 1000);
         });
     }
 
