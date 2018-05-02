@@ -2,7 +2,7 @@ import React from 'react';
 import { expect } from 'chai';
 import { shallow, mount } from 'enzyme';
 import { Menu } from 'antd';
-import BudgetVersionMenu from '../../../app/views/BudgetVersionMenu';
+import BudgetVersionMenu from '../../../../app/views/components/BudgetVersionMenu';
 import * as sinon from 'sinon';
 
 describe('<BudgetVersionMenu />', () => {
@@ -21,11 +21,14 @@ describe('<BudgetVersionMenu />', () => {
             { id: 2, name: 'Item 2' },
         ];
 
-        const wrapper = shallow(
+        const wrapper = mount(
             <BudgetVersionMenu versions={versions} />
         );
 
+
         const menu = wrapper.find(Menu).first();
+                console.log(wrapper.html());
+                console.log(menu);
         expect(menu.find(Menu.Item)).to.have.lengthOf(2);
     });
 

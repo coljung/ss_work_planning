@@ -4,13 +4,13 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Row, Col, Tabs, Dropdown, Icon } from 'antd';
 import ViewCommonContainer from './top-down/common/ViewCommonContainer';
-import BudgetViewsButtonActions from './BudgetViewsButtonActions';
+import BudgetVersionMenu from './components/BudgetVersionMenu';
+import BudgetViewsButtonActions from './components/BudgetViewsButtonActions';
 import { budgetVersions, saveNewBudgetVersion } from './BudgetViewActions';
 import { switchUrls, clearUrls } from '../components/customNavigation/CustomNavigationActions';
 import { ROUTE_BUDGET } from '../Routes';
 import { cellValueRenderer as commonCellValueRenderer } from './top-down/common/CommonCellRenderer';
 import { cellValueRenderer as execCellValueRenderer } from './top-down/exec/ExecCellRenderer';
-import BudgetVersionMenu from './BudgetVersionMenu';
 
 // Sub Component
 const TabPane = Tabs.TabPane;
@@ -141,25 +141,16 @@ class BudgetViewsContainer extends Component {
 
     render() {
         const { activeTab, budgetSeasonId, versionId, seasonName, versionName } = this.state;
-        const menuBudget =
-            <BudgetVersionMenu
-                versions={this.props.versions}
-                currentSeason={this.state.seasonName}
-                currentVersion={this.state.versionName}
-                handleClick={this.handleVersionClick} />;
-
         return (
             <div>
                 <div className="budgetHeader">
                     <Row type="flex" justify="start" className="innerHeader">
                         <Col span={12} className="col">
-                            <Dropdown overlay={menuBudget}>
-                                <h3>
-                                    <a className="ant-dropdown-link" href="#">
-                                        {seasonName} - {versionName}<Icon type="down" />
-                                    </a>
-                                </h3>
-                            </Dropdown>
+                            <BudgetVersionMenu
+                                versions={this.props.versions}
+                                currentSeason={this.state.seasonName}
+                                currentVersion={this.state.versionName}
+                                handleClick={this.handleVersionClick} />
                         </Col>
                         <Col span={12} className="col">
                             <BudgetViewsButtonActions saveNew={() => this.saveNewVersion(budgetSeasonId, versionId)} />
