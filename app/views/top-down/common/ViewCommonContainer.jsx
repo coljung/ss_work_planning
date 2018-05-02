@@ -28,6 +28,12 @@ class ViewCommonContainer extends Component {
             season: '',
         };
         this.dataToSave = [];
+
+        this.hotTableRef = null;
+
+        this.setHotTableRef = element => {
+            this.hotTableRef = element;
+        };
     }
 
     componentDidMount() {
@@ -65,7 +71,7 @@ class ViewCommonContainer extends Component {
         }
     };
 
-    resize = () => this.metricData();
+    resize = () => this.hotTableRef.hotInstance.render();
 
     metricData = () => {
         const { budget, version, view, config, router: { location } } = this.props;
@@ -149,7 +155,7 @@ class ViewCommonContainer extends Component {
                     nestedHeaders={columnTitles}
                     observeChanges={true}
                     persistentState={true}
-                    ref='hot'
+                    ref={this.setHotTableRef}
                     root='hot'
                     viewportColumnRenderingOffset={20}
                     viewportRowRenderingOffset={20}
