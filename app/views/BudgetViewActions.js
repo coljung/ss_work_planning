@@ -74,9 +74,7 @@ export function saveNewBudgetVersion(budgetId, versionId) {
                 dispatch(messages({ content: 'New Version Saved successfully!', response: '', isError: false }));
                 dispatch(receiveBudgetSaveNewVersion(res.body));
             },
-            err => {
-                dispatch(messages({ content: err, response: err.response, isError: true }));
-            },
+            err => dispatch(messages({ content: err, response: err.response, isError: true })),
         );
     };
 }
