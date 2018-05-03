@@ -3,7 +3,7 @@ import Handsontable from 'handsontable';
 // import { cellValueRenderer } from 'views/sections/top-down/ExecCellRenderer';
 import { cellValueRenderer } from '../../../../../app/views/sections/top-down/ExecCellRenderer';
 import * as sinon from 'sinon';
-import { currencyFormat, percentageFormat } from '../../../../../app/views/TableHelpers';
+import { currencyFormat, percentageFormat } from '../../../../../app/views/components/TableHelpers';
 
 const createCell = (instance, row, col, data = {}, value = '') => {
     const stateContainer = {

@@ -3,7 +3,7 @@ import Handsontable from 'handsontable';
 // import { cellValueRenderer } from 'views_path/sections/top-down/CommonCellRenderer';
 import { cellValueRenderer } from '../../../../../app/views/sections/top-down/CommonCellRenderer';
 import * as sinon from 'sinon';
-import { currencyFormat, percentageFormat } from '../../../../../app/views/TableHelpers';
+import { currencyFormat, percentageFormat } from '../../../../../app/views/components/TableHelpers';
 import { TAB_TOTAL } from '../../../../../app/views/BudgetViewsContainer';
 
 const createCell = (instance, row, col, data = {}, value = '', props = {}) => {

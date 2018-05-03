@@ -6,15 +6,14 @@ import HotTable from 'react-handsontable';
 import { Button } from 'antd';
 import { withRouter } from 'react-router';
 import {
-  saveBudget,
-  fetchBudgetMetricData,
-  resetState,
-  fetchBudgetConfigData,
-  refreshGridData,
-} from './ViewActions';
-import LoadingSpinner from '../../../components/common/LoadingSpinner';
+    saveBudget,
+    fetchBudgetMetricData,
+    resetState,
+    fetchBudgetConfigData,
+    refreshGridData } from './SectionActions';
+import LoadingSpinner from '../../components/common/LoadingSpinner';
 
-class ViewCommonContainer extends Component {
+class SectionContainer extends Component {
     constructor(props) {
         super(props);
 
@@ -34,7 +33,7 @@ class ViewCommonContainer extends Component {
 
         this.hotTableRef = null;
 
-        this.setHotTableRef = element => {
+        this.setHotTableRef = (element) => {
             this.hotTableRef = element;
         };
     }
@@ -152,6 +151,7 @@ class ViewCommonContainer extends Component {
                     currentColClassName={'currentCol'}
                     currentRowClassName={'currentRow'}
                     data={this.state.data}
+                    minRows={40}
                     fixedColumnsLeft={1}
                     fixedRowsTop={0}
                     formulas={false}
@@ -169,7 +169,6 @@ class ViewCommonContainer extends Component {
     };
 
     render() {
-        // && !this.props.refreshData
         const budgetListData = this.props.viewData[this.props.view] && !this.props.refreshData ? this.buildTable() : <LoadingSpinner />;
         let buttonStr = this.props.view;
         buttonStr = `${buttonStr.charAt(0).toUpperCase()}${buttonStr.slice(1)}`;
@@ -187,7 +186,7 @@ class ViewCommonContainer extends Component {
     }
 }
 
-ViewCommonContainer.propTypes = {
+SectionContainer.propTypes = {
     viewData: PropTypes.oneOfType([PropTypes.array, PropTypes.object]).isRequired,
     viewDataFetched: PropTypes.bool.isRequired,
     saveBudget: PropTypes.func.isRequired,
@@ -195,7 +194,7 @@ ViewCommonContainer.propTypes = {
     resetState: PropTypes.func.isRequired,
     budget: PropTypes.string.isRequired,
     version: PropTypes.string.isRequired,
-    location: PropTypes.string.isRequired,
+    location: PropTypes.object.isRequired,
     view: PropTypes.string.isRequired,
     router: PropTypes.object.isRequired,
     cellRenderer: PropTypes.func,
@@ -206,12 +205,12 @@ ViewCommonContainer.propTypes = {
 };
 
 function mapStateToProps(state) {
-    const { ViewReducers } = state;
+    const { SectionReducers } = state;
     return {
-        viewData: ViewReducers.viewData,
-        viewDataFetched: ViewReducers.viewDataFetched,
-        config: ViewReducers.config.available_metrics,
-        refreshData: ViewReducers.refreshData,
+        viewData: SectionReducers.viewData,
+        viewDataFetched: SectionReducers.viewDataFetched,
+        config: SectionReducers.config.available_metrics,
+        refreshData: SectionReducers.refreshData,
     };
 }
 
@@ -224,4 +223,4 @@ function mapDispatchToProps(dispatch) {
         refreshGridData }, dispatch);
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(ViewCommonContainer));
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(SectionContainer));

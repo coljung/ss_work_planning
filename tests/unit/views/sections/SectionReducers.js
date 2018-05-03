@@ -1,11 +1,11 @@
-import reducer from '../../../../../app/views/top-down/common/ViewReducers';
-import * as actions from '../../../../../app/views/top-down/common/ViewActions';
+import reducer from '../../../../app/views/sections/SectionReducers';
+import * as actions from '../../../../app/views/sections/SectionActions';
 import * as sinon from 'sinon';
 
 let sandbox;
 let initialState;
 
-describe('BudgetViewReducer', () => {
+describe('SectionReducer', () => {
 
     beforeAll(() => {
         sandbox = sinon.sandbox.create();

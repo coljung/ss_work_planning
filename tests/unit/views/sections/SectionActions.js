@@ -2,16 +2,16 @@ import nock from 'nock';
 import configureMockStore from 'redux-mock-store';
 import thunk from "redux-thunk";
 import { join } from "path";
-import getApiUrl from "../../../../../app/Helpers";
-import * as actions from '../../../../../app/views/top-down/common/ViewActions';
+import getApiUrl from "../../../../app/Helpers";
+import * as actions from '../../../../app/views/sections/SectionActions';
 
-import configResponse from '../../../../fixtures/config.json';
-import versionsDuplicate from '../../../../fixtures/versionsDuplicate.json';
+import configResponse from '../../../fixtures/config.json';
+import versionsDuplicate from '../../../fixtures/versionsDuplicate.json';
 
 const middlewares = [thunk]
 const mockStore = configureMockStore(middlewares)
 
-describe('ViewActions', () => {
+describe('SectionActions', () => {
     afterEach(() => {
         nock.cleanAll();
     });
@@ -77,10 +77,17 @@ describe('ViewActions', () => {
             expect(actions.receiveBudgetConfigData(config)).toEqual(expectedAction);
         });
 
+        it('Should handle requestRefreshGridData', () => {
+            const expectedAction = {
+                type: actions.REQUEST_REFRESH_GRID_DATA
+            };
+            expect(actions.requestRefreshGridData()).toEqual(expectedAction);
+        });
+
         it('Should handle fetchBudgetConfigData', () => {
             nock(UI_PLANNING_HOST)
             .get('/api/planning/config')
-            .replyWithFile(200, join(__dirname, '../../../..', 'fixtures', 'config.json'), {
+            .replyWithFile(200, join(__dirname, '../../..', 'fixtures', 'config.json'), {
                 'Content-Type': 'application/json'
             });
 
@@ -88,7 +95,7 @@ describe('ViewActions', () => {
                 { type: actions.REQUEST_BUDGETS_CONFIG_DATA },
                 { type: actions.RECEIVE_BUDGETS_CONFIG_DATA, config: configResponse }
             ];
-            const store = mockStore({ ViewActions: [] });
+            const store = mockStore({ SectionActions: [] });
 
             return store.dispatch(actions.fetchBudgetConfigData()).then(() =>{
                 expect(store.getActions()).toEqual(expectedActions);
@@ -110,7 +117,7 @@ describe('ViewActions', () => {
                 { type: 'MESSAGES' }
             ];
 
-            const store = mockStore({ ViewActions: [] });
+            const store = mockStore({ SectionActions: [] });
 
             return store.dispatch(actions.fetchBudgetConfigData()).then(() =>{
                 expect(store.getActions()).toMatchObject(expectedActions)
@@ -139,7 +146,7 @@ describe('ViewActions', () => {
         //         { type: actions.RECEIVE_BUDGETS_SAVE_BUDGET, version: versionsDuplicate },
         //     ];
 
-        //     const store = mockStore({ BudgetViewActions: [] });
+        //     const store = mockStore({ BudgetSectionActions: [] });
 
         //     return store.dispatch(actions.saveBudget()).then(() => {
         //         // return of async actions
@@ -229,7 +236,7 @@ describe('ViewActions', () => {
         //         { type: actions.RECEIVE_BUDGETS_VERSIONS, versions: versionsResponse }
         //     ];
         //
-        //     const store = mockStore({ BudgetViewActions: [] });
+        //     const store = mockStore({ BudgetSectionActions: [] });
         //
         //     return store.dispatch(actions.budgetVersions(2)).then(() => {
         //         // return of async actions
@@ -253,7 +260,7 @@ describe('ViewActions', () => {
         //         { type: 'MESSAGES' }
         //     ];
         //
-        //     const store = mockStore({ BudgetViewActions: [] });
+        //     const store = mockStore({ BudgetSectionActions: [] });
         //
         //     return store.dispatch(actions.budgetVersions(2)).then(() => {
         //         // return of async actions
@@ -286,7 +293,7 @@ describe('ViewActions', () => {
         //         { type: 'MESSAGES', message },
         //     ];
         //
-        //     const store = mockStore({ BudgetViewActions: [] });
+        //     const store = mockStore({ BudgetSectionActions: [] });
         //
         //     return store.dispatch(actions.saveNewBudgetVersion()).then(() => {
         //         // return of async actions

@@ -3,14 +3,14 @@ import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Row, Col, Tabs, Dropdown, Icon } from 'antd';
-import ViewCommonContainer from './top-down/common/ViewCommonContainer';
 import BudgetVersionMenu from './components/BudgetVersionMenu';
 import BudgetViewsButtonActions from './components/BudgetViewsButtonActions';
+import SectionContainer from './sections/SectionContainer';
 import { budgetVersions, saveNewBudgetVersion } from './BudgetViewActions';
 import { switchUrls, clearUrls } from '../components/customNavigation/CustomNavigationActions';
+import { cellValueRenderer as commonCellValueRenderer } from './sections/top-down/CommonCellRenderer';
+import { cellValueRenderer as execCellValueRenderer } from './sections/top-down/ExecCellRenderer';
 import { ROUTE_BUDGET } from '../Routes';
-import { cellValueRenderer as commonCellValueRenderer } from './top-down/common/CommonCellRenderer';
-import { cellValueRenderer as execCellValueRenderer } from './top-down/exec/ExecCellRenderer';
 
 // Sub Component
 const TabPane = Tabs.TabPane;
@@ -161,7 +161,7 @@ class BudgetViewsContainer extends Component {
                     <Tabs activeKey={activeTab} onChange={this.onTabChange} animated={false}>
                         <TabPane tab="Exec Recap" key={TAB_EXEC_RECAP}>
                             {(activeTab === TAB_EXEC_RECAP || this.state[TAB_EXEC_RECAP]) &&
-                                <ViewCommonContainer
+                                <SectionContainer
                                     budget={budgetSeasonId}
                                     version={versionId}
                                     cellRenderer={execCellValueRenderer}
@@ -172,7 +172,7 @@ class BudgetViewsContainer extends Component {
                         </TabPane>
                         <TabPane tab="Total" key={TAB_TOTAL}>
                             {(activeTab === TAB_TOTAL) &&
-                                <ViewCommonContainer
+                                <SectionContainer
                                     budget={budgetSeasonId}
                                     version={versionId}
                                     cellRenderer={commonCellValueRenderer}
@@ -184,7 +184,7 @@ class BudgetViewsContainer extends Component {
                         </TabPane>
                         <TabPane tab="Women" key={TAB_WOMEN}>
                             {(activeTab === TAB_WOMEN) &&
-                                <ViewCommonContainer
+                                <SectionContainer
                                     budget={budgetSeasonId}
                                     version={versionId}
                                     cellRenderer={commonCellValueRenderer}
@@ -196,7 +196,7 @@ class BudgetViewsContainer extends Component {
                         </TabPane>
                         <TabPane tab="Men" key={TAB_MEN}>
                             {(activeTab === TAB_MEN) &&
-                                <ViewCommonContainer
+                                <SectionContainer
                                     budget={budgetSeasonId}
                                     version={versionId}
                                     cellRenderer={commonCellValueRenderer}

@@ -1,9 +1,12 @@
 import Handsontable from 'handsontable';
 import { TAB_TOTAL } from '../../BudgetViewsContainer';
 import {
-    enableCellValidDate, disableEdit, enableEdit, emptyCell,
-    percentageFormat, currencyFormat,
-} from '../../TableHelpers';
+    enableCellValidDate,
+    disableEdit,
+    enableEdit,
+    emptyCell,
+    percentageFormat,
+    currencyFormat } from '../../components/TableHelpers';
 
 export function cellValueRenderer(instance, td, row, col, prop, value, cellProperties) {
     // styling border left per section
