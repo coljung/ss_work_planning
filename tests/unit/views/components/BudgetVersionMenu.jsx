@@ -1,12 +1,12 @@
 import React from 'react';
 import { expect } from 'chai';
 import { shallow, mount } from 'enzyme';
-import { Menu } from 'antd';
+import { Dropdown, Menu } from 'antd';
 import BudgetVersionMenu from '../../../../app/views/components/BudgetVersionMenu';
 import * as sinon from 'sinon';
 
 describe('<BudgetVersionMenu />', () => {
-    it('should render base layout', () => {
+    it.only('should render base layout', () => {
         const wrapper = shallow(
             <BudgetVersionMenu versions={[]} />
         );
