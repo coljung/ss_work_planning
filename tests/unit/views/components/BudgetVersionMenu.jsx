@@ -11,11 +11,15 @@ describe('<BudgetVersionMenu />', () => {
             <BudgetVersionMenu versions={[]} />
         );
 
-        const dropdown = wrapper.find(Menu).first();
+        const dropdown = wrapper.find(Dropdown).first();
+        //         console.log(wrapper.html());
+        //         console.log(dropdown);
+        // wrapper.find(dropdown).simulate('mouseenter');
         expect(dropdown).to.have.lengthOf(1);
     });
 
     it('should render base layout with items', () => {
+        const onVersionClick = sinon.spy();
         const versions = [
             { id: 1, name: 'Item 1' },
             { id: 2, name: 'Item 2' },
@@ -27,8 +31,6 @@ describe('<BudgetVersionMenu />', () => {
 
 
         const menu = wrapper.find(Menu).first();
-                console.log(wrapper.html());
-                console.log(menu);
         expect(menu.find(Menu.Item)).to.have.lengthOf(2);
     });
 
