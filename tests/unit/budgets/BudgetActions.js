@@ -130,7 +130,7 @@ describe('BudgetActions', () => {
             })
         });
 
-        it('Should fetchSeasons', () => {
+        it('Should fetchAvailableBudgets', () => {
             nock(UI_PLANNING_HOST)
             .get('/api/planning/budgets/show/available')
             .query(true)
@@ -145,13 +145,13 @@ describe('BudgetActions', () => {
 
             const store = mockStore({ BudgetActions: [] });
 
-            return store.dispatch(actions.fetchSeasons()).then(() => {
+            return store.dispatch(actions.fetchAvailableBudgets()).then(() => {
                 // return of async actions
                 expect(store.getActions()).toEqual(expectedActions)
             })
         });
 
-        it('Should failed to fetchSeasons', () => {
+        it('Should fail to fetchAvailableBudgets', () => {
             nock(UI_PLANNING_HOST)
             .get('/api/planning/budgets/show/available')
             .query(true)
@@ -169,7 +169,7 @@ describe('BudgetActions', () => {
 
             const store = mockStore({ BudgetActions: [] });
 
-            return store.dispatch(actions.fetchSeasons()).then(() => {
+            return store.dispatch(actions.fetchAvailableBudgets()).then(() => {
                 // return of async actions
                 expect(store.getActions()).toMatchObject(expectedActions)
             })

@@ -11,7 +11,7 @@ import versionsDuplicate from '../../../../fixtures/versionsDuplicate.json';
 const middlewares = [thunk]
 const mockStore = configureMockStore(middlewares)
 
-describe('BudgetViewActions', () => {
+describe('ViewActions', () => {
     afterEach(() => {
         nock.cleanAll();
     });
@@ -72,7 +72,7 @@ describe('BudgetViewActions', () => {
             const config = 'test';
             const expectedAction = {
                 type: actions.RECEIVE_BUDGETS_CONFIG_DATA,
-                config  
+                config
             };
             expect(actions.receiveBudgetConfigData(config)).toEqual(expectedAction);
         });

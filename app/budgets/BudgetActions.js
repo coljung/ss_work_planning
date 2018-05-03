@@ -72,7 +72,7 @@ export function fetchBudgets() {
     };
 }
 
-export function fetchSeasons() {
+export function fetchAvailableBudgets() {
     return (dispatch) => {
         dispatch(requestSeasons());
         return request

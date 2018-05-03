@@ -16,7 +16,7 @@ function setup() {
         // seasonsFetched: false, // same from redux provider
         visible: true,
         onOverlayClick: jest.fn(),
-        fetchSeasons: jest.fn(),
+        fetchAvailableBudgets: jest.fn(),
         createBudget: jest.fn(),
         resetState: jest.fn()
     }
@@ -72,7 +72,7 @@ function setupPureComponent() {
         seasonsFetched: true,
         visible: true,
         onOverlayClick: jest.fn(),
-        fetchSeasons: jest.fn(),
+        fetchAvailableBudgets: jest.fn(),
         createBudget: jest.fn(),
         resetState: jest.fn()
     }
@@ -159,7 +159,7 @@ describe('BudgetCreate', () => {
 
     it('should go fetch seasons on receive props', () => {
         const { enzymeWrapper } = setupPureComponent();
-        const spy = jest.spyOn(enzymeWrapper.props(), 'fetchSeasons');
+        const spy = jest.spyOn(enzymeWrapper.props(), 'fetchAvailableBudgets');
 
         enzymeWrapper.setProps({
             visible: true,

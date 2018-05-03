@@ -2,7 +2,7 @@ import reducer from '../../../app/views/BudgetViewReducer';
 import * as actions from '../../../app/views/BudgetViewActions';
 
 describe('BudgetViewReducer', () => {
-    
+
   it('should return the initial state', () => {
     expect(reducer(undefined, {})).toEqual({
         newVersion: null,
