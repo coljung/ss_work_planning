@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Button, Modal, Select, Spin, Radio } from 'antd';
-import { createBudget, fetchSeasons, resetState } from './BudgetActions';
+import { createBudget, fetchAvailableSeasons, resetState } from './BudgetActions';
 
 const Option = Select.Option;
 const RadioGroup = Radio.Group;
@@ -21,7 +21,7 @@ export class BudgetCreate extends Component {
 
     componentWillReceiveProps(props) {
         if (props.visible && !props.seasonsFetched) {
-            this.props.fetchSeasons();
+            this.props.fetchAvailableSeasons();
         }
     }
 
@@ -121,7 +121,7 @@ BudgetCreate.propTypes = {
     seasonsFetched: PropTypes.bool.isRequired,
     visible: PropTypes.bool.isRequired,
     onOverlayClick: PropTypes.func.isRequired,
-    fetchSeasons: PropTypes.func.isRequired,
+    fetchAvailableSeasons: PropTypes.func.isRequired,
     createBudget: PropTypes.func.isRequired,
     resetState: PropTypes.func.isRequired,
 };
@@ -135,7 +135,7 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-    return bindActionCreators({ fetchSeasons, createBudget, resetState }, dispatch);
+    return bindActionCreators({ fetchAvailableSeasons, createBudget, resetState }, dispatch);
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(BudgetCreate);
