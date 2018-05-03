@@ -106,21 +106,17 @@ export function fetchBudgetMetricData(budget, version, view, metric, query) {
     };
 }
 
-export function refreshGridData(updatedObj) {
+export function refreshGridData(budget, version, view, updatedObj) {
     return (dispatch) => {
         dispatch(requestRefreshGridData(updatedObj));
-        const req = request.post(`${getApiUrl()}planning/config`);
-        // return req.send(updatedObj)
-        //     .then(
-        //     res => dispatch(receiveRefreshGridData(res.body)),
-        //     err => dispatch(messages({ content: err, response: err.response, isError: true })),
-        //     );
-        return request
-            .get(`${getApiUrl()}planning/config`)
+        const req = request.put(`${getApiUrl()}planning/budgets/${budget}/versions/${version}/${view}/metrics`);
+        return req.send(updatedObj)
             .then(
             (res) => {
-                console.log(res);
-                return dispatch(receiveRefreshGridData());
+                if (res.statusCode === 200) {
+                    return dispatch(receiveRefreshGridData());
+                }
+                return dispatch(messages({ content: 'Not OK', response: '', isError: true }));
             },
             err => dispatch(messages({ content: err, response: err.response, isError: true })),
             );

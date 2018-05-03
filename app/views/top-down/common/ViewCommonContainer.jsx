@@ -13,12 +13,12 @@ import {
   refreshGridData,
 } from './ViewActions';
 import LoadingSpinner from '../../../components/common/LoadingSpinner';
-// temp code before save is enabled
-import { messages } from '../../../notifications/NotificationActions';
 
 class ViewCommonContainer extends Component {
     constructor(props) {
         super(props);
+
+        const { budget, version, view } = this.props;
 
         this.state = {
             data: [],
@@ -26,8 +26,17 @@ class ViewCommonContainer extends Component {
             headers: [],
             info: {},
             season: '',
+            budget,
+            version,
+            view,
         };
         this.dataToSave = [];
+
+        this.hotTableRef = null;
+
+        this.setHotTableRef = element => {
+            this.hotTableRef = element;
+        };
     }
 
     componentDidMount() {
@@ -65,10 +74,11 @@ class ViewCommonContainer extends Component {
         }
     };
 
-    resize = () => this.metricData();
+    resize = () => this.hotTableRef.hotInstance.render();
 
     metricData = () => {
-        const { budget, version, view, config, router: { location } } = this.props;
+        const { budget, version, view } = this.state;
+        const { config, router: { location } } = this.props;
         this.props.fetchBudgetMetricData(budget, version, view, config, location.query);
     }
 
@@ -79,9 +89,8 @@ class ViewCommonContainer extends Component {
             const col = cellEdits[0][1].split('.');
             const dataToSend = this.state.data[row][col[0]];
 
-            // temp code before save is enabled
-            this.props.messages({ content: dataToSend.value });
-            this.props.refreshGridData(dataToSend);
+            const { budget, version, view } = this.state;
+            this.props.refreshGridData(budget, version, view, dataToSend);
             // TODO
             // local store changes for save event
         }
@@ -144,12 +153,13 @@ class ViewCommonContainer extends Component {
                     currentRowClassName={'currentRow'}
                     data={this.state.data}
                     fixedColumnsLeft={1}
+                    fixedRowsTop={0}
                     formulas={false}
                     licenseKey='a389a-f2591-70b41-a480d-1911a'
                     nestedHeaders={columnTitles}
                     observeChanges={true}
                     persistentState={true}
-                    ref='hot'
+                    ref={this.setHotTableRef}
                     root='hot'
                     viewportColumnRenderingOffset={20}
                     viewportRowRenderingOffset={20}
@@ -190,6 +200,8 @@ ViewCommonContainer.propTypes = {
     router: PropTypes.object.isRequired,
     cellRenderer: PropTypes.func,
     fetchBudgetConfigData: PropTypes.func.isRequired,
+    refreshGridData: PropTypes.func.isRequired,
+    refreshData: PropTypes.bool.isRequired,
     config: PropTypes.array,
 };
 
@@ -209,8 +221,7 @@ function mapDispatchToProps(dispatch) {
         resetState,
         saveBudget,
         fetchBudgetConfigData,
-        refreshGridData,
-        messages }, dispatch);
+        refreshGridData }, dispatch);
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(ViewCommonContainer));

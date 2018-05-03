@@ -118,7 +118,7 @@ describe('BudgetViewActions', () => {
 
         it('Should handle saveNewBudgetVersion', () => {
             nock(UI_PLANNING_HOST)
-            .post('/api/planning/budgets/2/versions', { name: 'V1' })
+            .post('/api/planning/budgets/2/versions', { versionId: 'V1' })
             .reply(200, versionsDuplicate);
 
             const message = {
@@ -144,7 +144,7 @@ describe('BudgetViewActions', () => {
 
         it('Should fail saveNewBudgetVersion', () => {
             nock(UI_PLANNING_HOST)
-            .post('/api/planning/budgets/2/versions', { name: 'V1' })
+            .post('/api/planning/budgets/2/versions', { versionId: 'V1' })
             .reply(500, {
                 code: 'Foo Bar',
                 message: 'Foo Bar'

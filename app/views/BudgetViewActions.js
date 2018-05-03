@@ -63,19 +63,18 @@ export function budgetVersions(budgetId) {
     };
 }
 
-export function saveNewBudgetVersion(budgetId, name) {
+export function saveNewBudgetVersion(budgetId, versionId) {
     return (dispatch) => {
         dispatch(requestBudgetSaveNewVersion());
         return request
             .post(`${getApiUrl()}planning/budgets/${budgetId}/versions`)
-            .send({ name })
+            .send({ versionId })
             .then(
             (res) => {
                 dispatch(messages({ content: 'New Version Saved successfully!', response: '', isError: false }));
                 dispatch(receiveBudgetSaveNewVersion(res.body));
             },
             err => {
-                console.log(JSON.stringify(err));
                 dispatch(messages({ content: err, response: err.response, isError: true }));
             },
         );
