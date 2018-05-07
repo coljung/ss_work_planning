@@ -1,0 +1,41 @@
+#app{
+    .app_layout {
+        .ant-layout-sider .ant-menu {
+            position: relative;
+        }
+
+        .ant-menu-dark {
+            .ant-menu-item {
+                a{
+                    color: rgba(255, 255, 255, 0.67);
+                    font-size: 13px;
+                }
+            }
+            &.ant-menu>.ant-menu-item-divider {
+                background: #444;
+            }
+        }
+
+        .ant-menu-submenu .ant-menu-sub {
+            background: @ssense_black !important;
+        }
+        .ant-menu-submenu-popup.ant-menu-dark .ant-menu-item-selected,
+        .ant-menu.ant-menu-dark .ant-menu-item-selected {
+            background-color: @ssense_grey;
+        }
+
+        .ant-menu-dark .ant-menu-inline.ant-menu-sub {
+            background: @ssense_black;
+            box-shadow: none;
+        }
+
+        .ant-layout-sider-collapsed .anticon {
+            font-size: 16px;
+            line-height: 42px;
+        }
+
+        .ant-layout-sider-collapsed .nav-text {
+            display: none;
+        }
+    }
+}

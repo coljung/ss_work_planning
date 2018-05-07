@@ -1,8 +1,7 @@
 import agent from 'superagent';
 import wrap from 'superagent-promise';
 import { messages } from 'notifications/NotificationActions';
-import getApiUrl, { defaultMetricSequence } from '../../../Helpers.js';
-import budgetData from './grid/budgetData.json';
+import getApiUrl, { defaultMetricSequence } from '../../Helpers.js';
 
 const request = wrap(agent, Promise);
 
@@ -35,9 +34,8 @@ export const receiveBudgetSave = version => ({
     version,
 });
 
-export const requestRefreshGridData = updatedObj => ({
+export const requestRefreshGridData = () => ({
     type: REQUEST_REFRESH_GRID_DATA,
-    updatedObj,
 });
 
 export const receiveRefreshGridData = () => ({
@@ -56,25 +54,6 @@ export const receiveBudgetConfigData = config => ({
     type: RECEIVE_BUDGETS_CONFIG_DATA,
     config,
 });
-
-export function fetchBudgetData(budget, version, view, query) {
-    return (dispatch) => {
-        // merge query with the default if is not defined
-        const queryToSend = {
-            ...query,
-            metricSeq: query && query.metricSeq ? query.metricSeq : defaultMetricSequence(),
-        };
-
-        dispatch(requestBudgetViewData());
-        return request
-            .get(`${getApiUrl()}planning/budgets/${budget}/versions/${version}/${view}`)
-            .query(queryToSend)
-            .then(
-            res => dispatch(receiveBudgetViewData(budgetData, view)),
-            err => dispatch(messages({ content: err, response: err.response, isError: true })),
-        );
-    };
-}
 
 export function fetchBudgetConfigData() {
     return (dispatch) => {
@@ -106,21 +85,17 @@ export function fetchBudgetMetricData(budget, version, view, metric, query) {
     };
 }
 
-export function refreshGridData(updatedObj) {
+export function refreshGridData(budget, version, view, updatedObj) {
     return (dispatch) => {
-        dispatch(requestRefreshGridData(updatedObj));
-        const req = request.post(`${getApiUrl()}planning/config`);
-        // return req.send(updatedObj)
-        //     .then(
-        //     res => dispatch(receiveRefreshGridData(res.body)),
-        //     err => dispatch(messages({ content: err, response: err.response, isError: true })),
-        //     );
-        return request
-            .get(`${getApiUrl()}planning/config`)
+        dispatch(requestRefreshGridData());
+        const req = request.put(`${getApiUrl()}planning/budgets/${budget}/versions/${version}/${view}/metrics`);
+        return req.send(updatedObj)
             .then(
             (res) => {
-                console.log(res);
-                return dispatch(receiveRefreshGridData());
+                if (res.statusCode === 200) {
+                    return dispatch(receiveRefreshGridData());
+                }
+                return dispatch(messages({ content: 'Not OK', response: '', isError: true }));
             },
             err => dispatch(messages({ content: err, response: err.response, isError: true })),
             );

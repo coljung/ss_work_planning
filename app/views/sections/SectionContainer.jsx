@@ -6,19 +6,18 @@ import HotTable from 'react-handsontable';
 import { Button } from 'antd';
 import { withRouter } from 'react-router';
 import {
-  saveBudget,
-  fetchBudgetMetricData,
-  resetState,
-  fetchBudgetConfigData,
-  refreshGridData,
-} from './ViewActions';
-import LoadingSpinner from '../../../components/common/LoadingSpinner';
-// temp code before save is enabled
-import { messages } from '../../../notifications/NotificationActions';
+    saveBudget,
+    fetchBudgetMetricData,
+    resetState,
+    fetchBudgetConfigData,
+    refreshGridData } from './SectionActions';
+import LoadingSpinner from '../../components/common/LoadingSpinner';
 
-class ViewCommonContainer extends Component {
+class SectionContainer extends Component {
     constructor(props) {
         super(props);
+
+        const { budget, version, view } = this.props;
 
         this.state = {
             data: [],
@@ -26,12 +25,15 @@ class ViewCommonContainer extends Component {
             headers: [],
             info: {},
             season: '',
+            budget,
+            version,
+            view,
         };
         this.dataToSave = [];
 
         this.hotTableRef = null;
 
-        this.setHotTableRef = element => {
+        this.setHotTableRef = (element) => {
             this.hotTableRef = element;
         };
     }
@@ -74,7 +76,8 @@ class ViewCommonContainer extends Component {
     resize = () => this.hotTableRef.hotInstance.render();
 
     metricData = () => {
-        const { budget, version, view, config, router: { location } } = this.props;
+        const { budget, version, view } = this.state;
+        const { config, router: { location } } = this.props;
         this.props.fetchBudgetMetricData(budget, version, view, config, location.query);
     }
 
@@ -85,9 +88,8 @@ class ViewCommonContainer extends Component {
             const col = cellEdits[0][1].split('.');
             const dataToSend = this.state.data[row][col[0]];
 
-            // temp code before save is enabled
-            this.props.messages({ content: dataToSend.value });
-            this.props.refreshGridData(dataToSend);
+            const { budget, version, view } = this.state;
+            this.props.refreshGridData(budget, version, view, dataToSend);
             // TODO
             // local store changes for save event
         }
@@ -151,6 +153,7 @@ class ViewCommonContainer extends Component {
                     data={this.state.data}
                     minRows={40}
                     fixedColumnsLeft={1}
+                    fixedRowsTop={0}
                     formulas={false}
                     licenseKey='a389a-f2591-70b41-a480d-1911a'
                     nestedHeaders={columnTitles}
@@ -166,7 +169,6 @@ class ViewCommonContainer extends Component {
     };
 
     render() {
-        // && !this.props.refreshData
         const budgetListData = this.props.viewData[this.props.view] && !this.props.refreshData ? this.buildTable() : <LoadingSpinner />;
         let buttonStr = this.props.view;
         buttonStr = `${buttonStr.charAt(0).toUpperCase()}${buttonStr.slice(1)}`;
@@ -184,7 +186,7 @@ class ViewCommonContainer extends Component {
     }
 }
 
-ViewCommonContainer.propTypes = {
+SectionContainer.propTypes = {
     viewData: PropTypes.oneOfType([PropTypes.array, PropTypes.object]).isRequired,
     viewDataFetched: PropTypes.bool.isRequired,
     saveBudget: PropTypes.func.isRequired,
@@ -192,21 +194,23 @@ ViewCommonContainer.propTypes = {
     resetState: PropTypes.func.isRequired,
     budget: PropTypes.string.isRequired,
     version: PropTypes.string.isRequired,
-    location: PropTypes.string.isRequired,
+    location: PropTypes.object.isRequired,
     view: PropTypes.string.isRequired,
     router: PropTypes.object.isRequired,
     cellRenderer: PropTypes.func,
     fetchBudgetConfigData: PropTypes.func.isRequired,
+    refreshGridData: PropTypes.func.isRequired,
+    refreshData: PropTypes.bool.isRequired,
     config: PropTypes.array,
 };
 
 function mapStateToProps(state) {
-    const { ViewReducers } = state;
+    const { SectionReducers } = state;
     return {
-        viewData: ViewReducers.viewData,
-        viewDataFetched: ViewReducers.viewDataFetched,
-        config: ViewReducers.config.available_metrics,
-        refreshData: ViewReducers.refreshData,
+        viewData: SectionReducers.viewData,
+        viewDataFetched: SectionReducers.viewDataFetched,
+        config: SectionReducers.config.available_metrics,
+        refreshData: SectionReducers.refreshData,
     };
 }
 
@@ -216,8 +220,7 @@ function mapDispatchToProps(dispatch) {
         resetState,
         saveBudget,
         fetchBudgetConfigData,
-        refreshGridData,
-        messages }, dispatch);
+        refreshGridData }, dispatch);
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(ViewCommonContainer));
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(SectionContainer));

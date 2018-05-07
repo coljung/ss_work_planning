@@ -3,8 +3,7 @@ import { REQUEST_BUDGETS_VIEW,
          RESET_BUDGETS_VIEW,
          REQUEST_BUDGETS_CONFIG_DATA,
          RECEIVE_BUDGETS_CONFIG_DATA,
-         REQUEST_REFRESH_GRID_DATA,
-         RECEIVE_REFRESH_GRID_DATA } from './ViewActions';
+         RECEIVE_REFRESH_GRID_DATA } from './SectionActions';
 
 const initialState = {
     viewData: [],

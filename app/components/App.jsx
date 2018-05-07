@@ -27,7 +27,7 @@ export default class App extends Component {
 
     render() {
         return (
-            <div className="store_layout">
+            <div className="app_layout">
                 <Header>
                     <Icon
                         className="trigger"

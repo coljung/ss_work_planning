@@ -6,8 +6,8 @@ import HotTable from 'react-handsontable';
 import { MemoryRouter } from 'react-router-dom';
 import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
-import ViewCommonContainer from 'top_down/common/ViewCommonContainer';
-import LoadingSpinner from '../../../../../app/components/common/LoadingSpinner';
+import SectionContainer from '../../../../app/views/sections/SectionContainer';
+import LoadingSpinner from '../../../../app/components/common/LoadingSpinner';
 
 Enzyme.configure({ adapter: new Adapter() });
 
@@ -40,7 +40,7 @@ const initialState = {
 function setup(props = {}) {
     let store = configureMockStore([thunk])({
         ...initialState,
-        ViewReducers: {
+        SectionReducers: {
             viewData: props.viewData,
             viewDataFetched: props.viewDataFetched,
             config: props.config,
@@ -49,7 +49,7 @@ function setup(props = {}) {
 
     const wrapper = mount(
         <MemoryRouter>
-            <ViewCommonContainer {...props} store={store} />
+            <SectionContainer {...props} store={store} />
         </MemoryRouter>
     );
 
@@ -59,7 +59,7 @@ function setup(props = {}) {
     };
 }
 
-describe('Top Down ViewCommonContainer', () => {
+describe('Top Down SectionContainer', () => {
     it('should render loading spinner while fetching', () => {
         const { wrapper } = setup(initialProps);
 
