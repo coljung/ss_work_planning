@@ -95,12 +95,27 @@
     .ant-layout .ant-tabs-content .parentDiv {
         // height: @view-height;
         height: ~"calc(100% - 18vh)";
-        overflow: scroll;
+        overflow-y: scroll;
+    }
+
+    .wtHolder {
+        // height: @view-height;
+        overflow-y: scroll;
+    }
+    
+    // .wtSpreader {
+    //     height: @view-height;
+    //     overflow: hidden;
+    // }
+
+    table.htCore {
+        // height: @view-height;
+        overflow: hidden;
     }
 
     .ht_master.handsontable {
-        height: @view-height;
-        // overflow: hidden;
+        // height: @view-height;
+        // overflow-x: scroll;
     }
 
     .budgetBody {
