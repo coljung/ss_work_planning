@@ -1,49 +1,33 @@
 import Handsontable from 'handsontable';
-import { TAB_TOTAL } from '../../BudgetViewsContainer';
 import {
-    enableCellValidDate, disableEdit, enableEdit, emptyCell,
-    percentageFormat, currencyFormat, borderBottom,
-} from '../../TableHelpers';
+    borderBottom,
+    percentageFormat,
+    currencyFormat,
+    emptyCell } from '../../components/TableHelpers';
 
 export function cellValueRenderer(instance, td, row, col, prop, value, cellProperties) {
+    if ((row === 0 && col > 0) || (row === 5 && col > 1) || (row === 10 && col > 1)) {
+        td.style.background = '#eee';
+    }
+
+    // styling border for each metric
+    const rowSpan = 4;
+    borderBottom(row, rowSpan, td, col);
+
     // styling border left per section
     // borderLeft(this.state.columnData.leftBorderColumns, prop, td);
 
-    // styling border for each metric
-    const rowSpan = this.state.info.row_span;
-    borderBottom(row, rowSpan, td, col);
-
-    const propertyPath = prop;
-    const split = propertyPath.split('.');
+    const split = prop.split('.');
     const metricInformation = this.state.data[row][split[0]];
 
     if (metricInformation && metricInformation.isReadOnly !== undefined) {
         instance.setCellMeta(row, col, 'readOnly', metricInformation.isReadOnly);
     }
 
-    if (this.props.view === TAB_TOTAL) {
-        disableEdit(instance, row, col);
-        /*
-    } else if (col > 7) {
-        const currentRowSeasonYear = instance.getDataAtCell(row, 1);
-        const compareCodes = enableCellValidDate(prop, currentRowSeasonYear);
-
-        // if code combination of this cell's year + month greater than the actual month / year, then enable field
-        if (compareCodes.cellCode >= compareCodes.viewCode && this.props.view !== TAB_TOTAL) {
-            enableEdit(instance, row, col);
-        }
-
-        // similar logic to 'future', but here we check the next column instead of the previous
-        if (((this.state.season === 'FW' && prop === 'feb1') || (this.state.season === 'SS' && prop === 'aug0')) && this.props.view !== TAB_TOTAL) {
-            enableEdit(instance, row, col - 1);
-        }
-        */
-    }
-
     if (metricInformation && metricInformation.dataType !== undefined) {
         if ((metricInformation.dataType === 'currency'
-                || metricInformation.dataType === 'percentage'
-                || metricInformation.dataType === 'number')
+            || metricInformation.dataType === 'percentage'
+            || metricInformation.dataType === 'number')
             && isNaN(parseInt(value, 10))) {
             return emptyCell(instance, td, row, col);
         }
@@ -72,9 +56,8 @@ export function cellValueRenderer(instance, td, row, col, prop, value, cellPrope
         return emptyCell(instance, td, row, col);
     }
 
-    // disableRowCell(this.state.columnData.disabledRows || [], instance, row, col);
-    // percentageRow(this.state.columnData.percentageRows || [], instance, row, col);
-    // numberRow(this.state.columnData.numberRows || [], instance, row, col);
+    // percentageRow(this.state.columnData.percentageRows, instance, row, col);
+    // numberRow(this.state.columnData.numberRows, instance, row, col);
 
     return td;
 }

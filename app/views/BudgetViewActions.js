@@ -67,7 +67,7 @@ export function saveNewBudgetVersion(budgetId, versionId) {
     return (dispatch) => {
         dispatch(requestBudgetSaveNewVersion());
         return request
-            .post(`${getApiUrl()}planning/budgets/${budgetId}/versions/duplicate`)
+            .post(`${getApiUrl()}planning/budgets/${budgetId}/versions`)
             .send({ versionId })
             .then(
             (res) => {
@@ -75,6 +75,6 @@ export function saveNewBudgetVersion(budgetId, versionId) {
                 dispatch(receiveBudgetSaveNewVersion(res.body));
             },
             err => dispatch(messages({ content: err, response: err.response, isError: true })),
-            );
+        );
     };
 }

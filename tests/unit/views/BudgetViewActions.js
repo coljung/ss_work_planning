@@ -118,11 +118,8 @@ describe('BudgetViewActions', () => {
 
         it('Should handle saveNewBudgetVersion', () => {
             nock(UI_PLANNING_HOST)
-            .post('/api/planning/budgets/2/versions/duplicate')
-            .query(true)
-            .replyWithFile(200, join(__dirname, '..', '..', 'fixtures', 'versionsDuplicate.json'), {
-                'Content-Type': 'application/json'
-            });
+            .post('/api/planning/budgets/2/versions', { versionId: 'V1' })
+            .reply(200, versionsDuplicate);
 
             const message = {
                 content: 'New Version Saved successfully!',
@@ -139,7 +136,7 @@ describe('BudgetViewActions', () => {
 
             const store = mockStore({ BudgetViewActions: [] });
 
-            return store.dispatch(actions.saveNewBudgetVersion(2, 3)).then(() => {
+            return store.dispatch(actions.saveNewBudgetVersion(2, 'V1')).then(() => {
                 // return of async actions
                 expect(store.getActions()).toEqual(expectedActions)
             })
@@ -147,8 +144,7 @@ describe('BudgetViewActions', () => {
 
         it('Should fail saveNewBudgetVersion', () => {
             nock(UI_PLANNING_HOST)
-            .post('/api/planning/budgets/2/versions/duplicate')
-            .query(true)
+            .post('/api/planning/budgets/2/versions', { versionId: 'V1' })
             .reply(500, {
                 code: 'Foo Bar',
                 message: 'Foo Bar'

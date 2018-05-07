@@ -1,129 +1,58 @@
 #app{
-    .store_layout {
-      height: 100vh;
-      .ant-layout{
-          // height: ~"calc(100% - 64px)";
-          min-height: 100%;
-          background: #fff;
-          padding-top: 5rem;
-      }
-      .ant-layout-header{
-          background-color: @ssense_black;
-              background-color: #fff;
-          z-index: 100;
-          box-shadow: 0 2px 5px rgba(0, 0, 0, 0.26);
-              box-shadow: 0 0 5px rgba(0, 0, 0, 0.26);
-          padding: 0 20px 0 0;
-          height: 5rem;
-          color: white;
-          position: fixed;
-          top: 0;
-          left: 0;
-          width: 100%;
-          display:flex;
-          flex-direction: row;
-      }
-    }
-
-    .ant-layout-sider .ant-menu {
-        position: relative;
-    }
-
-    .ant-menu-dark {
-    	.ant-menu-item {
-    		a{
-    			color: rgba(255, 255, 255, 0.67);
-    			font-size: 13px;
-    		}
-    	}
-        &.ant-menu>.ant-menu-item-divider {
-            background: #444;
+    .app_layout {
+        height: 100vh;
+        .ant-layout{
+            // height: ~"calc(100% - 64px)";
+            min-height: 100%;
+            background: #fff;
+            padding-top: 5rem;
         }
     }
+    .ant-layout-header {
+        background-color: @ssense_black;
+        background-color: #fff;
+        z-index: 100;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.26);
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.26);
+        padding: 0 20px 0 0;
+        height: 5rem;
+        color: white;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        display:flex;
+        flex-direction: row;
+        .trigger {
+            min-width: 80px;
+            color: #fff;
+            font-size: 18px;
+            line-height: 5rem;
+            vertical-align: top;
+            padding: 0 16px;
+            cursor: pointer;
+            transition: color .3s;
+            background: @ssense_black;
+            margin-right: 25px;
+            &.anticon-menu-fold{
+                background: #fff;
+                color: @ssense_black;
+            }
+        }
 
-    .ant-menu-submenu .ant-menu-sub {
-      background: @ssense_black !important;
-    }
-    .ant-menu-submenu-popup.ant-menu-dark .ant-menu-item-selected,
-    .ant-menu.ant-menu-dark .ant-menu-item-selected {
-      background-color: @ssense_grey;
-    }
+        .trigger:hover {
+            color: #ccc;
+        }
 
-    .ant-menu-dark .ant-menu-inline.ant-menu-sub {
-      background: @ssense_black;
-      box-shadow: none;
-    }
+        .ant-menu {
+            margin-left: auto;
+            line-height: 63px;
+        }
 
-    .ant-layout-sider-collapsed .anticon {
-    	font-size: 16px;
-        line-height: 42px;
-    }
-
-    .ant-layout-sider-collapsed .nav-text {
-    	display: none;
-    }
-
-    .ant-tabs-nav-wrap {
-      height: 45px;
-      margin-bottom: 30px;
-    }
-    .ant-tabs-nav {
-      display: flex;
-      flex-direction: row;
-    }
-    .ant-tabs-nav .ant-tabs-tab {
-      height: 45px !important;
-    }
-    .ant-tabs-nav .ant-tabs-tab {
-      color: @ssense_grey;
-      text-transform: uppercase;
-      flex: 1;
-      text-align: center;
-    }
-    .ant-tabs-nav .ant-tabs-tab-active {
-      color: @ssense_black;
-    }
-    .ant-tabs-ink-bar {
-      background-color: @ssense_black;
-    }
-    .ant-tabs-nav .ant-tabs-tab.ant-tabs-tab-disabled {
-      color: tint(@ssense_grey, 50%);
-    }
-
-    .ant-fullcalendar-header .ant-radio-group {
-        display: none;
-    }
-
-    .ant-fullcalendar-header .ant-select {
-        width: auto !important;
-    }
-
-    .ant-fullcalendar-date {
-        font-size: 13px;
-    }
-
-    .ant-fullcalendar-date .appointments {
-        line-height: 24px;
-        list-style: none;
-        margin: 0;
-        padding: 0;
-    }
-
-    .ant-fullcalendar-date .appointments li {
-        color: #999;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-    }
-
-    .ant-fullcalendar-date .appointments li span:first-child {
-        font-size: 9px;
-        margin-right: 4px;
-    }
-
-    .ant-fullcalendar-date .appointments li span {
-        vertical-align: middle;
-        color: #108ee9;
+        .ant-dropdown-link {
+            height: 100%;
+            width: 100%;
+        }
     }
 
 }
