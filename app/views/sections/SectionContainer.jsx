@@ -141,7 +141,7 @@ class SectionContainer extends Component {
         const columnInfos = this.createColumnInfos(Object.getOwnPropertyNames(this.state.data.length ? this.state.data[0] : []));
 
         return (
-            <div className="parentDiv">
+            <div className={`${this.state.view}-view parentDiv`}>
                 <HotTable
                     afterChange={this.changeCell}
                     colHeaders={true}

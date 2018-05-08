@@ -1,5 +1,7 @@
 import moment from 'moment';
 
+const currentYear = moment().format('YY');
+
 export const currencyFormat = {
     pattern: '$0,000',
     culture: 'en-US',
@@ -21,6 +23,14 @@ export const borderBottom = (row, rowSpan, td) => {
     }
 };
 
+// grid color
+export const gridColors = (season, td) => {
+    if (season === currentYear) {
+        td.className += ' actualYear';
+    } else if (season === (currentYear - 1).toString()) {
+        td.className += ' prevYear';
+    }
+};
 /*
 export const percentageRow = (rows, instance, row, col) => {
     const metricName = instance.getDataAtCell(row, 0);

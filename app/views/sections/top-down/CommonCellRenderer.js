@@ -7,6 +7,7 @@ import {
     emptyCell,
     percentageFormat,
     borderBottom,
+    gridColors,
     currencyFormat } from '../../components/TableHelpers';
 
 export function cellValueRenderer(instance, td, row, col, prop, value, cellProperties) {
@@ -18,9 +19,16 @@ export function cellValueRenderer(instance, td, row, col, prop, value, cellPrope
     const propertyPath = prop;
     const split = propertyPath.split('.');
     const metricInformation = this.state.data[row][split[0]];
-console.log(metricInformation);
+
     if (metricInformation && metricInformation.isReadOnly !== undefined) {
         instance.setCellMeta(row, col, 'readOnly', metricInformation.isReadOnly);
+    }
+
+    if (metricInformation.dataRow === 'tdwp') {
+        // get this from json TODO
+        const currentRowValue = this.state.data[row]['metric'].value;
+        const currentRowSeason = currentRowValue.split('- ')[1].slice(2, 4);
+        gridColors(currentRowSeason, td);
     }
 
     if (this.props.view === TAB_TOTAL) {
