@@ -175,11 +175,13 @@ class SectionContainer extends Component {
 
         return (
             <div>
-                <Button
+                {/*
+                    <Button
                     icon="save"
                     className="saveBtn"
                     disabled={this.state.canSave}
                     onClick={() => this.save()}>Save {buttonStr} view</Button>
+                */}
                 {budgetListData}
             </div>
         );
