@@ -2,7 +2,7 @@
 
 exports[`App should render correctly 1`] = `
 <div
-  className="store_layout"
+  className="app_layout"
 >
   <div
     className="ant-layout-header"

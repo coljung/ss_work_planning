@@ -151,9 +151,8 @@ class SectionContainer extends Component {
                     currentColClassName={'currentCol'}
                     currentRowClassName={'currentRow'}
                     data={this.state.data}
-                    minRows={40}
                     fixedColumnsLeft={1}
-                    fixedRowsTop={0}
+                    fixedRowsTop={1}
                     formulas={false}
                     licenseKey='a389a-f2591-70b41-a480d-1911a'
                     nestedHeaders={columnTitles}
@@ -175,11 +174,11 @@ class SectionContainer extends Component {
 
         return (
             <div>
-                <Button
+                {/* <Button
                     icon="save"
                     className="saveBtn"
                     disabled={this.state.canSave}
-                    onClick={() => this.save()}>Save {buttonStr} view</Button>
+                    onClick={() => this.save()}>Save {buttonStr} view</Button> */}
                 {budgetListData}
             </div>
         );

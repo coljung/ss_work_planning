@@ -6,11 +6,14 @@ import {
     enableEdit,
     emptyCell,
     percentageFormat,
+    borderBottom,
     currencyFormat } from '../../components/TableHelpers';
 
 export function cellValueRenderer(instance, td, row, col, prop, value, cellProperties) {
-    // styling border left per section
-    // borderLeft(this.state.columnData.leftBorderColumns, prop, td);
+
+    // styling border for each metric
+    const rowSpan = this.state.info.row_span;
+    borderBottom(row, rowSpan, td, col);
 
     const propertyPath = prop;
     const split = propertyPath.split('.');
