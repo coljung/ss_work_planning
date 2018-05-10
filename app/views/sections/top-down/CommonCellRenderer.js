@@ -20,17 +20,19 @@ export function cellValueRenderer(instance, td, row, col, prop, value, cellPrope
     const split = propertyPath.split('.');
     const metricInformation = this.state.data[row][split[0]];
 
-    if (metricInformation && metricInformation.isReadOnly !== undefined) {
-        instance.setCellMeta(row, col, 'readOnly', metricInformation.isReadOnly);
-    }
+    if (metricInformation) {
+        if (metricInformation.isReadOnly !== undefined) {
+            instance.setCellMeta(row, col, 'readOnly', metricInformation.isReadOnly);
+        }
 
-    if (metricInformation.dataRow === 'tdwp' || metricInformation.dataRow === 'achd') {
-        // get this from json TODO
-        const budgetYear = (this.state.info.year).slice(2, 4);
-        const currentRowValue = this.state.data[row]['metric'].value;
-        const currentRowSeason = currentRowValue.split('- ')[1].slice(2, 4);
-        if (budgetYear === currentRowSeason) {
-            gridColors(metricInformation.dataRow, td);
+        if (metricInformation.dataRow === 'tdwp' || metricInformation.dataRow === 'achd') {
+            // get this from json TODO
+            const budgetYear = (this.state.info.year).slice(2, 4);
+            const currentRowValue = this.state.data[row].metric.value;
+            const currentRowSeason = currentRowValue.split('- ')[1].slice(2, 4);
+            if (budgetYear === currentRowSeason) {
+                gridColors(metricInformation.dataRow, td);
+            }
         }
     }
 
