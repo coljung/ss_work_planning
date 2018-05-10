@@ -5,12 +5,11 @@
         background: white;
         // height: 78vh;
         overflow: hidden;
-
+        border-top: 1px solid #777;
         .handsontable{
 
             table.htCore{
-                border: 1px solid #555;
-                border-left: none;
+                border-right: 2px solid #999;
                 .headerCell{
                     padding: 3px 8px;
                     font-weight: bold;
@@ -21,12 +20,9 @@
                     word-wrap: break-word;
                 }
                 thead{
-                    // th {
-                    //     background: #ddd;
-                    //     // border:none;
-                    //     padding: 3px 8px;
-                    //     font-size: 13px;
-                    // }
+                    th .relative {
+                        padding: 0 !important;
+                    }
                     tr:first-child th {
                       border: none;
                       border-bottom: 1px solid @ssense_grey;
@@ -41,11 +37,9 @@
                     white-space: pre;
                 }
                 th{
-                    // border-left: 1px solid #999;
-                    // border-bottom: 1px solid #999;
                     border-top: none;
-                    color: #fff;
-                    background: @ssense_black;
+                    color: @ssense_black;
+                    background: #ddd;
                     font-size: 11px;
                     font-weight: normal;
                 }
@@ -54,13 +48,26 @@
                 }
                 tbody th{
                     padding: 3px 0;
+                    border-bottom-color: @ssense_grey;
+                    border-right: 1px solid @ssense_grey;
                 }
                 td.currentRow, td.currentCol{
-                    background: #f9f9f9;
+                    background: #f1f1f1;
                 }
                 .current{
-                    background: #e2f5e0;
+                    background: #ddd;
                 }
+            }
+            td:not(.htDimmed).htNumeric {
+                color: @ssense_black !important;
+                font-weight: bold;
+                // background-color: #eef9ed;
+            }
+            td.htDimmed.htNumeric {
+              color: @ssense_grey;
+            }
+            td.cellNA {
+                color: #777 !important;
             }
             .ht_clone_top_left_corner {
               tr:last-child th{
@@ -69,16 +76,29 @@
               }
             }
             .leftCellBorder{
-                border-left: 1px solid #555;
+                border-left: 2px solid #999;
             }
             .bottomCellBorder{
-                border-bottom: 1px solid #555;
+                border-bottom: 2px solid #999;
             }
             .metricCell{
                 padding-right: 20px !important;
             }
             .cellNA{
                 text-align: right;
+            }
+            .tdwpActive{
+                background: rgba(244, 237, 214, 1);
+                &.htDimmed, &.cellNA {
+                    background: rgba(244, 237, 214, 0.7);
+                }
+            }
+            .actualActive{
+                background: rgba(194, 225, 243, 1);
+            }
+            .ht_clone_left td {
+              border-right: none;
+              // border-bottom: 1px solid @ssense_grey;
             }
         }
     }

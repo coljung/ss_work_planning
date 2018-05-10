@@ -1,6 +1,5 @@
 import { expect } from 'chai';
 import Handsontable from 'handsontable';
-// import { cellValueRenderer } from 'views_path/sections/top-down/CommonCellRenderer';
 import { cellValueRenderer } from '../../../../../app/views/sections/top-down/CommonCellRenderer';
 import * as sinon from 'sinon';
 import { currencyFormat, percentageFormat } from '../../../../../app/views/components/TableHelpers';
@@ -12,7 +11,7 @@ const createCell = (instance, row, col, data = {}, value = '', props = {}) => {
             data: [],
             info: [],
         },
-        props
+        props,
     };
 
     for (let i = 0; i <= row; i++) {

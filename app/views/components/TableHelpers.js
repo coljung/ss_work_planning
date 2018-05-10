@@ -21,6 +21,14 @@ export const borderBottom = (row, rowSpan, td) => {
     }
 };
 
+// grid color
+export const gridColors = (dataRow, td) => {
+    if (dataRow === 'tdwp') {
+        td.className += ' tdwpActive';
+    } else if (dataRow === 'achd') {
+        td.className += ' actualActive';
+    }
+};
 /*
 export const percentageRow = (rows, instance, row, col) => {
     const metricName = instance.getDataAtCell(row, 0);
