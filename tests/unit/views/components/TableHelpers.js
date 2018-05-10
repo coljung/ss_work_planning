@@ -8,6 +8,7 @@ import {
     percentageFormat,
     enableEdit,
     disableEdit,
+    gridColors,
     emptyCell } from '../../../../app/views/components/TableHelpers';
 
 describe('Helper functions', () => {
@@ -35,6 +36,9 @@ describe('Helper functions', () => {
             const td = document.createElement("td");
             borderLeft(leftBorderCols, 'stdpremarkdown', td);
             expect(td.className).to.contain(' leftCellBorder');
+            const td2 = document.createElement("td");
+            borderLeft(leftBorderCols, 'noclass', td2);
+            expect(td2.className).not.contain(' leftCellBorder');
         });
     });
 
@@ -43,6 +47,19 @@ describe('Helper functions', () => {
             const td = document.createElement("td");
             borderBottom(4, 5, td, 10);
             expect(td.className).to.contain(' bottomCellBorder');
+        });
+    });
+
+    describe('Grid Classes', () => {
+        it('should return proper class for gridColors function', () => {
+            const td = document.createElement("td");
+            gridColors('tdwp', td);
+            expect(td.className).to.contain(' tdwpActive');
+            gridColors('achd', td);
+            expect(td.className).to.contain(' actualActive');
+            const td2 = document.createElement("td");
+            gridColors('test', td2);
+            expect(td2.className).not.contain(' actualActive tdwpActive');
         });
     });
 

@@ -2,7 +2,7 @@ import { expect } from 'chai';
 import Handsontable from 'handsontable';
 import { cellValueRenderer } from '../../../../../app/views/sections/top-down/CommonCellRenderer';
 import * as sinon from 'sinon';
-import { currencyFormat, percentageFormat, gridColors } from '../../../../../app/views/components/TableHelpers';
+import { currencyFormat, percentageFormat } from '../../../../../app/views/components/TableHelpers';
 import { TAB_TOTAL } from '../../../../../app/views/BudgetViewsContainer';
 
 const createCell = (instance, row, col, data = {}, value = '', props = {}) => {
