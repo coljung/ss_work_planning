@@ -86,10 +86,20 @@ class SectionContainer extends Component {
         if (cellEdits) {
             const row = cellEdits[0][0];
             const col = cellEdits[0][1].split('.');
-            const dataToSend = this.state.data[row][col[0]];
+            const prevValue = cellEdits[0][2];
+            const newValue = cellEdits[0][3];
 
-            const { budget, version, view } = this.state;
-            this.props.refreshGridData(budget, version, view, dataToSend);
+            // future test if cell is numeric
+            const isNumValue = this.hotTableRef.hotInstance.getCellMeta(row, col).numericFormat;
+
+            // handsontable converts to string
+            if (parseInt(prevValue, 10) !== parseInt(newValue, 10)) {
+                const dataToSend = this.state.data[row][col[0]];
+
+                const { budget, version, view } = this.state;
+                this.props.refreshGridData(budget, version, view, dataToSend);
+            }
+
             // TODO
             // local store changes for save event
         }
