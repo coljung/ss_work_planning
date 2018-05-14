@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import HotTable from 'react-handsontable';
-import { Button } from 'antd';
+import { Button, Spin } from 'antd';
 import { withRouter } from 'react-router';
 import {
     saveBudget,
@@ -139,9 +139,10 @@ class SectionContainer extends Component {
     buildTable = () => {
         const columnTitles = this.state.headers;
         const columnInfos = this.createColumnInfos(Object.getOwnPropertyNames(this.state.data.length ? this.state.data[0] : []));
-
+        const refreshLoad = this.props.spreadingData ? (<div className="refreshLoad"><LoadingSpinner /></div>) : null;
         return (
             <div className={`${this.state.view}-view parentDiv`}>
+                {refreshLoad}
                 <HotTable
                     afterChange={this.changeCell}
                     colHeaders={true}
@@ -200,6 +201,7 @@ SectionContainer.propTypes = {
     fetchBudgetConfigData: PropTypes.func.isRequired,
     refreshGridData: PropTypes.func.isRequired,
     refreshData: PropTypes.bool.isRequired,
+    spreadingData: PropTypes.bool.isRequired,
     config: PropTypes.array,
 };
 
@@ -210,6 +212,7 @@ function mapStateToProps(state) {
         viewDataFetched: SectionReducers.viewDataFetched,
         config: SectionReducers.config.available_metrics,
         refreshData: SectionReducers.refreshData,
+        spreadingData: SectionReducers.spreadingData,
     };
 }
 

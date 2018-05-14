@@ -17,6 +17,7 @@ describe('SectionReducer', () => {
             config: [],
             viewDataFetched: false,
             refreshData: false,
+            spreadingData: false,
         };
     });
 
@@ -30,6 +31,7 @@ describe('SectionReducer', () => {
             config: [],
             viewDataFetched: false,
             refreshData: false,
+            spreadingData: false,
         })
     });
 
@@ -39,12 +41,7 @@ describe('SectionReducer', () => {
                 type: actions.RESET_BUDGETS_VIEW,
                 type: actions.REQUEST_BUDGETS_CONFIG_DATA,
             })
-        ).toEqual({
-            viewData: [],
-            config: [],
-            viewDataFetched: false,
-            refreshData: false,
-        });
+        ).toEqual(initialState);
 
         expect(
             reducer(undefined, {
@@ -55,6 +52,7 @@ describe('SectionReducer', () => {
             config: [],
             viewDataFetched: false,
             refreshData: false,
+            spreadingData: false,
         });
     });
 
@@ -83,6 +81,21 @@ describe('SectionReducer', () => {
             config: [],
             viewDataFetched: false,
             refreshData: true,
+            spreadingData: false,
+        });
+    });
+
+    it('should handle REQUEST_REFRESH_GRID_DATA', () => {
+        expect(
+            reducer(undefined, {
+                type: actions.REQUEST_REFRESH_GRID_DATA,
+            })
+        ).toEqual({
+            viewData: [],
+            config: [],
+            viewDataFetched: false,
+            refreshData: false,
+            spreadingData: true,
         });
     });
 
@@ -131,55 +144,5 @@ describe('SectionReducer', () => {
         // })
     });
 
-    // it('should handle RECEIVE_BUDGETS_VIEW', () => {
-    //   expect(
-    //     reducer(undefined, {
-    //       type: actions.RECEIVE_BUDGETS_VIEW,
-    //       budgets: {
-    //         data: [
-    //           { foo: 'bar' }
-    //         ]
-    //       }
-    //     })
-    //   ).toEqual({
-    //       budgets: [
-    //         { foo: 'bar' }
-    //       ],
-    //       seasons: [],
-    //       budgetsFetched: true,
-    //       seasonsFetched: false,
-    //   })
-    // });
-
-    // it('should handle RESET_BUDGETS_VIEW', () => {
-    //   expect(
-    //     reducer(undefined, {
-    //       type: actions.RECEIVE_BUDGETS_SAVE_NEW_VERSION,
-    //     })
-    //   ).toEqual({
-    //       viewData: [],
-    //       viewDataFetched: false,
-    //   })
-    // });
-
-    // it('should handle RECEIVE_BUDGETS_SAVE_NEW_VERSION', () => {
-    //   const state = {
-    //       newVersion: null,
-    //       versions: [],
-    //   };
-    //
-    //   expect(
-    //     reducer(state, {
-    //       type: actions.RECEIVE_BUDGETS_SAVE_NEW_VERSION,
-    //       version: { hello: 'world' }
-    //     })
-    //   ).toEqual({
-    //       newVersion: { hello: 'world' },
-    //       versions: [],
-    //   })
-    // });
-    //
-    //
-    //
 
 });

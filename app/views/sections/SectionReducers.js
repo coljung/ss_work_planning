@@ -3,13 +3,15 @@ import { REQUEST_BUDGETS_VIEW,
          RESET_BUDGETS_VIEW,
          REQUEST_BUDGETS_CONFIG_DATA,
          RECEIVE_BUDGETS_CONFIG_DATA,
-         RECEIVE_REFRESH_GRID_DATA } from './SectionActions';
+         RECEIVE_REFRESH_GRID_DATA,
+         REQUEST_REFRESH_GRID_DATA } from './SectionActions';
 
 const initialState = {
     viewData: [],
     config: [],
     viewDataFetched: false,
     refreshData: false,
+    spreadingData: false,
 };
 
 export default (state = initialState, action) => {
@@ -36,9 +38,15 @@ export default (state = initialState, action) => {
             return Object.assign({}, state, {
                 config: action.config,
             });
+        case REQUEST_REFRESH_GRID_DATA:
+            return Object.assign({}, state, {
+                refreshData: false,
+                spreadingData: true,
+            });
         case RECEIVE_REFRESH_GRID_DATA:
             return Object.assign({}, state, {
                 refreshData: true,
+                spreadingData: false,
             });
         default:
             return state;

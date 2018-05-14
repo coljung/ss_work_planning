@@ -88,10 +88,12 @@ export function fetchBudgetMetricData(budget, version, view, metric, query) {
 export function refreshGridData(budget, version, view, updatedObj) {
     return (dispatch) => {
         dispatch(requestRefreshGridData());
+        console.log('before');
         const req = request.put(`${getApiUrl()}planning/budgets/${budget}/versions/${version}/${view}/metrics`);
         return req.send(updatedObj)
             .then(
             (res) => {
+                console.log('after');
                 if (res.statusCode === 200) {
                     return dispatch(receiveRefreshGridData());
                 }
