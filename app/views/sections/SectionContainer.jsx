@@ -172,7 +172,7 @@ class SectionContainer extends Component {
                     ref={this.setHotTableRef}
                     root='hot'
                     viewportColumnRenderingOffset={20}
-                    viewportRowRenderingOffset={20}
+                    viewportRowRenderingOffset={100}
                 />
             </div>
         );
