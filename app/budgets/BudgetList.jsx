@@ -40,6 +40,7 @@ class BudgetList extends Component {
 
         // take latest 4 budgets
         const recentBudgets = hasVersions.slice(0, 4).map((budget) => {
+
             const url = `${ROUTE_BUDGET}/${budget.season}${budget.year}/budget/${budget.id}/version/${budget.versions[0].name}/${budget.versions[0].id}/exec`;
             return (
                 <li key={budget.id}>
@@ -54,7 +55,6 @@ class BudgetList extends Component {
             );
         });
 
-
         // take rest of  4 budgets
         this.restOfBudgets = hasVersions.slice(4).map(budget =>
             <li key={budget.id}>
@@ -65,10 +65,11 @@ class BudgetList extends Component {
                 </h4>
             </li>,
         );
+        const budgetListContent = this.props.budgets.length ? recentBudgets : <p>No budgets were created previously</p>;
 
         return (
             <ul className="budgetList">
-                {recentBudgets}
+                {budgetListContent}
             </ul>
         );
     }
