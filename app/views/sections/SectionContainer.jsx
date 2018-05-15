@@ -93,7 +93,7 @@ class SectionContainer extends Component {
             const isNumValue = this.hotTableRef.hotInstance.getCellMeta(row, col).numericFormat;
 
             // handsontable converts to string
-            if (parseInt(prevValue, 10) !== parseInt(newValue, 10)) {
+            if (parseFloat(prevValue, 10) !== parseFloat(newValue, 10)) {
                 const dataToSend = this.state.data[row][col[0]];
 
                 const { budget, version, view } = this.state;
