@@ -145,14 +145,14 @@ class BudgetViewsContainer extends Component {
             <div>
                 <div className="budgetHeader">
                     <Row type="flex" justify="start" className="innerHeader">
-                        <Col span={12} className="col">
+                        <Col span={8} className="col">
                             <BudgetVersionMenu
                                 versions={this.props.versions}
                                 currentSeason={this.state.seasonName}
                                 currentVersion={this.state.versionName}
                                 handleClick={this.handleVersionClick} />
                         </Col>
-                        <Col span={12} className="col">
+                        <Col span={16} className="col">
                             <BudgetViewsButtonActions saveNew={() => this.saveNewVersion(budgetSeasonId, versionId)} />
                         </Col>
                     </Row>
