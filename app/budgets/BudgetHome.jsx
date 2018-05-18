@@ -28,7 +28,7 @@ export default class BudgetHome extends Component {
     render() {
         return (
             <Row>
-                <Col xs={8}>
+                <Col xs={12}>
                     <Board title="Budgets Dashboard" style={{ paddingTop: '25px' }}>
                         <BudgetList
                             visible={this.state.viewArchivedModalActive}
@@ -36,7 +36,7 @@ export default class BudgetHome extends Component {
                         <BudgetCreate
                             visible={this.state.createModalActive}
                             onOverlayClick={this.toggleCreateModal.bind(this)} />
-                        <Row type="flex" justify="end">
+                        <Row type="flex" justify="start">
                             <Col>
                                  <Button size="large" icon="file" type="primary" onClick={this.toggleCreateModal}>Create New Budget</Button>
                                  <Button style={{ marginLeft: '20px' }} size="large" icon="line-chart" onClick={this.toggleViewArchivedModal}>View Older Budgets</Button>
