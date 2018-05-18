@@ -34,14 +34,12 @@ class BudgetList extends Component {
 
     createList = () => {
         const { budgets } = this.props;
-        let budgetListContent = this.props;
         const hasVersions = budgets
           .filter(budget => budget.versions.length)
           .sort(this.orderBudgets); // sort by most recent
 
         // take latest 4 budgets
         const recentBudgets = hasVersions.slice(0, 4).map((budget) => {
-
             const url = `${ROUTE_BUDGET}/${budget.season}${budget.year}/budget/${budget.id}/version/${budget.versions[0].name}/${budget.versions[0].id}/exec`;
 
             return (
@@ -56,7 +54,7 @@ class BudgetList extends Component {
                 </li>
             );
         });
-        budgetListContent = this.props.budgets.length ? recentBudgets : <p>No budgets were created previously</p>;
+        const budgetListContent = this.props.budgets.length ? recentBudgets : <p>No budgets were created previously</p>;
 
         // take rest of  4 budgets
         this.restOfBudgets = hasVersions.slice(4).map(budget =>
