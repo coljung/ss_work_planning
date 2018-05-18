@@ -153,7 +153,7 @@ class BudgetViewsContainer extends Component {
                                 handleClick={this.handleVersionClick} />
                         </Col>
                         <Col span={16} className="col">
-                            <BudgetViewsButtonActions saveNew={() => this.saveNewVersion(budgetSeasonId, versionId)} />
+                            <BudgetViewsButtonActions undoDisabled={true} saveNew={() => this.saveNewVersion(budgetSeasonId, versionId)} />
                         </Col>
                     </Row>
                 </div>
