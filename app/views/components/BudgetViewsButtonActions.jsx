@@ -10,7 +10,6 @@ export default class BudgetViewsButtonActions extends Component {
         super(props);
         this.state = {
             filterModalActive: false,
-            undoEnabled: false,
         };
     }
     toggleFilterModal = () => {
