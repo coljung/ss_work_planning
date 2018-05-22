@@ -83,7 +83,6 @@ class SectionContainer extends Component {
     }
 
     changeCell = (cellEdits) => {
-        console.log('--changeCell', cellEdits);
         // on load this is called, hence the check
         if (cellEdits) {
             const row = cellEdits[0][0];
