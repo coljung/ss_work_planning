@@ -6,6 +6,7 @@ import { Link } from 'react-router';
 import { Button, Modal, Spin, Row, Col } from 'antd';
 import { fetchBudgets } from './BudgetActions';
 import PopoverBudgetLink from './PopoverBudgetLink';
+import LoadingSpinner from '../components/common/LoadingSpinner';
 
 import { ROUTE_BUDGET } from '../Routes';
 
@@ -31,17 +32,25 @@ class BudgetList extends Component {
 
         return 0;
     }
-
-    createList = () => {
-        const { budgets } = this.props;
+    archiveBudgetList = (oldBudgets) => {
+        // take rest of  4 budgets
+        this.restOfBudgets = oldBudgets.slice(4).map(budget =>
+            <li key={budget.id}>
+                <h4>
+                    <Link id={`${budget.season}-${budget.year}`} to={`${ROUTE_BUDGET}/${budget.season}${budget.year}/budget/${budget.id}/version/${budget.versions[0].name}/${budget.versions[0].id}/exec`}>
+                        {budget.season}{budget.year}
+                    </Link>
+                </h4>
+            </li>,
+        );
+    }
+    recentBudgetList = (budgets) => {
         const hasVersions = budgets
           .filter(budget => budget.versions.length)
           .sort(this.orderBudgets); // sort by most recent
-
         // take latest 4 budgets
         const recentBudgets = hasVersions.slice(0, 4).map((budget) => {
             const url = `${ROUTE_BUDGET}/${budget.season}${budget.year}/budget/${budget.id}/version/${budget.versions[0].name}/${budget.versions[0].id}/exec`;
-
             return (
                 <li key={budget.id}>
                     <h4 className="budgetListLink">
@@ -54,19 +63,13 @@ class BudgetList extends Component {
                 </li>
             );
         });
-        const budgetListContent = this.props.budgets.length ? recentBudgets : <p>No budgets were created previously</p>;
-
-        // take rest of  4 budgets
-        this.restOfBudgets = hasVersions.slice(4).map(budget =>
-            <li key={budget.id}>
-                <h4>
-                    <Link id={`${budget.season}-${budget.year}`} to={`${ROUTE_BUDGET}/${budget.season}${budget.year}/budget/${budget.id}/version/${budget.versions[0].name}/${budget.versions[0].id}/exec`}>
-                        {budget.season}{budget.year}
-                    </Link>
-                </h4>
-            </li>,
-        );
-
+        // to create the list for the older budgets
+        this.archiveBudgetList(hasVersions);
+        return recentBudgets;
+    }
+    createList = () => {
+        const { budgets } = this.props;
+        const budgetListContent = this.props.budgets.length ? this.recentBudgetList(budgets) : <p>No budgets were created previously</p>;
         return (
             <ul className="budgetList">
                 {budgetListContent}
@@ -75,7 +78,7 @@ class BudgetList extends Component {
     }
 
     render() {
-        const budgetListData = this.props.budgetsFetched ? this.createList() : <Spin size="large" />;
+        const budgetListData = this.props.budgetsFetched ? this.createList() : <LoadingSpinner />;
 
         return (
             <div>
