@@ -88,7 +88,6 @@ class BudgetViewsContainer extends Component {
     };
 
     changeCell = (cellEdits) => {
-        console.log('changeCell', cellEdits);
         // on load this is called, hence the check
         if (cellEdits) {
             const row = cellEdits[0][0];
@@ -105,7 +104,6 @@ class BudgetViewsContainer extends Component {
                 const checkDuplicate = this.dataToSave.filter(e => e.row !== row || e.col !== col);
                 checkDuplicate.push(newData);
                 this.dataToSave = checkDuplicate;
-
             }
         }
     };
