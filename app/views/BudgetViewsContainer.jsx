@@ -10,6 +10,7 @@ import { budgetVersions, saveNewBudgetVersion } from './BudgetViewActions';
 import { switchUrls, clearUrls } from '../components/customNavigation/CustomNavigationActions';
 import { cellValueRenderer as commonCellValueRenderer } from './sections/top-down/CommonCellRenderer';
 import { cellValueRenderer as execCellValueRenderer } from './sections/top-down/ExecCellRenderer';
+import { pushAction as pushHistory, goBackAction, goForwardAction } from '../history/HistoryActions';
 import { ROUTE_BUDGET } from '../Routes';
 
 // Sub Component
@@ -84,6 +85,7 @@ class BudgetViewsContainer extends Component {
     };
 
     changeCell = (cellEdits) => {
+        console.log('changeCell', cellEdits);
         // on load this is called, hence the check
         if (cellEdits) {
             const row = cellEdits[0][0];
@@ -100,9 +102,31 @@ class BudgetViewsContainer extends Component {
                 const checkDuplicate = this.dataToSave.filter(e => e.row !== row || e.col !== col);
                 checkDuplicate.push(newData);
                 this.dataToSave = checkDuplicate;
+
             }
+            // Push new value into history
+            const foo = this.props.pushHistory('men', { name: new Date() });
+            console.log('handlePushToHistory', foo, checkDuplicate)
         }
     };
+
+    handleGoBack() {
+        const foo = this.props.goBackAction('men');
+
+        console.log('handleGoBack', foo);
+    }
+
+    handleGoForward() {
+        const foo = this.props.goForwardAction('men');
+
+        console.log('handleGoForward', foo);
+    }
+
+    handlePushToHistory() {
+        const foo = this.props.pushHistory('men', { name: new Date() });
+
+        console.log('handlePushToHistory', foo)
+    }
 
     handleVersionClick(event) {
         const { item: { props: { version } } } = event;
@@ -141,6 +165,13 @@ class BudgetViewsContainer extends Component {
 
     render() {
         const { activeTab, budgetSeasonId, versionId, seasonName, versionName } = this.state;
+        // undo disabled / enabled ?
+        const { history } = this.props;
+        const viewHistory = history[activeTab];
+        let undoDisabled = viewHistory ? viewHistory.undoDisabled : true;
+        let redoDisabled = viewHistory ? viewHistory.redoDisabled : true;
+        // activeTab
+        console.log(history, viewHistory);
         return (
             <div>
                 <div className="budgetHeader">
@@ -153,7 +184,7 @@ class BudgetViewsContainer extends Component {
                                 handleClick={this.handleVersionClick} />
                         </Col>
                         <Col span={16} className="col">
-                            <BudgetViewsButtonActions undoDisabled={true} saveNew={() => this.saveNewVersion(budgetSeasonId, versionId)} />
+                            <BudgetViewsButtonActions undoDisabled={undoDisabled} saveNew={() => this.saveNewVersion(budgetSeasonId, versionId)} />
                         </Col>
                     </Row>
                 </div>
@@ -230,18 +261,31 @@ BudgetViewsContainer.propTypes = {
     clearUrls: PropTypes.func.isRequired,
     versions: PropTypes.array.isRequired,
     router: PropTypes.object,
+    history: PropTypes.object,
+    pushHistory: PropTypes.func.isRequired,
+    goBackAction: PropTypes.func.isRequired,
+    goForwardAction: PropTypes.func.isRequired,
 };
 
 function mapStateToProps(state) {
-    const { BudgetViewReducer } = state;
+    const { BudgetViewReducer, HistoryReducer } = state;
     return {
         newVersion: BudgetViewReducer.newVersion,
         versions: BudgetViewReducer.versions,
+        history: HistoryReducer,
     };
 }
 
 function mapDispatchToProps(dispatch) {
-    return bindActionCreators({ budgetVersions, saveNewBudgetVersion, switchUrls, clearUrls }, dispatch);
+    return bindActionCreators({
+      budgetVersions,
+      saveNewBudgetVersion,
+      switchUrls,
+      clearUrls,
+      pushHistory,
+      goBackAction,
+      goForwardAction
+    }, dispatch);
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(BudgetViewsContainer);

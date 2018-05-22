@@ -11,6 +11,7 @@ import {
     resetState,
     fetchBudgetConfigData,
     refreshGridData } from './SectionActions';
+import { pushAction as pushHistory } from '../../history/HistoryActions';
 import LoadingSpinner from '../../components/common/LoadingSpinner';
 
 class SectionContainer extends Component {
@@ -82,6 +83,7 @@ class SectionContainer extends Component {
     }
 
     changeCell = (cellEdits) => {
+        console.log('--changeCell', cellEdits);
         // on load this is called, hence the check
         if (cellEdits) {
             const row = cellEdits[0][0];
@@ -95,9 +97,14 @@ class SectionContainer extends Component {
             // handsontable converts to string
             if (parseFloat(prevValue, 10) !== parseFloat(newValue, 10)) {
                 const dataToSend = this.state.data[row][col[0]];
-
+                console.log({ dataToSend })
                 const { budget, version, view } = this.state;
                 this.props.refreshGridData(budget, version, view, dataToSend);
+
+                // Should I add push history here ?
+                console.log('Push in history, we need previous data instead of new data');
+                const foo = this.props.pushHistory(view, dataToSend);
+                console.log('Push To History response', foo)
             }
 
             // TODO
@@ -213,16 +220,19 @@ SectionContainer.propTypes = {
     refreshData: PropTypes.bool.isRequired,
     spreadingData: PropTypes.bool.isRequired,
     config: PropTypes.array,
+    history: PropTypes.object,
+    pushHistory: PropTypes.func.isRequired,
 };
 
 function mapStateToProps(state) {
-    const { SectionReducers } = state;
+    const { SectionReducers, HistoryReducer } = state;
     return {
         viewData: SectionReducers.viewData,
         viewDataFetched: SectionReducers.viewDataFetched,
         config: SectionReducers.config.available_metrics,
         refreshData: SectionReducers.refreshData,
         spreadingData: SectionReducers.spreadingData,
+        history: HistoryReducer,
     };
 }
 
@@ -232,7 +242,9 @@ function mapDispatchToProps(dispatch) {
         resetState,
         saveBudget,
         fetchBudgetConfigData,
-        refreshGridData }, dispatch);
+        refreshGridData,
+        pushHistory,
+      }, dispatch);
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(SectionContainer));
