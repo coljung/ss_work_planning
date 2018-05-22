@@ -89,7 +89,10 @@ export function refreshGridData(budget, version, view, updatedObj) {
     return (dispatch) => {
         dispatch(requestRefreshGridData());
         const req = request.put(`${getApiUrl()}planning/budgets/${budget}/versions/${version}/${view}/metrics`);
-        return req.send(updatedObj)
+        return req.send({
+          ...updatedObj,
+          value: updatedObj.value > 0 ? updatedObj.value : 0.0001
+        })
             .then(
             (res) => {
                 if (res.statusCode === 200) {
