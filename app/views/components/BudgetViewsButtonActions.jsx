@@ -12,12 +12,12 @@ export default class BudgetViewsButtonActions extends Component {
             filterModalActive: false,
         };
     }
-
     toggleFilterModal = () => {
         this.setState({
             filterModalActive: !this.state.filterModalActive,
         });
     }
+
 
     render() {
         return (
@@ -38,6 +38,7 @@ export default class BudgetViewsButtonActions extends Component {
                     onOverlayClick={this.toggleFilterModal.bind(this)} />
 
                 <Button icon="switcher" onClick={this.toggleFilterModal}>Filter</Button>
+                <Button disabled={this.props.undoDisabled} icon="left">Undo</Button>
             </div>
         );
     }
@@ -45,4 +46,5 @@ export default class BudgetViewsButtonActions extends Component {
 
 BudgetViewsButtonActions.propTypes = {
     saveNew: PropTypes.func.isRequired,
+    undoDisabled: PropTypes.bool,
 };
