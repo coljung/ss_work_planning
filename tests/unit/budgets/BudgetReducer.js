@@ -43,6 +43,18 @@ describe('BudgetReducer', () => {
             seasonsFetched: false,
         })
     });
+    it('should handle REQUEST_CREATE_BUDGET', () => {
+        expect(
+            reducer(undefined, {
+                type: actions.REQUEST_CREATE_BUDGET
+            })
+        ).toEqual({
+            budgets: [],
+            seasons: [],
+            budgetsFetched: false,
+            seasonsFetched: true,
+        })
+    });
 
     it('should handle RECEIVE_CREATE_BUDGET', () => {
         const state = {
