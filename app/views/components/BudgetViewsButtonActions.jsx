@@ -20,6 +20,9 @@ export default class BudgetViewsButtonActions extends Component {
 
 
     render() {
+        const undoDisabled = this.props.undoDisabled ? this.props.undoDisabled : true;
+        const redoDisabled = this.props.redoDisabled ? this.props.redoDisabled : true;
+
         return (
             <div className="budgetBtns">
                 <Link to={ROUTE_DASHBOARD} >
@@ -38,7 +41,8 @@ export default class BudgetViewsButtonActions extends Component {
                     onOverlayClick={this.toggleFilterModal.bind(this)} />
 
                 <Button icon="switcher" onClick={this.toggleFilterModal}>Filter</Button>
-                <Button disabled={this.props.undoDisabled} icon="left">Undo</Button>
+                <Button disabled={undoDisabled} onClick={this.props.onUndo} icon="left">Undo</Button>
+                <Button disabled={redoDisabled} onClick={this.props.onRedo} icon="right">Redo</Button>
             </div>
         );
     }
@@ -47,4 +51,7 @@ export default class BudgetViewsButtonActions extends Component {
 BudgetViewsButtonActions.propTypes = {
     saveNew: PropTypes.func.isRequired,
     undoDisabled: PropTypes.bool,
+    onUndo: PropTypes.func,
+    redoDisabled: PropTypes.bool,
+    onRedo: PropTypes.func,
 };

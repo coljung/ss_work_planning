@@ -6,11 +6,12 @@ import { Row, Col, Tabs, Dropdown, Icon } from 'antd';
 import BudgetVersionMenu from './components/BudgetVersionMenu';
 import BudgetViewsButtonActions from './components/BudgetViewsButtonActions';
 import SectionContainer from './sections/SectionContainer';
+import { refreshGridData } from './sections/SectionActions';
 import { budgetVersions, saveNewBudgetVersion } from './BudgetViewActions';
 import { switchUrls, clearUrls } from '../components/customNavigation/CustomNavigationActions';
 import { cellValueRenderer as commonCellValueRenderer } from './sections/top-down/CommonCellRenderer';
 import { cellValueRenderer as execCellValueRenderer } from './sections/top-down/ExecCellRenderer';
-import { pushAction as pushHistory, goBackAction, goForwardAction } from '../history/HistoryActions';
+import { goBackAction, goForwardAction } from '../history/HistoryActions';
 import { ROUTE_BUDGET } from '../Routes';
 
 // Sub Component
@@ -51,6 +52,8 @@ class BudgetViewsContainer extends Component {
 
         this.onTabChange = this.onTabChange.bind(this);
         this.handleVersionClick = this.handleVersionClick.bind(this);
+        this.handleUndo = this.handleUndo.bind(this);
+        this.handleRedo = this.handleRedo.bind(this);
     }
 
     componentWillMount() {
@@ -104,28 +107,23 @@ class BudgetViewsContainer extends Component {
                 this.dataToSave = checkDuplicate;
 
             }
-            // Push new value into history
-            const foo = this.props.pushHistory('men', { name: new Date() });
-            console.log('handlePushToHistory', foo, checkDuplicate)
         }
     };
 
-    handleGoBack() {
-        const foo = this.props.goBackAction('men');
+    handleUndo() {
+      const { activeTab, budgetSeasonId, versionId } = this.state;
+      const { goBackAction, history } = this.props;
+      const data = goBackAction(activeTab);
 
-        console.log('handleGoBack', foo);
+      this.props.refreshGridData(budgetSeasonId, versionId, activeTab, data);
     }
 
-    handleGoForward() {
-        const foo = this.props.goForwardAction('men');
+    handleRedo() {
+      const { activeTab, budgetSeasonId, versionId } = this.state;
+      const { goForwardAction, history } = this.props;
+      const data = goForwardAction(activeTab);
 
-        console.log('handleGoForward', foo);
-    }
-
-    handlePushToHistory() {
-        const foo = this.props.pushHistory('men', { name: new Date() });
-
-        console.log('handlePushToHistory', foo)
+      this.props.refreshGridData(budgetSeasonId, versionId, activeTab, data);
     }
 
     handleVersionClick(event) {
@@ -184,7 +182,13 @@ class BudgetViewsContainer extends Component {
                                 handleClick={this.handleVersionClick} />
                         </Col>
                         <Col span={16} className="col">
-                            <BudgetViewsButtonActions undoDisabled={undoDisabled} saveNew={() => this.saveNewVersion(budgetSeasonId, versionId)} />
+                            <BudgetViewsButtonActions
+                              undoDisabled={undoDisabled}
+                              onUndo={this.handleUndo}
+                              redoDisabled={redoDisabled}
+                              onRedo={this.handleRedo}
+                              saveNew={() => this.saveNewVersion(budgetSeasonId, versionId)}
+                            />
                         </Col>
                     </Row>
                 </div>
@@ -262,9 +266,9 @@ BudgetViewsContainer.propTypes = {
     versions: PropTypes.array.isRequired,
     router: PropTypes.object,
     history: PropTypes.object,
-    pushHistory: PropTypes.func.isRequired,
     goBackAction: PropTypes.func.isRequired,
     goForwardAction: PropTypes.func.isRequired,
+    refreshGridData: PropTypes.func.isRequired,
 };
 
 function mapStateToProps(state) {
@@ -282,9 +286,9 @@ function mapDispatchToProps(dispatch) {
       saveNewBudgetVersion,
       switchUrls,
       clearUrls,
-      pushHistory,
       goBackAction,
-      goForwardAction
+      goForwardAction,
+      refreshGridData,
     }, dispatch);
 }
 

@@ -40,7 +40,7 @@ export default (state = initialState, action) => {
             ...state,
             [action.view]: {
               ...action.viewInfo,
-              undoDisabled: !canGo(state, action.view, action.viewInfo.currentIndex, defaultView),
+              undoDisabled: !canGo(state, action.view, action.viewInfo.currentIndex - 1, defaultView),
               redoDisabled: !canGo(state, action.view, action.viewInfo.currentIndex + 1, defaultView),
             }
           };
@@ -54,7 +54,7 @@ export default (state = initialState, action) => {
             ...state,
             [action.view]: {
               ...action.viewInfo,
-              undoDisabled: !canGo(state, action.view, action.viewInfo.currentIndex, defaultView),
+              undoDisabled: !canGo(state, action.view, action.viewInfo.currentIndex - 1, defaultView),
               redoDisabled: !canGo(state, action.view, action.viewInfo.currentIndex + 1, defaultView),
             }
           };
@@ -63,7 +63,7 @@ export default (state = initialState, action) => {
             ...state,
             [action.view]: {
               ...action.viewInfo,
-              undoDisabled: !canGo(state, action.view, action.viewInfo.currentIndex, defaultView),
+              undoDisabled: !canGo(state, action.view, action.viewInfo.currentIndex - 1, defaultView),
               redoDisabled: !canGo(state, action.view, action.viewInfo.currentIndex + 1, defaultView),
             },
           };

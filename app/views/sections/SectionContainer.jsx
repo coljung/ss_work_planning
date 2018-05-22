@@ -98,14 +98,18 @@ class SectionContainer extends Component {
             if (parseFloat(prevValue, 10) !== parseFloat(newValue, 10)) {
                 const dataToSend = this.state.data[row][col[0]];
                 const { budget, version, view } = this.state;
+                const { history, pushHistory } = this.props;
+                const viewHistory = history[view];
+
                 this.props.refreshGridData(budget, version, view, dataToSend);
 
                 // Send old value into history for future undo
-                this.props.pushHistory(view, { ...dataToSend, value: +prevValue });
-            }
+                if (!viewHistory) {
+                  pushHistory(view, { ...dataToSend, value: +prevValue });
+                }
 
-            // TODO
-            // local store changes for save event
+                pushHistory(view, dataToSend);
+            }
         }
         // if (cellEdits) {
         //     const row = cellEdits[0][0];
