@@ -9,7 +9,6 @@ export const push = (view, item) => {
 	view.currentIndex = view.history.length - 1;
 	view.length = view.history.length;
 
-
 	return view;
 };
 
