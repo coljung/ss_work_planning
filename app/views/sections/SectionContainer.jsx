@@ -97,14 +97,11 @@ class SectionContainer extends Component {
             // handsontable converts to string
             if (parseFloat(prevValue, 10) !== parseFloat(newValue, 10)) {
                 const dataToSend = this.state.data[row][col[0]];
-                console.log({ dataToSend })
                 const { budget, version, view } = this.state;
                 this.props.refreshGridData(budget, version, view, dataToSend);
 
-                // Should I add push history here ?
-                console.log('Push in history, we need previous data instead of new data');
-                const foo = this.props.pushHistory(view, dataToSend);
-                console.log('Push To History response', foo)
+                // Send old value into history for future undo
+                this.props.pushHistory(view, { ...dataToSend, value: +prevValue });
             }
 
             // TODO
