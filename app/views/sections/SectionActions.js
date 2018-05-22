@@ -97,7 +97,10 @@ export function refreshGridData(budget, version, view, updatedObj) {
                 }
                 return dispatch(messages({ content: 'Not OK', response: '', isError: true }));
             },
-            err => dispatch(messages({ content: err, response: err.response, isError: true })),
+            (err) => {
+                dispatch(messages({ content: err, response: err.response, isError: true }));
+                return dispatch(receiveRefreshGridData());
+            },
             );
     };
 }
