@@ -11,7 +11,7 @@ import {
     resetState,
     fetchBudgetConfigData,
     refreshGridData } from './SectionActions';
-import { pushAction as pushHistory } from '../../history/HistoryActions';
+import { pushAction as pushHistory } from '../history/HistoryActions';
 import LoadingSpinner from '../../components/common/LoadingSpinner';
 
 class SectionContainer extends Component {
@@ -103,6 +103,7 @@ class SectionContainer extends Component {
                 this.props.refreshGridData(budget, version, view, dataToSend);
 
                 // Send old value into history for future undo
+                console.log('change cell viewHistory', viewHistory);
                 if (!viewHistory) {
                   pushHistory(view, { ...dataToSend, value: +prevValue });
                 }

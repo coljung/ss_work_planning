@@ -11,7 +11,7 @@ import { budgetVersions, saveNewBudgetVersion } from './BudgetViewActions';
 import { switchUrls, clearUrls } from '../components/customNavigation/CustomNavigationActions';
 import { cellValueRenderer as commonCellValueRenderer } from './sections/top-down/CommonCellRenderer';
 import { cellValueRenderer as execCellValueRenderer } from './sections/top-down/ExecCellRenderer';
-import { goBackAction, goForwardAction } from '../history/HistoryActions';
+import { goBackAction, goForwardAction } from './history/HistoryActions';
 import { ROUTE_BUDGET } from '../Routes';
 
 // Sub Component
@@ -166,8 +166,7 @@ class BudgetViewsContainer extends Component {
         const viewHistory = history[activeTab];
         let undoDisabled = viewHistory ? viewHistory.undoDisabled : true;
         let redoDisabled = viewHistory ? viewHistory.redoDisabled : true;
-        // activeTab
-        console.log(history, viewHistory);
+
         return (
             <div>
                 <div className="budgetHeader">
