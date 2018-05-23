@@ -144,12 +144,6 @@ class SectionContainer extends Component {
         // }
     };
 
-    save = () => {
-        const dataToSend = {};
-        dataToSend.data = this.dataToSave;
-        this.props.saveBudget(this.props.budget, this.props.version, this.props.view, dataToSend);
-    };
-
     createColumn = (column, renderer) => ({
         data: `${column}.value`,
         readOnly: false,
@@ -202,11 +196,6 @@ class SectionContainer extends Component {
 
         return (
             <div>
-                {/* <Button
-                    icon="save"
-                    className="saveBtn"
-                    disabled={this.state.canSave}
-                    onClick={() => this.save()}>Save {buttonStr} view</Button> */}
                 {budgetListData}
             </div>
         );
