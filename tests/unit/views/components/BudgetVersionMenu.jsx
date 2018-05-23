@@ -6,7 +6,7 @@ import BudgetVersionMenu from '../../../../app/views/components/BudgetVersionMen
 import * as sinon from 'sinon';
 
 describe('<BudgetVersionMenu />', () => {
-    it('should render base layout', () => {
+    it.only('should render base layout', () => {
         const wrapper = shallow(
             <BudgetVersionMenu versions={[]} />
         );
