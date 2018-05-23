@@ -11,6 +11,7 @@ const initialState = {
     seasons: [],
     budgetsFetched: false,
     seasonsFetched: false,
+    budgetCreateFetched: true,
 };
 
 export default (state = initialState, action) => {
@@ -26,7 +27,7 @@ export default (state = initialState, action) => {
             });
         case REQUEST_CREATE_BUDGET:
             return Object.assign({}, state, {
-                seasonsFetched: true,
+                budgetCreateFetched: false,
             });
         case RECEIVE_CREATE_BUDGET:
             return Object.assign({}, state, {
@@ -34,6 +35,7 @@ export default (state = initialState, action) => {
                     ...state.budgets,
                     action.budget,
                 ],
+                budgetCreateFetched: true,
             });
         case REQUEST_SEASONS:
         case RESET_SEASONS_VIEW:

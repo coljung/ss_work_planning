@@ -4,6 +4,8 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Button, Modal, Select, Spin, Radio } from 'antd';
 import { createBudget, fetchAvailableSeasons, resetState } from './BudgetActions';
+import LoadingOverlay from '../components/common/LoadingOverlay';
+
 
 const Option = Select.Option;
 const RadioGroup = Radio.Group;
@@ -101,18 +103,18 @@ export class BudgetCreate extends Component {
             </Button>
         </div>);
 
-        const modalContent = this.props.seasonsFetched ? this.createModalContent() : <Spin size="large" />;
-
-        return (
+        const modal = (
             <Modal
                 title="Create Budget"
                 visible={this.props.visible}
                 onOk={this.handleOk}
                 onCancel={this.closeModal}
                 footer={footerButtons}>
-                {modalContent}
+                {this.createModalContent()}
             </Modal>
         );
+        const createBudgetContent = this.props.budgetCreateFetched ? modal : <LoadingOverlay />;
+        return (createBudgetContent);
     }
 }
 
@@ -124,6 +126,7 @@ BudgetCreate.propTypes = {
     fetchAvailableSeasons: PropTypes.func.isRequired,
     createBudget: PropTypes.func.isRequired,
     resetState: PropTypes.func.isRequired,
+    budgetCreateFetched: PropTypes.bool.isRequired,
 };
 
 function mapStateToProps(state) {
@@ -131,6 +134,7 @@ function mapStateToProps(state) {
     return {
         seasons: BudgetReducer.seasons,
         seasonsFetched: BudgetReducer.seasonsFetched,
+        budgetCreateFetched: BudgetReducer.budgetCreateFetched,
     };
 }
 

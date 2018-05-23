@@ -108,12 +108,27 @@
         margin: -35px 25px 0 0;
     }
 
-    .spinDiv{
+    .spinDiv,
+    .loadingOverlay{
         text-align: center;
         padding: 50px 0;
         color: @ssense_black;
         .ant-spin-dot i {
           background-color: @ssense_black;
+        }
+    }
+    .loadingOverlay {
+        position: absolute;
+        z-index: 99999;
+        background: rgba(255,255,255,0.8);
+        padding: 0;
+        width: 85%;
+        height:85%;
+        .ant-spin {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
         }
     }
 
