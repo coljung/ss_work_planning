@@ -1,11 +1,11 @@
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 
-import * as actions from '../../../app/history/HistoryActions';
+import * as actions from '../../../app/views/history/HistoryActions';
 
 
 
-describe.only('History Actions', () => {
+describe('History Actions', () => {
   let middlewares;
   let mockStore;
 
@@ -23,7 +23,7 @@ describe.only('History Actions', () => {
     const expectedAction = {
       type: actions.HISTORY_PUSH,
       view,
-      item
+      viewInfo: item
     }
 
     expect(actions.push(view, item)).toEqual(expectedAction);
@@ -79,18 +79,5 @@ describe.only('History Actions', () => {
     }
 
     expect(actions.goForward(view)).toEqual(expectedAction);
-  });
-
-  it('Should test canGo', () => {
-    const view  = 'men';
-    const n = 0;
-
-    const expectedAction = {
-      type: actions.HISTORY_CAN_GO,
-      view,
-      n
-    }
-
-    expect(actions.canGo(view, n)).toEqual(expectedAction);
   });
 });
