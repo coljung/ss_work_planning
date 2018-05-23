@@ -2,7 +2,7 @@ export const getView = (state, view, defaultView) => state[view] === undefined ?
 
 export const push = (state, view, item, defaultView = {}) => {
     if (+view.currentIndex != +view.history.length - 1) {
-        view.history = view.history.slice(0, view.currentIndex);
+        view.history = view.history.slice(0, view.currentIndex + 1);
     }
 
     view.history.push(item);
