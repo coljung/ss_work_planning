@@ -46,8 +46,6 @@ class BudgetViewsContainer extends Component {
             [TAB_BRAND_GROUPS]: false,
         };
 
-        this.dataToSave = [];
-
         this.props.switchUrls(budgetid, id, seasonname, vname, tab);
 
         this.onTabChange = this.onTabChange.bind(this);
@@ -85,27 +83,6 @@ class BudgetViewsContainer extends Component {
 
     saveNewVersion = (budget, version) => {
         this.props.saveNewBudgetVersion(budget, version);
-    };
-
-    changeCell = (cellEdits) => {
-        // on load this is called, hence the check
-        if (cellEdits) {
-            const row = cellEdits[0][0];
-            const col = cellEdits[0][1];
-            const prevValue = cellEdits[0][2];
-            const newValue = cellEdits[0][3];
-            if (prevValue !== newValue) {
-                const newData = {
-                    row,
-                    col,
-                    value: newValue,
-                };
-                // check if cell has been modified already
-                const checkDuplicate = this.dataToSave.filter(e => e.row !== row || e.col !== col);
-                checkDuplicate.push(newData);
-                this.dataToSave = checkDuplicate;
-            }
-        }
     };
 
     handleUndo() {
@@ -151,8 +128,6 @@ class BudgetViewsContainer extends Component {
             activeTab: newTabKey,
             [newTabKey]: true,
         });
-
-        this.dataToSave = [];
 
         const { router } = this.props;
 
@@ -208,7 +183,6 @@ class BudgetViewsContainer extends Component {
                                     budget={budgetSeasonId}
                                     version={versionId}
                                     cellRenderer={commonCellValueRenderer}
-                                    updateData={this.changeCell}
                                     key={TAB_TOTAL}
                                     view={TAB_TOTAL}
                                 />
@@ -220,7 +194,6 @@ class BudgetViewsContainer extends Component {
                                     budget={budgetSeasonId}
                                     version={versionId}
                                     cellRenderer={commonCellValueRenderer}
-                                    updateData={this.changeCell}
                                     key={TAB_WOMEN}
                                     view={TAB_WOMEN}
                                 />
@@ -232,7 +205,6 @@ class BudgetViewsContainer extends Component {
                                     budget={budgetSeasonId}
                                     version={versionId}
                                     cellRenderer={commonCellValueRenderer}
-                                    updateData={this.changeCell}
                                     key={TAB_MEN}
                                     view={TAB_MEN}
                                 />
