@@ -61,8 +61,8 @@ export const goBackAction = view => (dispatch, getState) => {
     if (canGoUtil(state, view, newIndex, defaultView)) {
         const item = viewInfo.history[newIndex];
         viewInfo.currentIndex = newIndex;
-        viewInfo.undoDisabled = !canGo(state, view, viewInfo.currentIndex - 1, defaultView);
-        viewInfo.redoDisabled = !canGo(state, view, viewInfo.currentIndex + 1, defaultView);
+        viewInfo.undoDisabled = !canGoUtil(state, view, newIndex - 1, defaultView);
+        viewInfo.redoDisabled = !canGoUtil(state, view, newIndex + 1, defaultView);
 
         dispatch(goBack(view, viewInfo));
 
@@ -86,8 +86,8 @@ export const goForwardAction = view => (dispatch, getState) => {
     if (canGoUtil(state, view, newIndex, defaultView)) {
         const item = viewInfo.history[newIndex];
         viewInfo.currentIndex = newIndex;
-        viewInfo.undoDisabled = !canGo(state, view, viewInfo.currentIndex - 1, defaultView);
-        viewInfo.redoDisabled = !canGo(state, view, viewInfo.currentIndex + 1, defaultView);
+        viewInfo.undoDisabled = !canGoUtil(state, view, viewInfo.currentIndex - 1, defaultView);
+        viewInfo.redoDisabled = !canGoUtil(state, view, viewInfo.currentIndex + 1, defaultView);
 
         dispatch(goForward(view, viewInfo));
 
