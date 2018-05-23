@@ -24,10 +24,10 @@ export default class App extends Component {
             }, 80000);
         }
     }
-
     render() {
+        const getClassname = this.props.location.pathname === '/' ? 'app_layout_home' : 'app_layout';
         return (
-            <div className="app_layout">
+            <div className={getClassname}>
                 <Header>
                     <Icon
                         className="trigger"

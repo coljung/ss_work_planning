@@ -1,13 +1,17 @@
 #app{
-    overflow: hidden;
     // overflow-x: scroll;
-    .app_layout {
+    .app_layout,
+    .app_layout_home {
+        overflow: hidden;
         height: 100vh;
         .ant-layout{
             // height: ~"calc(100% - 64px)";
             min-height: 100%;
             background: #fff;
             padding-top: 5rem;
+        }
+        &_home {
+            overflow: visible;
         }
     }
     .ant-layout-header {
