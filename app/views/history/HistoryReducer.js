@@ -40,22 +40,13 @@ export default (state = initialState, action) => {
             ...state,
             [action.view]: {
               ...action.viewInfo,
-              undoDisabled: !canGo(state, action.view, action.viewInfo.currentIndex - 1, defaultView),
-              redoDisabled: !canGo(state, action.view, action.viewInfo.currentIndex + 1, defaultView),
             }
           };
-        case HISTORY_REPLACE:
-          return state;
-        case HISTORY_GO:
-
-          break;
         case HISTORY_GO_BACK:
           return {
             ...state,
             [action.view]: {
               ...action.viewInfo,
-              undoDisabled: !canGo(state, action.view, action.viewInfo.currentIndex - 1, defaultView),
-              redoDisabled: !canGo(state, action.view, action.viewInfo.currentIndex + 1, defaultView),
             }
           };
         case HISTORY_GO_FORWARD:
@@ -63,12 +54,8 @@ export default (state = initialState, action) => {
             ...state,
             [action.view]: {
               ...action.viewInfo,
-              undoDisabled: !canGo(state, action.view, action.viewInfo.currentIndex - 1, defaultView),
-              redoDisabled: !canGo(state, action.view, action.viewInfo.currentIndex + 1, defaultView),
             },
           };
-        case HISTORY_CAN_GO:
-          return state;
         default:
           return state;
     }

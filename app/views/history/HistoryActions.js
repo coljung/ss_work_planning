@@ -20,7 +20,8 @@ export const pushAction = (view, item) => (dispatch, getState) => {
     const { HistoryReducer: state } = getState();
     const viewInfo = getView(state, view, defaultView);
 
-    pushUtil(viewInfo, item);
+
+    pushUtil(state, viewInfo, item, defaultView);
 
     dispatch(push(view, viewInfo));
 
@@ -60,6 +61,8 @@ export const goBackAction = view => (dispatch, getState) => {
     if (canGoUtil(state, view, newIndex, defaultView)) {
         const item = viewInfo.history[newIndex];
         viewInfo.currentIndex = newIndex;
+        viewInfo.undoDisabled = !canGo(state, view, viewInfo.currentIndex - 1, defaultView);
+        viewInfo.redoDisabled = !canGo(state, view, viewInfo.currentIndex + 1, defaultView);
 
         dispatch(goBack(view, viewInfo));
 
@@ -83,6 +86,8 @@ export const goForwardAction = view => (dispatch, getState) => {
     if (canGoUtil(state, view, newIndex, defaultView)) {
         const item = viewInfo.history[newIndex];
         viewInfo.currentIndex = newIndex;
+        viewInfo.undoDisabled = !canGo(state, view, viewInfo.currentIndex - 1, defaultView);
+        viewInfo.redoDisabled = !canGo(state, view, viewInfo.currentIndex + 1, defaultView);
 
         dispatch(goForward(view, viewInfo));
 

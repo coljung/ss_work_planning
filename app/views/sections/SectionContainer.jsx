@@ -37,6 +37,8 @@ class SectionContainer extends Component {
         this.setHotTableRef = (element) => {
             this.hotTableRef = element;
         };
+
+        this.lastEditCell = null;
     }
 
     componentDidMount() {
@@ -87,6 +89,7 @@ class SectionContainer extends Component {
         if (cellEdits) {
             const row = cellEdits[0][0];
             const col = cellEdits[0][1].split('.');
+            const cellEditKey = [cellEdits[0][0], cellEdits[0][1]].join('.');
             const prevValue = cellEdits[0][2];
             const newValue = cellEdits[0][3];
 
@@ -103,12 +106,18 @@ class SectionContainer extends Component {
                 this.props.refreshGridData(budget, version, view, dataToSend);
 
                 // Send old value into history for future undo
-                console.log('change cell viewHistory', viewHistory);
-                if (!viewHistory) {
+                // TODO: Fix this
+                // I did this because if the second+ edited cell is not the same
+                // we need to be able to undo it, old value should be store in history
+                // same a first push
+                // this would cause a double undo / redo click when changing cell
+                if (this.lastEditCell != cellEditKey) {
                   pushHistory(view, { ...dataToSend, value: +prevValue });
                 }
 
                 pushHistory(view, dataToSend);
+
+                this.lastEditCell = cellEditKey;
             }
         }
         // if (cellEdits) {
