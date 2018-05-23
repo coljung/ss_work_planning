@@ -4,7 +4,7 @@ import {
   HISTORY_GO,
   HISTORY_GO_BACK,
   HISTORY_GO_FORWARD,
-  HISTORY_CAN_GO
+  HISTORY_CAN_GO,
 } from './HistoryActions';
 
 import {
@@ -12,7 +12,7 @@ import {
   push,
   pop,
   canGo,
-  viewLength
+  viewLength,
 } from './utils';
 
 const initialState = {
@@ -25,38 +25,38 @@ const initialState = {
 };
 
 export const defaultView = {
-  length: null,
-  currentIndex: null,
-  undoDisabled: true,
-  redoDisabled: true,
-  history: []
+    length: null,
+    currentIndex: null,
+    undoDisabled: true,
+    redoDisabled: true,
+    history: [],
 };
 
 export default (state = initialState, action) => {
     let view;
     switch (action.type) {
         case HISTORY_PUSH:
-          return {
-            ...state,
-            [action.view]: {
-              ...action.viewInfo,
-            }
-          };
+            return {
+                ...state,
+                [action.view]: {
+                    ...action.viewInfo,
+                },
+            };
         case HISTORY_GO_BACK:
-          return {
-            ...state,
-            [action.view]: {
-              ...action.viewInfo,
-            }
-          };
+            return {
+                ...state,
+                [action.view]: {
+                    ...action.viewInfo,
+                },
+            };
         case HISTORY_GO_FORWARD:
-          return {
-            ...state,
-            [action.view]: {
-              ...action.viewInfo,
-            },
-          };
+            return {
+                ...state,
+                [action.view]: {
+                    ...action.viewInfo,
+                },
+            };
         default:
-          return state;
+            return state;
     }
-}
+};

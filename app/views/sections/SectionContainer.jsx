@@ -112,7 +112,7 @@ class SectionContainer extends Component {
                 // same a first push
                 // this would cause a double undo / redo click when changing cell
                 if (this.lastEditCell != cellEditKey) {
-                  pushHistory(view, { ...dataToSend, value: +prevValue });
+                    pushHistory(view, { ...dataToSend, value: +prevValue });
                 }
 
                 pushHistory(view, dataToSend);
@@ -243,7 +243,7 @@ function mapDispatchToProps(dispatch) {
         fetchBudgetConfigData,
         refreshGridData,
         pushHistory,
-      }, dispatch);
+    }, dispatch);
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(SectionContainer));

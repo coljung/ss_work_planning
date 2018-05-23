@@ -11,7 +11,6 @@ import {
     currencyFormat } from '../../components/TableHelpers';
 
 export function cellValueRenderer(instance, td, row, col, prop, value, cellProperties) {
-
     // styling border for each metric
     const rowSpan = this.state.info.row_span;
     borderBottom(row, rowSpan, td, col);

@@ -8,13 +8,11 @@ export const HISTORY_GO_BACK = 'HISTORY_GO_BACK';
 export const HISTORY_GO_FORWARD = 'HISTORY_GO_FORWARD';
 export const HISTORY_CAN_GO = 'HISTORY_CAN_GO';
 
-export const push = (view, viewInfo) => {
-  return {
+export const push = (view, viewInfo) => ({
     type: HISTORY_PUSH,
     view,
-    viewInfo
-  };
-}
+    viewInfo,
+});
 
 export const pushAction = (view, item) => (dispatch, getState) => {
     const { HistoryReducer: state } = getState();
@@ -28,30 +26,24 @@ export const pushAction = (view, item) => (dispatch, getState) => {
     return item;
 };
 
-export const replace = (view, n, item) => {
-  return {
+export const replace = (view, n, item) => ({
     type: HISTORY_REPLACE,
     view,
     n,
-    item
-  };
-}
+    item,
+});
 
-export const go = (view, n) => {
-  return {
+export const go = (view, n) => ({
     type: HISTORY_GO,
     view,
-    n
-  };
-}
+    n,
+});
 
-export const goBack = (view, viewInfo) => {
-  return {
+export const goBack = (view, viewInfo) => ({
     type: HISTORY_GO_BACK,
     view,
-    viewInfo
-  };
-}
+    viewInfo,
+});
 
 export const goBackAction = view => (dispatch, getState) => {
     const { HistoryReducer: state } = getState();
@@ -68,15 +60,13 @@ export const goBackAction = view => (dispatch, getState) => {
 
         return item;
     }
-}
+};
 
-export const goForward = (view, viewInfo) => {
-  return {
+export const goForward = (view, viewInfo) => ({
     type: HISTORY_GO_FORWARD,
     view,
-    viewInfo
-  };
-}
+    viewInfo,
+});
 
 export const goForwardAction = view => (dispatch, getState) => {
     const { HistoryReducer: state } = getState();
@@ -93,10 +83,10 @@ export const goForwardAction = view => (dispatch, getState) => {
 
         return item;
     }
-}
+};
 
 export const canGo = (view, n) => (_, getState) => {
     const { HistoryReducer: state } = getState();
 
     return canGoUtil(state, view, n, defaultView);
-}
+};

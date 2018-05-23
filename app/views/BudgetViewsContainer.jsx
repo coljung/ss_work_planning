@@ -109,19 +109,19 @@ class BudgetViewsContainer extends Component {
     };
 
     handleUndo() {
-      const { activeTab, budgetSeasonId, versionId } = this.state;
-      const { goBackAction, history } = this.props;
-      const data = goBackAction(activeTab);
+        const { activeTab, budgetSeasonId, versionId } = this.state;
+        const { goBackAction, history } = this.props;
+        const data = goBackAction(activeTab);
 
-      this.props.refreshGridData(budgetSeasonId, versionId, activeTab, data);
+        this.props.refreshGridData(budgetSeasonId, versionId, activeTab, data);
     }
 
     handleRedo() {
-      const { activeTab, budgetSeasonId, versionId } = this.state;
-      const { goForwardAction, history } = this.props;
-      const data = goForwardAction(activeTab);
+        const { activeTab, budgetSeasonId, versionId } = this.state;
+        const { goForwardAction, history } = this.props;
+        const data = goForwardAction(activeTab);
 
-      this.props.refreshGridData(budgetSeasonId, versionId, activeTab, data);
+        this.props.refreshGridData(budgetSeasonId, versionId, activeTab, data);
     }
 
     handleVersionClick(event) {
@@ -164,8 +164,8 @@ class BudgetViewsContainer extends Component {
         // undo disabled / enabled ?
         const { history } = this.props;
         const viewHistory = history[activeTab];
-        let undoDisabled = viewHistory ? viewHistory.undoDisabled : true;
-        let redoDisabled = viewHistory ? viewHistory.redoDisabled : true;
+        const undoDisabled = viewHistory ? viewHistory.undoDisabled : true;
+        const redoDisabled = viewHistory ? viewHistory.redoDisabled : true;
 
         return (
             <div>
@@ -279,13 +279,13 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return bindActionCreators({
-      budgetVersions,
-      saveNewBudgetVersion,
-      switchUrls,
-      clearUrls,
-      goBackAction,
-      goForwardAction,
-      refreshGridData,
+        budgetVersions,
+        saveNewBudgetVersion,
+        switchUrls,
+        clearUrls,
+        goBackAction,
+        goForwardAction,
+        refreshGridData,
     }, dispatch);
 }
 
