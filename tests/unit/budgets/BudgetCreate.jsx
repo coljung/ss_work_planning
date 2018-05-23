@@ -18,7 +18,7 @@ function setup() {
         onOverlayClick: jest.fn(),
         fetchAvailableSeasons: jest.fn(),
         createBudget: jest.fn(),
-        resetState: jest.fn()
+        resetState: jest.fn(),
     }
 
     const middlewares = [thunk]
@@ -44,7 +44,9 @@ function setup() {
                 { year: 2023, season: 'FW', name: 'FW23' }
             ],
             budgetsFetched: false,
-            seasonsFetched: true
+            seasonsFetched: true,
+            budgetCreateFetched: true,
+
         }
     };
 
@@ -70,6 +72,7 @@ function setupPureComponent() {
             { year: 2018, season: 'FW', name: 'FW18' }
         ],
         seasonsFetched: true,
+        budgetCreateFetched: true,
         visible: true,
         onOverlayClick: jest.fn(),
         fetchAvailableSeasons: jest.fn(),

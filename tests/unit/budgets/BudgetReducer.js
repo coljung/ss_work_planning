@@ -8,6 +8,7 @@ describe('BudgetReducer', () => {
             seasons: [],
             budgetsFetched: false,
             seasonsFetched: false,
+            budgetCreateFetched: true,
         })
     });
 
@@ -21,6 +22,7 @@ describe('BudgetReducer', () => {
             seasons: [],
             budgetsFetched: false,
             seasonsFetched: false,
+            budgetCreateFetched: true,
         })
     });
 
@@ -41,6 +43,7 @@ describe('BudgetReducer', () => {
             seasons: [],
             budgetsFetched: true,
             seasonsFetched: false,
+            budgetCreateFetched: true,
         })
     });
     it('should handle REQUEST_CREATE_BUDGET', () => {
@@ -52,33 +55,22 @@ describe('BudgetReducer', () => {
             budgets: [],
             seasons: [],
             budgetsFetched: false,
-            seasonsFetched: true,
+            seasonsFetched: false,
+            budgetCreateFetched: false,
         })
     });
 
     it('should handle RECEIVE_CREATE_BUDGET', () => {
-        const state = {
-            budgets: [
-                { foo: 'bar' }
-            ],
-            seasons: [],
-            budgetsFetched: true,
-            seasonsFetched: false,
-        };
-
         expect(
-            reducer(state, {
-                type: actions.RECEIVE_CREATE_BUDGET,
-                budget: { hello: 'world' }
+            reducer(undefined, {
+                type: actions.RECEIVE_CREATE_BUDGETS,
             })
         ).toEqual({
-            budgets: [
-                { foo: 'bar' },
-                { hello: 'world' }
-            ],
+            budgets: [],
             seasons: [],
-            budgetsFetched: true,
+            budgetsFetched: false,
             seasonsFetched: false,
+            budgetCreateFetched: true,
         })
     });
 

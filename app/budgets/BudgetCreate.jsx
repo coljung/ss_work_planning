@@ -113,7 +113,7 @@ export class BudgetCreate extends Component {
                 {this.createModalContent()}
             </Modal>
         );
-        const createBudgetContent = this.props.budgetCreateFetched ? modal : <LoadingOverlay />;
+        const createBudgetContent = this.props.budgetCreateFetched ? modal : <LoadingOverlay text='Creating Budget...'/>;
         return (createBudgetContent);
     }
 }
