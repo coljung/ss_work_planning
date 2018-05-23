@@ -60,6 +60,8 @@ export const goBackAction = view => (dispatch, getState) => {
 
         return item;
     }
+
+    return null;
 };
 
 export const goForward = (view, viewInfo) => ({
@@ -83,6 +85,8 @@ export const goForwardAction = view => (dispatch, getState) => {
 
         return item;
     }
+
+    return null;
 };
 
 export const canGo = (view, n) => (_, getState) => {

@@ -100,7 +100,7 @@ class SectionContainer extends Component {
             if (parseFloat(prevValue, 10) !== parseFloat(newValue, 10)) {
                 const dataToSend = this.state.data[row][col[0]];
                 const { budget, version, view } = this.state;
-                const { history, pushHistory } = this.props;
+                const { history, pushHistory } = this.props; // eslint-disable-line no-shadow
                 const viewHistory = history[view];
 
                 this.props.refreshGridData(budget, version, view, dataToSend);
@@ -111,7 +111,7 @@ class SectionContainer extends Component {
                 // we need to be able to undo it, old value should be store in history
                 // same a first push
                 // this would cause a double undo / redo click when changing cell
-                if (this.lastEditCell != cellEditKey) {
+                if (this.lastEditCell !== cellEditKey) {
                     pushHistory(view, { ...dataToSend, value: +prevValue });
                 }
 

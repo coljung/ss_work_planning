@@ -87,7 +87,7 @@ class BudgetViewsContainer extends Component {
 
     handleUndo() {
         const { activeTab, budgetSeasonId, versionId } = this.state;
-        const { goBackAction, history } = this.props;
+        const { goBackAction, history } = this.props; // eslint-disable-line no-shadow
         const data = goBackAction(activeTab);
 
         this.props.refreshGridData(budgetSeasonId, versionId, activeTab, data);
@@ -95,7 +95,7 @@ class BudgetViewsContainer extends Component {
 
     handleRedo() {
         const { activeTab, budgetSeasonId, versionId } = this.state;
-        const { goForwardAction, history } = this.props;
+        const { goForwardAction, history } = this.props; // eslint-disable-line no-shadow
         const data = goForwardAction(activeTab);
 
         this.props.refreshGridData(budgetSeasonId, versionId, activeTab, data);
