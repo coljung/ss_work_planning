@@ -57,28 +57,28 @@ export const goForward = (view, viewInfo) => ({
 export const goForwardAction = view => goInDirection(HISTORY_GO_DIRECTION_FUTURE, view);
 
 export const goInDirection = (direction, view) => (dispatch, getState) => {
-  const { HistoryReducer: state } = getState();
-  const viewInfo = getView(state, view, defaultView);
-  let newIndex;
+    const { HistoryReducer: state } = getState();
+    const viewInfo = getView(state, view, defaultView);
+    let newIndex;
 
-  if (direction === HISTORY_GO_DIRECTION_PAST) {
-    newIndex = viewInfo.currentIndex - 1;
-  } else {
-    newIndex = viewInfo.currentIndex + 1;
-  }
+    if (direction === HISTORY_GO_DIRECTION_PAST) {
+        newIndex = viewInfo.currentIndex - 1;
+    } else {
+        newIndex = viewInfo.currentIndex + 1;
+    }
 
-  if (canGoUtil(state, view, newIndex, defaultView)) {
-      const item = viewInfo.history[newIndex];
-      viewInfo.currentIndex = newIndex;
-      viewInfo.undoDisabled = !canGoUtil(state, view, newIndex - 1, defaultView);
-      viewInfo.redoDisabled = !canGoUtil(state, view, newIndex + 1, defaultView);
+    if (canGoUtil(state, view, newIndex, defaultView)) {
+        const item = viewInfo.history[newIndex];
+        viewInfo.currentIndex = newIndex;
+        viewInfo.undoDisabled = !canGoUtil(state, view, newIndex - 1, defaultView);
+        viewInfo.redoDisabled = !canGoUtil(state, view, newIndex + 1, defaultView);
 
-      dispatch(goForward(view, viewInfo));
+        dispatch(goForward(view, viewInfo));
 
-      return item;
-  }
+        return item;
+    }
 
-  return null;
+    return null;
 }
 
 export const canGo = (view, n) => (_, getState) => {
