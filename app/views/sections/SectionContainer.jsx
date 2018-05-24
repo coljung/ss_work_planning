@@ -84,6 +84,31 @@ class SectionContainer extends Component {
         this.props.fetchBudgetMetricData(budget, version, view, config, location.query);
     }
 
+    /**
+     *  Handsontable Change cell row index
+     * @typedef {Number} Handsontable~RowIndex
+     */
+    /**
+     *  Handsontable Change cell column and property string joined by a "."
+     * @typedef {String} Handsontable~ColIndexAndProperty
+     */
+    /**
+     *  Handsontable Change cell old value
+     * @typedef {(String|Number)} Handsontable~OldValue
+     */
+    /**
+     *  Handsontable Change cell new value
+     * @typedef {(String|Number)} Handsontable~NewValue
+     */
+    /**
+     * Handsontable Change cell
+     * @typedef {Array<[Handsontable~RowIndex, Handsontable~ColIndexAndProperty, Handsontable~OldValue, Handsontable~NewValue]>} Handsontable~ChangeCell
+     */
+    /**
+     * Change cell handler
+     * @param  {Handsontable~ChangeCell[]} cellEdits An array of {Handsontable~ChangeCell}
+     * @return {void}
+     */
     changeCell = (cellEdits) => {
         // on load this is called, hence the check
         if (cellEdits) {
