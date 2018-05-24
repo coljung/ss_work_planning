@@ -18,7 +18,6 @@ export const pushAction = (view, item) => (dispatch, getState) => {
     const { HistoryReducer: state } = getState();
     const viewInfo = getView(state, view, defaultView);
 
-
     pushUtil(state, viewInfo, item, defaultView);
 
     dispatch(push(view, viewInfo));

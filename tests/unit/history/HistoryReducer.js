@@ -65,7 +65,7 @@ describe('History Reducer', () => {
 
     store.dispatch(actions.pushAction(view, item2));
 
-    const foo = store.dispatch(actions.goBackAction(view));;
+    const foo = store.dispatch(actions.goBackAction(view));
 
     expect(foo).toBe(item);
 
@@ -77,7 +77,7 @@ describe('History Reducer', () => {
   });
 
   it('Should go forward (redo)', () => {
-    const foo = store.dispatch(actions.goForwardAction(view));;
+    const foo = store.dispatch(actions.goForwardAction(view));
 
     expect(foo).toBe(item2);
 
