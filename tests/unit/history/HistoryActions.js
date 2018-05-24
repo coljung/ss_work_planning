@@ -26,34 +26,17 @@ describe('History Actions', () => {
     expect(actions.push(view, item)).toEqual(expectedAction);
   });
 
-  it('Should test replace', () => {
-    const n = 0;
-    const view  = 'men';
-    const item = {
-      foo: 'bar'
-    };
-
-    const expectedAction = {
-      type: actions.HISTORY_REPLACE,
-      view,
-      n,
-      item
-    }
-
-    expect(actions.replace(view, n, item)).toEqual(expectedAction);
-  });
-
   it('Should test go', () => {
-    const n = 0;
+    const viewInfo = { foo: 'bar' };
     const view  = 'men';
 
     const expectedAction = {
-      type: actions.HISTORY_GO,
+      type: actions.HISTORY_GO_BACK,
       view,
-      n
+      viewInfo
     }
 
-    expect(actions.go(view, n)).toEqual(expectedAction);
+    expect(actions.go(actions.HISTORY_GO_BACK, view, viewInfo)).toEqual(expectedAction);
   });
 
   it('Should test goBack', () => {
