@@ -11,6 +11,7 @@ import {
     resetState,
     fetchBudgetConfigData,
     refreshGridData } from './SectionActions';
+import { pushAction as pushHistory } from '../history/HistoryActions';
 import LoadingSpinner from '../../components/common/LoadingSpinner';
 
 class SectionContainer extends Component {
@@ -36,6 +37,8 @@ class SectionContainer extends Component {
         this.setHotTableRef = (element) => {
             this.hotTableRef = element;
         };
+
+        this.lastEditCell = null;
     }
 
     componentDidMount() {
@@ -81,11 +84,37 @@ class SectionContainer extends Component {
         this.props.fetchBudgetMetricData(budget, version, view, config, location.query);
     }
 
+    /**
+     *  Handsontable Change cell row index
+     * @typedef {Number} Handsontable~RowIndex
+     */
+    /**
+     *  Handsontable Change cell column and property string joined by a "."
+     * @typedef {String} Handsontable~ColIndexAndProperty
+     */
+    /**
+     *  Handsontable Change cell old value
+     * @typedef {(String|Number)} Handsontable~OldValue
+     */
+    /**
+     *  Handsontable Change cell new value
+     * @typedef {(String|Number)} Handsontable~NewValue
+     */
+    /**
+     * Handsontable Change cell
+     * @typedef {Array<[Handsontable~RowIndex, Handsontable~ColIndexAndProperty, Handsontable~OldValue, Handsontable~NewValue]>} Handsontable~ChangeCell
+     */
+    /**
+     * Change cell handler
+     * @param  {Handsontable~ChangeCell[]} cellEdits An array of {Handsontable~ChangeCell}
+     * @return {void}
+     */
     changeCell = (cellEdits) => {
         // on load this is called, hence the check
         if (cellEdits) {
             const row = cellEdits[0][0];
             const col = cellEdits[0][1].split('.');
+            const cellEditKey = [cellEdits[0][0], cellEdits[0][1]].join('.');
             const prevValue = cellEdits[0][2];
             const newValue = cellEdits[0][3];
 
@@ -95,13 +124,26 @@ class SectionContainer extends Component {
             // handsontable converts to string
             if (parseFloat(prevValue, 10) !== parseFloat(newValue, 10)) {
                 const dataToSend = this.state.data[row][col[0]];
-
                 const { budget, version, view } = this.state;
-                this.props.refreshGridData(budget, version, view, dataToSend);
-            }
+                const { history, pushHistory } = this.props; // eslint-disable-line no-shadow
+                const viewHistory = history[view];
 
-            // TODO
-            // local store changes for save event
+                this.props.refreshGridData(budget, version, view, dataToSend);
+
+                // Send old value into history for future undo
+                // TODO: Fix this
+                // I did this because if the second+ edited cell is not the same
+                // we need to be able to undo it, old value should be store in history
+                // same a first push
+                // this would cause a double undo / redo click when changing cell
+                if (this.lastEditCell !== cellEditKey) {
+                    pushHistory(view, { ...dataToSend, value: +prevValue });
+                }
+
+                pushHistory(view, dataToSend);
+
+                this.lastEditCell = cellEditKey;
+            }
         }
         // if (cellEdits) {
         //     const row = cellEdits[0][0];
@@ -125,12 +167,6 @@ class SectionContainer extends Component {
         //         });
         //     }
         // }
-    };
-
-    save = () => {
-        const dataToSend = {};
-        dataToSend.data = this.dataToSave;
-        this.props.saveBudget(this.props.budget, this.props.version, this.props.view, dataToSend);
     };
 
     createColumn = (column, renderer) => ({
@@ -185,11 +221,6 @@ class SectionContainer extends Component {
 
         return (
             <div>
-                {/* <Button
-                    icon="save"
-                    className="saveBtn"
-                    disabled={this.state.canSave}
-                    onClick={() => this.save()}>Save {buttonStr} view</Button> */}
                 {budgetListData}
             </div>
         );
@@ -213,16 +244,19 @@ SectionContainer.propTypes = {
     refreshData: PropTypes.bool.isRequired,
     spreadingData: PropTypes.bool.isRequired,
     config: PropTypes.array,
+    history: PropTypes.object,
+    pushHistory: PropTypes.func.isRequired,
 };
 
 function mapStateToProps(state) {
-    const { SectionReducers } = state;
+    const { SectionReducers, HistoryReducer } = state;
     return {
         viewData: SectionReducers.viewData,
         viewDataFetched: SectionReducers.viewDataFetched,
         config: SectionReducers.config.available_metrics,
         refreshData: SectionReducers.refreshData,
         spreadingData: SectionReducers.spreadingData,
+        history: HistoryReducer,
     };
 }
 
@@ -232,7 +266,9 @@ function mapDispatchToProps(dispatch) {
         resetState,
         saveBudget,
         fetchBudgetConfigData,
-        refreshGridData }, dispatch);
+        refreshGridData,
+        pushHistory,
+    }, dispatch);
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(SectionContainer));

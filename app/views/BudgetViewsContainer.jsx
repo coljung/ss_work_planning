@@ -6,10 +6,12 @@ import { Row, Col, Tabs, Dropdown, Icon } from 'antd';
 import BudgetVersionMenu from './components/BudgetVersionMenu';
 import BudgetViewsButtonActions from './components/BudgetViewsButtonActions';
 import SectionContainer from './sections/SectionContainer';
+import { refreshGridData } from './sections/SectionActions';
 import { budgetVersions, saveNewBudgetVersion } from './BudgetViewActions';
 import { switchUrls, clearUrls } from '../components/customNavigation/CustomNavigationActions';
 import { cellValueRenderer as commonCellValueRenderer } from './sections/top-down/CommonCellRenderer';
 import { cellValueRenderer as execCellValueRenderer } from './sections/top-down/ExecCellRenderer';
+import { goBackAction, goForwardAction } from './history/HistoryActions';
 import { ROUTE_BUDGET } from '../Routes';
 
 // Sub Component
@@ -44,12 +46,12 @@ class BudgetViewsContainer extends Component {
             [TAB_BRAND_GROUPS]: false,
         };
 
-        this.dataToSave = [];
-
         this.props.switchUrls(budgetid, id, seasonname, vname, tab);
 
         this.onTabChange = this.onTabChange.bind(this);
         this.handleVersionClick = this.handleVersionClick.bind(this);
+        this.handleUndo = this.handleUndo.bind(this);
+        this.handleRedo = this.handleRedo.bind(this);
     }
 
     componentWillMount() {
@@ -83,26 +85,21 @@ class BudgetViewsContainer extends Component {
         this.props.saveNewBudgetVersion(budget, version);
     };
 
-    changeCell = (cellEdits) => {
-        // on load this is called, hence the check
-        if (cellEdits) {
-            const row = cellEdits[0][0];
-            const col = cellEdits[0][1];
-            const prevValue = cellEdits[0][2];
-            const newValue = cellEdits[0][3];
-            if (prevValue !== newValue) {
-                const newData = {
-                    row,
-                    col,
-                    value: newValue,
-                };
-                // check if cell has been modified already
-                const checkDuplicate = this.dataToSave.filter(e => e.row !== row || e.col !== col);
-                checkDuplicate.push(newData);
-                this.dataToSave = checkDuplicate;
-            }
-        }
-    };
+    handleUndo() {
+        const { activeTab, budgetSeasonId, versionId } = this.state;
+        const { goBackAction, history } = this.props; // eslint-disable-line no-shadow
+        const data = goBackAction(activeTab);
+
+        this.props.refreshGridData(budgetSeasonId, versionId, activeTab, data);
+    }
+
+    handleRedo() {
+        const { activeTab, budgetSeasonId, versionId } = this.state;
+        const { goForwardAction, history } = this.props; // eslint-disable-line no-shadow
+        const data = goForwardAction(activeTab);
+
+        this.props.refreshGridData(budgetSeasonId, versionId, activeTab, data);
+    }
 
     handleVersionClick(event) {
         const { item: { props: { version } } } = event;
@@ -132,8 +129,6 @@ class BudgetViewsContainer extends Component {
             [newTabKey]: true,
         });
 
-        this.dataToSave = [];
-
         const { router } = this.props;
 
         router.push(`${ROUTE_BUDGET}/${seasonName}/budget/${budgetSeasonId}/version/${versionName}/${versionId}/${newTabKey}`);
@@ -141,6 +136,12 @@ class BudgetViewsContainer extends Component {
 
     render() {
         const { activeTab, budgetSeasonId, versionId, seasonName, versionName } = this.state;
+        // undo disabled / enabled ?
+        const { history } = this.props;
+        const viewHistory = history[activeTab];
+        const undoDisabled = viewHistory ? viewHistory.undoDisabled : true;
+        const redoDisabled = viewHistory ? viewHistory.redoDisabled : true;
+
         return (
             <div>
                 <div className="budgetHeader">
@@ -153,7 +154,13 @@ class BudgetViewsContainer extends Component {
                                 handleClick={this.handleVersionClick} />
                         </Col>
                         <Col span={16} className="col">
-                            <BudgetViewsButtonActions undoDisabled={true} saveNew={() => this.saveNewVersion(budgetSeasonId, versionId)} />
+                            <BudgetViewsButtonActions
+                              undoDisabled={undoDisabled}
+                              onUndo={this.handleUndo}
+                              redoDisabled={redoDisabled}
+                              onRedo={this.handleRedo}
+                              saveNew={() => this.saveNewVersion(budgetSeasonId, versionId)}
+                            />
                         </Col>
                     </Row>
                 </div>
@@ -176,7 +183,6 @@ class BudgetViewsContainer extends Component {
                                     budget={budgetSeasonId}
                                     version={versionId}
                                     cellRenderer={commonCellValueRenderer}
-                                    updateData={this.changeCell}
                                     key={TAB_TOTAL}
                                     view={TAB_TOTAL}
                                 />
@@ -188,7 +194,6 @@ class BudgetViewsContainer extends Component {
                                     budget={budgetSeasonId}
                                     version={versionId}
                                     cellRenderer={commonCellValueRenderer}
-                                    updateData={this.changeCell}
                                     key={TAB_WOMEN}
                                     view={TAB_WOMEN}
                                 />
@@ -200,7 +205,6 @@ class BudgetViewsContainer extends Component {
                                     budget={budgetSeasonId}
                                     version={versionId}
                                     cellRenderer={commonCellValueRenderer}
-                                    updateData={this.changeCell}
                                     key={TAB_MEN}
                                     view={TAB_MEN}
                                 />
@@ -230,18 +234,31 @@ BudgetViewsContainer.propTypes = {
     clearUrls: PropTypes.func.isRequired,
     versions: PropTypes.array.isRequired,
     router: PropTypes.object,
+    history: PropTypes.object,
+    goBackAction: PropTypes.func.isRequired,
+    goForwardAction: PropTypes.func.isRequired,
+    refreshGridData: PropTypes.func.isRequired,
 };
 
 function mapStateToProps(state) {
-    const { BudgetViewReducer } = state;
+    const { BudgetViewReducer, HistoryReducer } = state;
     return {
         newVersion: BudgetViewReducer.newVersion,
         versions: BudgetViewReducer.versions,
+        history: HistoryReducer,
     };
 }
 
 function mapDispatchToProps(dispatch) {
-    return bindActionCreators({ budgetVersions, saveNewBudgetVersion, switchUrls, clearUrls }, dispatch);
+    return bindActionCreators({
+        budgetVersions,
+        saveNewBudgetVersion,
+        switchUrls,
+        clearUrls,
+        goBackAction,
+        goForwardAction,
+        refreshGridData,
+    }, dispatch);
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(BudgetViewsContainer);

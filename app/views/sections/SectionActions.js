@@ -89,7 +89,10 @@ export function refreshGridData(budget, version, view, updatedObj) {
     return (dispatch) => {
         dispatch(requestRefreshGridData());
         const req = request.put(`${getApiUrl()}planning/budgets/${budget}/versions/${version}/${view}/metrics`);
-        return req.send(updatedObj)
+        return req.send({
+            ...updatedObj,
+            value: updatedObj.value === 0 ? 0.0001 : updatedObj.value,
+        })
             .then(
             (res) => {
                 if (res.statusCode === 200) {
@@ -97,7 +100,10 @@ export function refreshGridData(budget, version, view, updatedObj) {
                 }
                 return dispatch(messages({ content: 'Not OK', response: '', isError: true }));
             },
-            err => dispatch(messages({ content: err, response: err.response, isError: true })),
+            (err) => {
+                dispatch(receiveRefreshGridData());
+                return dispatch(messages({ content: err, response: err.response, isError: true }));
+            },
             );
     };
 }

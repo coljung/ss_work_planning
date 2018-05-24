@@ -38,7 +38,8 @@ export default class BudgetViewsButtonActions extends Component {
                     onOverlayClick={this.toggleFilterModal.bind(this)} />
 
                 <Button icon="switcher" onClick={this.toggleFilterModal}>Filter</Button>
-                <Button disabled={this.props.undoDisabled} icon="left">Undo</Button>
+                <Button disabled={this.props.undoDisabled} onClick={this.props.onUndo} icon="left">Undo</Button>
+                <Button disabled={this.props.redoDisabled} onClick={this.props.onRedo} icon="right">Redo</Button>
             </div>
         );
     }
@@ -47,4 +48,7 @@ export default class BudgetViewsButtonActions extends Component {
 BudgetViewsButtonActions.propTypes = {
     saveNew: PropTypes.func.isRequired,
     undoDisabled: PropTypes.bool,
+    onUndo: PropTypes.func,
+    redoDisabled: PropTypes.bool,
+    onRedo: PropTypes.func,
 };
