@@ -1,9 +1,6 @@
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
-
 import * as actions from '../../../app/views/history/HistoryActions';
-
-
 
 describe('History Actions', () => {
   let middlewares;

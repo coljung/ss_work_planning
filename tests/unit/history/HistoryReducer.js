@@ -1,11 +1,8 @@
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
-
-import reducer, { defaultView } from '../../../app/views/history/HistoryReducer';
 import * as actions from '../../../app/views/history/HistoryActions';
+import reducer, { defaultView } from '../../../app/views/history/HistoryReducer';
 import { canGo as canGoUtil, getView } from '../../../app/views/history/utils';
-
-
 
 describe('History Reducer', () => {
   let middlewares;
