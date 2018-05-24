@@ -7,6 +7,8 @@ export const HISTORY_GO = 'HISTORY_GO';
 export const HISTORY_GO_BACK = 'HISTORY_GO_BACK';
 export const HISTORY_GO_FORWARD = 'HISTORY_GO_FORWARD';
 export const HISTORY_CAN_GO = 'HISTORY_CAN_GO';
+export const HISTORY_GO_DIRECTION_PAST = 'HISTORY_GO_DIRECTION_PAST';
+export const HISTORY_GO_DIRECTION_FUTURE = 'HISTORY_GO_DIRECTION_FUTURE';
 
 export const push = (view, viewInfo) => ({
     type: HISTORY_PUSH,
@@ -44,24 +46,7 @@ export const goBack = (view, viewInfo) => ({
     viewInfo,
 });
 
-export const goBackAction = view => (dispatch, getState) => {
-    const { HistoryReducer: state } = getState();
-    const viewInfo = getView(state, view, defaultView);
-    const newIndex = viewInfo.currentIndex - 1;
-
-    if (canGoUtil(state, view, newIndex, defaultView)) {
-        const item = viewInfo.history[newIndex];
-        viewInfo.currentIndex = newIndex;
-        viewInfo.undoDisabled = !canGoUtil(state, view, newIndex - 1, defaultView);
-        viewInfo.redoDisabled = !canGoUtil(state, view, newIndex + 1, defaultView);
-
-        dispatch(goBack(view, viewInfo));
-
-        return item;
-    }
-
-    return null;
-};
+export const goBackAction = view => goInDirection(HISTORY_GO_DIRECTION_PAST, view);
 
 export const goForward = (view, viewInfo) => ({
     type: HISTORY_GO_FORWARD,
@@ -69,24 +54,32 @@ export const goForward = (view, viewInfo) => ({
     viewInfo,
 });
 
-export const goForwardAction = view => (dispatch, getState) => {
-    const { HistoryReducer: state } = getState();
-    const viewInfo = getView(state, view, defaultView);
-    const newIndex = viewInfo.currentIndex + 1;
+export const goForwardAction = view => goInDirection(HISTORY_GO_DIRECTION_FUTURE, view);
 
-    if (canGoUtil(state, view, newIndex, defaultView)) {
-        const item = viewInfo.history[newIndex];
-        viewInfo.currentIndex = newIndex;
-        viewInfo.undoDisabled = !canGoUtil(state, view, viewInfo.currentIndex - 1, defaultView);
-        viewInfo.redoDisabled = !canGoUtil(state, view, viewInfo.currentIndex + 1, defaultView);
+export const goInDirection = (direction, view) => (dispatch, getState) => {
+  const { HistoryReducer: state } = getState();
+  const viewInfo = getView(state, view, defaultView);
+  let newIndex;
 
-        dispatch(goForward(view, viewInfo));
+  if (direction === HISTORY_GO_DIRECTION_PAST) {
+    newIndex = viewInfo.currentIndex - 1;
+  } else {
+    newIndex = viewInfo.currentIndex + 1;
+  }
 
-        return item;
-    }
+  if (canGoUtil(state, view, newIndex, defaultView)) {
+      const item = viewInfo.history[newIndex];
+      viewInfo.currentIndex = newIndex;
+      viewInfo.undoDisabled = !canGoUtil(state, view, newIndex - 1, defaultView);
+      viewInfo.redoDisabled = !canGoUtil(state, view, newIndex + 1, defaultView);
 
-    return null;
-};
+      dispatch(goForward(view, viewInfo));
+
+      return item;
+  }
+
+  return null;
+}
 
 export const canGo = (view, n) => (_, getState) => {
     const { HistoryReducer: state } = getState();
