@@ -1,18 +1,17 @@
 import {
-  HISTORY_PUSH,
-  HISTORY_REPLACE,
-  HISTORY_GO,
-  HISTORY_GO_BACK,
-  HISTORY_GO_FORWARD,
-  HISTORY_CAN_GO,
+    HISTORY_PUSH,
+    HISTORY_REPLACE,
+    HISTORY_GO_BACK,
+    HISTORY_GO_FORWARD,
+    HISTORY_CAN_GO,
 } from './HistoryActions';
 
 import {
-  getView,
-  push,
-  pop,
-  canGo,
-  viewLength,
+    getView,
+    push,
+    pop,
+    canGo,
+    viewLength,
 } from './utils';
 
 const initialState = {
