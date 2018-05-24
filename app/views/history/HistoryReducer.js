@@ -36,19 +36,7 @@ export default (state = initialState, action) => {
     let view;
     switch (action.type) {
         case HISTORY_PUSH:
-            return {
-                ...state,
-                [action.view]: {
-                    ...action.viewInfo,
-                },
-            };
         case HISTORY_GO_BACK:
-            return {
-                ...state,
-                [action.view]: {
-                    ...action.viewInfo,
-                },
-            };
         case HISTORY_GO_FORWARD:
             return {
                 ...state,
