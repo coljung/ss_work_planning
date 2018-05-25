@@ -1,8 +1,8 @@
 import { combineReducers } from 'redux';
-import SectionReducers from './views/sections/SectionReducers';
-import BudgetReducer from './budgets/BudgetReducer';
-import BudgetViewReducer from './views/BudgetViewReducer';
-import HistoryReducer from './views/history/HistoryReducer';
+import SectionReducers from './budgets/sections/SectionReducers';
+import BudgetReducer from './home/BudgetReducer';
+import BudgetViewReducer from './budgets/BudgetViewReducer';
+import HistoryReducer from './budgets/history/HistoryReducer';
 import Message from './notifications/NotificationReducer';
 import CustomNavigationReducer from './components/customNavigation/CustomNavigationReducer';
 
