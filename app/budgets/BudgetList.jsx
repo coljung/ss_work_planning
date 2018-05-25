@@ -37,7 +37,7 @@ class BudgetList extends Component {
         this.restOfBudgets = oldBudgets.slice(4).map(budget =>
             <li key={budget.id}>
                 <h4>
-                    <Link id={`${budget.season}-${budget.year}`} to={`${ROUTE_BUDGET}/${budget.season}${budget.year}/budget/${budget.id}/version/${budget.versions[0].name}/${budget.versions[0].id}/exec`}>
+                    <Link id={`${budget.season}-${budget.year}`} to={`${ROUTE_BUDGET}/${budget.season}${budget.year}/${budget.id}/version/${budget.versions[0].name}/${budget.versions[0].id}/top-down/exec`}>
                         {budget.season}{budget.year}
                     </Link>
                 </h4>
@@ -49,20 +49,17 @@ class BudgetList extends Component {
           .filter(budget => budget.versions.length)
           .sort(this.orderBudgets); // sort by most recent
         // take latest 4 budgets
-        const recentBudgets = hasVersions.slice(0, 4).map((budget) => {
-            const url = `${ROUTE_BUDGET}/${budget.season}${budget.year}/budget/${budget.id}/version/${budget.versions[0].name}/${budget.versions[0].id}/exec`;
-            return (
-                <li key={budget.id}>
-                    <h4 className="budgetListLink">
-                        <PopoverBudgetLink
-                            budgetId={budget.id}
-                            seasonName={`${budget.season}${budget.year}`}
-                            versionId={budget.versions[0].id}
-                            versionName={budget.versions[0].name} />
-                    </h4>
-                </li>
-            );
-        });
+        const recentBudgets = hasVersions.slice(0, 4).map(budget =>
+            <li key={budget.id}>
+                <h4 className="budgetListLink">
+                    <PopoverBudgetLink
+                        budgetId={budget.id}
+                        seasonName={`${budget.season}${budget.year}`}
+                        versionId={budget.versions[0].id}
+                        versionName={budget.versions[0].name} />
+                </h4>
+            </li>,
+        );
         // to create the list for the older budgets
         this.archiveBudgetList(hasVersions);
         return recentBudgets;

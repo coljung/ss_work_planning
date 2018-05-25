@@ -6,25 +6,25 @@ import { Popover } from 'antd';
 import { ROUTE_BUDGET } from '../Routes';
 
 const viewsTop = [
-    { name: 'Executive Recap', url: 'exec' },
-    { name: 'OTB Total', url: 'total' },
-    { name: 'OTB Women', url: 'women' },
-    { name: 'OTB Men', url: 'men' },
+    { name: 'Executive Recap', url: 'exec', section: 'top-down' },
+    { name: 'OTB Total', url: 'total', section: 'top-down' },
+    { name: 'OTB Women', url: 'women', section: 'top-down' },
+    { name: 'OTB Men', url: 'men', section: 'top-down' },
 ];
 const viewsMiddle = [
-    { name: 'Brand Group Targets Women', url: 'bg-women' },
-    { name: 'Brand Group Targets Men', url: 'bg-men' },
-    { name: 'Department Targets Women', url: 'department' },
-    { name: 'Department Targets Men', url: 'department2' },
-    { name: 'Width and Depth Targets', url: 'width-depth' },
+    { name: 'Brand Group Targets Women', url: 'bg-women', section: 'middle-out' },
+    { name: 'Brand Group Targets Men', url: 'bg-men', section: 'middle-out' },
+    { name: 'Department Targets Women', url: 'department', section: 'middle-out' },
+    { name: 'Department Targets Men', url: 'department2', section: 'middle-out' },
+    { name: 'Width and Depth Targets', url: 'width-depth', section: 'middle-out' },
 ];
 const viewsBottom = [
-    { name: 'Delivery', url: 'delivery' },
-    { name: 'Unit', url: 'unit' },
-    { name: 'Department', url: 'department3' },
-    { name: 'Department', url: 'department4' },
-    { name: 'Sales Margin', url: 'sales-margin' },
-    { name: 'Shrink Planning', url: 'shrink-planning' },
+    { name: 'Delivery', url: 'delivery', section: 'bottom-up' },
+    { name: 'Unit', url: 'unit', section: 'bottom-up' },
+    { name: 'Department', url: 'department3', section: 'bottom-up' },
+    { name: 'Department', url: 'department4', section: 'bottom-up' },
+    { name: 'Sales Margin', url: 'sales-margin', section: 'bottom-up' },
+    { name: 'Shrink Planning', url: 'shrink-planning', section: 'bottom-up' },
 ];
 
 const PopoverbudgetLink = ({ budgetId, seasonName, versionId, versionName }) => {
@@ -33,7 +33,7 @@ const PopoverbudgetLink = ({ budgetId, seasonName, versionId, versionName }) => 
     const displayLinkFunction = (link, index) =>
         <li key={`${seasonName}-${index}-${link.url}`}>
             <Link id={`${seasonName}-${index}-${link.url}`}
-                  to={`${ROUTE_BUDGET}/${seasonName}/budget/${budgetId}/version/${versionName}/${versionId}/${link.url}`}>
+                  to={`${ROUTE_BUDGET}/${seasonName}/${budgetId}/version/${versionName}/${versionId}/${link.section}/${link.url}`}>
                 {link.name}
             </Link>
         </li>;

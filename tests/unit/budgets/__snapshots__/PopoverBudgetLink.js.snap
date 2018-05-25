@@ -16,7 +16,7 @@ exports[`PopoverBudgetLink should render correctly 1`] = `
               id="undefined-0-exec"
               onlyActiveOnIndex={false}
               style={Object {}}
-              to="/season/undefined/budget/undefined/version/undefined/undefined/exec"
+              to="/budget/undefined/undefined/version/undefined/undefined/top-down/exec"
             >
               Executive Recap
             </Link>
@@ -26,7 +26,7 @@ exports[`PopoverBudgetLink should render correctly 1`] = `
               id="undefined-1-total"
               onlyActiveOnIndex={false}
               style={Object {}}
-              to="/season/undefined/budget/undefined/version/undefined/undefined/total"
+              to="/budget/undefined/undefined/version/undefined/undefined/top-down/total"
             >
               OTB Total
             </Link>
@@ -36,7 +36,7 @@ exports[`PopoverBudgetLink should render correctly 1`] = `
               id="undefined-2-women"
               onlyActiveOnIndex={false}
               style={Object {}}
-              to="/season/undefined/budget/undefined/version/undefined/undefined/women"
+              to="/budget/undefined/undefined/version/undefined/undefined/top-down/women"
             >
               OTB Women
             </Link>
@@ -46,7 +46,7 @@ exports[`PopoverBudgetLink should render correctly 1`] = `
               id="undefined-3-men"
               onlyActiveOnIndex={false}
               style={Object {}}
-              to="/season/undefined/budget/undefined/version/undefined/undefined/men"
+              to="/budget/undefined/undefined/version/undefined/undefined/top-down/men"
             >
               OTB Men
             </Link>
@@ -63,7 +63,7 @@ exports[`PopoverBudgetLink should render correctly 1`] = `
               id="undefined-0-bg-women"
               onlyActiveOnIndex={false}
               style={Object {}}
-              to="/season/undefined/budget/undefined/version/undefined/undefined/bg-women"
+              to="/budget/undefined/undefined/version/undefined/undefined/middle-out/bg-women"
             >
               Brand Group Targets Women
             </Link>
@@ -73,7 +73,7 @@ exports[`PopoverBudgetLink should render correctly 1`] = `
               id="undefined-1-bg-men"
               onlyActiveOnIndex={false}
               style={Object {}}
-              to="/season/undefined/budget/undefined/version/undefined/undefined/bg-men"
+              to="/budget/undefined/undefined/version/undefined/undefined/middle-out/bg-men"
             >
               Brand Group Targets Men
             </Link>
@@ -83,7 +83,7 @@ exports[`PopoverBudgetLink should render correctly 1`] = `
               id="undefined-2-department"
               onlyActiveOnIndex={false}
               style={Object {}}
-              to="/season/undefined/budget/undefined/version/undefined/undefined/department"
+              to="/budget/undefined/undefined/version/undefined/undefined/middle-out/department"
             >
               Department Targets Women
             </Link>
@@ -93,7 +93,7 @@ exports[`PopoverBudgetLink should render correctly 1`] = `
               id="undefined-3-department2"
               onlyActiveOnIndex={false}
               style={Object {}}
-              to="/season/undefined/budget/undefined/version/undefined/undefined/department2"
+              to="/budget/undefined/undefined/version/undefined/undefined/middle-out/department2"
             >
               Department Targets Men
             </Link>
@@ -103,7 +103,7 @@ exports[`PopoverBudgetLink should render correctly 1`] = `
               id="undefined-4-width-depth"
               onlyActiveOnIndex={false}
               style={Object {}}
-              to="/season/undefined/budget/undefined/version/undefined/undefined/width-depth"
+              to="/budget/undefined/undefined/version/undefined/undefined/middle-out/width-depth"
             >
               Width and Depth Targets
             </Link>
@@ -120,7 +120,7 @@ exports[`PopoverBudgetLink should render correctly 1`] = `
               id="undefined-0-delivery"
               onlyActiveOnIndex={false}
               style={Object {}}
-              to="/season/undefined/budget/undefined/version/undefined/undefined/delivery"
+              to="/budget/undefined/undefined/version/undefined/undefined/bottom-up/delivery"
             >
               Delivery
             </Link>
@@ -130,7 +130,7 @@ exports[`PopoverBudgetLink should render correctly 1`] = `
               id="undefined-1-unit"
               onlyActiveOnIndex={false}
               style={Object {}}
-              to="/season/undefined/budget/undefined/version/undefined/undefined/unit"
+              to="/budget/undefined/undefined/version/undefined/undefined/bottom-up/unit"
             >
               Unit
             </Link>
@@ -140,7 +140,7 @@ exports[`PopoverBudgetLink should render correctly 1`] = `
               id="undefined-2-department3"
               onlyActiveOnIndex={false}
               style={Object {}}
-              to="/season/undefined/budget/undefined/version/undefined/undefined/department3"
+              to="/budget/undefined/undefined/version/undefined/undefined/bottom-up/department3"
             >
               Department
             </Link>
@@ -150,7 +150,7 @@ exports[`PopoverBudgetLink should render correctly 1`] = `
               id="undefined-3-department4"
               onlyActiveOnIndex={false}
               style={Object {}}
-              to="/season/undefined/budget/undefined/version/undefined/undefined/department4"
+              to="/budget/undefined/undefined/version/undefined/undefined/bottom-up/department4"
             >
               Department
             </Link>
@@ -160,7 +160,7 @@ exports[`PopoverBudgetLink should render correctly 1`] = `
               id="undefined-4-sales-margin"
               onlyActiveOnIndex={false}
               style={Object {}}
-              to="/season/undefined/budget/undefined/version/undefined/undefined/sales-margin"
+              to="/budget/undefined/undefined/version/undefined/undefined/bottom-up/sales-margin"
             >
               Sales Margin
             </Link>
@@ -170,7 +170,7 @@ exports[`PopoverBudgetLink should render correctly 1`] = `
               id="undefined-5-shrink-planning"
               onlyActiveOnIndex={false}
               style={Object {}}
-              to="/season/undefined/budget/undefined/version/undefined/undefined/shrink-planning"
+              to="/budget/undefined/undefined/version/undefined/undefined/bottom-up/shrink-planning"
             >
               Shrink Planning
             </Link>
