@@ -21,7 +21,7 @@ describe('History Actions', () => {
       type: actions.HISTORY_PUSH,
       view,
       viewInfo: item
-    }
+    };
 
     expect(actions.push(view, item)).toEqual(expectedAction);
   });
@@ -34,7 +34,7 @@ describe('History Actions', () => {
       type: actions.HISTORY_GO_BACK,
       view,
       viewInfo
-    }
+    };
 
     expect(actions.go(actions.HISTORY_GO_BACK, view, viewInfo)).toEqual(expectedAction);
   });
@@ -45,7 +45,7 @@ describe('History Actions', () => {
     const expectedAction = {
       type: actions.HISTORY_GO_BACK,
       view
-    }
+    };
 
     expect(actions.goBack(view)).toEqual(expectedAction);
   });
@@ -56,7 +56,7 @@ describe('History Actions', () => {
     const expectedAction = {
       type: actions.HISTORY_GO_FORWARD,
       view
-    }
+    };
 
     expect(actions.goForward(view)).toEqual(expectedAction);
   });
