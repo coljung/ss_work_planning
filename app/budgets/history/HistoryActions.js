@@ -29,22 +29,6 @@ export const go = (type, view, viewInfo) => ({
     viewInfo,
 });
 
-export const goBack = (view, viewInfo) => ({
-    type: HISTORY_GO_BACK,
-    view,
-    viewInfo,
-});
-
-export const goBackAction = view => goInDirection(HISTORY_GO_BACK, view);
-
-export const goForward = (view, viewInfo) => ({
-    type: HISTORY_GO_FORWARD,
-    view,
-    viewInfo,
-});
-
-export const goForwardAction = view => goInDirection(HISTORY_GO_FORWARD, view);
-
 export const goInDirection = (direction, view) => (dispatch, getState) => {
     const { HistoryReducer: state } = getState();
     const viewInfo = getView(state, view, defaultView);
@@ -68,7 +52,23 @@ export const goInDirection = (direction, view) => (dispatch, getState) => {
     }
 
     return null;
-}
+};
+
+export const goBack = (view, viewInfo) => ({
+    type: HISTORY_GO_BACK,
+    view,
+    viewInfo,
+});
+
+export const goBackAction = view => goInDirection(HISTORY_GO_BACK, view);
+
+export const goForward = (view, viewInfo) => ({
+    type: HISTORY_GO_FORWARD,
+    view,
+    viewInfo,
+});
+
+export const goForwardAction = view => goInDirection(HISTORY_GO_FORWARD, view);
 
 export const canGo = (view, n) => (_, getState) => {
     const { HistoryReducer: state } = getState();
