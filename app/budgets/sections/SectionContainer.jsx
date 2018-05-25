@@ -129,24 +129,22 @@ class SectionContainer extends Component {
                 const viewHistory = history[view];
 
                 this.props.refreshGridData(budget, version, view, dataToSend)
-                .then(res => {
-                    // Send old value into history for future undo
-                    // TODO: Fix this
-                    // I did this because if the second+ edited cell is not the same
-                    // we need to be able to undo it, old value should be store in history
-                    // same a first push
-                    // this would cause a double undo / redo click when changing cell
-                    if (this.lastEditCell !== cellEditKey) {
-                        pushHistory(view, { ...dataToSend, value: +prevValue });
-                    }
+                    .then((res) => {
+                        // Send old value into history for future undo
+                        // TODO: Fix this
+                        // I did this because if the second+ edited cell is not the same
+                        // we need to be able to undo it, old value should be store in history
+                        // same a first push
+                        // this would cause a double undo / redo click when changing cell
+                        if (this.lastEditCell !== cellEditKey) {
+                            pushHistory(view, { ...dataToSend, value: +prevValue });
+                        }
 
-                    pushHistory(view, dataToSend);
+                        pushHistory(view, dataToSend);
 
-                    this.lastEditCell = cellEditKey;
-                })
-                .catch(error => {
-                    console.log('error', error);
-                });
+                        this.lastEditCell = cellEditKey;
+                    })
+                    .catch(Promise.reject);
             }
         }
         // if (cellEdits) {
