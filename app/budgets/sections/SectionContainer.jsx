@@ -109,7 +109,7 @@ class SectionContainer extends Component {
      * @param  {Handsontable~ChangeCell[]} cellEdits An array of {Handsontable~ChangeCell}
      * @return {void}
      */
-    changeCell = (cellEdits) => {
+    changeCell = async (cellEdits) => {
         // on load this is called, hence the check
         if (cellEdits) {
             const row = cellEdits[0][0];
@@ -128,21 +128,25 @@ class SectionContainer extends Component {
                 const { history, pushHistory } = this.props; // eslint-disable-line no-shadow
                 const viewHistory = history[view];
 
-                this.props.refreshGridData(budget, version, view, dataToSend);
+                this.props.refreshGridData(budget, version, view, dataToSend)
+                .then(res => {
+                    // Send old value into history for future undo
+                    // TODO: Fix this
+                    // I did this because if the second+ edited cell is not the same
+                    // we need to be able to undo it, old value should be store in history
+                    // same a first push
+                    // this would cause a double undo / redo click when changing cell
+                    if (this.lastEditCell !== cellEditKey) {
+                        pushHistory(view, { ...dataToSend, value: +prevValue });
+                    }
 
-                // Send old value into history for future undo
-                // TODO: Fix this
-                // I did this because if the second+ edited cell is not the same
-                // we need to be able to undo it, old value should be store in history
-                // same a first push
-                // this would cause a double undo / redo click when changing cell
-                if (this.lastEditCell !== cellEditKey) {
-                    pushHistory(view, { ...dataToSend, value: +prevValue });
-                }
+                    pushHistory(view, dataToSend);
 
-                pushHistory(view, dataToSend);
-
-                this.lastEditCell = cellEditKey;
+                    this.lastEditCell = cellEditKey;
+                })
+                .catch(error => {
+                    console.log('error', error);
+                });
             }
         }
         // if (cellEdits) {

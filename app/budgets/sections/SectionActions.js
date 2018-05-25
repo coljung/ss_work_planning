@@ -93,18 +93,23 @@ export function refreshGridData(budget, version, view, updatedObj) {
             ...updatedObj,
             value: updatedObj.value === 0 ? 0.0001 : updatedObj.value,
         })
-            .then(
+        .then(
             (res) => {
-                if (res.statusCode === 200) {
-                    return dispatch(receiveRefreshGridData());
+                const isResponseSuccess = res.statusCode >= 200 && res.statusCode <= 399;
+                if(isResponseSuccess) {
+                    dispatch(receiveRefreshGridData());
+                } else {
+                    dispatch(messages({ content: 'Not OK', response: '', isError: true }));
                 }
-                return dispatch(messages({ content: 'Not OK', response: '', isError: true }));
+
+                return res.body
             },
             (err) => {
                 dispatch(receiveRefreshGridData());
-                return dispatch(messages({ content: err, response: err.response, isError: true }));
+                dispatch(messages({ content: err, response: err.response, isError: true }));
+                throw err;
             },
-            );
+        );
     };
 }
 
