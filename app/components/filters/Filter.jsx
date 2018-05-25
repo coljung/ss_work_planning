@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Button, Icon, Modal, List, Checkbox, Row, Col, Tree } from 'antd';
-import { resetState } from '../../budgets/BudgetActions';
+import { resetState } from '../../home/BudgetActions';
 
 const TreeNode = Tree.TreeNode;
 

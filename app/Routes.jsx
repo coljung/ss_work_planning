@@ -1,8 +1,8 @@
 import React from 'react';
 import { Route, IndexRoute } from 'react-router';
 import App from './components/App';
-import BudgetViewsContainer from './views/BudgetViewsContainer';
-import Home from './budgets/BudgetHome';
+import BudgetViewsContainer from './budgets/BudgetViewsContainer';
+import Home from './home/BudgetHome';
 import NotFound from './components/NotFound';
 
 /*
