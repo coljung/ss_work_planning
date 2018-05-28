@@ -12,6 +12,8 @@ import { switchUrls, clearUrls } from '../components/customNavigation/CustomNavi
 import { cellValueRenderer as commonCellValueRenderer } from './sections/top-down/CommonCellRenderer';
 import { cellValueRenderer as execCellValueRenderer } from './sections/top-down/ExecCellRenderer';
 import { goBackAction, goForwardAction } from './history/HistoryActions';
+
+import TopDownSection from './sections/top-down/TopDownSection';
 import { ROUTE_BUDGET } from '../Routes';
 
 // Sub Component
@@ -34,7 +36,7 @@ class BudgetViewsContainer extends Component {
         const { budgetid, id, seasonname, vname, section, tab } = this.props.params;
 
         this.state = {
-            budgetSeasonId: budgetid,
+            budgetid,
             versionId: id,
             seasonName: seasonname,
             versionName: vname,
@@ -49,10 +51,8 @@ class BudgetViewsContainer extends Component {
 
         this.props.switchUrls(budgetid, id, seasonname, vname, tab);
 
-        this.onTabChange = this.onTabChange.bind(this);
+        this.handleTabChange = this.handleTabChange.bind(this);
         this.handleVersionClick = this.handleVersionClick.bind(this);
-        this.handleUndo = this.handleUndo.bind(this);
-        this.handleRedo = this.handleRedo.bind(this);
     }
 
     componentWillMount() {
@@ -75,10 +75,7 @@ class BudgetViewsContainer extends Component {
                 [nextProps.params.tab]: true,
             });
         } else if (nextProps.newVersion !== this.props.newVersion) {
-            const { router, params: { tab } } = this.props;
-            const { budgetSeasonId, seasonName, section } = this.state;
-
-            router.push(`${ROUTE_BUDGET}/${seasonName}/${budgetSeasonId}/version/${nextProps.newVersion.name}/${nextProps.newVersion.id}/${section}/${tab}`);
+            this.handlePushRoute(true, false, nextProps.newVersion, null);
         }
     }
 
@@ -86,20 +83,23 @@ class BudgetViewsContainer extends Component {
         this.props.saveNewBudgetVersion(budget, version);
     };
 
-    handleUndo() {
-        const { activeTab, budgetSeasonId, versionId } = this.state;
-        const { goBackAction, history } = this.props; // eslint-disable-line no-shadow
-        const data = goBackAction(activeTab);
+    handlePushRoute = (useNextProps, switchVersion, newVersion = null, newTab = null) => {
+        const { router } = this.props;
+        const { budgetid, seasonName, section } = this.state;
 
-        this.props.refreshGridData(budgetSeasonId, versionId, activeTab, data);
+        const versionName = useNextProps || switchVersion ? newVersion.name : this.state.versionName;
+        const versionId = useNextProps || switchVersion ? newVersion.id : this.state.versionId;
+        const tab = newTab || this.props.params.tab;
+
+        router.push(`${ROUTE_BUDGET}/${seasonName}/${budgetid}/version/${versionName}/${versionId}/${section}/${tab}`);
     }
 
-    handleRedo() {
-        const { activeTab, budgetSeasonId, versionId } = this.state;
-        const { goForwardAction, history } = this.props; // eslint-disable-line no-shadow
-        const data = goForwardAction(activeTab);
+    handleHistory = (historyMove) => {
+        const { activeTab, budgetid, versionId } = this.state;
+        const { goBackAction, goForwardAction, history } = this.props; // eslint-disable-line no-shadow
+        const data = historyMove === 'undo' ? goBackAction(activeTab) : goForwardAction(activeTab);
 
-        this.props.refreshGridData(budgetSeasonId, versionId, activeTab, data);
+        this.props.refreshGridData(budgetid, versionId, activeTab, data);
     }
 
     handleVersionClick(event) {
@@ -111,16 +111,13 @@ class BudgetViewsContainer extends Component {
                 versionName: version.name,
             });
 
-            const { router, params: { tab } } = this.props;
-            const { seasonName, section } = this.state;
-
-            router.push(`${ROUTE_BUDGET}/${seasonName}/${version.budget_id}/version/${version.name}/${version.id}/${section}/${tab}`);
+            this.handlePushRoute(false, true, version, null);
         }
     }
 
-    onTabChange(newTabKey) {
+    handleTabChange(newTabKey) {
         // set true to load tabbed component
-        const { activeTab, budgetSeasonId, seasonName, section, versionId, versionName } = this.state;
+        const { activeTab } = this.state;
 
         this.setState({
             [activeTab]: false,
@@ -128,19 +125,16 @@ class BudgetViewsContainer extends Component {
             [newTabKey]: true,
         });
 
-        const { router } = this.props;
-
-        router.push(`${ROUTE_BUDGET}/${seasonName}/${budgetSeasonId}/version/${versionName}/${versionId}/${section}/${newTabKey}`);
+        this.handlePushRoute(false, false, null, newTabKey);
     }
 
     render() {
-        const { activeTab, budgetSeasonId, versionId, seasonName, versionName } = this.state;
+        const { activeTab, budgetid, versionId, seasonName, versionName } = this.state;
         // undo disabled / enabled ?
         const { history } = this.props;
         const viewHistory = history[activeTab];
         const undoDisabled = viewHistory ? viewHistory.undoDisabled : true;
         const redoDisabled = viewHistory ? viewHistory.redoDisabled : true;
-
         return (
             <div>
                 <div className="budgetHeader">
@@ -155,20 +149,20 @@ class BudgetViewsContainer extends Component {
                         <Col span={16} className="col">
                             <BudgetViewsButtonActions
                               undoDisabled={undoDisabled}
-                              onUndo={this.handleUndo}
+                              onUndo={() => this.handleHistory('undo')}
                               redoDisabled={redoDisabled}
-                              onRedo={this.handleRedo}
-                              saveNew={() => this.saveNewVersion(budgetSeasonId, versionId)}
+                              onRedo={() => this.handleHistory('redo')}
+                              saveNew={() => this.saveNewVersion(budgetid, versionId)}
                             />
                         </Col>
                     </Row>
                 </div>
                 <div className="budgetBody">
-                    <Tabs activeKey={activeTab} onChange={this.onTabChange} animated={false}>
+                    <Tabs activeKey={activeTab} onChange={this.handleTabChange} animated={false}>
                         <TabPane tab="Exec Recap" key={TAB_EXEC_RECAP}>
                             {(activeTab === TAB_EXEC_RECAP || this.state[TAB_EXEC_RECAP]) &&
                                 <SectionContainer
-                                    budget={budgetSeasonId}
+                                    budget={budgetid}
                                     version={versionId}
                                     cellRenderer={execCellValueRenderer}
                                     key={TAB_EXEC_RECAP}
@@ -179,7 +173,7 @@ class BudgetViewsContainer extends Component {
                         <TabPane tab="Total" key={TAB_TOTAL}>
                             {(activeTab === TAB_TOTAL) &&
                                 <SectionContainer
-                                    budget={budgetSeasonId}
+                                    budget={budgetid}
                                     version={versionId}
                                     cellRenderer={commonCellValueRenderer}
                                     key={TAB_TOTAL}
@@ -190,7 +184,7 @@ class BudgetViewsContainer extends Component {
                         <TabPane tab="Women" key={TAB_WOMEN}>
                             {(activeTab === TAB_WOMEN) &&
                                 <SectionContainer
-                                    budget={budgetSeasonId}
+                                    budget={budgetid}
                                     version={versionId}
                                     cellRenderer={commonCellValueRenderer}
                                     key={TAB_WOMEN}
@@ -201,7 +195,7 @@ class BudgetViewsContainer extends Component {
                         <TabPane tab="Men" key={TAB_MEN}>
                             {(activeTab === TAB_MEN) &&
                                 <SectionContainer
-                                    budget={budgetSeasonId}
+                                    budget={budgetid}
                                     version={versionId}
                                     cellRenderer={commonCellValueRenderer}
                                     key={TAB_MEN}
@@ -212,7 +206,7 @@ class BudgetViewsContainer extends Component {
                         <TabPane tab="Brand Groups" disabled key={TAB_BRAND_GROUPS}>
                             {(activeTab === TAB_BRAND_GROUPS || this.state[TAB_BRAND_GROUPS]) &&
                                 <TotalViewContainer
-                                    budget={budgetSeasonId}
+                                    budget={budgetid}
                                     version={versionId}
                                 />
                             }
