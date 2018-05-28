@@ -1,11 +1,11 @@
 // Action names
-export const URLS = 'URLS';
-export const CLEAR_URLS = 'CLEAR_URLS';
+export const GLOBAL_DATA = 'GLOBAL_DATA';
+export const CLEAR_GLOBAL_DATA = 'CLEAR_GLOBAL_DATA';
 
 // Internal actions
-export function switchUrls(budgetid, versionid, seasonname, vname, tab) {
+export function switchGlobalData(budgetid, versionid, seasonname, vname, tab) {
     return {
-        type: URLS,
+        type: GLOBAL_DATA,
         budgetid,
         versionid,
         seasonname,
@@ -15,8 +15,8 @@ export function switchUrls(budgetid, versionid, seasonname, vname, tab) {
 }
 
 
-export function clearUrls() {
+export function clearGlobalData() {
     return {
-        type: CLEAR_URLS,
+        type: CLEAR_GLOBAL_DATA,
     };
 }

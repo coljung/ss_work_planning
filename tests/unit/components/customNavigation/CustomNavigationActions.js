@@ -1,10 +1,10 @@
-import { URLS, CLEAR_URLS, switchUrls, clearUrls } from '../../../../app/components/customNavigation/CustomNavigationActions';
+import { GLOBAL_DATA, CLEAR_GLOBAL_DATA, switchGlobalData, clearGlobalData } from '../../../../app/components/customNavigation/CustomNavigationActions';
 
 describe('CustomNavigationActions', () => {
 
-    it('should handle URLS', () => {
-        expect(switchUrls(43, 23, 'SS', 'V2', 'men' )).toEqual({
-            type: URLS,
+    it('should handle GLOBAL_DATA', () => {
+        expect(switchGlobalData(43, 23, 'SS', 'V2', 'men' )).toEqual({
+            type: GLOBAL_DATA,
             budgetid: 43,
             versionid: 23,
             seasonname: 'SS',
@@ -13,7 +13,7 @@ describe('CustomNavigationActions', () => {
         });
     });
 
-    it('should handle CLEAR_URLS', () => {
-        expect(clearUrls()).toEqual({ type: CLEAR_URLS });
+    it('should handle CLEAR_GLOBAL_DATA', () => {
+        expect(clearGlobalData()).toEqual({ type: CLEAR_GLOBAL_DATA });
     });
 });

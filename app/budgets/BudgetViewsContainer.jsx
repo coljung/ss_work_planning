@@ -8,7 +8,7 @@ import BudgetViewsButtonActions from './components/BudgetViewsButtonActions';
 import SectionContainer from './sections/SectionContainer';
 import { refreshGridData } from './sections/SectionActions';
 import { budgetVersions, saveNewBudgetVersion } from './BudgetViewActions';
-import { switchUrls, clearUrls } from '../components/customNavigation/CustomNavigationActions';
+import { switchGlobalData, clearGlobalData } from '../components/customNavigation/CustomNavigationActions';
 import { cellValueRenderer as commonCellValueRenderer } from './sections/top-down/CommonCellRenderer';
 import { cellValueRenderer as execCellValueRenderer } from './sections/top-down/ExecCellRenderer';
 import { goBackAction, goForwardAction } from './history/HistoryActions';
@@ -49,7 +49,7 @@ class BudgetViewsContainer extends Component {
             [TAB_BRAND_GROUPS]: false,
         };
 
-        this.props.switchUrls(budgetid, id, seasonname, vname, tab);
+        this.props.switchGlobalData(budgetid, id, seasonname, vname, tab);
 
         this.handleTabChange = this.handleTabChange.bind(this);
         this.handleVersionClick = this.handleVersionClick.bind(this);
@@ -62,7 +62,7 @@ class BudgetViewsContainer extends Component {
     }
 
     componentWillUnmount() {
-        this.props.clearUrls();
+        this.props.clearGlobalData();
     }
 
     componentWillReceiveProps(nextProps) {
@@ -223,8 +223,8 @@ BudgetViewsContainer.propTypes = {
     newVersion: PropTypes.object,
     saveNewBudgetVersion: PropTypes.func.isRequired,
     budgetVersions: PropTypes.func.isRequired,
-    switchUrls: PropTypes.func.isRequired,
-    clearUrls: PropTypes.func.isRequired,
+    switchGlobalData: PropTypes.func.isRequired,
+    clearGlobalData: PropTypes.func.isRequired,
     versions: PropTypes.array.isRequired,
     router: PropTypes.object,
     history: PropTypes.object,
@@ -246,8 +246,8 @@ function mapDispatchToProps(dispatch) {
     return bindActionCreators({
         budgetVersions,
         saveNewBudgetVersion,
-        switchUrls,
-        clearUrls,
+        switchGlobalData,
+        clearGlobalData,
         goBackAction,
         goForwardAction,
         refreshGridData,
