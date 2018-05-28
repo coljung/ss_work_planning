@@ -31,13 +31,14 @@ class BudgetViewsContainer extends Component {
     constructor(props, context) {
         super(props, context);
 
-        const { budgetid, id, seasonname, vname, tab } = this.props.params;
+        const { budgetid, id, seasonname, vname, section, tab } = this.props.params;
 
         this.state = {
             budgetSeasonId: budgetid,
             versionId: id,
             seasonName: seasonname,
             versionName: vname,
+            section,
             activeTab: tab || TAB_EXEC_RECAP,
             [TAB_EXEC_RECAP]: false,
             [TAB_TOTAL]: false,
@@ -75,9 +76,9 @@ class BudgetViewsContainer extends Component {
             });
         } else if (nextProps.newVersion !== this.props.newVersion) {
             const { router, params: { tab } } = this.props;
-            const { budgetSeasonId, seasonName } = this.state;
+            const { budgetSeasonId, seasonName, section } = this.state;
 
-            router.push(`${ROUTE_BUDGET}/${seasonName}/budget/${budgetSeasonId}/version/${nextProps.newVersion.name}/${nextProps.newVersion.id}/${tab}`);
+            router.push(`${ROUTE_BUDGET}/${seasonName}/${budgetSeasonId}/version/${nextProps.newVersion.name}/${nextProps.newVersion.id}/${section}/${tab}`);
         }
     }
 
@@ -110,18 +111,16 @@ class BudgetViewsContainer extends Component {
                 versionName: version.name,
             });
 
-            const { params: { tab } } = this.props;
-            const { seasonName } = this.state;
+            const { router, params: { tab } } = this.props;
+            const { seasonName, section } = this.state;
 
-            const { router } = this.props;
-
-            router.push(`${ROUTE_BUDGET}/${seasonName}/budget/${version.budget_id}/version/${version.name}/${version.id}/${tab}`);
+            router.push(`${ROUTE_BUDGET}/${seasonName}/${version.budget_id}/version/${version.name}/${version.id}/${section}/${tab}`);
         }
     }
 
     onTabChange(newTabKey) {
         // set true to load tabbed component
-        const { activeTab, budgetSeasonId, seasonName, versionId, versionName } = this.state;
+        const { activeTab, budgetSeasonId, seasonName, section, versionId, versionName } = this.state;
 
         this.setState({
             [activeTab]: false,
@@ -131,7 +130,7 @@ class BudgetViewsContainer extends Component {
 
         const { router } = this.props;
 
-        router.push(`${ROUTE_BUDGET}/${seasonName}/budget/${budgetSeasonId}/version/${versionName}/${versionId}/${newTabKey}`);
+        router.push(`${ROUTE_BUDGET}/${seasonName}/${budgetSeasonId}/version/${versionName}/${versionId}/${section}/${newTabKey}`);
     }
 
     render() {
