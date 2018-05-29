@@ -16,7 +16,7 @@ export const pushAction = (view, item) => (dispatch, getState) => {
     const { HistoryReducer: state } = getState();
     const viewInfo = getView(state, view, defaultView);
 
-    pushUtil(state, viewInfo, item, defaultView);
+    pushUtil(viewInfo, item, defaultView);
 
     dispatch(push(view, viewInfo));
 
@@ -40,11 +40,11 @@ export const goInDirection = (direction, view) => (dispatch, getState) => {
         newIndex = viewInfo.currentIndex + 1;
     }
 
-    if (canGoUtil(state, view, newIndex, defaultView)) {
+    if (canGoUtil(viewInfo, newIndex, defaultView)) {
         const item = viewInfo.history[newIndex];
         viewInfo.currentIndex = newIndex;
-        viewInfo.undoDisabled = !canGoUtil(state, view, newIndex - 1, defaultView);
-        viewInfo.redoDisabled = !canGoUtil(state, view, newIndex + 1, defaultView);
+        viewInfo.undoDisabled = !canGoUtil(viewInfo, newIndex - 1, defaultView);
+        viewInfo.redoDisabled = !canGoUtil(viewInfo, newIndex + 1, defaultView);
 
         dispatch(go(direction, view, viewInfo));
 
@@ -72,6 +72,7 @@ export const goForwardAction = view => goInDirection(HISTORY_GO_FORWARD, view);
 
 export const canGo = (view, n) => (_, getState) => {
     const { HistoryReducer: state } = getState();
+    const viewInfo = getView(state, view, defaultView);
 
-    return canGoUtil(state, view, n, defaultView);
+    return canGoUtil(viewInfo, n, defaultView);
 };
