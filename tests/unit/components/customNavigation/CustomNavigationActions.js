@@ -5,11 +5,11 @@ describe('CustomNavigationActions', () => {
     it('should handle GLOBAL_DATA', () => {
         expect(switchGlobalData(43, 23, 'SS', 'V2', 'men' )).toEqual({
             type: GLOBAL_DATA,
-            budgetid: 43,
-            versionid: 23,
-            seasonname: 'SS',
-            vname: 'V2',
-            tab: 'men',
+            budgetId: 43,
+            versionId: 23,
+            seasonName: 'SS',
+            versionName: 'V2',
+            view: 'men',
         });
     });
 

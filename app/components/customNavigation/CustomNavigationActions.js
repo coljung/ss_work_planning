@@ -3,14 +3,14 @@ export const GLOBAL_DATA = 'GLOBAL_DATA';
 export const CLEAR_GLOBAL_DATA = 'CLEAR_GLOBAL_DATA';
 
 // Internal actions
-export function switchGlobalData(budgetid, versionid, seasonname, vname, tab) {
+export function switchGlobalData(budgetId, versionId, seasonName, versionName, view) {
     return {
         type: GLOBAL_DATA,
-        budgetid,
-        versionid,
-        seasonname,
-        vname,
-        tab,
+        budgetId,
+        versionId,
+        seasonName,
+        versionName,
+        view,
     };
 }
 

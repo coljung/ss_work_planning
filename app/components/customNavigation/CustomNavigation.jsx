@@ -26,7 +26,7 @@ class CustomNavigation extends Component {
     }
 
     render() {
-        const { budgetView, budgetId, versionId, seasonName, versionName, view } = this.props;
+        const { budgetView, budgetId, versionId, seasonName, versionName } = this.props;
         const season = seasonName ? seasonName.split('2') : '';
         return (
             <Menu
@@ -170,7 +170,6 @@ CustomNavigation.propTypes = {
     versionId: PropTypes.string,
     seasonName: PropTypes.string,
     versionName: PropTypes.string,
-    view: PropTypes.string,
 };
 
 function mapStateToProps(state) {
@@ -181,7 +180,6 @@ function mapStateToProps(state) {
         versionId: CustomNavigationReducer.versionId,
         seasonName: CustomNavigationReducer.seasonName,
         versionName: CustomNavigationReducer.versionName,
-        view: CustomNavigationReducer.view,
     };
 }
 

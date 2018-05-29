@@ -14,11 +14,11 @@ export default (state = initialState, action) => {
         case GLOBAL_DATA:
             return Object.assign({}, state, {
                 budgetView: true,
-                budgetId: action.budgetid,
-                versionId: action.versionid,
-                seasonName: action.seasonname,
-                versionName: action.vname,
-                view: action.tab,
+                budgetId: action.budgetId,
+                versionId: action.versionId,
+                seasonName: action.seasonName,
+                versionName: action.versionName,
+                view: action.view,
             });
         case CLEAR_GLOBAL_DATA:
             return initialState;
