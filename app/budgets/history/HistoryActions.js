@@ -3,10 +3,10 @@ import { getView } from './utils';
 
 export const HISTORY_UNDO = 'HISTORY_UNDO';
 export const HISTORY_REDO = 'HISTORY_REDO';
-export const HISTORY_PUSH_NEW = 'HISTORY_PUSH_NEW';
+export const HISTORY_PUSH = 'HISTORY_PUSH';
 
 export const historyPush = (view, item) => ({
-    type: HISTORY_PUSH_NEW,
+    type: HISTORY_PUSH,
     view,
     item,
 });

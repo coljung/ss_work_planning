@@ -1,7 +1,7 @@
 import {
     HISTORY_UNDO,
     HISTORY_REDO,
-    HISTORY_PUSH_NEW
+    HISTORY_PUSH
 } from './HistoryActions';
 
 import {
@@ -55,7 +55,7 @@ export default (state = initialState, action) => {
                   future: newFuture
               }
             }
-        case HISTORY_PUSH_NEW:
+        case HISTORY_PUSH:
             const newPresent  = action.item;
             if (present === newPresent) {
               return state;
