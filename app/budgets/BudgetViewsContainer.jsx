@@ -11,7 +11,7 @@ import { budgetVersions, saveNewBudgetVersion } from './BudgetViewActions';
 import { switchUrls, clearUrls } from '../components/customNavigation/CustomNavigationActions';
 import { cellValueRenderer as commonCellValueRenderer } from './sections/top-down/CommonCellRenderer';
 import { cellValueRenderer as execCellValueRenderer } from './sections/top-down/ExecCellRenderer';
-import { goBackAction, goForwardAction } from './history/HistoryActions';
+import { historyUndo, historyRedo } from './history/HistoryActions';
 import { ROUTE_BUDGET } from '../Routes';
 
 // Sub Component
@@ -88,16 +88,16 @@ class BudgetViewsContainer extends Component {
 
     handleUndo() {
         const { activeTab, budgetSeasonId, versionId } = this.state;
-        const { goBackAction, history } = this.props; // eslint-disable-line no-shadow
-        const data = goBackAction(activeTab);
+        const { historyUndo } = this.props; // eslint-disable-line no-shadow
+        const data = historyUndo(activeTab);
 
         this.props.refreshGridData(budgetSeasonId, versionId, activeTab, data);
     }
 
     handleRedo() {
         const { activeTab, budgetSeasonId, versionId } = this.state;
-        const { goForwardAction, history } = this.props; // eslint-disable-line no-shadow
-        const data = goForwardAction(activeTab);
+        const { historyRedo } = this.props; // eslint-disable-line no-shadow
+        const data = historyRedo(activeTab);
 
         this.props.refreshGridData(budgetSeasonId, versionId, activeTab, data);
     }
@@ -138,8 +138,8 @@ class BudgetViewsContainer extends Component {
         // undo disabled / enabled ?
         const { history } = this.props;
         const viewHistory = history[activeTab];
-        const undoDisabled = viewHistory ? viewHistory.undoDisabled : true;
-        const redoDisabled = viewHistory ? viewHistory.redoDisabled : true;
+        const undoDisabled = viewHistory ? viewHistory.past.length <= 0 : true;
+        const redoDisabled = viewHistory ? viewHistory.future.length <= 0 : true;
 
         return (
             <div>
@@ -234,9 +234,9 @@ BudgetViewsContainer.propTypes = {
     versions: PropTypes.array.isRequired,
     router: PropTypes.object,
     history: PropTypes.object,
-    goBackAction: PropTypes.func.isRequired,
-    goForwardAction: PropTypes.func.isRequired,
     refreshGridData: PropTypes.func.isRequired,
+    historyUndo: PropTypes.func.isRequired,
+    historyRedo: PropTypes.func.isRequired,
 };
 
 function mapStateToProps(state) {
@@ -254,9 +254,9 @@ function mapDispatchToProps(dispatch) {
         saveNewBudgetVersion,
         switchUrls,
         clearUrls,
-        goBackAction,
-        goForwardAction,
         refreshGridData,
+        historyUndo,
+        historyRedo,
     }, dispatch);
 }
 

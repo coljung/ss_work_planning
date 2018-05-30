@@ -11,7 +11,7 @@ import {
     resetState,
     fetchBudgetConfigData,
     refreshGridData } from './SectionActions';
-import { pushAction as pushHistory } from '../history/HistoryActions';
+import { historyPush } from '../history/HistoryActions';
 import LoadingSpinner from '../../components/common/LoadingSpinner';
 
 class SectionContainer extends Component {
@@ -125,7 +125,7 @@ class SectionContainer extends Component {
             if (parseFloat(prevValue, 10) !== parseFloat(newValue, 10)) {
                 const dataToSend = this.state.data[row][col[0]];
                 const { budget, version, view } = this.state;
-                const { history, pushHistory } = this.props; // eslint-disable-line no-shadow
+                const { historyPush } = this.props; // eslint-disable-line no-shadow
                 const viewHistory = history[view];
 
                 this.props.refreshGridData(budget, version, view, dataToSend)
@@ -137,14 +137,14 @@ class SectionContainer extends Component {
                         // same a first push
                         // this would cause a double undo / redo click when changing cell
                         if (this.lastEditCell !== cellEditKey) {
-                            pushHistory(view, { ...dataToSend, value: +prevValue });
+                            historyPush(view, { ...dataToSend, value: +prevValue });
                         }
 
-                        pushHistory(view, dataToSend);
+                        historyPush(view, dataToSend);
 
                         this.lastEditCell = cellEditKey;
                     })
-                    .catch(Promise.reject);
+                    .catch(err => {throw err});
             }
         }
         // if (cellEdits) {
@@ -246,8 +246,8 @@ SectionContainer.propTypes = {
     refreshData: PropTypes.bool.isRequired,
     spreadingData: PropTypes.bool.isRequired,
     config: PropTypes.array,
-    history: PropTypes.object,
-    pushHistory: PropTypes.func.isRequired,
+    history: PropTypes.object.isRequired,
+    historyPush: PropTypes.func.isRequired,
 };
 
 function mapStateToProps(state) {
@@ -269,7 +269,7 @@ function mapDispatchToProps(dispatch) {
         saveBudget,
         fetchBudgetConfigData,
         refreshGridData,
-        pushHistory,
+        historyPush,
     }, dispatch);
 }
 
