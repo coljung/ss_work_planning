@@ -27,7 +27,6 @@ class CustomNavigation extends Component {
 
     render() {
         const { budgetView, budgetId, versionId, seasonName, versionName } = this.props;
-        const season = seasonName ? seasonName.split('2') : '';
         return (
             <Menu
                 onClick={this.handleClick}
@@ -49,25 +48,25 @@ class CustomNavigation extends Component {
                     disabled={!budgetView}
                     title={<span><Icon type="mail" /><span>Top Down</span></span>}>
                         <Menu.Item key="sub2-1">
-                            <Link to={`${ROUTE_BUDGET}/${season[0]}/${budgetId}/version/${versionName}/${versionId}/top-down/exec`}>
+                            <Link to={`${ROUTE_BUDGET}/${seasonName}/${budgetId}/version/${versionName}/${versionId}/top-down/exec`}>
                                 <Icon type="calendar" />
                                 <span className="nav-text">Executive Recap</span>
                             </Link>
                         </Menu.Item>
                         <Menu.Item key="sub2-2">
-                            <Link to={`${ROUTE_BUDGET}/${season[0]}/${budgetId}/version/${versionName}/${versionId}/top-down/total`}>
+                            <Link to={`${ROUTE_BUDGET}/${seasonName}/${budgetId}/version/${versionName}/${versionId}/top-down/total`}>
                                 <Icon type="calendar" />
                                 <span className="nav-text">OTB Total</span>
                             </Link>
                         </Menu.Item>
                         <Menu.Item key="sub2-3">
-                            <Link to={`${ROUTE_BUDGET}/${season[0]}/${budgetId}/version/${versionName}/${versionId}/top-down/women`}>
+                            <Link to={`${ROUTE_BUDGET}/${seasonName}/${budgetId}/version/${versionName}/${versionId}/top-down/women`}>
                                 <Icon type="calendar" />
                                 <span className="nav-text">OTB Women</span>
                             </Link>
                         </Menu.Item>
                         <Menu.Item key="sub2-4">
-                            <Link to={`${ROUTE_BUDGET}/${season[0]}/${budgetId}/version/${versionName}/${versionId}/top-down/men`}>
+                            <Link to={`${ROUTE_BUDGET}/${seasonName}/${budgetId}/version/${versionName}/${versionId}/top-down/men`}>
                                 <Icon type="calendar" />
                                 <span className="nav-text">OTB Men</span>
                             </Link>
@@ -78,31 +77,31 @@ class CustomNavigation extends Component {
                     disabled={!budgetView}
                     title={<span><Icon type="team" /><span>Middle Out Summary</span></span>}>
                     <Menu.Item key="sub3-1">
-                        <Link to={`${ROUTE_BUDGET}/${season[0]}/${budgetId}/version/${versionName}/${versionId}/middle-out/bgw`}>
+                        <Link to={`${ROUTE_BUDGET}/${seasonName}/${budgetId}/version/${versionName}/${versionId}/middle-out/bg-women`}>
                             <Icon type="calendar" />
                             <span className="nav-text">Brand Group Targets Women</span>
                         </Link>
                     </Menu.Item>
                     <Menu.Item key="sub3-2">
-                        <Link to={`${ROUTE_BUDGET}/${season[0]}/${budgetId}/version/${versionName}/${versionId}/middle-out/bgm`}>
+                        <Link to={`${ROUTE_BUDGET}/${seasonName}/${budgetId}/version/${versionName}/${versionId}/middle-out/bg-men`}>
                             <Icon type="calendar" />
                             <span className="nav-text">Brand Group Targets Men</span>
                         </Link>
                     </Menu.Item>
                     <Menu.Item key="sub3-3">
-                        <Link to={`${ROUTE_BUDGET}/${season[0]}/${budgetId}/version/${versionName}/${versionId}/middle-out/department`}>
+                        <Link to={`${ROUTE_BUDGET}/${seasonName}/${budgetId}/version/${versionName}/${versionId}/middle-out/department`}>
                             <Icon type="calendar" />
                             <span className="nav-text">Department Targets Women</span>
                         </Link>
                     </Menu.Item>
                     <Menu.Item key="sub3-4">
-                        <Link to={`${ROUTE_BUDGET}/${season[0]}/${budgetId}/version/${versionName}/${versionId}/middle-out/department`}>
+                        <Link to={`${ROUTE_BUDGET}/${seasonName}/${budgetId}/version/${versionName}/${versionId}/middle-out/department`}>
                             <Icon type="calendar" />
                             <span className="nav-text">Department Targets Men</span>
                         </Link>
                     </Menu.Item>
                     <Menu.Item key="sub3-5">
-                        <Link to={`${ROUTE_BUDGET}/${season[0]}/${budgetId}/version/${versionName}/${versionId}/middle-out/width-depth`}>
+                        <Link to={`${ROUTE_BUDGET}/${seasonName}/${budgetId}/version/${versionName}/${versionId}/middle-out/width-depth`}>
                             <Icon type="calendar" />
                             <span className="nav-text">Width and Depth Targets</span>
                         </Link>
@@ -114,37 +113,37 @@ class CustomNavigation extends Component {
                     title={<span><Icon type="file" /><span>Bottom Up</span></span>}
                   >
                   <Menu.Item key="sub4-1">
-                      <Link to={`${ROUTE_BUDGET}/${season[0]}/${budgetId}/version/${versionName}/${versionId}/bottom-up/receipts`}>
+                      <Link to={`${ROUTE_BUDGET}/${seasonName}/${budgetId}/version/${versionName}/${versionId}/bottom-up/receipts`}>
                           <Icon type="calendar" />
                           <span className="nav-text">Receipts</span>
                       </Link>
                   </Menu.Item>
                   <Menu.Item key="sub4-2">
-                      <Link to={`${ROUTE_BUDGET}/${season[0]}/${budgetId}/version/${versionName}/${versionId}/bottom-up/delivery`}>
+                      <Link to={`${ROUTE_BUDGET}/${seasonName}/${budgetId}/version/${versionName}/${versionId}/bottom-up/delivery`}>
                           <Icon type="calendar" />
                           <span className="nav-text">Delivery</span>
                       </Link>
                   </Menu.Item>
                   <Menu.Item key="sub4-3">
-                      <Link to={`${ROUTE_BUDGET}/${season[0]}/${budgetId}/version/${versionName}/${versionId}/bottom-up/unit`}>
+                      <Link to={`${ROUTE_BUDGET}/${seasonName}/${budgetId}/version/${versionName}/${versionId}/bottom-up/unit`}>
                           <Icon type="calendar" />
                           <span className="nav-text">Unit</span>
                       </Link>
                   </Menu.Item>
                   <Menu.Item key="sub4-4">
-                      <Link to={`${ROUTE_BUDGET}/${season[0]}/${budgetId}/version/${versionName}/${versionId}/bottom-up/department2`}>
+                      <Link to={`${ROUTE_BUDGET}/${seasonName}/${budgetId}/version/${versionName}/${versionId}/bottom-up/department2`}>
                           <Icon type="calendar" />
                           <span className="nav-text">Department</span>
                       </Link>
                   </Menu.Item>
                   <Menu.Item key="sub4-5">
-                      <Link to={`${ROUTE_BUDGET}/${season[0]}/${budgetId}/version/${versionName}/${versionId}/bottom-up/sales-margin`}>
+                      <Link to={`${ROUTE_BUDGET}/${seasonName}/${budgetId}/version/${versionName}/${versionId}/bottom-up/sales-margin`}>
                           <Icon type="calendar" />
                           <span className="nav-text">Sales & Margin</span>
                       </Link>
                   </Menu.Item>
                   <Menu.Item key="sub4-6">
-                      <Link to={`${ROUTE_BUDGET}/${season[0]}/${budgetId}/version/${versionName}/${versionId}/bottom-up/shrink`}>
+                      <Link to={`${ROUTE_BUDGET}/${seasonName}/${budgetId}/version/${versionName}/${versionId}/bottom-up/shrink`}>
                           <Icon type="calendar" />
                           <span className="nav-text">Shrink</span>
                       </Link>

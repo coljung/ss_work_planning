@@ -14,6 +14,7 @@ import { cellValueRenderer as execCellValueRenderer } from './sections/top-down/
 import { goBackAction, goForwardAction } from './history/HistoryActions';
 
 import TopDownSection from './sections/top-down/TopDownSection';
+import MiddleOutSection from './sections/middle-out/MiddleOutSection';
 import { ROUTE_BUDGET } from '../Routes';
 
 // Sub Component
@@ -31,7 +32,6 @@ class BudgetViewsContainer extends Component {
 
         const { budgetId, versionId, seasonName, versionName, sectionName, tab } = this.props.params;
 
-        // TODO fix naming to match ALL around
         this.state = {
             budgetId,
             versionId,
@@ -54,7 +54,6 @@ class BudgetViewsContainer extends Component {
 
     componentWillMount() {
         const { budgetVersions, params: { budgetId } } = this.props; // eslint-disable-line no-shadow
-
         budgetVersions(budgetId);
     }
 
@@ -63,15 +62,12 @@ class BudgetViewsContainer extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if (nextProps.params.tab !== this.props.params.tab) {
-            const currentKey = this.state.activeTab;
 
-            this.setState({
-                [currentKey]: false,
-                activeTab: nextProps.params.tab,
-                [nextProps.params.tab]: true,
-            });
-        } else if (nextProps.newVersion !== this.props.newVersion) {
+        if (nextProps.params.sectionName !== this.props.params.sectionName) {
+            const { budgetId, versionId, seasonName, versionName, sectionName, tab } = nextProps.params;
+            this.props.switchGlobalData(budgetId, versionId, seasonName, versionName, tab);
+        }
+        if (nextProps.newVersion !== this.props.newVersion) {
             this.handlePushRoute(true, false, nextProps.newVersion, null);
         }
     }
@@ -82,13 +78,13 @@ class BudgetViewsContainer extends Component {
 
     handlePushRoute = (useNextProps, switchVersion, newVersion = null, newTab = null) => {
         const { router } = this.props;
-        const { budgetId, seasonName, section } = this.state;
+        const { budgetId, seasonName, sectionName } = this.state;
 
         const versionName = useNextProps || switchVersion ? newVersion.name : this.state.versionName;
         const versionId = useNextProps || switchVersion ? newVersion.id : this.state.versionId;
         const tab = newTab || this.props.params.tab;
 
-        router.push(`${ROUTE_BUDGET}/${seasonName}/${budgetId}/version/${versionName}/${versionId}/${section}/${tab}`);
+        router.push(`${ROUTE_BUDGET}/${seasonName}/${budgetId}/version/${versionName}/${versionId}/${sectionName}/${tab}`);
     }
 
     handleHistory = (historyMove) => {
@@ -114,15 +110,31 @@ class BudgetViewsContainer extends Component {
 
     handleTabChange(newTabKey) {
         // set true to load tabbed component
-        const { activeTab } = this.state;
-
-        this.setState({
-            [activeTab]: false,
-            activeTab: newTabKey,
-            [newTabKey]: true,
-        });
+        const { budgetId, versionId, seasonName, versionName } = this.state;
 
         this.handlePushRoute(false, false, null, newTabKey);
+        this.props.switchGlobalData(budgetId, versionId, seasonName, versionName, newTabKey);
+    }
+
+    getCurrentSection = (activeTab, globalBudgetId, globalVersionId) => {
+        switch (this.state.sectionName) {
+            case 'top-down':
+                return (<TopDownSection
+                    activeKey={activeTab}
+                    changeTab={() => this.handleTabChange}
+                    budget={globalBudgetId}
+                    tab={this.props.params.tab}
+                    version={globalVersionId} />);
+            case 'middle-out' :
+                return (<MiddleOutSection
+                    activeKey={activeTab}
+                    changeTab={() => this.handleTabChange}
+                    budget={globalBudgetId}
+                    tab={this.props.params.tab}
+                    version={globalVersionId} />);
+            default:
+                return null;
+        }
     }
 
     render() {
@@ -137,6 +149,9 @@ class BudgetViewsContainer extends Component {
         const viewHistory = history[activeTab];
         const undoDisabled = viewHistory ? viewHistory.undoDisabled : true;
         const redoDisabled = viewHistory ? viewHistory.redoDisabled : true;
+
+        const currentSection = this.getCurrentSection(activeTab, globalBudgetId, globalVersionId);
+
         return (
             <div>
                 <div className="budgetHeader">
@@ -160,65 +175,60 @@ class BudgetViewsContainer extends Component {
                     </Row>
                 </div>
                 <div className="budgetBody">
-                    <Tabs activeKey={activeTab} onChange={this.handleTabChange} animated={false}>
-                        <TabPane tab="Exec Recap" key={TAB_EXEC_RECAP}>
-                            {(activeTab === TAB_EXEC_RECAP || this.state[TAB_EXEC_RECAP]) &&
-                                <SectionContainer
-                                    budget={globalBudgetId}
-                                    version={globalVersionId}
-                                    cellRenderer={execCellValueRenderer}
-                                    key={TAB_EXEC_RECAP}
-                                    view={TAB_EXEC_RECAP}
-                                />
-                            }
-                        </TabPane>
-                        <TabPane tab="Total" key={TAB_TOTAL}>
-                            {(activeTab === TAB_TOTAL) &&
-                                <SectionContainer
-                                    budget={globalBudgetId}
-                                    version={globalVersionId}
-                                    cellRenderer={commonCellValueRenderer}
-                                    key={TAB_TOTAL}
-                                    view={TAB_TOTAL}
-                                />
-                            }
-                        </TabPane>
-                        <TabPane tab="Women" key={TAB_WOMEN}>
-                            {(activeTab === TAB_WOMEN) &&
-                                <SectionContainer
-                                    budget={globalBudgetId}
-                                    version={globalVersionId}
-                                    cellRenderer={commonCellValueRenderer}
-                                    key={TAB_WOMEN}
-                                    view={TAB_WOMEN}
-                                />
-                            }
-                        </TabPane>
-                        <TabPane tab="Men" key={TAB_MEN}>
-                            {(activeTab === TAB_MEN) &&
-                                <SectionContainer
-                                    budget={globalBudgetId}
-                                    version={globalVersionId}
-                                    cellRenderer={commonCellValueRenderer}
-                                    key={TAB_MEN}
-                                    view={TAB_MEN}
-                                />
-                            }
-                        </TabPane>
-                        <TabPane tab="Brand Groups" disabled key={TAB_BRAND_GROUPS}>
-                            {(activeTab === TAB_BRAND_GROUPS || this.state[TAB_BRAND_GROUPS]) &&
-                                <TotalViewContainer
-                                    budget={globalBudgetId}
-                                    version={globalVersionId}
-                                />
-                            }
-                        </TabPane>
-                    </Tabs>
+                    {currentSection}
                 </div>
             </div>
         );
     }
 }
+
+// <Tabs activeKey={activeTab} onChange={this.handleTabChange} animated={false}>
+//     <TabPane tab="Exec Recap" key={TAB_EXEC_RECAP}>
+//         {(activeTab === TAB_EXEC_RECAP || this.state[TAB_EXEC_RECAP]) &&
+//             <SectionContainer
+//                 budget={globalBudgetId}
+//                 version={globalVersionId}
+//                 cellRenderer={execCellValueRenderer}
+//                 key={TAB_EXEC_RECAP}
+//                 view={TAB_EXEC_RECAP}
+//             />
+//         }
+//     </TabPane>
+//     <TabPane tab="Total" key={TAB_TOTAL}>
+//         {(activeTab === TAB_TOTAL) &&
+//             <SectionContainer
+//                 budget={globalBudgetId}
+//                 version={globalVersionId}
+//                 cellRenderer={commonCellValueRenderer}
+//                 key={TAB_TOTAL}
+//                 view={TAB_TOTAL}
+//             />
+//         }
+//     </TabPane>
+//     <TabPane tab="Women" key={TAB_WOMEN}>
+//         {(activeTab === TAB_WOMEN) &&
+//             <SectionContainer
+//                 budget={globalBudgetId}
+//                 version={globalVersionId}
+//                 cellRenderer={commonCellValueRenderer}
+//                 key={TAB_WOMEN}
+//                 view={TAB_WOMEN}
+//             />
+//         }
+//     </TabPane>
+//     <TabPane tab="Men" key={TAB_MEN}>
+//         {(activeTab === TAB_MEN) &&
+//             <SectionContainer
+//                 budget={globalBudgetId}
+//                 version={globalVersionId}
+//                 cellRenderer={commonCellValueRenderer}
+//                 key={TAB_MEN}
+//                 view={TAB_MEN}
+//             />
+//         }
+//     </TabPane>
+// </Tabs>
+
 
 BudgetViewsContainer.propTypes = {
     params: PropTypes.object.isRequired,
