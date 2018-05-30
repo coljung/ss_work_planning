@@ -8,10 +8,12 @@ import BudgetViewsButtonActions from './components/BudgetViewsButtonActions';
 import SectionContainer from './sections/SectionContainer';
 import { refreshGridData } from './sections/SectionActions';
 import { budgetVersions, saveNewBudgetVersion } from './BudgetViewActions';
-import { switchUrls, clearUrls } from '../components/customNavigation/CustomNavigationActions';
+import { switchGlobalData, clearGlobalData } from '../components/customNavigation/CustomNavigationActions';
 import { cellValueRenderer as commonCellValueRenderer } from './sections/top-down/CommonCellRenderer';
 import { cellValueRenderer as execCellValueRenderer } from './sections/top-down/ExecCellRenderer';
 import { historyUndo, historyRedo } from './history/HistoryActions';
+import TopDownSection from './sections/top-down/TopDownSection';
+import MiddleOutSection from './sections/middle-out/MiddleOutSection';
 import { ROUTE_BUDGET } from '../Routes';
 
 // Sub Component
@@ -24,21 +26,17 @@ export const TAB_MEN = 'men';
 export const TAB_BRAND_GROUPS = 'brand-groups';
 
 class BudgetViewsContainer extends Component {
-    static contextTypes = {
-        router: PropTypes.object,
-    };
-
     constructor(props, context) {
         super(props, context);
 
-        const { budgetid, id, seasonname, vname, section, tab } = this.props.params;
+        const { budgetId, versionId, seasonName, versionName, sectionName, tab } = this.props.params;
 
         this.state = {
-            budgetSeasonId: budgetid,
-            versionId: id,
-            seasonName: seasonname,
-            versionName: vname,
-            section,
+            budgetId,
+            versionId,
+            seasonName,
+            versionName,
+            sectionName,
             activeTab: tab || TAB_EXEC_RECAP,
             [TAB_EXEC_RECAP]: false,
             [TAB_TOTAL]: false,
@@ -47,38 +45,29 @@ class BudgetViewsContainer extends Component {
             [TAB_BRAND_GROUPS]: false,
         };
 
-        this.props.switchUrls(budgetid, id, seasonname, vname, tab);
+        this.props.switchGlobalData(budgetId, versionId, seasonName, versionName, tab);
 
-        this.onTabChange = this.onTabChange.bind(this);
+        this.handleTabChange = this.handleTabChange.bind(this);
         this.handleVersionClick = this.handleVersionClick.bind(this);
-        this.handleUndo = this.handleUndo.bind(this);
-        this.handleRedo = this.handleRedo.bind(this);
     }
 
     componentWillMount() {
-        const { budgetVersions, params: { budgetid } } = this.props; // eslint-disable-line no-shadow
-
-        budgetVersions(budgetid);
+        const { budgetVersions, params: { budgetId } } = this.props; // eslint-disable-line no-shadow
+        budgetVersions(budgetId);
     }
 
     componentWillUnmount() {
-        this.props.clearUrls();
+        this.props.clearGlobalData();
     }
 
     componentWillReceiveProps(nextProps) {
-        if (nextProps.params.tab !== this.props.params.tab) {
-            const currentKey = this.state.activeTab;
 
-            this.setState({
-                [currentKey]: false,
-                activeTab: nextProps.params.tab,
-                [nextProps.params.tab]: true,
-            });
-        } else if (nextProps.newVersion !== this.props.newVersion) {
-            const { router, params: { tab } } = this.props;
-            const { budgetSeasonId, seasonName, section } = this.state;
-
-            router.push(`${ROUTE_BUDGET}/${seasonName}/${budgetSeasonId}/version/${nextProps.newVersion.name}/${nextProps.newVersion.id}/${section}/${tab}`);
+        if (nextProps.params.sectionName !== this.props.params.sectionName) {
+            const { budgetId, versionId, seasonName, versionName, sectionName, tab } = nextProps.params;
+            this.props.switchGlobalData(budgetId, versionId, seasonName, versionName, tab);
+        }
+        if (nextProps.newVersion !== this.props.newVersion) {
+            this.handlePushRoute(true, false, nextProps.newVersion, null);
         }
     }
 
@@ -86,20 +75,23 @@ class BudgetViewsContainer extends Component {
         this.props.saveNewBudgetVersion(budget, version);
     };
 
-    handleUndo() {
-        const { activeTab, budgetSeasonId, versionId } = this.state;
-        const { historyUndo } = this.props; // eslint-disable-line no-shadow
-        const data = historyUndo(activeTab);
+    handlePushRoute = (useNextProps, switchVersion, newVersion = null, newTab = null) => {
+        const { router } = this.props;
+        const { budgetId, seasonName, sectionName } = this.state;
 
-        this.props.refreshGridData(budgetSeasonId, versionId, activeTab, data);
+        const versionName = useNextProps || switchVersion ? newVersion.name : this.state.versionName;
+        const versionId = useNextProps || switchVersion ? newVersion.id : this.state.versionId;
+        const tab = newTab || this.props.params.tab;
+
+        router.push(`${ROUTE_BUDGET}/${seasonName}/${budgetId}/version/${versionName}/${versionId}/${sectionName}/${tab}`);
     }
 
-    handleRedo() {
-        const { activeTab, budgetSeasonId, versionId } = this.state;
-        const { historyRedo } = this.props; // eslint-disable-line no-shadow
-        const data = historyRedo(activeTab);
+    handleHistory = (historyMove) => {
+        const { activeTab, budgetId, versionId } = this.state;
+        const { historyUndo, historyRedo } = this.props; // eslint-disable-line no-shadow
+        const data = historyMove === 'undo' ? historyUndo(activeTab) : historyRedo(activeTab);
 
-        this.props.refreshGridData(budgetSeasonId, versionId, activeTab, data);
+        this.props.refreshGridData(budgetId, versionId, activeTab, data);
     }
 
     handleVersionClick(event) {
@@ -111,35 +103,53 @@ class BudgetViewsContainer extends Component {
                 versionName: version.name,
             });
 
-            const { router, params: { tab } } = this.props;
-            const { seasonName, section } = this.state;
-
-            router.push(`${ROUTE_BUDGET}/${seasonName}/${version.budget_id}/version/${version.name}/${version.id}/${section}/${tab}`);
+            this.handlePushRoute(false, true, version, null);
         }
     }
 
-    onTabChange(newTabKey) {
+    handleTabChange(newTabKey) {
         // set true to load tabbed component
-        const { activeTab, budgetSeasonId, seasonName, section, versionId, versionName } = this.state;
+        const { budgetId, versionId, seasonName, versionName } = this.state;
 
-        this.setState({
-            [activeTab]: false,
-            activeTab: newTabKey,
-            [newTabKey]: true,
-        });
+        this.handlePushRoute(false, false, null, newTabKey);
+        this.props.switchGlobalData(budgetId, versionId, seasonName, versionName, newTabKey);
+    }
 
-        const { router } = this.props;
-
-        router.push(`${ROUTE_BUDGET}/${seasonName}/${budgetSeasonId}/version/${versionName}/${versionId}/${section}/${newTabKey}`);
+    getCurrentSection = (activeTab, globalBudgetId, globalVersionId) => {
+        switch (this.state.sectionName) {
+            case 'top-down':
+                return (<TopDownSection
+                    activeKey={activeTab}
+                    changeTab={() => this.handleTabChange}
+                    budget={globalBudgetId}
+                    tab={this.props.params.tab}
+                    version={globalVersionId} />);
+            case 'middle-out' :
+                return (<MiddleOutSection
+                    activeKey={activeTab}
+                    changeTab={() => this.handleTabChange}
+                    budget={globalBudgetId}
+                    tab={this.props.params.tab}
+                    version={globalVersionId} />);
+            default:
+                return null;
+        }
     }
 
     render() {
-        const { activeTab, budgetSeasonId, versionId, seasonName, versionName } = this.state;
+        if (!this.props.budgetView) {
+            return null;
+        }
+        // TODO FIGURE TAB because it doesnt chage on tab switch
+        const { activeTab } = this.state;
+        const { globalBudgetId, globalVersionId, globalSeasonName, globalVersionName, versions, history } = this.props;
+
         // undo disabled / enabled ?
-        const { history } = this.props;
         const viewHistory = history[activeTab];
         const undoDisabled = viewHistory ? viewHistory.past.length <= 0 : true;
         const redoDisabled = viewHistory ? viewHistory.future.length <= 0 : true;
+
+        const currentSection = this.getCurrentSection(activeTab, globalBudgetId, globalVersionId);
 
         return (
             <div>
@@ -147,90 +157,85 @@ class BudgetViewsContainer extends Component {
                     <Row type="flex" justify="start" className="innerHeader">
                         <Col span={8} className="col">
                             <BudgetVersionMenu
-                                versions={this.props.versions}
-                                currentSeason={this.state.seasonName}
-                                currentVersion={this.state.versionName}
+                                versions={versions}
+                                currentSeason={globalSeasonName}
+                                currentVersion={globalVersionName}
                                 handleClick={this.handleVersionClick} />
                         </Col>
                         <Col span={16} className="col">
                             <BudgetViewsButtonActions
                               undoDisabled={undoDisabled}
-                              onUndo={this.handleUndo}
+                              onUndo={() => this.handleHistory('undo')}
                               redoDisabled={redoDisabled}
-                              onRedo={this.handleRedo}
-                              saveNew={() => this.saveNewVersion(budgetSeasonId, versionId)}
+                              onRedo={() => this.handleHistory('redo')}
+                              saveNew={() => this.saveNewVersion(globalBudgetId, globalVersionId)}
                             />
                         </Col>
                     </Row>
                 </div>
                 <div className="budgetBody">
-                    <Tabs activeKey={activeTab} onChange={this.onTabChange} animated={false}>
-                        <TabPane tab="Exec Recap" key={TAB_EXEC_RECAP}>
-                            {(activeTab === TAB_EXEC_RECAP || this.state[TAB_EXEC_RECAP]) &&
-                                <SectionContainer
-                                    budget={budgetSeasonId}
-                                    version={versionId}
-                                    cellRenderer={execCellValueRenderer}
-                                    key={TAB_EXEC_RECAP}
-                                    view={TAB_EXEC_RECAP}
-                                />
-                            }
-                        </TabPane>
-                        <TabPane tab="Total" key={TAB_TOTAL}>
-                            {(activeTab === TAB_TOTAL) &&
-                                <SectionContainer
-                                    budget={budgetSeasonId}
-                                    version={versionId}
-                                    cellRenderer={commonCellValueRenderer}
-                                    key={TAB_TOTAL}
-                                    view={TAB_TOTAL}
-                                />
-                            }
-                        </TabPane>
-                        <TabPane tab="Women" key={TAB_WOMEN}>
-                            {(activeTab === TAB_WOMEN) &&
-                                <SectionContainer
-                                    budget={budgetSeasonId}
-                                    version={versionId}
-                                    cellRenderer={commonCellValueRenderer}
-                                    key={TAB_WOMEN}
-                                    view={TAB_WOMEN}
-                                />
-                            }
-                        </TabPane>
-                        <TabPane tab="Men" key={TAB_MEN}>
-                            {(activeTab === TAB_MEN) &&
-                                <SectionContainer
-                                    budget={budgetSeasonId}
-                                    version={versionId}
-                                    cellRenderer={commonCellValueRenderer}
-                                    key={TAB_MEN}
-                                    view={TAB_MEN}
-                                />
-                            }
-                        </TabPane>
-                        <TabPane tab="Brand Groups" disabled key={TAB_BRAND_GROUPS}>
-                            {(activeTab === TAB_BRAND_GROUPS || this.state[TAB_BRAND_GROUPS]) &&
-                                <TotalViewContainer
-                                    budget={budgetSeasonId}
-                                    version={versionId}
-                                />
-                            }
-                        </TabPane>
-                    </Tabs>
+                    {currentSection}
                 </div>
             </div>
         );
     }
 }
 
+// <Tabs activeKey={activeTab} onChange={this.handleTabChange} animated={false}>
+//     <TabPane tab="Exec Recap" key={TAB_EXEC_RECAP}>
+//         {(activeTab === TAB_EXEC_RECAP || this.state[TAB_EXEC_RECAP]) &&
+//             <SectionContainer
+//                 budget={globalBudgetId}
+//                 version={globalVersionId}
+//                 cellRenderer={execCellValueRenderer}
+//                 key={TAB_EXEC_RECAP}
+//                 view={TAB_EXEC_RECAP}
+//             />
+//         }
+//     </TabPane>
+//     <TabPane tab="Total" key={TAB_TOTAL}>
+//         {(activeTab === TAB_TOTAL) &&
+//             <SectionContainer
+//                 budget={globalBudgetId}
+//                 version={globalVersionId}
+//                 cellRenderer={commonCellValueRenderer}
+//                 key={TAB_TOTAL}
+//                 view={TAB_TOTAL}
+//             />
+//         }
+//     </TabPane>
+//     <TabPane tab="Women" key={TAB_WOMEN}>
+//         {(activeTab === TAB_WOMEN) &&
+//             <SectionContainer
+//                 budget={globalBudgetId}
+//                 version={globalVersionId}
+//                 cellRenderer={commonCellValueRenderer}
+//                 key={TAB_WOMEN}
+//                 view={TAB_WOMEN}
+//             />
+//         }
+//     </TabPane>
+//     <TabPane tab="Men" key={TAB_MEN}>
+//         {(activeTab === TAB_MEN) &&
+//             <SectionContainer
+//                 budget={globalBudgetId}
+//                 version={globalVersionId}
+//                 cellRenderer={commonCellValueRenderer}
+//                 key={TAB_MEN}
+//                 view={TAB_MEN}
+//             />
+//         }
+//     </TabPane>
+// </Tabs>
+
+
 BudgetViewsContainer.propTypes = {
     params: PropTypes.object.isRequired,
     newVersion: PropTypes.object,
     saveNewBudgetVersion: PropTypes.func.isRequired,
     budgetVersions: PropTypes.func.isRequired,
-    switchUrls: PropTypes.func.isRequired,
-    clearUrls: PropTypes.func.isRequired,
+    switchGlobalData: PropTypes.func.isRequired,
+    clearGlobalData: PropTypes.func.isRequired,
     versions: PropTypes.array.isRequired,
     router: PropTypes.object,
     history: PropTypes.object,
@@ -240,11 +245,17 @@ BudgetViewsContainer.propTypes = {
 };
 
 function mapStateToProps(state) {
-    const { BudgetViewReducer, HistoryReducer } = state;
+    const { BudgetViewReducer, HistoryReducer, CustomNavigationReducer } = state;
     return {
         newVersion: BudgetViewReducer.newVersion,
         versions: BudgetViewReducer.versions,
         history: HistoryReducer,
+        globalBudgetId: CustomNavigationReducer.budgetId,
+        globalVersionId: CustomNavigationReducer.versionId,
+        globalSeasonName: CustomNavigationReducer.seasonName,
+        globalVersionName: CustomNavigationReducer.versionName,
+        globalTab: CustomNavigationReducer.view,
+        budgetView: CustomNavigationReducer.budgetView,
     };
 }
 
@@ -252,8 +263,8 @@ function mapDispatchToProps(dispatch) {
     return bindActionCreators({
         budgetVersions,
         saveNewBudgetVersion,
-        switchUrls,
-        clearUrls,
+        switchGlobalData,
+        clearGlobalData,
         refreshGridData,
         historyUndo,
         historyRedo,
