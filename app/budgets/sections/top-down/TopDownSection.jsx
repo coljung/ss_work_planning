@@ -106,14 +106,6 @@ export default class TopDownSection extends Component {
                         />
                     }
                 </TabPane>
-                <TabPane tab="Brand Groups" disabled key={TAB_BRAND_GROUPS}>
-                    {(activeTab === TAB_BRAND_GROUPS || this.state[TAB_BRAND_GROUPS]) &&
-                        <TotalViewContainer
-                            budget={budget}
-                            version={version}
-                        />
-                    }
-                </TabPane>
             </Tabs>
         );
     }

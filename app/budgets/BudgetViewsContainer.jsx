@@ -66,6 +66,14 @@ class BudgetViewsContainer extends Component {
         if (nextProps.params.sectionName !== this.props.params.sectionName) {
             const { budgetId, versionId, seasonName, versionName, sectionName, tab } = nextProps.params;
             this.props.switchGlobalData(budgetId, versionId, seasonName, versionName, tab);
+            this.setState({
+                budgetId,
+                versionId,
+                seasonName,
+                versionName,
+                sectionName,
+                activeTab: tab,
+            });
         }
         if (nextProps.newVersion !== this.props.newVersion) {
             this.handlePushRoute(true, false, nextProps.newVersion, null);
