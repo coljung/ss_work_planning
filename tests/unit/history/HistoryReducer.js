@@ -1,89 +1,88 @@
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import * as actions from '../../../app/budgets/history/HistoryActions';
-import reducer, { defaultView } from '../../../app/budgets/history/HistoryReducer';
-import { canGo as canGoUtil, getView } from '../../../app/budgets/history/utils';
+import reducer, {
+    defaultView
+} from '../../../app/budgets/history/HistoryReducer';
+import { getView } from '../../../app/budgets/history/utils';
 
 describe('History Reducer', () => {
-  let middlewares;
-  let mockStore;
-  let store;
-  let view;
-  let item;
-  let item2;
+    let middlewares;
+    let mockStore;
+    let store;
+    let view;
+    let item;
+    let item2;
 
-  beforeAll(() => {
-    middlewares = [thunk];
-    mockStore = configureMockStore(middlewares);
-    store = mockStore({ HistoryReducer: {} });
-    view  = 'men';
-    item = {
-      foo: 'bar'
-    };
-    item2 = {
-      foo: 'qaz'
-    };
-  });
+    beforeAll(() => {
+        middlewares = [thunk];
+        mockStore = configureMockStore(middlewares);
+        store = mockStore({ HistoryReducer: {} });
+        view = 'men';
+        item = {
+            foo: 'bar'
+        };
+        item2 = {
+            foo: 'qaz'
+        };
+    });
 
-  it('should push multiple item into a view', () => {
-    const action = store.dispatch(actions.pushAction(view, item));
-    expect(action).toBe(item);
+    it('should push multiple item into a view', () => {
+        const action = store.dispatch(actions.historyPush(view, item));
+        const expectedFirstPushAction = {
+            item: { foo: 'bar' },
+            type: 'HISTORY_PUSH',
+            view: 'men'
+        };
 
-    store.dispatch(actions.pushAction(view, item));
+        expect(action).toEqual(expectedFirstPushAction);
 
-    const expectedActions = [
-      {
-        type: 'HISTORY_PUSH',
-        view: 'men',
-        viewInfo: {
-          currentIndex: 1,
-          history: [{ foo: 'bar' }, { foo: 'bar' }],
-          length: 2,
-          redoDisabled: true,
-          undoDisabled: false
-        }
-      },
-      {
-        type: 'HISTORY_PUSH',
-        view: 'men',
-        viewInfo: {
-          currentIndex: 1,
-          history: [{ foo: 'bar' }, { foo: 'bar' }],
-          length: 2,
-          redoDisabled: true,
-          undoDisabled: false
-        }
-      }
-    ];
+        store.dispatch(actions.historyPush(view, item));
 
-    expect(store.getActions()).toEqual(expectedActions);
-  });
+        const expectedActions = [
+            { item: { foo: 'bar' }, type: 'HISTORY_PUSH', view: 'men' },
+            { item: { foo: 'bar' }, type: 'HISTORY_PUSH', view: 'men' }
+        ];
 
-  it('Should go back to the latest item (undo)', () => {
-    const action = store.dispatch(actions.pushAction(view, item));
-    expect(action).toBe(item);
+        expect(store.getActions()).toEqual(expectedActions);
+    });
 
-    store.dispatch(actions.pushAction(view, item2));
+    it('Should undo', () => {
+        store = mockStore({ HistoryReducer: {} });
+        store.dispatch(actions.historyPush(view, item));
+        store.dispatch(actions.historyPush(view, item));
+        store.dispatch(actions.historyPush(view, item2));
+        store.dispatch(actions.historyUndo(view));
 
-    const foo = store.dispatch(actions.goBackAction(view));
+        const reducerActions = store.getActions();
 
-    expect(foo).toBe(item);
+        expect(reducerActions[reducerActions.length - 1]).toHaveProperty(
+            'type',
+            actions.HISTORY_UNDO
+        );
+        expect(reducerActions[reducerActions.length - 1]).toHaveProperty(
+            'view',
+            view
+        );
+    });
 
-    const reducerActions = store.getActions();
+    it('Should redo', () => {
+        store = mockStore({ HistoryReducer: {} });
+        store.dispatch(actions.historyPush(view, item));
+        store.dispatch(actions.historyPush(view, item));
+        store.dispatch(actions.historyPush(view, item2));
+        store.dispatch(actions.historyUndo(view));
+        store.dispatch(actions.historyRedo(view));
 
-    expect(reducerActions[reducerActions.length - 1]).toHaveProperty('viewInfo');
-    expect(reducerActions[reducerActions.length - 1]).toHaveProperty('viewInfo.redoDisabled', false);
-    expect(reducerActions[reducerActions.length - 1]).toHaveProperty('viewInfo.currentIndex', 2);
-  });
+        const reducerActions = store.getActions();
 
-  it('Should go forward (redo)', () => {
-    const foo = store.dispatch(actions.goForwardAction(view));
-
-    expect(foo).toBe(item2);
-
-    const reducerActions = store.getActions();
-
-    expect(reducerActions[reducerActions.length - 1]).toHaveProperty('viewInfo');
-    expect(reducerActions[reducerActions.length - 1]).toHaveProperty('viewInfo.currentIndex', 3);
-  });
+        expect(reducerActions[reducerActions.length - 1]).toHaveProperty(
+            'type',
+            actions.HISTORY_REDO
+        );
+        expect(reducerActions[reducerActions.length - 1]).toHaveProperty(
+            'view',
+            view
+        );
+    });
 });

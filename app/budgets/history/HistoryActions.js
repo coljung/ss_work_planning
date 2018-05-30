@@ -8,31 +8,30 @@ export const HISTORY_PUSH = 'HISTORY_PUSH';
 export const historyPush = (view, item) => ({
     type: HISTORY_PUSH,
     view,
-    item,
+    item
 });
 
-export const historyUndo = (view) => (dispatch, getState) => {
+export const historyUndo = view => (dispatch, getState) => {
     const { HistoryReducer: state } = getState();
     const viewInfo = getView(state, view, defaultView);
     const previous = viewInfo.past[viewInfo.past.length - 1];
 
     dispatch({
         type: HISTORY_UNDO,
-        view,
+        view
     });
 
     return previous;
 };
 
-
-export const historyRedo = (view) => (dispatch, getState) => {
+export const historyRedo = view => (dispatch, getState) => {
     const { HistoryReducer: state } = getState();
     const viewInfo = getView(state, view, defaultView);
     const next = viewInfo.future[0];
 
     dispatch({
         type: HISTORY_REDO,
-        view,
+        view
     });
 
     return next;

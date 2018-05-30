@@ -1,16 +1,6 @@
-import {
-    HISTORY_UNDO,
-    HISTORY_REDO,
-    HISTORY_PUSH
-} from './HistoryActions';
+import { HISTORY_UNDO, HISTORY_REDO, HISTORY_PUSH } from './HistoryActions';
 
-import {
-    getView,
-    push,
-    pop,
-    canGo,
-    viewLength,
-} from './utils';
+import { getView, push, pop, canGo, viewLength } from './utils';
 
 const initialState = {
     // men: {
@@ -24,7 +14,7 @@ const initialState = {
 export const defaultView = {
     past: [],
     present: null,
-    future: [],
+    future: []
 };
 
 export default (state = initialState, action) => {
@@ -34,41 +24,41 @@ export default (state = initialState, action) => {
 
     switch (action.type) {
         case HISTORY_UNDO:
-            const previous = past[past.length - 1]
-            const newPast = past.slice(0, past.length - 1)
+            const previous = past[past.length - 1];
+            const newPast = past.slice(0, past.length - 1);
             return {
-              ...state,
-              [view]: {
-                  past: newPast,
-                  present: previous,
-                  future: [present, ...future]
-              }
-            }
+                ...state,
+                [view]: {
+                    past: newPast,
+                    present: previous,
+                    future: [present, ...future]
+                }
+            };
         case HISTORY_REDO:
-            const next = future[0]
-            const newFuture = future.slice(1)
+            const next = future[0];
+            const newFuture = future.slice(1);
             return {
-              ...state,
-              [view]: {
-                  past: [...past, present],
-                  present: next,
-                  future: newFuture
-              }
-            }
+                ...state,
+                [view]: {
+                    past: [...past, present],
+                    present: next,
+                    future: newFuture
+                }
+            };
         case HISTORY_PUSH:
-            const newPresent  = action.item;
+            const newPresent = action.item;
             if (present === newPresent) {
-              return state;
+                return state;
             }
 
             return {
-              ...state,
-              [view]: {
-                  past: present ? [...past, present] : [...past],
-                  present: newPresent,
-                  future: []
-              }
-            }
+                ...state,
+                [view]: {
+                    past: present ? [...past, present] : [...past],
+                    present: newPresent,
+                    future: []
+                }
+            };
         default:
             return state;
     }
