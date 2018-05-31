@@ -11,7 +11,8 @@ import { budgetVersions, saveNewBudgetVersion } from './BudgetViewActions';
 import { switchGlobalData, clearGlobalData } from '../components/customNavigation/CustomNavigationActions';
 import { cellValueRenderer as commonCellValueRenderer } from './sections/top-down/CommonCellRenderer';
 import { cellValueRenderer as execCellValueRenderer } from './sections/top-down/ExecCellRenderer';
-import { historyUndo, historyRedo } from './history/HistoryActions';
+import { goBackAction, goForwardAction } from './history/HistoryActions';
+
 import TopDownSection from './sections/top-down/TopDownSection';
 import MiddleOutSection from './sections/middle-out/MiddleOutSection';
 import { ROUTE_BUDGET } from '../Routes';
@@ -62,6 +63,8 @@ class BudgetViewsContainer extends Component {
 
     componentWillReceiveProps(nextProps) {
 
+        console.log(nextProps.params.tab, this.props.params.tab);
+
         if (nextProps.params.sectionName !== this.props.params.sectionName) {
             const { budgetId, versionId, seasonName, versionName, sectionName, tab } = nextProps.params;
             this.props.switchGlobalData(budgetId, versionId, seasonName, versionName, tab);
@@ -96,8 +99,8 @@ class BudgetViewsContainer extends Component {
 
     handleHistory = (historyMove) => {
         const { activeTab, budgetId, versionId } = this.state;
-        const { historyUndo, historyRedo } = this.props; // eslint-disable-line no-shadow
-        const data = historyMove === 'undo' ? historyUndo(activeTab) : historyRedo(activeTab);
+        const { goBackAction, goForwardAction, history } = this.props; // eslint-disable-line no-shadow
+        const data = historyMove === 'undo' ? goBackAction(activeTab) : goForwardAction(activeTab);
 
         this.props.refreshGridData(budgetId, versionId, activeTab, data);
     }
@@ -128,14 +131,14 @@ class BudgetViewsContainer extends Component {
             case 'top-down':
                 return (<TopDownSection
                     activeKey={activeTab}
-                    changeTab={() => this.handleTabChange}
+                    changeTab={key => this.handleTabChange(key)}
                     budget={globalBudgetId}
                     tab={this.props.params.tab}
                     version={globalVersionId} />);
             case 'middle-out' :
                 return (<MiddleOutSection
                     activeKey={activeTab}
-                    changeTab={() => this.handleTabChange}
+                    changeTab={key => this.handleTabChange(key)}
                     budget={globalBudgetId}
                     tab={this.props.params.tab}
                     version={globalVersionId} />);
@@ -154,8 +157,8 @@ class BudgetViewsContainer extends Component {
 
         // undo disabled / enabled ?
         const viewHistory = history[activeTab];
-        const undoDisabled = viewHistory ? viewHistory.past.length <= 0 : true;
-        const redoDisabled = viewHistory ? viewHistory.future.length <= 0 : true;
+        const undoDisabled = viewHistory ? viewHistory.undoDisabled : true;
+        const redoDisabled = viewHistory ? viewHistory.redoDisabled : true;
 
         const currentSection = this.getCurrentSection(activeTab, globalBudgetId, globalVersionId);
 
@@ -189,54 +192,6 @@ class BudgetViewsContainer extends Component {
     }
 }
 
-// <Tabs activeKey={activeTab} onChange={this.handleTabChange} animated={false}>
-//     <TabPane tab="Exec Recap" key={TAB_EXEC_RECAP}>
-//         {(activeTab === TAB_EXEC_RECAP || this.state[TAB_EXEC_RECAP]) &&
-//             <SectionContainer
-//                 budget={globalBudgetId}
-//                 version={globalVersionId}
-//                 cellRenderer={execCellValueRenderer}
-//                 key={TAB_EXEC_RECAP}
-//                 view={TAB_EXEC_RECAP}
-//             />
-//         }
-//     </TabPane>
-//     <TabPane tab="Total" key={TAB_TOTAL}>
-//         {(activeTab === TAB_TOTAL) &&
-//             <SectionContainer
-//                 budget={globalBudgetId}
-//                 version={globalVersionId}
-//                 cellRenderer={commonCellValueRenderer}
-//                 key={TAB_TOTAL}
-//                 view={TAB_TOTAL}
-//             />
-//         }
-//     </TabPane>
-//     <TabPane tab="Women" key={TAB_WOMEN}>
-//         {(activeTab === TAB_WOMEN) &&
-//             <SectionContainer
-//                 budget={globalBudgetId}
-//                 version={globalVersionId}
-//                 cellRenderer={commonCellValueRenderer}
-//                 key={TAB_WOMEN}
-//                 view={TAB_WOMEN}
-//             />
-//         }
-//     </TabPane>
-//     <TabPane tab="Men" key={TAB_MEN}>
-//         {(activeTab === TAB_MEN) &&
-//             <SectionContainer
-//                 budget={globalBudgetId}
-//                 version={globalVersionId}
-//                 cellRenderer={commonCellValueRenderer}
-//                 key={TAB_MEN}
-//                 view={TAB_MEN}
-//             />
-//         }
-//     </TabPane>
-// </Tabs>
-
-
 BudgetViewsContainer.propTypes = {
     params: PropTypes.object.isRequired,
     newVersion: PropTypes.object,
@@ -247,9 +202,9 @@ BudgetViewsContainer.propTypes = {
     versions: PropTypes.array.isRequired,
     router: PropTypes.object,
     history: PropTypes.object,
+    goBackAction: PropTypes.func,
+    goForwardAction: PropTypes.func,
     refreshGridData: PropTypes.func.isRequired,
-    historyUndo: PropTypes.func.isRequired,
-    historyRedo: PropTypes.func.isRequired,
 };
 
 function mapStateToProps(state) {
@@ -273,9 +228,9 @@ function mapDispatchToProps(dispatch) {
         saveNewBudgetVersion,
         switchGlobalData,
         clearGlobalData,
+        goBackAction,
+        goForwardAction,
         refreshGridData,
-        historyUndo,
-        historyRedo,
     }, dispatch);
 }
 

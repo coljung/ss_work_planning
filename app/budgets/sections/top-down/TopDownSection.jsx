@@ -41,6 +41,8 @@ export default class TopDownSection extends Component {
                 activeTab: nextProps.tab,
                 [nextProps.tab]: true,
             });
+
+            // this.props.changeTab(nextProps.tab);
         }
     }
 
@@ -53,7 +55,6 @@ export default class TopDownSection extends Component {
             activeTab: newTabKey,
             [newTabKey]: true,
         });
-
         this.props.changeTab(newTabKey);
     }
 

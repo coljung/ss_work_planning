@@ -14,7 +14,7 @@ const initialState = {
 export const defaultView = {
     past: [],
     present: null,
-    future: []
+    future: [],
 };
 
 export default (state = initialState, action) => {
@@ -23,7 +23,7 @@ export default (state = initialState, action) => {
     const { past, present, future } = viewInfo;
 
     switch (action.type) {
-        case HISTORY_UNDO:
+        case HISTORY_UNDO: {
             const previous = past[past.length - 1];
             const newPast = past.slice(0, past.length - 1);
             return {
@@ -31,10 +31,11 @@ export default (state = initialState, action) => {
                 [view]: {
                     past: newPast,
                     present: previous,
-                    future: [present, ...future]
-                }
+                    future: [present, ...future],
+                },
             };
-        case HISTORY_REDO:
+        }
+        case HISTORY_REDO: {
             const next = future[0];
             const newFuture = future.slice(1);
             return {
@@ -42,10 +43,11 @@ export default (state = initialState, action) => {
                 [view]: {
                     past: [...past, present],
                     present: next,
-                    future: newFuture
-                }
+                    future: newFuture,
+                },
             };
-        case HISTORY_PUSH:
+        }
+        case HISTORY_PUSH: {
             const newPresent = action.item;
             if (present === newPresent) {
                 return state;
@@ -56,9 +58,10 @@ export default (state = initialState, action) => {
                 [view]: {
                     past: present ? [...past, present] : [...past],
                     present: newPresent,
-                    future: []
-                }
+                    future: [],
+                },
             };
+        }
         default:
             return state;
     }
