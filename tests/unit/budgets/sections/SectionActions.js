@@ -84,6 +84,13 @@ describe('SectionActions', () => {
             expect(actions.requestRefreshGridData()).toEqual(expectedAction);
         });
 
+        it('Should handle receiveRefreshGridData', () => {
+            const expectedAction = {
+                type: actions.RECEIVE_REFRESH_GRID_DATA,
+            };
+            expect(actions.receiveRefreshGridData()).toEqual(expectedAction);
+        });
+
         it('Should handle fetchBudgetConfigData', () => {
             nock(UI_PLANNING_HOST)
             .get('/api/planning/config')
