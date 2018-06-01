@@ -1,5 +1,5 @@
 import Handsontable from 'handsontable';
-import { TAB_TOTAL } from '../../BudgetViewsContainer';
+import { TAB_TOTAL } from './TopDownSection';
 import {
     enableCellValidDate,
     disableEdit,

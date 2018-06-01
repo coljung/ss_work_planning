@@ -3,7 +3,6 @@ import Handsontable from 'handsontable';
 import { cellValueRenderer } from '../../../../../app/budgets/sections/middle-out/CommonCellRenderer';
 import * as sinon from 'sinon';
 import { currencyFormat, percentageFormat } from '../../../../../app/budgets/components/TableHelpers';
-import { TAB_TOTAL } from '../../../../../app/budgets/BudgetViewsContainer';
 
 const createCell = (instance, row, col, data = {}, value = '', props = {}) => {
     const stateContainer = {
@@ -114,7 +113,7 @@ describe('Common view cell rendering', () => {
         createCell(instance, 0, 0, { prop: { dataType: 'currency' } }, 99);
 
         expect(spy.called).to.equal(true);
-        // console.log('................', spy.getCall(0).args);
+        console.log('................', spy.getCall(0).args);
         expect(spy.getCall(0).args[2]).to.equal('numericFormat');
         expect(spy.getCall(0).args[3]).to.equal(currencyFormat);
     });
@@ -143,15 +142,4 @@ describe('Common view cell rendering', () => {
         expect(spy.getCall(0).args[3]).to.equal(null);
     });
 
-    it('should set readonly in total view', () => {
-        const instance = new Handsontable(document.createElement('div'));
-
-        const spy = sinon.spy(instance, 'setCellMeta');
-
-        createCell(instance, 0, 0, { prop: { dataType: 'currency' } }, 99, { view: TAB_TOTAL });
-
-        expect(spy.called).to.equal(true);
-        expect(spy.getCall(0).args[2]).to.equal('readOnly');
-        expect(spy.getCall(0).args[3]).to.equal(true);
-    });
 });
