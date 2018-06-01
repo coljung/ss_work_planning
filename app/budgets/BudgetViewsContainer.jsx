@@ -20,12 +20,6 @@ import { ROUTE_BUDGET } from '../Routes';
 // Sub Component
 const TabPane = Tabs.TabPane;
 
-export const TAB_EXEC_RECAP = 'exec';
-export const TAB_TOTAL = 'total';
-export const TAB_WOMEN = 'women';
-export const TAB_MEN = 'men';
-export const TAB_BRAND_GROUPS = 'brand-groups';
-
 class BudgetViewsContainer extends Component {
     constructor(props, context) {
         super(props, context);
@@ -38,12 +32,7 @@ class BudgetViewsContainer extends Component {
             seasonName,
             versionName,
             sectionName,
-            activeTab: tab || TAB_EXEC_RECAP,
-            [TAB_EXEC_RECAP]: false,
-            [TAB_TOTAL]: false,
-            [TAB_WOMEN]: false,
-            [TAB_MEN]: false,
-            [TAB_BRAND_GROUPS]: false,
+            activeTab: tab,
         };
 
         this.props.switchGlobalData(budgetId, versionId, seasonName, versionName, tab);
@@ -62,9 +51,6 @@ class BudgetViewsContainer extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-
-        console.log(nextProps.params.tab, this.props.params.tab);
-
         if (nextProps.params.sectionName !== this.props.params.sectionName) {
             const { budgetId, versionId, seasonName, versionName, sectionName, tab } = nextProps.params;
             this.props.switchGlobalData(budgetId, versionId, seasonName, versionName, tab);
@@ -151,7 +137,7 @@ class BudgetViewsContainer extends Component {
         if (!this.props.budgetView) {
             return null;
         }
-        // TODO FIGURE TAB because it doesnt chage on tab switch
+
         const { activeTab } = this.state;
         const { globalBudgetId, globalVersionId, globalSeasonName, globalVersionName, versions, history } = this.props;
 
@@ -205,6 +191,11 @@ BudgetViewsContainer.propTypes = {
     goBackAction: PropTypes.func,
     goForwardAction: PropTypes.func,
     refreshGridData: PropTypes.func.isRequired,
+    budgetView: PropTypes.bool.isRequired,
+    globalBudgetId: PropTypes.string,
+    globalVersionId: PropTypes.string,
+    globalSeasonName: PropTypes.string,
+    globalVersionName: PropTypes.string,
 };
 
 function mapStateToProps(state) {

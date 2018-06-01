@@ -144,7 +144,9 @@ class SectionContainer extends Component {
 
                         this.lastEditCell = cellEditKey;
                     })
-                    .catch(err => {throw err});
+                    .catch((err) => {
+                        throw err;
+                    });
             }
         }
         // if (cellEdits) {
