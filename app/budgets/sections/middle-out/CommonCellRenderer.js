@@ -1,5 +1,4 @@
 import Handsontable from 'handsontable';
-import { TAB_TOTAL } from './TopDownSection';
 import {
     enableCellValidDate,
     disableEdit,
@@ -33,25 +32,6 @@ export function cellValueRenderer(instance, td, row, col, prop, value, cellPrope
                 gridColors(metricInformation.dataRow, td);
             }
         }
-    }
-
-    if (this.props.view === TAB_TOTAL) {
-        disableEdit(instance, row, col);
-        /*
-    } else if (col > 7) {
-        const currentRowSeasonYear = instance.getDataAtCell(row, 1);
-        const compareCodes = enableCellValidDate(prop, currentRowSeasonYear);
-
-        // if code combination of this cell's year + month greater than the actual month / year, then enable field
-        if (compareCodes.cellCode >= compareCodes.viewCode && this.props.view !== TAB_TOTAL) {
-            enableEdit(instance, row, col);
-        }
-
-        // similar logic to 'future', but here we check the next column instead of the previous
-        if (((this.state.season === 'FW' && prop === 'feb1') || (this.state.season === 'SS' && prop === 'aug0')) && this.props.view !== TAB_TOTAL) {
-            enableEdit(instance, row, col - 1);
-        }
-        */
     }
 
     if (metricInformation && metricInformation.dataType !== undefined) {
