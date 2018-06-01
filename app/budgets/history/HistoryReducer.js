@@ -1,48 +1,67 @@
-import {
-    HISTORY_PUSH,
-    HISTORY_REPLACE,
-    HISTORY_GO_BACK,
-    HISTORY_GO_FORWARD,
-    HISTORY_CAN_GO,
-} from './HistoryActions';
+import { HISTORY_UNDO, HISTORY_REDO, HISTORY_PUSH } from './HistoryActions';
 
-import {
-    getView,
-    push,
-    pop,
-    canGo,
-    viewLength,
-} from './utils';
+import { getView, push, pop, canGo, viewLength } from './utils';
 
 const initialState = {
     // men: {
-    //   length: null,
-    //   currentIndex: null;
-    //   history: [],
+    //   past: Array<T>,
+    //   present: T,
+    //   future: Array<T>
     // }
     // ...
 };
 
 export const defaultView = {
-    length: null,
-    currentIndex: null,
-    undoDisabled: true,
-    redoDisabled: true,
-    history: [],
+    past: [],
+    present: null,
+    future: [],
 };
 
 export default (state = initialState, action) => {
-    let view;
+    const { view } = action;
+    const viewInfo = getView(state, view, defaultView);
+    const { past, present, future } = viewInfo;
+
     switch (action.type) {
-        case HISTORY_PUSH:
-        case HISTORY_GO_BACK:
-        case HISTORY_GO_FORWARD:
+        case HISTORY_UNDO: {
+            const previous = past[past.length - 1];
+            const newPast = past.slice(0, past.length - 1);
             return {
                 ...state,
-                [action.view]: {
-                    ...action.viewInfo,
+                [view]: {
+                    past: newPast,
+                    present: previous,
+                    future: [present, ...future],
                 },
             };
+        }
+        case HISTORY_REDO: {
+            const next = future[0];
+            const newFuture = future.slice(1);
+            return {
+                ...state,
+                [view]: {
+                    past: [...past, present],
+                    present: next,
+                    future: newFuture,
+                },
+            };
+        }
+        case HISTORY_PUSH: {
+            const newPresent = action.item;
+            if (present === newPresent) {
+                return state;
+            }
+
+            return {
+                ...state,
+                [view]: {
+                    past: present ? [...past, present] : [...past],
+                    present: newPresent,
+                    future: [],
+                },
+            };
+        }
         default:
             return state;
     }

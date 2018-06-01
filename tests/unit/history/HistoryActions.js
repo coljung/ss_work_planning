@@ -3,61 +3,57 @@ import thunk from 'redux-thunk';
 import * as actions from '../../../app/budgets/history/HistoryActions';
 
 describe('History Actions', () => {
-  let middlewares;
-  let mockStore;
+    let middlewares;
+    let mockStore;
+    let store;
 
-  beforeAll(() => {
-    middlewares = [thunk];
-    mockStore = configureMockStore(middlewares);
-  });
+    beforeAll(() => {
+        middlewares = [thunk];
+        mockStore = configureMockStore(middlewares);
+    });
 
-  it('Should test push', () => {
-    const view  = 'men';
-    const item = {
-      foo: 'bar'
-    };
+    it('Should test history push', () => {
+        const view = 'men';
+        const item = {
+            foo: 'bar'
+        };
 
-    const expectedAction = {
-      type: actions.HISTORY_PUSH,
-      view,
-      viewInfo: item
-    };
+        const expectedAction = {
+            type: actions.HISTORY_PUSH,
+            view,
+            item
+        };
 
-    expect(actions.push(view, item)).toEqual(expectedAction);
-  });
+        expect(actions.historyPush(view, item)).toEqual(expectedAction);
+    });
 
-  it('Should test go', () => {
-    const viewInfo = { foo: 'bar' };
-    const view  = 'men';
+    it('Should test history undo', () => {
+        store = mockStore({ HistoryReducer: {} });
+        const view = 'men';
+        const expectedAction = {
+            type: actions.HISTORY_UNDO,
+            view
+        };
 
-    const expectedAction = {
-      type: actions.HISTORY_GO_BACK,
-      view,
-      viewInfo
-    };
+        store.dispatch(actions.historyUndo(view));
 
-    expect(actions.go(actions.HISTORY_GO_BACK, view, viewInfo)).toEqual(expectedAction);
-  });
+        const expectedActions = [{ type: 'HISTORY_UNDO', view: 'men' }];
 
-  it('Should test goBack', () => {
-    const view  = 'men';
+        expect(store.getActions()).toEqual(expectedActions);
+    });
 
-    const expectedAction = {
-      type: actions.HISTORY_GO_BACK,
-      view
-    };
+    it('Should test goForward', () => {
+        store = mockStore({ HistoryReducer: {} });
+        const view = 'men';
+        const expectedAction = {
+            type: actions.HISTORY_REDO,
+            view
+        };
 
-    expect(actions.goBack(view)).toEqual(expectedAction);
-  });
+        store.dispatch(actions.historyRedo(view));
 
-  it('Should test goForward', () => {
-    const view  = 'men';
+        const expectedActions = [{ type: 'HISTORY_REDO', view: 'men' }];
 
-    const expectedAction = {
-      type: actions.HISTORY_GO_FORWARD,
-      view
-    };
-
-    expect(actions.goForward(view)).toEqual(expectedAction);
-  });
+        expect(store.getActions()).toEqual(expectedActions);
+    });
 });

@@ -21,7 +21,7 @@ export default class App extends Component {
         if (!collapsed) {
             this.timer = setTimeout(() => {
                 this.setState({ collapsed: !collapsed });
-            }, 80000);
+            }, 7000);
         }
     }
     render() {

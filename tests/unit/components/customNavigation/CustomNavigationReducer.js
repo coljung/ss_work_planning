@@ -20,16 +20,16 @@ describe('CustomNavigationReducer', () => {
       expect(reducer(undefined, {})).toEqual(initialState)
     });
 
-    it('should handle URLS', () => {
+    it('should handle GLOBAL_DATA', () => {
 
         const urlAction = {
-            type: actions.URLS,
+            type: actions.GLOBAL_DATA,
             budgetView: true,
-            budgetid: 11,
-            versionid: 22,
-            seasonname: 'SS',
-            vname: 'V1',
-            tab: 'men' // important to pass correct payload, that's what the tests are for ;)
+            budgetId: 11,
+            versionId: 22,
+            seasonName: 'SS',
+            versionName: 'V1',
+            view: 'men' // important to pass correct payload, that's what the tests are for ;)
         };
         expect(reducer({}, urlAction)).toEqual({
             budgetView: true,
@@ -41,9 +41,9 @@ describe('CustomNavigationReducer', () => {
     });
 
 
-    it('should CLEAR_URLS', () => {
+    it('should CLEAR_GLOBAL_DATA', () => {
         const clearAction = {
-            type: actions.CLEAR_URLS,
+            type: actions.CLEAR_GLOBAL_DATA,
         };
         expect(reducer({}, clearAction)).toEqual(initialState)
     });
