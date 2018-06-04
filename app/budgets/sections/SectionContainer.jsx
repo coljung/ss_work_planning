@@ -30,15 +30,16 @@ class SectionContainer extends Component {
             version,
             view,
         };
-        this.dataToSave = [];
 
+        // set a reference to the Handsontable
         this.hotTableRef = null;
-
         this.setHotTableRef = (element) => {
             this.hotTableRef = element;
         };
 
         this.lastEditCell = null;
+
+        this.emptyChange = false;
     }
 
     componentDidMount() {
@@ -110,6 +111,12 @@ class SectionContainer extends Component {
      * @return {void}
      */
     changeCell = async (cellEdits) => {
+        // checks if previous change was simply a revert
+        if (this.emptyChange) {
+            this.emptyChange = false;
+            return;
+        }
+
         // on load this is called, hence the check
         if (cellEdits) {
             const row = cellEdits[0][0];
@@ -120,6 +127,13 @@ class SectionContainer extends Component {
 
             // future test if cell is numeric
             const isNumValue = this.hotTableRef.hotInstance.getCellMeta(row, col).numericFormat;
+
+            // if user doesnt enter any text
+            if (newValue === '') {
+                this.emptyChange = true;
+                this.hotTableRef.hotInstance.setDataAtRowProp(row, cellEdits[0][1], prevValue);
+                return;
+            }
 
             // handsontable converts to string
             if (parseFloat(prevValue, 10) !== parseFloat(newValue, 10)) {
@@ -149,28 +163,6 @@ class SectionContainer extends Component {
                     });
             }
         }
-        // if (cellEdits) {
-        //     const row = cellEdits[0][0];
-        //     const col = cellEdits[0][1];
-        //     const prevValue = cellEdits[0][2];
-        //     const newValue = cellEdits[0][3];
-        //     if (prevValue !== newValue) {
-        //         const newData = {
-        //             row,
-        //             col,
-        //             value: newValue,
-        //         };
-        //         // check if cell has been modified already
-        //         const checkDuplicate = this.dataToSave.filter(e => e.row !== row || e.col !== col);
-        //         checkDuplicate.push(newData);
-        //         this.dataToSave = checkDuplicate;
-        //     }
-        //     if (this.state.canSave) {
-        //         this.setState({
-        //             canSave: false,
-        //         });
-        //     }
-        // }
     };
 
     createColumn = (column, renderer) => ({

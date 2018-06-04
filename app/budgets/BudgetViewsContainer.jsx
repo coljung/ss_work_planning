@@ -11,7 +11,7 @@ import { budgetVersions, saveNewBudgetVersion } from './BudgetViewActions';
 import { switchGlobalData, clearGlobalData } from '../components/customNavigation/CustomNavigationActions';
 import { cellValueRenderer as commonCellValueRenderer } from './sections/top-down/CommonCellRenderer';
 import { cellValueRenderer as execCellValueRenderer } from './sections/top-down/ExecCellRenderer';
-import { goBackAction, goForwardAction } from './history/HistoryActions';
+import { historyUndo, historyRedo } from './history/HistoryActions';
 
 import TopDownSection from './sections/top-down/TopDownSection';
 import MiddleOutSection from './sections/middle-out/MiddleOutSection';
@@ -85,8 +85,8 @@ class BudgetViewsContainer extends Component {
 
     handleHistory = (historyMove) => {
         const { activeTab, budgetId, versionId } = this.state;
-        const { goBackAction, goForwardAction, history } = this.props; // eslint-disable-line no-shadow
-        const data = historyMove === 'undo' ? goBackAction(activeTab) : goForwardAction(activeTab);
+        const { historyUndo, historyRedo } = this.props; // eslint-disable-line no-shadow
+        const data = historyMove === 'undo' ? historyUndo(activeTab) : historyRedo(activeTab);
 
         this.props.refreshGridData(budgetId, versionId, activeTab, data);
     }
@@ -143,8 +143,8 @@ class BudgetViewsContainer extends Component {
 
         // undo disabled / enabled ?
         const viewHistory = history[activeTab];
-        const undoDisabled = viewHistory ? viewHistory.undoDisabled : true;
-        const redoDisabled = viewHistory ? viewHistory.redoDisabled : true;
+        const undoDisabled = viewHistory ? viewHistory.past.length <= 0 : true;
+        const redoDisabled = viewHistory ? viewHistory.future.length <= 0 : true;
 
         const currentSection = this.getCurrentSection(activeTab, globalBudgetId, globalVersionId);
 
@@ -188,9 +188,9 @@ BudgetViewsContainer.propTypes = {
     versions: PropTypes.array.isRequired,
     router: PropTypes.object,
     history: PropTypes.object,
-    goBackAction: PropTypes.func,
-    goForwardAction: PropTypes.func,
     refreshGridData: PropTypes.func.isRequired,
+    historyUndo: PropTypes.func.isRequired,
+    historyRedo: PropTypes.func.isRequired,
     budgetView: PropTypes.bool.isRequired,
     globalBudgetId: PropTypes.string,
     globalVersionId: PropTypes.string,
@@ -219,8 +219,8 @@ function mapDispatchToProps(dispatch) {
         saveNewBudgetVersion,
         switchGlobalData,
         clearGlobalData,
-        goBackAction,
-        goForwardAction,
+        historyUndo,
+        historyRedo,
         refreshGridData,
     }, dispatch);
 }
