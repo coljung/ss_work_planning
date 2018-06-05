@@ -1,2 +1,2 @@
 export const getView = (state, view, defaultView) =>
-    state[view] === undefined ? defaultView : state[view];
+    (state[view] === undefined ? defaultView : state[view]);
