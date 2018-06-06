@@ -63,6 +63,7 @@ class SectionContainer extends Component {
 
     componentWillReceiveProps = (nextProps) => {
         const setData = nextProps.viewData ? nextProps.viewData[nextProps.view] : {};
+        // console.log(nextProps);
         if (this.props.viewData.length !== setData && !!setData) {
             this.setState({
                 headers: setData.headers,
@@ -75,12 +76,21 @@ class SectionContainer extends Component {
         if (nextProps.refreshData) {
             this.metricData();
         }
+
+        if (nextProps.version !== this.props.version) {
+            this.setState(
+                {
+                    version: nextProps.version,
+                }, () => this.metricData(),
+            );
+        }
     };
 
     resize = () => this.hotTableRef.hotInstance.render();
 
     metricData = () => {
         const { budget, version, view } = this.state;
+        console.log(version);
         const { config, router: { location } } = this.props;
         this.props.fetchBudgetMetricData(budget, version, view, config, location.query);
     }

@@ -52,20 +52,39 @@ class BudgetViewsContainer extends Component {
 
     componentWillReceiveProps(nextProps) {
         if (nextProps.params.sectionName !== this.props.params.sectionName) {
-            const { budgetId, versionId, seasonName, versionName, sectionName, tab } = nextProps.params;
-            this.props.switchGlobalData(budgetId, versionId, seasonName, versionName, tab);
-            this.setState({
-                budgetId,
-                versionId,
-                seasonName,
-                versionName,
-                sectionName,
-                activeTab: tab,
-            });
+            // const { budgetId, versionId, seasonName, versionName, sectionName, tab } = nextProps.params;
+            // this.props.switchGlobalData(budgetId, versionId, seasonName, versionName, tab);
+            // this.setState({
+            //     budgetId,
+            //     versionId,
+            //     seasonName,
+            //     versionName,
+            //     sectionName,
+            //     activeTab: tab,
+            // });
+            this.newSpecs(nextProps.params);
         }
         if (nextProps.newVersion !== this.props.newVersion) {
             this.handlePushRoute(true, false, nextProps.newVersion, null);
+            this.newSpecs(nextProps.params, nextProps.newVersion);
         }
+    }
+
+    newSpecs = (newProps, newVersion = null) => {
+        const { budgetId, seasonName, sectionName, tab } = newProps;
+        const versionId = newVersion ? newVersion.id : newProps.versionId;
+        const versionName = newVersion ? newVersion.name : newProps.versionName;
+
+        this.setState({
+            budgetId,
+            versionId,
+            seasonName,
+            versionName,
+            sectionName,
+            activeTab: tab,
+        });
+
+        this.props.switchGlobalData(budgetId, versionId, seasonName, versionName, tab);
     }
 
     saveNewVersion = (budget, version) => {
@@ -87,12 +106,12 @@ class BudgetViewsContainer extends Component {
         const { activeTab, budgetId, versionId } = this.state;
         const { historyUndo, historyRedo } = this.props; // eslint-disable-line no-shadow
         const data = historyMove === 'undo' ? historyUndo(activeTab) : historyRedo(activeTab);
-
         this.props.refreshGridData(budgetId, versionId, activeTab, data);
     }
 
     handleVersionClick(event) {
         const { item: { props: { version } } } = event;
+        const { budgetId, seasonName, tab } = this.state;
 
         if (version.id !== this.state.versionId) {
             this.setState({
@@ -101,6 +120,7 @@ class BudgetViewsContainer extends Component {
             });
 
             this.handlePushRoute(false, true, version, null);
+            this.props.switchGlobalData(budgetId, version.id, seasonName, version.name, tab);
         }
     }
 
