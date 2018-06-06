@@ -9,6 +9,10 @@ export const percentageFormat = {
     pattern: '0%',
 };
 
+export const numericFormat = {
+    pattern: '0',
+};
+
 export const borderLeft = (columns, prop, td) => {
     if (columns.indexOf(prop) !== -1) {
         td.className += ' leftCellBorder';

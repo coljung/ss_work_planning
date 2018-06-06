@@ -2,14 +2,16 @@ import { expect } from 'chai';
 import Handsontable from 'handsontable';
 import { cellValueRenderer } from '../../../../../app/budgets/sections/top-down/CommonCellRenderer';
 import * as sinon from 'sinon';
-import { currencyFormat, percentageFormat } from '../../../../../app/budgets/components/TableHelpers';
+import { currencyFormat, percentageFormat, numericFormat } from '../../../../../app/budgets/components/TableHelpers';
 import { TAB_TOTAL } from '../../../../../app/budgets/sections/top-down/TopDownSection';
 
 const createCell = (instance, row, col, data = {}, value = '', props = {}) => {
     const stateContainer = {
         state: {
             data: [],
-            info: [],
+            info: {
+                year: 'SS2018',
+            },
         },
         props,
     };
@@ -118,6 +120,17 @@ describe('Common view cell rendering', () => {
         expect(spy.getCall(0).args[3]).to.equal(currencyFormat);
     });
 
+    it.skip('should return gridcolors', () => {
+        const instance = new Handsontable(document.createElement('div'));
+
+        const spy = sinon.spy(instance, 'setCellMeta');
+
+        createCell(instance, 0, 0, { prop: { dataType: 'currency', dataRow: 'tdwp' } }, 99);
+
+        expect(spy.called).to.equal(true);
+        console.log(spy.getCall(0));
+    });
+
     it('should return percentage cell based on data type', () => {
         const instance = new Handsontable(document.createElement('div'));
 
@@ -128,6 +141,18 @@ describe('Common view cell rendering', () => {
         expect(spy.called).to.equal(true);
         expect(spy.getCall(0).args[2]).to.equal('numericFormat');
         expect(spy.getCall(0).args[3]).to.equal(percentageFormat);
+    });
+
+    it('should return numeric cell based on data type', () => {
+        const instance = new Handsontable(document.createElement('div'));
+
+        const spy = sinon.spy(instance, 'setCellMeta');
+
+        createCell(instance, 0, 0, { prop: { dataType: 'number' } }, 99);
+
+        expect(spy.called).to.equal(true);
+        expect(spy.getCall(0).args[2]).to.equal('numericFormat');
+        expect(spy.getCall(0).args[3]).to.equal(numericFormat);
     });
 
     it('should return text cell based on data type', () => {
