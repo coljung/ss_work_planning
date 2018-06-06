@@ -8,6 +8,7 @@ import {
     percentageFormat,
     enableEdit,
     disableEdit,
+    numericFormat,
     gridColors,
     emptyCell } from '../../../../app/budgets/components/TableHelpers';
 
@@ -23,6 +24,14 @@ describe('Helper functions', () => {
         it('should return a percentage format', () => {
             expect(percentageFormat).to.be.an('object');
             expect(percentageFormat.pattern).to.contain('%');
+        });
+    });
+
+    describe('Numeric Format', () => {
+        it('should return a numeric format', () => {
+            expect(numericFormat).to.be.an('object');
+            console.log('----', numericFormat.pattern);
+            expect(percentageFormat.pattern).to.contain(0);
         });
     });
 
