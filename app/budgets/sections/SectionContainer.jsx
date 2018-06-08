@@ -33,14 +33,28 @@ class SectionContainer extends Component {
 
         // set a reference to the Handsontable
         this.hotTableRef = null;
-        this.setHotTableRef = (element) => {
-            this.hotTableRef = element;
-        };
+
+        this.row = 0;
+        this.column = 0;
 
         this.lastEditCell = null;
 
         this.emptyChange = false;
     }
+
+    setHotTableRef = (element) => {
+        if (element) {
+            this.hotTableRef = element;
+            // console.log(this.row, this.column);
+            if (this.row !== 0 || this.column !== 0) {
+                this.hotTableRef.hotInstance.selectCell(this.row, this.column, this.row, this.column, true, false);
+                this.hotTableRef.hotInstance.scrollViewportTo(this.row, 23, false, true);
+                // reset numbers
+                this.row = 0;
+                this.column = 0;
+            }
+        }
+    };
 
     componentDidMount() {
         const promise = this.props.fetchBudgetConfigData();
@@ -90,7 +104,6 @@ class SectionContainer extends Component {
 
     metricData = () => {
         const { budget, version, view } = this.state;
-        console.log(version);
         const { config, router: { location } } = this.props;
         this.props.fetchBudgetMetricData(budget, version, view, config, location.query);
     }
@@ -129,6 +142,7 @@ class SectionContainer extends Component {
 
         // on load this is called, hence the check
         if (cellEdits) {
+            // debugger;
             const row = cellEdits[0][0];
             const col = cellEdits[0][1].split('.');
             const cellEditKey = [cellEdits[0][0], cellEdits[0][1]].join('.');
@@ -151,6 +165,10 @@ class SectionContainer extends Component {
                 const { budget, version, view } = this.state;
                 const { historyPush } = this.props; // eslint-disable-line no-shadow
                 const viewHistory = history[view];
+
+                // set row/col for scrollpositioning
+                this.row = row;
+                this.column = Object.keys(this.state.data[row]).indexOf(col[0]);
 
                 this.props.refreshGridData(budget, version, view, dataToSend)
                     .then((res) => {
