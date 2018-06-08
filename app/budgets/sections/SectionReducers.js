@@ -12,6 +12,7 @@ const initialState = {
     viewDataFetched: false,
     refreshData: false,
     spreadingData: false,
+    loading: false,
 };
 
 export default (state = initialState, action) => {
@@ -24,6 +25,8 @@ export default (state = initialState, action) => {
                 viewData: [],
                 viewDataFetched: false,
                 refreshData: false,
+                loading: true,
+
             });
         case RECEIVE_BUDGETS_VIEW: {
             const setData = [];
@@ -32,6 +35,7 @@ export default (state = initialState, action) => {
                 viewData: setData,
                 viewDataFetched: true,
                 refreshData: false,
+                loading: false,
             });
         }
         case RECEIVE_BUDGETS_CONFIG_DATA:
@@ -42,11 +46,13 @@ export default (state = initialState, action) => {
             return Object.assign({}, state, {
                 refreshData: false,
                 spreadingData: true,
+                loading: true,
             });
         case RECEIVE_REFRESH_GRID_DATA:
             return Object.assign({}, state, {
                 refreshData: true,
                 spreadingData: false,
+                loading: false,
             });
         default:
             return state;
