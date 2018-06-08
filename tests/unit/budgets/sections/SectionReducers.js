@@ -15,6 +15,7 @@ describe('SectionReducer', () => {
         initialState = {
             viewData: [],
             config: [],
+            loading: false,
             viewDataFetched: false,
             refreshData: false,
             spreadingData: false,
@@ -29,6 +30,7 @@ describe('SectionReducer', () => {
         expect(reducer(undefined, {})).toEqual({
             viewData: [],
             config: [],
+            loading: false,
             viewDataFetched: false,
             refreshData: false,
             spreadingData: false,
@@ -50,6 +52,7 @@ describe('SectionReducer', () => {
         ).toEqual({
             viewData: [],
             config: [],
+            loading: true,
             viewDataFetched: false,
             refreshData: false,
             spreadingData: false,
@@ -79,6 +82,7 @@ describe('SectionReducer', () => {
         ).toEqual({
             viewData: [],
             config: [],
+            loading: false,
             viewDataFetched: false,
             refreshData: true,
             spreadingData: false,
@@ -93,6 +97,7 @@ describe('SectionReducer', () => {
         ).toEqual({
             viewData: [],
             config: [],
+            loading: true,
             viewDataFetched: false,
             refreshData: false,
             spreadingData: true,

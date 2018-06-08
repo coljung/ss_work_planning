@@ -159,12 +159,20 @@ class BudgetViewsContainer extends Component {
         }
 
         const { activeTab } = this.state;
-        const { globalBudgetId, globalVersionId, globalSeasonName, globalVersionName, versions, history } = this.props;
+        const {
+            globalBudgetId,
+            globalVersionId,
+            globalSeasonName,
+            globalVersionName,
+            versions,
+            history,
+            loadingBudget,
+        } = this.props;
 
         // undo disabled / enabled ?
         const viewHistory = history[activeTab];
-        const undoDisabled = viewHistory ? viewHistory.past.length <= 0 : true;
-        const redoDisabled = viewHistory ? viewHistory.future.length <= 0 : true;
+        const undoDisabled = viewHistory && !loadingBudget ? viewHistory.past.length <= 0 : true;
+        const redoDisabled = viewHistory && !loadingBudget ? viewHistory.future.length <= 0 : true;
 
         const currentSection = this.getCurrentSection(activeTab, globalBudgetId, globalVersionId);
 
@@ -216,10 +224,17 @@ BudgetViewsContainer.propTypes = {
     globalVersionId: PropTypes.string,
     globalSeasonName: PropTypes.string,
     globalVersionName: PropTypes.string,
+    loadingBudget: PropTypes.bool.isRequired,
 };
 
 function mapStateToProps(state) {
-    const { BudgetViewReducer, HistoryReducer, CustomNavigationReducer } = state;
+    const {
+        BudgetViewReducer,
+        HistoryReducer,
+        CustomNavigationReducer,
+        SectionReducers,
+    } = state;
+
     return {
         newVersion: BudgetViewReducer.newVersion,
         versions: BudgetViewReducer.versions,
@@ -230,6 +245,7 @@ function mapStateToProps(state) {
         globalVersionName: CustomNavigationReducer.versionName,
         globalTab: CustomNavigationReducer.view,
         budgetView: CustomNavigationReducer.budgetView,
+        loadingBudget: SectionReducers.loading,
     };
 }
 
