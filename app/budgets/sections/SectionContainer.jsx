@@ -45,10 +45,11 @@ class SectionContainer extends Component {
     setHotTableRef = (element) => {
         if (element) {
             this.hotTableRef = element;
-            // console.log(this.row, this.column);
             if (this.row !== 0 || this.column !== 0) {
+                // selects cell and scrolls
                 this.hotTableRef.hotInstance.selectCell(this.row, this.column, this.row, this.column, true, false);
-                this.hotTableRef.hotInstance.scrollViewportTo(this.row, 23, false, true);
+                // scrolls and moves grid so that selected cell is not in the bottom right section
+                this.hotTableRef.hotInstance.scrollViewportTo(this.row, this.column, false, true);
                 // reset numbers
                 this.row = 0;
                 this.column = 0;
@@ -142,7 +143,6 @@ class SectionContainer extends Component {
 
         // on load this is called, hence the check
         if (cellEdits) {
-            // debugger;
             const row = cellEdits[0][0];
             const col = cellEdits[0][1].split('.');
             const cellEditKey = [cellEdits[0][0], cellEdits[0][1]].join('.');
