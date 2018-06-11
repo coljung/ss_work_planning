@@ -1,10 +1,10 @@
+const newRelic = require('newrelic');
 const path = require('path');
 const express = require('express');
 const cors = require('cors');
 const config = require('config');
 const basicAuth = require('node-basicauth');
 const httpProxy = require('http-proxy-middleware');
-const newRelic = require('newrelic');
 
 const host = config.get('server.host');
 const port = config.get('server.port');
