@@ -70,17 +70,17 @@ class BudgetViewsContainer extends Component {
     }
 
     newSpecs = (params, newVersion = null) => {
-        const { budgetId, seasonName, tab, globalTab, globalBudgetId, globalVersionId, globalSeasonName, globalversionName, sectionName } = params;
+        const { budgetId, seasonName, tab, sectionName } = params;
         const versionId = newVersion ? newVersion.id : params.versionId;
         const versionName = newVersion ? newVersion.name : params.versionName;
 
         this.setState({
-            budgetId: globalBudgetId || budgetId,
-            versionId: globalVersionId || versionId,
-            seasonName: globalSeasonName || seasonName,
-            versionName: globalversionName || versionName,
+            budgetId,
+            versionId,
+            seasonName,
+            versionName,
             sectionName,
-            activeTab: globalTab || tab,
+            activeTab: tab,
         });
 
         this.props.switchGlobalData(budgetId, versionId, seasonName, versionName, tab);
@@ -102,10 +102,10 @@ class BudgetViewsContainer extends Component {
     }
 
     handleHistory = (historyMove) => {
-        const { activeTab, budgetId, versionId } = this.state;
-        const { historyUndo, historyRedo } = this.props; // eslint-disable-line no-shadow
-        const data = historyMove === 'undo' ? historyUndo(activeTab) : historyRedo(activeTab);
-        this.props.refreshGridData(budgetId, versionId, activeTab, data);
+        const { budgetId, versionId } = this.state;
+        const { historyUndo, historyRedo, params: { tab } } = this.props; // eslint-disable-line no-shadow
+        const data = historyMove === 'undo' ? historyUndo(tab) : historyRedo(tab);
+        this.props.refreshGridData(budgetId, versionId, tab, data);
     }
 
     handleVersionClick(event) {
@@ -157,7 +157,7 @@ class BudgetViewsContainer extends Component {
             return null;
         }
 
-        const { activeTab } = this.state;
+        // const { activeTab } = this.state;
         const {
             globalBudgetId,
             globalVersionId,
@@ -172,7 +172,7 @@ class BudgetViewsContainer extends Component {
         const viewHistory = history[this.props.params.tab];
         const undoDisabled = viewHistory && !loadingBudget ? viewHistory.past.length <= 0 : true;
         const redoDisabled = viewHistory && !loadingBudget ? viewHistory.future.length <= 0 : true;
-        const currentSection = this.getCurrentSection(activeTab, globalBudgetId, globalVersionId);
+        const currentSection = this.getCurrentSection(this.props.params.tab, globalBudgetId, globalVersionId);
 
         return (
             <div>
