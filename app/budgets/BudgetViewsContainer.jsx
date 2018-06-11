@@ -67,15 +67,12 @@ class BudgetViewsContainer extends Component {
             this.handlePushRoute(true, false, nextProps.newVersion, null);
             this.newSpecs(nextProps.params, nextProps.newVersion);
         }
-        // } else if (nextProps !== this.props) {
-        //     this.newSpecs(nextProps);
-        // }
     }
 
-    newSpecs = (newProps, newVersion = null) => {
-        const { budgetId, seasonName, tab, globalTab, globalBudgetId, globalVersionId, globalSeasonName, globalversionName, params: { sectionName } } = newProps;
-        const versionId = newVersion ? newVersion.id : newProps.versionId;
-        const versionName = newVersion ? newVersion.name : newProps.versionName;
+    newSpecs = (params, newVersion = null) => {
+        const { budgetId, seasonName, tab, globalTab, globalBudgetId, globalVersionId, globalSeasonName, globalversionName, sectionName } = params;
+        const versionId = newVersion ? newVersion.id : params.versionId;
+        const versionName = newVersion ? newVersion.name : params.versionName;
 
         this.setState({
             budgetId: globalBudgetId || budgetId,
