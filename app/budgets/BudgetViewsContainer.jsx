@@ -63,25 +63,27 @@ class BudgetViewsContainer extends Component {
             //     activeTab: tab,
             // });
             this.newSpecs(nextProps.params);
-        }
-        if (nextProps.newVersion !== this.props.newVersion) {
+        } else if (nextProps.newVersion !== this.props.newVersion) {
             this.handlePushRoute(true, false, nextProps.newVersion, null);
             this.newSpecs(nextProps.params, nextProps.newVersion);
         }
+        // } else if (nextProps !== this.props) {
+        //     this.newSpecs(nextProps);
+        // }
     }
 
     newSpecs = (newProps, newVersion = null) => {
-        const { budgetId, seasonName, sectionName, tab } = newProps;
+        const { budgetId, seasonName, tab, globalTab, globalBudgetId, globalVersionId, globalSeasonName, globalversionName, params: { sectionName } } = newProps;
         const versionId = newVersion ? newVersion.id : newProps.versionId;
         const versionName = newVersion ? newVersion.name : newProps.versionName;
 
         this.setState({
-            budgetId,
-            versionId,
-            seasonName,
-            versionName,
+            budgetId: globalBudgetId || budgetId,
+            versionId: globalVersionId || versionId,
+            seasonName: globalSeasonName || seasonName,
+            versionName: globalversionName || versionName,
             sectionName,
-            activeTab: tab,
+            activeTab: globalTab || tab,
         });
 
         this.props.switchGlobalData(budgetId, versionId, seasonName, versionName, tab);
@@ -170,10 +172,9 @@ class BudgetViewsContainer extends Component {
         } = this.props;
 
         // undo disabled / enabled ?
-        const viewHistory = history[activeTab];
+        const viewHistory = history[this.props.params.tab];
         const undoDisabled = viewHistory && !loadingBudget ? viewHistory.past.length <= 0 : true;
         const redoDisabled = viewHistory && !loadingBudget ? viewHistory.future.length <= 0 : true;
-
         const currentSection = this.getCurrentSection(activeTab, globalBudgetId, globalVersionId);
 
         return (
