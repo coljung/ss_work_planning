@@ -34,8 +34,7 @@ class SectionContainer extends Component {
         // set a reference to the Handsontable
         this.hotTableRef = null;
 
-        this.row = 0;
-        this.column = 0;
+        this.resetScroll();
 
         this.lastEditCell = null;
 
@@ -45,14 +44,15 @@ class SectionContainer extends Component {
     setHotTableRef = (element) => {
         if (element) {
             this.hotTableRef = element;
-            if (this.row !== 0 || this.column !== 0) {
-                // selects cell and scrolls
-                this.hotTableRef.hotInstance.selectCell(this.row, this.column, this.row, this.column, true, false);
-                // scrolls and moves grid so that selected cell is not in the bottom right section
-                this.hotTableRef.hotInstance.scrollViewportTo(this.row, this.column, false, true);
+            if (this.scrollPosTop !== 0 || this.scrollPosLeft !== 0) {
+                // selects cell
+                this.hotTableRef.hotInstance.selectCell(this.row, this.column, this.row, this.column, false, false);
+                // scrolls to exact position
+                const elem = document.getElementsByClassName('wtHolder')[0];
+                elem.scrollTop = this.scrollPosTop;
+                elem.scrollLeft = this.scrollPosLeft;
                 // reset numbers
-                this.row = 0;
-                this.column = 0;
+                this.resetScroll();
             }
         }
     };
@@ -100,6 +100,13 @@ class SectionContainer extends Component {
             );
         }
     };
+
+    resetScroll = () => {
+        this.row = 0;
+        this.column = 0;
+        this.scrollPosLeft = 0;
+        this.scrollPosTop = 0;
+    }
 
     resize = () => this.hotTableRef.hotInstance.render();
 
@@ -169,6 +176,10 @@ class SectionContainer extends Component {
                 // set row/col for scrollpositioning
                 this.row = row;
                 this.column = Object.keys(this.state.data[row]).indexOf(col[0]);
+
+                const element = document.getElementsByClassName('wtHolder')[0];
+                this.scrollPosTop = element.scrollTop;
+                this.scrollPosLeft = element.scrollLeft;
 
                 this.props.refreshGridData(budget, version, view, dataToSend)
                     .then((res) => {
