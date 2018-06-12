@@ -30,6 +30,7 @@
     "history": "^4.3.0",
     "http-proxy-middleware": "^0.17.4",
     "moment": "^2.22.1",
+    "newrelic": "^4.1.4",
     "node-basicauth": "0.0.9",
     "offline-plugin": "^4.9.0",
     "prop-types": "^15.6.0",
