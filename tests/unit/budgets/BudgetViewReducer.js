@@ -23,7 +23,7 @@ describe('BudgetViewReducer', () => {
       })
     ).toEqual({
         newVersion: { hello: 'world' },
-        versions: [],
+        versions: [{ hello: 'world' }],
     })
   });
 
