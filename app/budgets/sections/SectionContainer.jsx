@@ -6,11 +6,9 @@ import HotTable from 'react-handsontable';
 import { Button, Spin } from 'antd';
 import { withRouter } from 'react-router';
 import {
-    saveBudget,
-    fetchBudgetMetricData,
-    resetState,
-    fetchBudgetConfigData,
-    refreshGridData } from './SectionActions';
+    resetState } from './SectionActions';
+import {
+    sendDataForSpreading } from '../BudgetViewActions';
 import { historyPush } from '../history/HistoryActions';
 import LoadingSpinner from '../../components/common/LoadingSpinner';
 
@@ -18,17 +16,11 @@ class SectionContainer extends Component {
     constructor(props) {
         super(props);
 
-        const { budget, version, view } = this.props;
-
         this.state = {
             data: [],
-            canSave: true,
             headers: [],
             info: {},
             season: '',
-            budget,
-            version,
-            view,
         };
 
         // set a reference to the Handsontable
@@ -51,16 +43,14 @@ class SectionContainer extends Component {
                 const elem = document.getElementsByClassName('wtHolder')[0];
                 elem.scrollTop = this.scrollPosTop;
                 elem.scrollLeft = this.scrollPosLeft;
+                // this.hotTableRef.focus();
                 // reset numbers
                 this.resetScroll();
             }
         }
     };
 
-    componentDidMount() {
-        const promise = this.props.fetchBudgetConfigData();
-        promise.then(this.metricData);
-
+    componentWillMount() {
         // refresh grid on window resize
         let resizeTimeout = '';
         window.addEventListener('resize', (event) => {
@@ -77,9 +67,9 @@ class SectionContainer extends Component {
     }
 
     componentWillReceiveProps = (nextProps) => {
-        const setData = nextProps.viewData ? nextProps.viewData[nextProps.view] : {};
+        const setData = nextProps.data ? nextProps.data[nextProps.view] : {};
         // console.log(nextProps);
-        if (this.props.viewData.length !== setData && !!setData) {
+        if (this.props.data.length !== setData && !!setData) {
             this.setState({
                 headers: setData.headers,
                 data: setData.data,
@@ -88,17 +78,17 @@ class SectionContainer extends Component {
             });
         }
 
-        if (nextProps.refreshData) {
-            this.metricData();
-        }
-
-        if (nextProps.version !== this.props.version) {
-            this.setState(
-                {
-                    version: nextProps.version,
-                }, () => this.metricData(),
-            );
-        }
+        // if (nextProps.refreshData) {
+        //     this.metricData();
+        // }
+        //
+        // if (nextProps.version !== this.props.version) {
+        //     this.setState(
+        //         {
+        //             version: nextProps.version,
+        //         }, () => this.metricData(),
+        //     );
+        // }
     };
 
     resetScroll = () => {
@@ -109,12 +99,6 @@ class SectionContainer extends Component {
     }
 
     resize = () => this.hotTableRef.hotInstance.render();
-
-    metricData = () => {
-        const { budget, version, view } = this.state;
-        const { config, router: { location } } = this.props;
-        this.props.fetchBudgetMetricData(budget, version, view, config, location.query);
-    }
 
     /**
      *  Handsontable Change cell row index
@@ -169,7 +153,7 @@ class SectionContainer extends Component {
             // handsontable converts to string
             if (parseFloat(prevValue, 10) !== parseFloat(newValue, 10)) {
                 const dataToSend = this.state.data[row][col[0]];
-                const { budget, version, view } = this.state;
+                const { budget, version, view } = this.props;
                 const { historyPush } = this.props; // eslint-disable-line no-shadow
                 const viewHistory = history[view];
 
@@ -181,7 +165,7 @@ class SectionContainer extends Component {
                 this.scrollPosTop = element.scrollTop;
                 this.scrollPosLeft = element.scrollLeft;
 
-                this.props.refreshGridData(budget, version, view, dataToSend)
+                this.props.sendDataForSpreading(budget, version, view, dataToSend)
                     .then((res) => {
                         // Send old value into history for future undo
                         // TODO: Fix this
@@ -213,7 +197,6 @@ class SectionContainer extends Component {
 
     createColumnInfos(columns) {
         const renderer = this.props.cellRenderer ? this.props.cellRenderer.bind(this) : undefined;
-
         return columns.map(column => this.createColumn(column, renderer));
     }
 
@@ -222,7 +205,7 @@ class SectionContainer extends Component {
         const columnInfos = this.createColumnInfos(Object.getOwnPropertyNames(this.state.data.length ? this.state.data[0] : []));
         const refreshLoad = this.props.spreadingData ? (<div className="refreshLoad"><LoadingSpinner /></div>) : null;
         return (
-            <div className={`${this.state.view}-view parentDiv`}>
+            <div className={`${this.props.view}-view parentDiv`}>
                 {refreshLoad}
                 <HotTable
                     afterChange={this.changeCell}
@@ -250,9 +233,8 @@ class SectionContainer extends Component {
     };
 
     render() {
-        const budgetListData = this.props.viewData[this.props.view] && !this.props.refreshData ? this.buildTable() : <LoadingSpinner />;
-        let buttonStr = this.props.view;
-        buttonStr = `${buttonStr.charAt(0).toUpperCase()}${buttonStr.slice(1)}`;
+        const { data, view, budgetLoading } = this.props;
+        const budgetListData = data[view] && !budgetLoading ? this.buildTable() : <LoadingSpinner />;
 
         return (
             <div>
@@ -263,10 +245,8 @@ class SectionContainer extends Component {
 }
 
 SectionContainer.propTypes = {
-    viewData: PropTypes.oneOfType([PropTypes.array, PropTypes.object]).isRequired,
-    viewDataFetched: PropTypes.bool.isRequired,
-    saveBudget: PropTypes.func.isRequired,
-    fetchBudgetMetricData: PropTypes.func.isRequired,
+    data: PropTypes.oneOfType([PropTypes.array, PropTypes.object]).isRequired,
+    // saveBudget: PropTypes.func.isRequired,
     resetState: PropTypes.func.isRequired,
     budget: PropTypes.string.isRequired,
     version: PropTypes.string.isRequired,
@@ -274,22 +254,19 @@ SectionContainer.propTypes = {
     view: PropTypes.string.isRequired,
     router: PropTypes.object.isRequired,
     cellRenderer: PropTypes.func,
-    fetchBudgetConfigData: PropTypes.func.isRequired,
-    refreshGridData: PropTypes.func.isRequired,
+    sendDataForSpreading: PropTypes.func.isRequired,
     refreshData: PropTypes.bool.isRequired,
+    budgetLoading: PropTypes.bool.isRequired,
     spreadingData: PropTypes.bool.isRequired,
-    config: PropTypes.array,
     history: PropTypes.object.isRequired,
     historyPush: PropTypes.func.isRequired,
 };
 
 function mapStateToProps(state) {
-    const { SectionReducers, HistoryReducer } = state;
+    const { BudgetViewReducer, SectionReducers, HistoryReducer } = state;
     return {
-        viewData: SectionReducers.viewData,
-        viewDataFetched: SectionReducers.viewDataFetched,
-        config: SectionReducers.config.available_metrics,
         refreshData: SectionReducers.refreshData,
+        budgetLoading: BudgetViewReducer.budgetLoading,
         spreadingData: SectionReducers.spreadingData,
         history: HistoryReducer,
     };
@@ -297,11 +274,8 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return bindActionCreators({
-        fetchBudgetMetricData,
         resetState,
-        saveBudget,
-        fetchBudgetConfigData,
-        refreshGridData,
+        sendDataForSpreading,
         historyPush,
     }, dispatch);
 }

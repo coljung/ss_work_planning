@@ -2,23 +2,21 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { Row, Col, Tabs, Dropdown, Icon } from 'antd';
+import { Row, Col, Dropdown, Icon } from 'antd';
 import BudgetVersionMenu from './components/BudgetVersionMenu';
 import BudgetViewsButtonActions from './components/BudgetViewsButtonActions';
-import SectionContainer from './sections/SectionContainer';
-import { refreshGridData } from './sections/SectionActions';
-import { budgetVersions, saveNewBudgetVersion } from './BudgetViewActions';
-import { switchGlobalData, clearGlobalData } from '../components/customNavigation/CustomNavigationActions';
-import { cellValueRenderer as commonCellValueRenderer } from './sections/top-down/CommonCellRenderer';
-import { cellValueRenderer as execCellValueRenderer } from './sections/top-down/ExecCellRenderer';
+import { sendDataForSpreading } from './sections/SectionActions';
+import {
+        getBudgetVersions,
+        fetchBudgetConfigData,
+        fetchBudgetMetricData,
+        saveNewBudgetVersion } from './BudgetViewActions';
+import { setGlobalData, clearGlobalData } from '../components/customNavigation/CustomNavigationActions';
 import { historyUndo, historyRedo } from './history/HistoryActions';
 
 import TopDownSection from './sections/top-down/TopDownSection';
 import MiddleOutSection from './sections/middle-out/MiddleOutSection';
 import { ROUTE_BUDGET } from '../Routes';
-
-// Sub Component
-const TabPane = Tabs.TabPane;
 
 class BudgetViewsContainer extends Component {
     constructor(props, context) {
@@ -35,15 +33,23 @@ class BudgetViewsContainer extends Component {
             activeTab: tab,
         };
 
-        this.props.switchGlobalData(budgetId, versionId, seasonName, versionName, tab);
+        // set global parameters for budgets
+        // Budget ID, Version ID, Season Name (SSXX/FWXX), Version name (VX), tab/view
+        this.props.setGlobalData(budgetId, versionId, seasonName, versionName, tab);
 
         this.handleTabChange = this.handleTabChange.bind(this);
         this.handleVersionClick = this.handleVersionClick.bind(this);
     }
 
-    componentWillMount() {
-        const { budgetVersions, params: { budgetId } } = this.props; // eslint-disable-line no-shadow
-        budgetVersions(budgetId);
+    componentDidMount() {
+        const { getBudgetVersions, fetchBudgetConfigData, params: { budgetId } } = this.props; // eslint-disable-line no-shadow
+
+        // gets list of associated versions
+        getBudgetVersions(budgetId);
+
+        // get config data, then fetch metrics based on config
+        const promise = fetchBudgetConfigData();
+        promise.then(this.getMetricData);
     }
 
     componentWillUnmount() {
@@ -52,16 +58,6 @@ class BudgetViewsContainer extends Component {
 
     componentWillReceiveProps(nextProps) {
         if (nextProps.params.sectionName !== this.props.params.sectionName) {
-            // const { budgetId, versionId, seasonName, versionName, sectionName, tab } = nextProps.params;
-            // this.props.switchGlobalData(budgetId, versionId, seasonName, versionName, tab);
-            // this.setState({
-            //     budgetId,
-            //     versionId,
-            //     seasonName,
-            //     versionName,
-            //     sectionName,
-            //     activeTab: tab,
-            // });
             this.newSpecs(nextProps.params);
         } else if (nextProps.newVersion !== this.props.newVersion) {
             this.handlePushRoute(true, false, nextProps.newVersion, null);
@@ -83,7 +79,13 @@ class BudgetViewsContainer extends Component {
             activeTab: tab,
         });
 
-        this.props.switchGlobalData(budgetId, versionId, seasonName, versionName, tab);
+        this.props.setGlobalData(budgetId, versionId, seasonName, versionName, tab);
+    }
+
+    getMetricData = () => {
+        const { budgetId, versionId, activeTab } = this.state;
+        const { config, router: { location } } = this.props;
+        this.props.fetchBudgetMetricData(budgetId, versionId, activeTab, config.available_metrics, location.query);
     }
 
     saveNewVersion = (budget, version) => {
@@ -105,7 +107,7 @@ class BudgetViewsContainer extends Component {
         const { budgetId, versionId } = this.state;
         const { historyUndo, historyRedo, params: { tab } } = this.props; // eslint-disable-line no-shadow
         const data = historyMove === 'undo' ? historyUndo(tab) : historyRedo(tab);
-        this.props.refreshGridData(budgetId, versionId, tab, data);
+        this.props.sendDataForSpreading(budgetId, versionId, tab, data);
     }
 
     handleVersionClick(event) {
@@ -119,7 +121,7 @@ class BudgetViewsContainer extends Component {
             });
 
             this.handlePushRoute(false, true, version, null);
-            this.props.switchGlobalData(budgetId, version.id, seasonName, version.name, tab);
+            this.props.setGlobalData(budgetId, version.id, seasonName, version.name, tab);
         }
     }
 
@@ -128,7 +130,7 @@ class BudgetViewsContainer extends Component {
         const { budgetId, versionId, seasonName, versionName } = this.state;
 
         this.handlePushRoute(false, false, null, newTabKey);
-        this.props.switchGlobalData(budgetId, versionId, seasonName, versionName, newTabKey);
+        this.props.setGlobalData(budgetId, versionId, seasonName, versionName, newTabKey);
     }
 
     getCurrentSection = (activeTab, globalBudgetId, globalVersionId) => {
@@ -138,6 +140,7 @@ class BudgetViewsContainer extends Component {
                     activeKey={activeTab}
                     changeTab={key => this.handleTabChange(key)}
                     budget={globalBudgetId}
+                    data={this.props.viewData}
                     tab={this.props.params.tab}
                     version={globalVersionId} />);
             case 'middle-out' :
@@ -145,6 +148,7 @@ class BudgetViewsContainer extends Component {
                     activeKey={activeTab}
                     changeTab={key => this.handleTabChange(key)}
                     budget={globalBudgetId}
+                    data={this.props.viewData}
                     tab={this.props.params.tab}
                     version={globalVersionId} />);
             default:
@@ -153,7 +157,8 @@ class BudgetViewsContainer extends Component {
     }
 
     render() {
-        if (!this.props.budgetView) {
+        // make sure config is loaded before moving forward
+        if (!Object.keys(this.props.config).length) {
             return null;
         }
 
@@ -169,13 +174,14 @@ class BudgetViewsContainer extends Component {
         } = this.props;
 
         // undo disabled / enabled ?
-        const viewHistory = history[this.props.params.tab];
-        const undoDisabled = viewHistory && !loadingBudget ? viewHistory.past.length <= 0 : true;
-        const redoDisabled = viewHistory && !loadingBudget ? viewHistory.future.length <= 0 : true;
+        // const viewHistory = history[this.props.params.tab];
+        // const undoDisabled = viewHistory && !loadingBudget ? viewHistory.past.length <= 0 : true;
+        // const redoDisabled = viewHistory && !loadingBudget ? viewHistory.future.length <= 0 : true;
         const currentSection = this.getCurrentSection(this.props.params.tab, globalBudgetId, globalVersionId);
 
         return (
             <div>
+                {/*
                 <div className="budgetHeader">
                     <Row type="flex" justify="start" className="innerHeader">
                         <Col span={8} className="col">
@@ -196,6 +202,7 @@ class BudgetViewsContainer extends Component {
                         </Col>
                     </Row>
                 </div>
+                */}
                 <div className="budgetBody">
                     {currentSection}
                 </div>
@@ -208,21 +215,25 @@ BudgetViewsContainer.propTypes = {
     params: PropTypes.object.isRequired,
     newVersion: PropTypes.object,
     saveNewBudgetVersion: PropTypes.func.isRequired,
-    budgetVersions: PropTypes.func.isRequired,
-    switchGlobalData: PropTypes.func.isRequired,
+    viewData: PropTypes.oneOfType([PropTypes.array, PropTypes.object]).isRequired,
+    view: PropTypes.string,
+    getBudgetVersions: PropTypes.func.isRequired,
+    fetchBudgetConfigData: PropTypes.func.isRequired,
+    fetchBudgetMetricData: PropTypes.func.isRequired,
+    setGlobalData: PropTypes.func.isRequired,
     clearGlobalData: PropTypes.func.isRequired,
     versions: PropTypes.array.isRequired,
     router: PropTypes.object,
     history: PropTypes.object,
-    refreshGridData: PropTypes.func.isRequired,
+    sendDataForSpreading: PropTypes.func.isRequired,
     historyUndo: PropTypes.func.isRequired,
     historyRedo: PropTypes.func.isRequired,
-    budgetView: PropTypes.bool.isRequired,
     globalBudgetId: PropTypes.string,
     globalVersionId: PropTypes.string,
     globalSeasonName: PropTypes.string,
     globalVersionName: PropTypes.string,
     loadingBudget: PropTypes.bool.isRequired,
+    config: PropTypes.object,
 };
 
 function mapStateToProps(state) {
@@ -230,32 +241,35 @@ function mapStateToProps(state) {
         BudgetViewReducer,
         HistoryReducer,
         CustomNavigationReducer,
-        SectionReducers,
     } = state;
 
     return {
         newVersion: BudgetViewReducer.newVersion,
         versions: BudgetViewReducer.versions,
+        config: BudgetViewReducer.config,
+        loadingBudget: BudgetViewReducer.loading,
+        viewData: BudgetViewReducer.viewData,
+        view: BudgetViewReducer.view,
         history: HistoryReducer,
         globalBudgetId: CustomNavigationReducer.budgetId,
         globalVersionId: CustomNavigationReducer.versionId,
         globalSeasonName: CustomNavigationReducer.seasonName,
         globalVersionName: CustomNavigationReducer.versionName,
         globalTab: CustomNavigationReducer.view,
-        budgetView: CustomNavigationReducer.budgetView,
-        loadingBudget: SectionReducers.loading,
     };
 }
 
 function mapDispatchToProps(dispatch) {
     return bindActionCreators({
-        budgetVersions,
+        fetchBudgetMetricData,
+        getBudgetVersions,
+        fetchBudgetConfigData,
         saveNewBudgetVersion,
-        switchGlobalData,
+        setGlobalData,
         clearGlobalData,
         historyUndo,
         historyRedo,
-        refreshGridData,
+        sendDataForSpreading,
     }, dispatch);
 }
 

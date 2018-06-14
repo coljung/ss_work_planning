@@ -12,7 +12,6 @@ export const TAB_EXEC_RECAP = 'exec';
 export const TAB_TOTAL = 'total';
 export const TAB_WOMEN = 'women';
 export const TAB_MEN = 'men';
-export const TAB_BRAND_GROUPS = 'brand-groups';
 
 export default class TopDownSection extends Component {
     constructor(props) {
@@ -26,7 +25,6 @@ export default class TopDownSection extends Component {
             [TAB_TOTAL]: false,
             [TAB_WOMEN]: false,
             [TAB_MEN]: false,
-            [TAB_BRAND_GROUPS]: false,
         };
 
         this.handleTabChange = this.handleTabChange.bind(this);
@@ -59,7 +57,7 @@ export default class TopDownSection extends Component {
     }
 
     render() {
-        const { budget, version } = this.props;
+        const { budget, version, data } = this.props;
         const { activeTab } = this.state;
         return (
             <Tabs activeKey={activeTab} onChange={this.handleTabChange} animated={false}>
@@ -68,6 +66,7 @@ export default class TopDownSection extends Component {
                         <SectionContainer
                             budget={budget}
                             version={version}
+                            data={data}
                             cellRenderer={execCellValueRenderer}
                             key={TAB_EXEC_RECAP}
                             view={TAB_EXEC_RECAP}
@@ -79,6 +78,7 @@ export default class TopDownSection extends Component {
                         <SectionContainer
                             budget={budget}
                             version={version}
+                            data={data}
                             cellRenderer={commonCellValueRenderer}
                             key={TAB_TOTAL}
                             view={TAB_TOTAL}
@@ -90,6 +90,7 @@ export default class TopDownSection extends Component {
                         <SectionContainer
                             budget={budget}
                             version={version}
+                            data={data}
                             cellRenderer={commonCellValueRenderer}
                             key={TAB_WOMEN}
                             view={TAB_WOMEN}
@@ -101,6 +102,7 @@ export default class TopDownSection extends Component {
                         <SectionContainer
                             budget={budget}
                             version={version}
+                            data={data}
                             cellRenderer={commonCellValueRenderer}
                             key={TAB_MEN}
                             view={TAB_MEN}
@@ -115,6 +117,7 @@ export default class TopDownSection extends Component {
 TopDownSection.propTypes = {
     activeKey: PropTypes.string.isRequired,
     budget: PropTypes.string.isRequired,
+    data: PropTypes.array.isRequired,
     tab: PropTypes.string.isRequired,
     version: PropTypes.string.isRequired,
     changeTab: PropTypes.func.isRequired,

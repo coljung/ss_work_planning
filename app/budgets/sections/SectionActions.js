@@ -5,6 +5,7 @@ import getApiUrl, { defaultMetricSequence } from '../../Helpers.js';
 
 const request = wrap(agent, Promise);
 
+
 export const REQUEST_BUDGETS_VIEW = 'REQUEST_BUDGETS_VIEW';
 export const RECEIVE_BUDGETS_VIEW = 'RECEIVE_BUDGETS_VIEW';
 export const RESET_BUDGETS_VIEW = 'RESET_BUDGETS_VIEW';
@@ -25,25 +26,12 @@ export const receiveBudgetViewData = (viewData, view) => ({
     view,
 });
 
-export const requestBudgetSave = () => ({
-    type: REQUEST_BUDGETS_SAVE_BUDGET,
-});
-
-export const receiveBudgetSave = version => ({
-    type: RECEIVE_BUDGETS_SAVE_BUDGET,
-    version,
-});
-
-export const requestRefreshGridData = () => ({
+export const requestSendDataForSpreading = () => ({
     type: REQUEST_REFRESH_GRID_DATA,
 });
 
-export const receiveRefreshGridData = () => ({
+export const receiveSendDataForSpreading = () => ({
     type: RECEIVE_REFRESH_GRID_DATA,
-});
-
-export const resetState = () => ({
-    type: RESET_BUDGETS_VIEW,
 });
 
 export const requestBudgetConfigData = () => ({
@@ -53,6 +41,19 @@ export const requestBudgetConfigData = () => ({
 export const receiveBudgetConfigData = config => ({
     type: RECEIVE_BUDGETS_CONFIG_DATA,
     config,
+});
+
+// export const requestBudgetSave = () => ({
+//     type: REQUEST_BUDGETS_SAVE_BUDGET,
+// });
+//
+// export const receiveBudgetSave = version => ({
+//     type: RECEIVE_BUDGETS_SAVE_BUDGET,
+//     version,
+// });
+
+export const resetState = () => ({
+    type: RESET_BUDGETS_VIEW,
 });
 
 export function fetchBudgetConfigData() {
@@ -85,9 +86,9 @@ export function fetchBudgetMetricData(budget, version, view, metric, query) {
     };
 }
 
-export function refreshGridData(budget, version, view, updatedObj) {
+export function sendDataForSpreading(budget, version, view, updatedObj) {
     return (dispatch) => {
-        dispatch(requestRefreshGridData());
+        dispatch(requestSendDataForSpreading());
         const req = request.put(`${getApiUrl()}planning/budgets/${budget}/versions/${version}/${view}/metrics`);
         return req.send({
             ...updatedObj,
@@ -98,7 +99,7 @@ export function refreshGridData(budget, version, view, updatedObj) {
                 const isResponseSuccess = res.statusCode >= 200 && res.statusCode <= 399;
 
                 if (isResponseSuccess) {
-                    dispatch(receiveRefreshGridData());
+                    dispatch(receiveSendDataForSpreading());
                 } else {
                     dispatch(messages({ content: 'Not OK', response: '', isError: true }));
                 }
@@ -106,7 +107,7 @@ export function refreshGridData(budget, version, view, updatedObj) {
                 return res.body;
             },
             (err) => {
-                dispatch(receiveRefreshGridData());
+                dispatch(receiveSendDataForSpreading());
                 dispatch(messages({ content: err, response: err.response, isError: true }));
                 throw err;
             },
@@ -114,18 +115,18 @@ export function refreshGridData(budget, version, view, updatedObj) {
     };
 }
 
-export function saveBudget(budget, id, view, data) {
-    return (dispatch) => {
-        dispatch(requestBudgetSave());
-        return request
-            .post(`${getApiUrl()}planning/budgets/${budget}/versions/${id}/${view}`)
-            .send(data)
-            .then(
-            (res) => {
-                dispatch(messages({ content: 'Budget Saved successfully!', response: '', isError: false }));
-                dispatch(receiveBudgetSave(res.body));
-            },
-            err => dispatch(messages({ content: err, response: err.response, isError: true })),
-            );
-    };
-}
+// export function saveBudget(budget, id, view, data) {
+//     return (dispatch) => {
+//         dispatch(requestBudgetSave());
+//         return request
+//             .post(`${getApiUrl()}planning/budgets/${budget}/versions/${id}/${view}`)
+//             .send(data)
+//             .then(
+//             (res) => {
+//                 dispatch(messages({ content: 'Budget Saved successfully!', response: '', isError: false }));
+//                 dispatch(receiveBudgetSave(res.body));
+//             },
+//             err => dispatch(messages({ content: err, response: err.response, isError: true })),
+//             );
+//     };
+// }

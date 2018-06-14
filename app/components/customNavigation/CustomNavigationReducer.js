@@ -1,7 +1,6 @@
 import { GLOBAL_DATA, CLEAR_GLOBAL_DATA } from './CustomNavigationActions';
 
 const initialState = {
-    budgetView: false,
     budgetId: null,
     versionId: null,
     seasonName: null,
@@ -10,15 +9,15 @@ const initialState = {
 };
 
 export default (state = initialState, action) => {
+    const [budgetId, versionId, seasonName, versionName, view] = action.options || '';
     switch (action.type) {
         case GLOBAL_DATA:
             return Object.assign({}, state, {
-                budgetView: true,
-                budgetId: action.budgetId,
-                versionId: action.versionId,
-                seasonName: action.seasonName,
-                versionName: action.versionName,
-                view: action.view,
+                budgetId,
+                versionId,
+                seasonName,
+                versionName,
+                view,
             });
         case CLEAR_GLOBAL_DATA:
             return initialState;

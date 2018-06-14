@@ -9,7 +9,6 @@ import { REQUEST_BUDGETS_VIEW,
 const initialState = {
     viewData: [],
     config: [],
-    viewDataFetched: false,
     refreshData: false,
     spreadingData: false,
     loading: false,
@@ -23,7 +22,6 @@ export default (state = initialState, action) => {
         case REQUEST_BUDGETS_VIEW:
             return Object.assign({}, state, {
                 viewData: [],
-                viewDataFetched: false,
                 refreshData: false,
                 loading: true,
 
@@ -33,7 +31,6 @@ export default (state = initialState, action) => {
             setData[action.view] = action.viewData;
             return Object.assign({}, state, {
                 viewData: setData,
-                viewDataFetched: true,
                 refreshData: false,
                 loading: false,
             });
