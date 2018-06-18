@@ -9,13 +9,14 @@ export const REQUEST_BUDGETS_VERSIONS = 'REQUEST_BUDGETS_VERSIONS';
 export const RECEIVE_BUDGETS_VERSIONS = 'RECEIVE_BUDGETS_VERSIONS';
 export const REQUEST_BUDGETS_CONFIG_DATA = 'REQUEST_BUDGETS_CONFIG_DATA';
 export const RECEIVE_BUDGETS_CONFIG_DATA = 'RECEIVE_BUDGETS_CONFIG_DATA';
-export const REQUEST_BUDGETS_VIEW = 'REQUEST_BUDGETS_VIEW';
-export const RECEIVE_BUDGETS_VIEW = 'RECEIVE_BUDGETS_VIEW';
-export const REQUEST_REFRESH_GRID_DATA = 'REQUEST_REFRESH_GRID_DATA';
-export const RECEIVE_REFRESH_GRID_DATA = 'RECEIVE_REFRESH_GRID_DATA';
+export const REQUEST_BUDGETS_DATA = 'REQUEST_BUDGETS_DATA';
+export const RECEIVE_BUDGETS_DATA = 'RECEIVE_BUDGETS_DATA';
+export const REQUEST_SPREAD_DATA = 'REQUEST_SPREAD_DATA';
+export const RECEIVE_SPREAD_DATA = 'RECEIVE_SPREAD_DATA';
 export const REQUEST_BUDGETS_SAVE_NEW_VERSION = 'REQUEST_BUDGETS_SAVE_NEW_VERSION';
 export const RECEIVE_BUDGETS_SAVE_NEW_VERSION = 'RECEIVE_BUDGETS_SAVE_NEW_VERSION';
-export const RESET_BUDGETS_VIEW = 'RESET_BUDGETS_VIEW';
+export const RESET_BUDGETS_DATA = 'RESET_BUDGETS_DATA';
+export const SET_TRIGGER_CHANGE = 'SET_TRIGGER_CHANGE';
 
 export const requestBudgetVersions = () => ({
     type: REQUEST_BUDGETS_VERSIONS,
@@ -36,21 +37,21 @@ export const receiveBudgetConfigData = config => ({
 });
 
 export const requestBudgetViewData = () => ({
-    type: REQUEST_BUDGETS_VIEW,
+    type: REQUEST_BUDGETS_DATA,
 });
 
 export const receiveBudgetViewData = (viewData, view) => ({
-    type: RECEIVE_BUDGETS_VIEW,
+    type: RECEIVE_BUDGETS_DATA,
     viewData,
     view,
 });
 
 export const requestSendDataForSpreading = () => ({
-    type: REQUEST_REFRESH_GRID_DATA,
+    type: REQUEST_SPREAD_DATA,
 });
 
 export const receiveSendDataForSpreading = () => ({
-    type: RECEIVE_REFRESH_GRID_DATA,
+    type: RECEIVE_SPREAD_DATA,
 });
 
 export const requestBudgetSaveNewVersion = () => ({
@@ -62,8 +63,12 @@ export const receiveBudgetSaveNewVersion = version => ({
     version,
 });
 
+export const triggerChange = () => ({
+    type: SET_TRIGGER_CHANGE,
+});
+
 export const resetState = () => ({
-    type: RESET_BUDGETS_VIEW,
+    type: RESET_BUDGETS_DATA,
 });
 
 export function getBudgetVersions(budgetId) {

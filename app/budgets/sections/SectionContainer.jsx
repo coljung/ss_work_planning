@@ -68,7 +68,6 @@ class SectionContainer extends Component {
 
     componentWillReceiveProps = (nextProps) => {
         const setData = nextProps.data ? nextProps.data[nextProps.view] : {};
-        // console.log(nextProps);
         if (this.props.data.length !== setData && !!setData) {
             this.setState({
                 headers: setData.headers,
@@ -77,18 +76,6 @@ class SectionContainer extends Component {
                 season: setData.info.season,
             });
         }
-
-        // if (nextProps.refreshData) {
-        //     this.metricData();
-        // }
-        //
-        // if (nextProps.version !== this.props.version) {
-        //     this.setState(
-        //         {
-        //             version: nextProps.version,
-        //         }, () => this.metricData(),
-        //     );
-        // }
     };
 
     resetScroll = () => {
@@ -203,7 +190,7 @@ class SectionContainer extends Component {
     buildTable = () => {
         const columnTitles = this.state.headers;
         const columnInfos = this.createColumnInfos(Object.getOwnPropertyNames(this.state.data.length ? this.state.data[0] : []));
-        const refreshLoad = this.props.spreadingData ? (<div className="refreshLoad"><LoadingSpinner /></div>) : null;
+        const refreshLoad = this.props.isDataSpreading ? (<div className="refreshLoad"><LoadingSpinner /></div>) : null;
         return (
             <div className={`${this.props.view}-view parentDiv`}>
                 {refreshLoad}
@@ -233,8 +220,8 @@ class SectionContainer extends Component {
     };
 
     render() {
-        const { data, view, budgetLoading } = this.props;
-        const budgetListData = data[view] && !budgetLoading ? this.buildTable() : <LoadingSpinner />;
+        const { data, view, isBudgetLoading } = this.props;
+        const budgetListData = data[view] && !isBudgetLoading ? this.buildTable() : <LoadingSpinner />;
 
         return (
             <div>
@@ -245,30 +232,28 @@ class SectionContainer extends Component {
 }
 
 SectionContainer.propTypes = {
-    data: PropTypes.oneOfType([PropTypes.array, PropTypes.object]).isRequired,
     // saveBudget: PropTypes.func.isRequired,
-    resetState: PropTypes.func.isRequired,
     budget: PropTypes.string.isRequired,
-    version: PropTypes.string.isRequired,
-    location: PropTypes.object.isRequired,
-    view: PropTypes.string.isRequired,
-    router: PropTypes.object.isRequired,
     cellRenderer: PropTypes.func,
-    sendDataForSpreading: PropTypes.func.isRequired,
-    refreshData: PropTypes.bool.isRequired,
-    budgetLoading: PropTypes.bool.isRequired,
-    spreadingData: PropTypes.bool.isRequired,
+    data: PropTypes.oneOfType([PropTypes.array, PropTypes.object]).isRequired,
     history: PropTypes.object.isRequired,
     historyPush: PropTypes.func.isRequired,
+    isBudgetLoading: PropTypes.bool.isRequired,
+    isDataSpreading: PropTypes.bool.isRequired,
+    location: PropTypes.object.isRequired,
+    resetState: PropTypes.func.isRequired,
+    router: PropTypes.object.isRequired,
+    sendDataForSpreading: PropTypes.func.isRequired,
+    version: PropTypes.string.isRequired,
+    view: PropTypes.string.isRequired,
 };
 
 function mapStateToProps(state) {
-    const { BudgetViewReducer, SectionReducers, HistoryReducer } = state;
+    const { BudgetViewReducer, HistoryReducer } = state;
     return {
-        refreshData: SectionReducers.refreshData,
-        budgetLoading: BudgetViewReducer.budgetLoading,
-        spreadingData: SectionReducers.spreadingData,
         history: HistoryReducer,
+        isBudgetLoading: BudgetViewReducer.isBudgetLoading,
+        isDataSpreading: BudgetViewReducer.isDataSpreading,
     };
 }
 

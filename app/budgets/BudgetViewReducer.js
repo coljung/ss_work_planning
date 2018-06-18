@@ -1,69 +1,71 @@
 import {
          RECEIVE_BUDGETS_VERSIONS,
          RECEIVE_BUDGETS_CONFIG_DATA,
-         REQUEST_BUDGETS_VIEW,
-         RECEIVE_BUDGETS_VIEW,
-         REQUEST_REFRESH_GRID_DATA,
-         RECEIVE_REFRESH_GRID_DATA,
+         REQUEST_BUDGETS_DATA,
+         RECEIVE_BUDGETS_DATA,
+         REQUEST_SPREAD_DATA,
+         RECEIVE_SPREAD_DATA,
          RECEIVE_BUDGETS_SAVE_NEW_VERSION,
+         SET_TRIGGER_CHANGE,
      } from './BudgetViewActions';
 
 const initialState = {
     config: {},
-    budgetLoading: false,
-    spreadingRunning: false,
-    loading: false,
+    isBudgetLoading: false,
+    isDataSpreading: false,
+    isRefreshRequired: false,
     newVersion: null,
-    refreshData: false,
     versions: [],
-    viewData: [],
     view: null,
+    viewData: [],
 };
 
 export default (state = initialState, action) => {
     switch (action.type) {
         case RECEIVE_BUDGETS_VERSIONS:
-            return Object.assign({}, state, {
+            return {
+                ...state,
                 versions: action.versions.data,
-            });
+            };
         case RECEIVE_BUDGETS_CONFIG_DATA:
             return Object.assign({}, state, {
                 config: action.config,
             });
-        case REQUEST_BUDGETS_VIEW:
+        case REQUEST_BUDGETS_DATA:
             return Object.assign({}, state, {
+                // view: null, // not sure if required here
+                isBudgetLoading: true,
+                isRefreshRequired: false,
                 viewData: [],
-                budgetLoading: true,
-                refreshData: false,
-                loading: true,
-                view: null,
             });
-        case RECEIVE_BUDGETS_VIEW: {
+        case RECEIVE_BUDGETS_DATA: {
             const setData = [];
             setData[action.view] = action.viewData;
             return Object.assign({}, state, {
-                viewData: setData,
-                budgetLoading: false,
-                refreshData: false,
-                loading: false,
+                isBudgetLoading: false,
                 view: action.view,
+                viewData: setData,
             });
         }
-        case REQUEST_REFRESH_GRID_DATA:
+        case REQUEST_SPREAD_DATA:
             return Object.assign({}, state, {
-                refreshData: false,
-                spreadingData: true,
-                loading: true,
+                isBudgetLoading: false,
+                isDataSpreading: true,
             });
-        case RECEIVE_REFRESH_GRID_DATA:
+        case RECEIVE_SPREAD_DATA:
             return Object.assign({}, state, {
-                refreshData: true,
-                spreadingData: false,
-                loading: false,
+                isBudgetLoading: true,
+                isDataSpreading: false,
+                isRefreshRequired: true,
             });
         case RECEIVE_BUDGETS_SAVE_NEW_VERSION:
             return Object.assign({}, state, {
                 newVersion: action.version,
+                versions: [action.version, ...state.versions],
+            });
+        case SET_TRIGGER_CHANGE:
+            return Object.assign({}, state, {
+                isRefreshRequired: true,
             });
         default:
             return state;

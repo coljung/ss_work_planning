@@ -5,12 +5,13 @@ import { connect } from 'react-redux';
 import { Row, Col, Dropdown, Icon } from 'antd';
 import BudgetVersionMenu from './components/BudgetVersionMenu';
 import BudgetViewsButtonActions from './components/BudgetViewsButtonActions';
-import { sendDataForSpreading } from './sections/SectionActions';
 import {
         getBudgetVersions,
         fetchBudgetConfigData,
         fetchBudgetMetricData,
-        saveNewBudgetVersion } from './BudgetViewActions';
+        saveNewBudgetVersion,
+        sendDataForSpreading,
+        triggerChange } from './BudgetViewActions';
 import { setGlobalData, clearGlobalData } from '../components/customNavigation/CustomNavigationActions';
 import { historyUndo, historyRedo } from './history/HistoryActions';
 
@@ -30,7 +31,7 @@ class BudgetViewsContainer extends Component {
             seasonName,
             versionName,
             sectionName,
-            activeTab: tab,
+            tab,
         };
 
         // set global parameters for budgets
@@ -39,6 +40,10 @@ class BudgetViewsContainer extends Component {
 
         this.handleTabChange = this.handleTabChange.bind(this);
         this.handleVersionClick = this.handleVersionClick.bind(this);
+    }
+
+    componentDidUpdate(prevProps, prevState) {
+        // debugger;
     }
 
     componentDidMount() {
@@ -58,11 +63,20 @@ class BudgetViewsContainer extends Component {
 
     componentWillReceiveProps(nextProps) {
         if (nextProps.params.sectionName !== this.props.params.sectionName) {
-            this.newSpecs(nextProps.params);
-        } else if (nextProps.newVersion !== this.props.newVersion) {
+            // this.newSpecs(nextProps.params);
+        }
+
+        if (nextProps.newVersion !== this.props.newVersion) {
             this.handlePushRoute(true, false, nextProps.newVersion, null);
             this.newSpecs(nextProps.params, nextProps.newVersion);
         }
+
+        if (nextProps.isRefreshRequired && nextProps.isRefreshRequired !== this.props.isRefreshRequired) {
+            this.getMetricData();
+        }
+        // if (nextProps.isRefreshRequired && nextProps.isRefreshRequired !== this.props.isRefreshRequired) {
+        //     this.getMetricData();
+        // }
     }
 
     newSpecs = (params, newVersion = null) => {
@@ -76,16 +90,17 @@ class BudgetViewsContainer extends Component {
             seasonName,
             versionName,
             sectionName,
-            activeTab: tab,
+            tab,
         });
 
         this.props.setGlobalData(budgetId, versionId, seasonName, versionName, tab);
     }
 
     getMetricData = () => {
-        const { budgetId, versionId, activeTab } = this.state;
+        const { budgetId, versionId, tab } = this.state;
         const { config, router: { location } } = this.props;
-        this.props.fetchBudgetMetricData(budgetId, versionId, activeTab, config.available_metrics, location.query);
+        // this.props.fetchBudgetMetricData(budgetId, versionId, tab, config.available_metrics, location.query);
+        this.props.fetchBudgetMetricData(budgetId, versionId, tab, ['Sales'], location.query);
     }
 
     saveNewVersion = (budget, version) => {
@@ -101,6 +116,7 @@ class BudgetViewsContainer extends Component {
         const tab = newTab || this.props.params.tab;
 
         router.push(`${ROUTE_BUDGET}/${seasonName}/${budgetId}/version/${versionName}/${versionId}/${sectionName}/${tab}`);
+        // this.props.triggerChange();
     }
 
     handleHistory = (historyMove) => {
@@ -115,22 +131,28 @@ class BudgetViewsContainer extends Component {
         const { budgetId, seasonName, tab } = this.state;
 
         if (version.id !== this.state.versionId) {
-            this.setState({
-                versionId: version.id,
-                versionName: version.name,
-            });
+            this.setState(
+                {
+                    versionId: version.id,
+                    versionName: version.name,
+                }, () => this.props.triggerChange(),
+            );
 
-            this.handlePushRoute(false, true, version, null);
             this.props.setGlobalData(budgetId, version.id, seasonName, version.name, tab);
+            this.handlePushRoute(false, true, version, null);
         }
     }
 
-    handleTabChange(newTabKey) {
-        // set true to load tabbed component
+    handleTabChange(newActiveTab) {
         const { budgetId, versionId, seasonName, versionName } = this.state;
+        this.setState(
+            {
+                tab: newActiveTab,
+            }, () => this.props.triggerChange(),
+        );
 
-        this.handlePushRoute(false, false, null, newTabKey);
-        this.props.setGlobalData(budgetId, versionId, seasonName, versionName, newTabKey);
+        this.props.setGlobalData(budgetId, versionId, seasonName, versionName, newActiveTab);
+        this.handlePushRoute(false, false, null, newActiveTab);
     }
 
     getCurrentSection = (activeTab, globalBudgetId, globalVersionId) => {
@@ -170,18 +192,17 @@ class BudgetViewsContainer extends Component {
             globalVersionName,
             versions,
             history,
-            loadingBudget,
+            isBudgetLoading,
         } = this.props;
 
         // undo disabled / enabled ?
-        // const viewHistory = history[this.props.params.tab];
-        // const undoDisabled = viewHistory && !loadingBudget ? viewHistory.past.length <= 0 : true;
-        // const redoDisabled = viewHistory && !loadingBudget ? viewHistory.future.length <= 0 : true;
+        const viewHistory = history[this.props.params.tab];
+        const undoDisabled = viewHistory && !isBudgetLoading ? viewHistory.past.length <= 0 : true;
+        const redoDisabled = viewHistory && !isBudgetLoading ? viewHistory.future.length <= 0 : true;
         const currentSection = this.getCurrentSection(this.props.params.tab, globalBudgetId, globalVersionId);
 
         return (
             <div>
-                {/*
                 <div className="budgetHeader">
                     <Row type="flex" justify="start" className="innerHeader">
                         <Col span={8} className="col">
@@ -202,7 +223,6 @@ class BudgetViewsContainer extends Component {
                         </Col>
                     </Row>
                 </div>
-                */}
                 <div className="budgetBody">
                     {currentSection}
                 </div>
@@ -232,7 +252,7 @@ BudgetViewsContainer.propTypes = {
     globalVersionId: PropTypes.string,
     globalSeasonName: PropTypes.string,
     globalVersionName: PropTypes.string,
-    loadingBudget: PropTypes.bool.isRequired,
+    isBudgetLoading: PropTypes.bool.isRequired,
     config: PropTypes.object,
 };
 
@@ -244,32 +264,34 @@ function mapStateToProps(state) {
     } = state;
 
     return {
+        config: BudgetViewReducer.config,
+        globalBudgetId: CustomNavigationReducer.budgetId,
+        globalSeasonName: CustomNavigationReducer.seasonName,
+        globalTab: CustomNavigationReducer.view,
+        globalVersionId: CustomNavigationReducer.versionId,
+        globalVersionName: CustomNavigationReducer.versionName,
+        history: HistoryReducer,
+        isBudgetLoading: BudgetViewReducer.isBudgetLoading,
+        isRefreshRequired: BudgetViewReducer.isRefreshRequired,
         newVersion: BudgetViewReducer.newVersion,
         versions: BudgetViewReducer.versions,
-        config: BudgetViewReducer.config,
-        loadingBudget: BudgetViewReducer.loading,
-        viewData: BudgetViewReducer.viewData,
         view: BudgetViewReducer.view,
-        history: HistoryReducer,
-        globalBudgetId: CustomNavigationReducer.budgetId,
-        globalVersionId: CustomNavigationReducer.versionId,
-        globalSeasonName: CustomNavigationReducer.seasonName,
-        globalVersionName: CustomNavigationReducer.versionName,
-        globalTab: CustomNavigationReducer.view,
+        viewData: BudgetViewReducer.viewData,
     };
 }
 
 function mapDispatchToProps(dispatch) {
     return bindActionCreators({
+        clearGlobalData,
+        fetchBudgetConfigData,
         fetchBudgetMetricData,
         getBudgetVersions,
-        fetchBudgetConfigData,
-        saveNewBudgetVersion,
-        setGlobalData,
-        clearGlobalData,
-        historyUndo,
         historyRedo,
+        historyUndo,
+        saveNewBudgetVersion,
         sendDataForSpreading,
+        setGlobalData,
+        triggerChange,
     }, dispatch);
 }
 
