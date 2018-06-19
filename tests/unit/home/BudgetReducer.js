@@ -30,11 +30,9 @@ describe('BudgetReducer', () => {
         expect(
             reducer(undefined, {
                 type: actions.RECEIVE_BUDGETS,
-                budgets: {
-                    data: [
-                        { foo: 'bar' }
-                    ]
-                }
+                budgets: [
+                    { foo: 'bar' }
+                ]
             })
         ).toEqual({
             budgets: [

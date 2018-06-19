@@ -1,5 +1,4 @@
-{
-  "data": [
+[
     {
       "id": "2",
       "budget_id": "2",
@@ -7,7 +6,4 @@
       "updated_at": "2018-02-27T15:03:56.492Z",
       "name": "V1"
     }
-  ],
-  "pagination": { "page": 1, "pageSize": 1000, "rowCount": 1, "pageCount": 1 },
-  "total": 1
-}
+]
