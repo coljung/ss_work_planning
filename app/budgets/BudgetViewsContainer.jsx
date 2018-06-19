@@ -40,7 +40,7 @@ class BudgetViewsContainer extends Component {
         this.props.setGlobalData(budgetId, versionId, seasonName, versionName, tab);
 
         this.handleTabChange = this.handleTabChange.bind(this);
-        this.handleVersionClick = this.handleVersionClick.bind(this);
+        this.handleVersionChange = this.handleVersionChange.bind(this);
     }
 
     componentDidMount() {
@@ -65,34 +65,29 @@ class BudgetViewsContainer extends Component {
         }
 
         if (nextProps.newVersion !== this.props.newVersion) {
-            this.handlePushRoute(true, false, nextProps.newVersion, null);
-            // this.newSpecs(nextProps.params, nextProps.newVersion);
+            this.handleVersionChange(null, nextProps.newVersion);
         }
-
         if (nextProps.isRefreshRequired && nextProps.isRefreshRequired !== this.props.isRefreshRequired) {
             this.getMetricData();
         }
-        // if (nextProps.isRefreshRequired && nextProps.isRefreshRequired !== this.props.isRefreshRequired) {
-        //     this.getMetricData();
-        // }
     }
-
-    newSpecs = (params, newVersion = null) => {
-        const { budgetId, seasonName, tab, sectionName } = params;
-        const versionId = newVersion ? newVersion.id : params.versionId;
-        const versionName = newVersion ? newVersion.name : params.versionName;
-
-        this.setState({
-            budgetId,
-            versionId,
-            seasonName,
-            versionName,
-            sectionName,
-            tab,
-        });
-
-        this.props.setGlobalData(budgetId, versionId, seasonName, versionName, tab);
-    }
+    //
+    // newSpecs = (params, newVersion = null) => {
+    //     const { budgetId, seasonName, tab, sectionName } = params;
+    //     const versionId = newVersion ? newVersion.id : params.versionId;
+    //     const versionName = newVersion ? newVersion.name : params.versionName;
+    //
+    //     this.setState({
+    //         budgetId,
+    //         versionId,
+    //         seasonName,
+    //         versionName,
+    //         sectionName,
+    //         tab,
+    //     });
+    //
+    //     this.props.setGlobalData(budgetId, versionId, seasonName, versionName, tab);
+    // }
 
     getMetricData = () => {
         const { budgetId, versionId, tab } = this.state;
@@ -105,12 +100,12 @@ class BudgetViewsContainer extends Component {
         this.props.saveNewBudgetVersion(budget, version);
     };
 
-    handlePushRoute = (useNextProps, switchVersion, newVersion = null, newTab = null) => {
+    handlePushRoute = (newVersion = null, newTab = null) => {
         const { router } = this.props;
         const { budgetId, seasonName, sectionName } = this.state;
 
-        const versionName = useNextProps || switchVersion ? newVersion.name : this.state.versionName;
-        const versionId = useNextProps || switchVersion ? newVersion.id : this.state.versionId;
+        const versionName = newVersion ? newVersion.name : this.state.versionName;
+        const versionId = newVersion ? newVersion.id : this.state.versionId;
         const tab = newTab || this.props.params.tab;
 
         router.push(`${ROUTE_BUDGET}/${seasonName}/${budgetId}/version/${versionName}/${versionId}/${sectionName}/${tab}`);
@@ -123,9 +118,9 @@ class BudgetViewsContainer extends Component {
         this.props.sendDataForSpreading(budgetId, versionId, tab, data);
     }
 
-    handleVersionClick(event) {
-        const { item: { props: { version } } } = event;
+    handleVersionChange(event, newVersion = null) {
         const { budgetId, seasonName, tab } = this.state;
+        const version = newVersion || event.item.props.version;
 
         if (version.id !== this.state.versionId) {
             this.setState(
@@ -136,7 +131,7 @@ class BudgetViewsContainer extends Component {
             );
 
             this.props.setGlobalData(budgetId, version.id, seasonName, version.name, tab);
-            this.handlePushRoute(false, true, version, null);
+            this.handlePushRoute(version, null);
         }
     }
 
@@ -149,7 +144,7 @@ class BudgetViewsContainer extends Component {
         );
 
         this.props.setGlobalData(budgetId, versionId, seasonName, versionName, newActiveTab);
-        this.handlePushRoute(false, false, null, newActiveTab);
+        this.handlePushRoute(null, newActiveTab);
     }
 
     getCurrentSection = (activeTab, globalBudgetId, globalVersionId) => {
@@ -207,7 +202,7 @@ class BudgetViewsContainer extends Component {
                                 versions={versions}
                                 currentSeason={globalSeasonName}
                                 currentVersion={globalVersionName}
-                                handleClick={this.handleVersionClick} />
+                                handleClick={this.handleVersionChange} />
                         </Col>
                         <Col span={16} className="col">
                             <BudgetViewsButtonActions

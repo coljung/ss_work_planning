@@ -35,7 +35,6 @@ export default (state = initialState, action) => {
             });
         case REQUEST_BUDGETS_DATA:
             return Object.assign({}, state, {
-                // view: null, // not sure if required here
                 isBudgetLoading: true,
                 isRefreshRequired: false,
                 viewData: [],
@@ -62,7 +61,6 @@ export default (state = initialState, action) => {
             });
         case RECEIVE_BUDGETS_SAVE_NEW_VERSION:
             return Object.assign({}, state, {
-                isRefreshRequired: true,
                 newVersion: action.version,
                 versions: [action.version, ...state.versions],
             });
