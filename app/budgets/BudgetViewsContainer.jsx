@@ -245,7 +245,7 @@ BudgetViewsContainer.propTypes = {
     saveNewBudgetVersion: PropTypes.func.isRequired,
     sendDataForSpreading: PropTypes.func.isRequired,
     setGlobalData: PropTypes.func.isRequired,
-    versions: PropTypes.array.isRequired,
+    versions: PropTypes.object.isRequired,
     view: PropTypes.string,
     viewData: PropTypes.oneOfType([PropTypes.array, PropTypes.object]).isRequired,
     triggerChange: PropTypes.func.isRequired,

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Button, Popconfirm } from 'antd';
 import { Link } from 'react-router';
 import { ROUTE_DASHBOARD } from '../../Routes';
-import Filter from '../../components/filters/Filter';
+import Filter from '../filters/Filter';
 
 export default class BudgetViewsButtonActions extends Component {
     constructor(props) {

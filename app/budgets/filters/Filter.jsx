@@ -7,16 +7,6 @@ import { resetState } from '../../home/BudgetActions';
 
 const TreeNode = Tree.TreeNode;
 
-// Object.entries(this.state.dataMetrics).forEach(([key, value]) => {
-// console.log(`${key} ${value}`); // "a 5", "b 7", "c 9"
-// });
-//
-// var tt = [];
-// Object.entries(this.state.dataMetrics).forEach(([key, value]) => {
-// if(value) tt.push(key);
-// });
-// console.log(tt)
-
 const treeData = [
     {
         title: 'Sales',
@@ -317,7 +307,6 @@ class Filter extends Component {
     }
 
     componentWillReceiveProps = (nextProps) => {
-        // debugger;
         if (nextProps.config !== this.props.config && !this.props.config) {
             const temp = [];
             nextProps.config.forEach((e) => {
@@ -409,9 +398,10 @@ Filter.propTypes = {
 };
 
 function mapStateToProps(state) {
-    const { SectionReducers } = state;
+    const { BudgetViewReducer } = state;
+    console.log(state);
     return {
-        config: SectionReducers.config.available_metrics,
+        config: BudgetViewReducer.config.available_metrics,
     };
 }
 
