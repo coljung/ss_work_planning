@@ -7,6 +7,16 @@ import { resetState } from '../../home/BudgetActions';
 
 const TreeNode = Tree.TreeNode;
 
+// Object.entries(this.state.dataMetrics).forEach(([key, value]) => {
+// console.log(`${key} ${value}`); // "a 5", "b 7", "c 9"
+// });
+//
+// var tt = [];
+// Object.entries(this.state.dataMetrics).forEach(([key, value]) => {
+// if(value) tt.push(key);
+// });
+// console.log(tt)
+
 const treeData = [
     {
         title: 'Sales',
@@ -294,24 +304,40 @@ const treeData = [
     },
 ];
 
-export default class Filter extends Component {
+class Filter extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            expandedKeys: ['sales_ss19', 'cogs'],
             autoExpandParent: true,
-            checkedKeys: ['sales_ss19_BU_OP'],
+            checkedKeys: [],
             selectedKeys: [],
+            available_metrics: [],
         };
     }
+
+    componentWillReceiveProps = (nextProps) => {
+        // debugger;
+        if (nextProps.config !== this.props.config && !this.props.config) {
+            const temp = [];
+            nextProps.config.forEach((e) => {
+                const createEntry = {};
+                createEntry.title = e;
+                createEntry.key = e.toLowerCase();
+                temp.push(createEntry);
+            });
+            this.setState({
+                available_metrics: temp,
+            });
+            // debugger;
+        }
+    };
 
     onExpand = (expandedKeys) => {
         // console.log('onExpand', arguments);
         // if not set autoExpandParent to false, if children expanded, parent can not collapse.
         // or, you can remove all expanded children keys.
         this.setState({
-            expandedKeys,
             autoExpandParent: false,
         });
     };
@@ -338,6 +364,7 @@ export default class Filter extends Component {
     }
 
     render() {
+        console.log(this.state.available_metrics);
         const footerButtons = (
             <div>
                 <Button type='primary' size='large' id='filterButton'>
@@ -352,17 +379,16 @@ export default class Filter extends Component {
             <Tree
                 checkable
                 onExpand={this.onExpand}
-                expandedKeys={this.state.expandedKeys}
                 autoExpandParent={this.state.autoExpandParent}
                 onCheck={this.onCheck}
                 checkedKeys={this.state.checkedKeys}
                 onSelect={this.onSelect}
                 selectedKeys={this.state.selectedKeys}>
-                {this.renderTreeNodes(treeData)}
+                {this.renderTreeNodes(this.state.available_metrics)}
             </Tree>
         );
         return (
-            <Modal
+            this.state.available_metrics && <Modal
                 title='Filters'
                 visible={this.props.visible}
                 className='filterModal'
@@ -379,4 +405,14 @@ export default class Filter extends Component {
 Filter.propTypes = {
     visible: PropTypes.bool.isRequired,
     onOverlayClick: PropTypes.func.isRequired,
+    config: PropTypes.array,
 };
+
+function mapStateToProps(state) {
+    const { SectionReducers } = state;
+    return {
+        config: SectionReducers.config.available_metrics,
+    };
+}
+
+export default connect(mapStateToProps)(Filter);
