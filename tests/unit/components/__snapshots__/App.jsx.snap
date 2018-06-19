@@ -45,6 +45,7 @@ exports[`App should render correctly 1`] = `
         className="ant-layout-sider-children"
       >
         <CustomNavigation
+          customOnClick={[Function]}
           pathname="pathname"
         />
       </div>
