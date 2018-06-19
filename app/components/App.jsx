@@ -12,12 +12,18 @@ export default class App extends Component {
         this.state = { collapsed: true, showStoreModal: true };
     }
 
+    toggleFromOutside() {
+        if (!this.state.collapsed) {
+            this.toggle();
+        }
+    }
+
     toggle() {
         const collapsed = !this.state.collapsed;
         this.setState({ collapsed });
         clearTimeout(this.timer);
 
-        // collapse after 8 seconds
+        // collapse after 7 seconds
         if (!collapsed) {
             this.timer = setTimeout(() => {
                 this.setState({ collapsed: !collapsed });
@@ -40,7 +46,9 @@ export default class App extends Component {
                         trigger={null}
                         collapsible
                         collapsed={this.state.collapsed}>
-                        <CustomNavigation pathname={this.props.location.pathname} />
+                        <CustomNavigation
+                            pathname={this.props.location.pathname}
+                            customOnClick={() => this.toggleFromOutside()} />
                     </Sider>
                     <Content>
                         <main style={{ flex: 1, overflowY: 'auto', padding: '0 25px 25px' }}>

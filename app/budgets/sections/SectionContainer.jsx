@@ -217,6 +217,18 @@ class SectionContainer extends Component {
         return columns.map(column => this.createColumn(column, renderer));
     }
 
+    detectCollapse = () => {
+        const elem = document.getElementsByClassName('ant-layout-sider-collapsed');
+        if (!elem.length) {
+            const resizeTimeout = setInterval(() => {
+                if (elem.length) {
+                    this.resize();
+                    clearInterval(resizeTimeout);
+                }
+            }, 500);
+        }
+    }
+
     buildTable = () => {
         const columnTitles = this.state.headers;
         const columnInfos = this.createColumnInfos(Object.getOwnPropertyNames(this.state.data.length ? this.state.data[0] : []));
@@ -226,6 +238,8 @@ class SectionContainer extends Component {
                 {refreshLoad}
                 <HotTable
                     afterChange={this.changeCell}
+                    beforeRender={this.detectCollapse}
+                    afterRender={this.detectCollapse}
                     colHeaders={true}
                     rowHeaders={true}
                     columns={columnInfos}
