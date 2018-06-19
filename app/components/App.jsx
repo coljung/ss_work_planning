@@ -48,7 +48,7 @@ export default class App extends Component {
                         collapsed={this.state.collapsed}>
                         <CustomNavigation
                             pathname={this.props.location.pathname}
-                            customOnClick={() => this.toggleFromOutside()} />
+                            triggerMenuCollapse={() => this.toggleFromOutside()} />
                     </Sider>
                     <Content>
                         <main style={{ flex: 1, overflowY: 'auto', padding: '0 25px 25px' }}>

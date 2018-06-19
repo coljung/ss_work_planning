@@ -238,7 +238,6 @@ class SectionContainer extends Component {
                 {refreshLoad}
                 <HotTable
                     afterChange={this.changeCell}
-                    beforeRender={this.detectCollapse}
                     afterRender={this.detectCollapse}
                     colHeaders={true}
                     rowHeaders={true}
