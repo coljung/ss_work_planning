@@ -240,6 +240,7 @@ BudgetViewsContainer.propTypes = {
     isBudgetLoading: PropTypes.bool.isRequired,
     isRefreshRequired: PropTypes.bool.isRequired,
     newVersion: PropTypes.object,
+    resetState: PropTypes.func.isRequired,
     router: PropTypes.object,
     saveNewBudgetVersion: PropTypes.func.isRequired,
     sendDataForSpreading: PropTypes.func.isRequired,

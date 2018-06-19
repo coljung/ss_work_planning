@@ -1,3 +1,6 @@
+// not used for now
+
+
 // import agent from 'superagent';
 // import wrap from 'superagent-promise';
 // import { messages } from 'notifications/NotificationActions';
@@ -43,31 +46,7 @@
 //     config,
 // });
 //
-// // export const requestBudgetSave = () => ({
-// //     type: REQUEST_BUDGETS_SAVE_BUDGET,
-// // });
-// //
-// // export const receiveBudgetSave = version => ({
-// //     type: RECEIVE_BUDGETS_SAVE_BUDGET,
-// //     version,
-// // });
-//
 // export const resetState = () => ({
 //     type: RESET_BUDGETS_VIEW,
 // });
 //
-// // export function saveBudget(budget, id, view, data) {
-// //     return (dispatch) => {
-// //         dispatch(requestBudgetSave());
-// //         return request
-// //             .post(`${getApiUrl()}planning/budgets/${budget}/versions/${id}/${view}`)
-// //             .send(data)
-// //             .then(
-// //             (res) => {
-// //                 dispatch(messages({ content: 'Budget Saved successfully!', response: '', isError: false }));
-// //                 dispatch(receiveBudgetSave(res.body));
-// //             },
-// //             err => dispatch(messages({ content: err, response: err.response, isError: true })),
-// //             );
-// //     };
-// // }
