@@ -353,7 +353,6 @@ class Filter extends Component {
     }
 
     render() {
-        console.log(this.state.available_metrics);
         const footerButtons = (
             <div>
                 <Button type='primary' size='large' id='filterButton'>
