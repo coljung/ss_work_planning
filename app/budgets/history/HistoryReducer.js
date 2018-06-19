@@ -1,4 +1,5 @@
 import { HISTORY_UNDO, HISTORY_REDO, HISTORY_PUSH } from './HistoryActions';
+import { CLEAR_GLOBAL_DATA } from '../../components/customNavigation/CustomNavigationActions';
 
 import { getView, push, pop, canGo, viewLength } from './utils';
 
@@ -62,6 +63,8 @@ export default (state = initialState, action) => {
                 },
             };
         }
+        case CLEAR_GLOBAL_DATA:
+            return defaultView;
         default:
             return state;
     }

@@ -22,7 +22,7 @@ export default (state = initialState, action) => {
             });
         case RECEIVE_BUDGETS:
             return Object.assign({}, state, {
-                budgets: action.budgets.data,
+                budgets: action.budgets,
                 budgetsFetched: true,
             });
         case REQUEST_CREATE_BUDGET:

@@ -27,7 +27,7 @@ export default (state = initialState, action) => {
         case RECEIVE_BUDGETS_VERSIONS:
             return {
                 ...state,
-                versions: action.versions.data,
+                versions: action.versions,
             };
         case RECEIVE_BUDGETS_CONFIG_DATA:
             return Object.assign({}, state, {
