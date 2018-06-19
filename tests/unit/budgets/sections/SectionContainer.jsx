@@ -19,7 +19,10 @@ const initialProps = {
     viewDataFetched: false,
     saveBudget: jest.fn(),
     fetchBudgetMetricData: jest.fn(),
-    resetState: jest.fn(),
+    BudgetViewReducer: {
+        isBudgetLoading: false,
+        isDataSpreading: false,
+    },
     router: {
         location: {},
     },

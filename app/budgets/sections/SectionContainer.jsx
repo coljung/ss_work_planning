@@ -5,8 +5,8 @@ import { connect } from 'react-redux';
 import HotTable from 'react-handsontable';
 import { Button, Spin } from 'antd';
 import { withRouter } from 'react-router';
-import {
-    resetState } from './SectionActions';
+// import {
+//     resetState } from './SectionActions';
 import {
     sendDataForSpreading } from '../BudgetViewActions';
 import { historyPush } from '../history/HistoryActions';
@@ -62,7 +62,7 @@ class SectionContainer extends Component {
     }
 
     componentWillUnmount() {
-        this.props.resetState();
+        // this.props.resetState();
         window.removeEventListener('resize', this.resize);
     }
 
@@ -187,18 +187,6 @@ class SectionContainer extends Component {
         return columns.map(column => this.createColumn(column, renderer));
     }
 
-    test = () => {
-        const elem = document.getElementsByClassName('ant-layout-sider-collapsed');
-        if (!elem.length) {
-            const resizeTimeout = setInterval(() => {
-                if (elem.length) {
-                    this.resize();
-                    clearInterval(resizeTimeout);
-                }
-            }, 500);
-        }
-    }
-
     buildTable = () => {
         const columnTitles = this.state.headers;
         const columnInfos = this.createColumnInfos(Object.getOwnPropertyNames(this.state.data.length ? this.state.data[0] : []));
@@ -208,7 +196,6 @@ class SectionContainer extends Component {
                 {refreshLoad}
                 <HotTable
                     afterChange={this.changeCell}
-                    afterRender={this.test}
                     colHeaders={true}
                     rowHeaders={true}
                     columns={columnInfos}
@@ -253,7 +240,7 @@ SectionContainer.propTypes = {
     isBudgetLoading: PropTypes.bool.isRequired,
     isDataSpreading: PropTypes.bool.isRequired,
     location: PropTypes.object.isRequired,
-    resetState: PropTypes.func.isRequired,
+    // resetState: PropTypes.func.isRequired,
     router: PropTypes.object.isRequired,
     sendDataForSpreading: PropTypes.func.isRequired,
     version: PropTypes.string.isRequired,
@@ -271,7 +258,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return bindActionCreators({
-        resetState,
+        // resetState,
         sendDataForSpreading,
         historyPush,
     }, dispatch);
