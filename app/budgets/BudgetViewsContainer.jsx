@@ -11,6 +11,7 @@ import {
         fetchBudgetMetricData,
         saveNewBudgetVersion,
         sendDataForSpreading,
+        resetState,
         triggerChange } from './BudgetViewActions';
 import { setGlobalData, clearGlobalData } from '../components/customNavigation/CustomNavigationActions';
 import { historyUndo, historyRedo } from './history/HistoryActions';
@@ -42,10 +43,6 @@ class BudgetViewsContainer extends Component {
         this.handleVersionClick = this.handleVersionClick.bind(this);
     }
 
-    componentDidUpdate(prevProps, prevState) {
-        // debugger;
-    }
-
     componentDidMount() {
         const { getBudgetVersions, fetchBudgetConfigData, params: { budgetId } } = this.props; // eslint-disable-line no-shadow
 
@@ -59,6 +56,7 @@ class BudgetViewsContainer extends Component {
 
     componentWillUnmount() {
         this.props.clearGlobalData();
+        this.props.resetState();
     }
 
     componentWillReceiveProps(nextProps) {
@@ -68,7 +66,7 @@ class BudgetViewsContainer extends Component {
 
         if (nextProps.newVersion !== this.props.newVersion) {
             this.handlePushRoute(true, false, nextProps.newVersion, null);
-            this.newSpecs(nextProps.params, nextProps.newVersion);
+            // this.newSpecs(nextProps.params, nextProps.newVersion);
         }
 
         if (nextProps.isRefreshRequired && nextProps.isRefreshRequired !== this.props.isRefreshRequired) {
@@ -116,7 +114,6 @@ class BudgetViewsContainer extends Component {
         const tab = newTab || this.props.params.tab;
 
         router.push(`${ROUTE_BUDGET}/${seasonName}/${budgetId}/version/${versionName}/${versionId}/${sectionName}/${tab}`);
-        // this.props.triggerChange();
     }
 
     handleHistory = (historyMove) => {
@@ -233,27 +230,29 @@ class BudgetViewsContainer extends Component {
 
 BudgetViewsContainer.propTypes = {
     params: PropTypes.object.isRequired,
-    newVersion: PropTypes.object,
-    saveNewBudgetVersion: PropTypes.func.isRequired,
-    viewData: PropTypes.oneOfType([PropTypes.array, PropTypes.object]).isRequired,
-    view: PropTypes.string,
-    getBudgetVersions: PropTypes.func.isRequired,
+    clearGlobalData: PropTypes.func.isRequired,
+    config: PropTypes.object,
     fetchBudgetConfigData: PropTypes.func.isRequired,
     fetchBudgetMetricData: PropTypes.func.isRequired,
-    setGlobalData: PropTypes.func.isRequired,
-    clearGlobalData: PropTypes.func.isRequired,
-    versions: PropTypes.array.isRequired,
-    router: PropTypes.object,
-    history: PropTypes.object,
-    sendDataForSpreading: PropTypes.func.isRequired,
-    historyUndo: PropTypes.func.isRequired,
-    historyRedo: PropTypes.func.isRequired,
+    getBudgetVersions: PropTypes.func.isRequired,
     globalBudgetId: PropTypes.string,
-    globalVersionId: PropTypes.string,
     globalSeasonName: PropTypes.string,
+    globalVersionId: PropTypes.string,
     globalVersionName: PropTypes.string,
+    history: PropTypes.object,
+    historyRedo: PropTypes.func.isRequired,
+    historyUndo: PropTypes.func.isRequired,
     isBudgetLoading: PropTypes.bool.isRequired,
-    config: PropTypes.object,
+    isRefreshRequired: PropTypes.bool.isRequired,
+    newVersion: PropTypes.object,
+    router: PropTypes.object,
+    saveNewBudgetVersion: PropTypes.func.isRequired,
+    sendDataForSpreading: PropTypes.func.isRequired,
+    setGlobalData: PropTypes.func.isRequired,
+    versions: PropTypes.array.isRequired,
+    view: PropTypes.string,
+    viewData: PropTypes.oneOfType([PropTypes.array, PropTypes.object]).isRequired,
+    triggerChange: PropTypes.func.isRequired,
 };
 
 function mapStateToProps(state) {
@@ -288,6 +287,7 @@ function mapDispatchToProps(dispatch) {
         getBudgetVersions,
         historyRedo,
         historyUndo,
+        resetState,
         saveNewBudgetVersion,
         sendDataForSpreading,
         setGlobalData,

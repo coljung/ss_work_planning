@@ -187,6 +187,18 @@ class SectionContainer extends Component {
         return columns.map(column => this.createColumn(column, renderer));
     }
 
+    test = () => {
+        const elem = document.getElementsByClassName('ant-layout-sider-collapsed');
+        if (!elem.length) {
+            const resizeTimeout = setInterval(() => {
+                if (elem.length) {
+                    this.resize();
+                    clearInterval(resizeTimeout);
+                }
+            }, 500);
+        }
+    }
+
     buildTable = () => {
         const columnTitles = this.state.headers;
         const columnInfos = this.createColumnInfos(Object.getOwnPropertyNames(this.state.data.length ? this.state.data[0] : []));
@@ -196,6 +208,7 @@ class SectionContainer extends Component {
                 {refreshLoad}
                 <HotTable
                     afterChange={this.changeCell}
+                    afterRender={this.test}
                     colHeaders={true}
                     rowHeaders={true}
                     columns={columnInfos}
@@ -232,7 +245,6 @@ class SectionContainer extends Component {
 }
 
 SectionContainer.propTypes = {
-    // saveBudget: PropTypes.func.isRequired,
     budget: PropTypes.string.isRequired,
     cellRenderer: PropTypes.func,
     data: PropTypes.oneOfType([PropTypes.array, PropTypes.object]).isRequired,

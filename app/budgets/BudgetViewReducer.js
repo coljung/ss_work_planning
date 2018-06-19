@@ -5,8 +5,10 @@ import {
          RECEIVE_BUDGETS_DATA,
          REQUEST_SPREAD_DATA,
          RECEIVE_SPREAD_DATA,
+         REQUEST_BUDGETS_SAVE_NEW_VERSION,
          RECEIVE_BUDGETS_SAVE_NEW_VERSION,
          SET_TRIGGER_CHANGE,
+         RESET_BUDGETS_DATA,
      } from './BudgetViewActions';
 
 const initialState = {
@@ -60,6 +62,7 @@ export default (state = initialState, action) => {
             });
         case RECEIVE_BUDGETS_SAVE_NEW_VERSION:
             return Object.assign({}, state, {
+                isRefreshRequired: true,
                 newVersion: action.version,
                 versions: [action.version, ...state.versions],
             });
@@ -67,6 +70,8 @@ export default (state = initialState, action) => {
             return Object.assign({}, state, {
                 isRefreshRequired: true,
             });
+        case RESET_BUDGETS_DATA:
+            return initialState;
         default:
             return state;
     }
