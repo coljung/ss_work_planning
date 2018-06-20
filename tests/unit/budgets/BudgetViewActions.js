@@ -5,6 +5,7 @@ import { join } from 'path';
 import getApiUrl from '../../../app/Helpers';
 import * as actions from '../../../app/budgets/BudgetViewActions';
 
+import configResponse from '../../fixtures/config.json';
 import versionsResponse from '../../fixtures/versions.json';
 import versionsDuplicate from '../../fixtures/versionsDuplicate.json';
 
@@ -36,6 +37,63 @@ describe('BudgetViewActions', () => {
             expect(actions.receiveBudgetVersions(versions)).toEqual(expectedAction);
         });
 
+        it('Should handle requestBudgetConfigData', () => {
+            const expectedAction = {
+                type: actions.REQUEST_BUDGETS_CONFIG_DATA
+            };
+            expect(actions.requestBudgetConfigData()).toEqual(expectedAction);
+        });
+
+        it('Should handle receiveBudgetConfigData', () => {
+            const config = 'test';
+            const expectedAction = {
+                type: actions.RECEIVE_BUDGETS_CONFIG_DATA,
+                config
+            };
+            expect(actions.receiveBudgetConfigData(config)).toEqual(expectedAction);
+        });
+
+        it('Should handle requestBudgetViewData', () => {
+            const expectedAction = {
+                type: actions.REQUEST_BUDGETS_DATA
+            };
+            expect(actions.requestBudgetViewData()).toEqual(expectedAction);
+        });
+
+        it('Should handle receiveBudgetViewData', () => {
+            const viewData = {
+                foo: 'Bar'
+            };
+            const view = 'test';
+            const expectedAction = {
+                type: actions.RECEIVE_BUDGETS_DATA,
+                viewData,
+                view
+            };
+            expect(actions.receiveBudgetViewData(viewData, view)).toEqual(expectedAction);
+        });
+
+        it('Should handle requestSendDataForSpreading', () => {
+            const expectedAction = {
+                type: actions.REQUEST_SPREAD_DATA
+            };
+            expect(actions.requestSendDataForSpreading()).toEqual(expectedAction);
+        });
+
+        it('Should handle receiveSendDataForSpreading', () => {
+            const expectedAction = {
+                type: actions.RECEIVE_SPREAD_DATA,
+            };
+            expect(actions.receiveSendDataForSpreading()).toEqual(expectedAction);
+        });
+
+        it('Should handle resetState', () => {
+            const expectedAction = {
+                type: actions.RESET_BUDGETS_DATA
+            };
+            expect(actions.resetState()).toEqual(expectedAction);
+        });
+
         it('Should handle requestBudgetSaveNewVersion', () => {
             const expectedAction = {
                 type: actions.REQUEST_BUDGETS_SAVE_NEW_VERSION
@@ -54,25 +112,7 @@ describe('BudgetViewActions', () => {
             expect(actions.receiveBudgetSaveNewVersion(version)).toEqual(expectedAction);
         });
 
-        it('Should handle requestBudgetSave', () => {
-            const expectedAction = {
-                type: actions.REQUEST_BUDGETS_SAVE_BUDGET
-            };
-            expect(actions.requestBudgetSave()).toEqual(expectedAction);
-        });
-
-        it('Should handle receiveBudgetSave', () => {
-            const version = {
-                foo: 'Bar'
-            };
-            const expectedAction = {
-                type: actions.RECEIVE_BUDGETS_SAVE_BUDGET,
-                version
-            };
-            expect(actions.receiveBudgetSave(version)).toEqual(expectedAction);
-        });
-
-        it('Should handle budgetVersions', () => {
+        it('Should handle getBudgetVersions', () => {
             nock(UI_PLANNING_HOST)
             .get('/api/planning/budgets/2/versions')
             .query(true)
@@ -86,13 +126,13 @@ describe('BudgetViewActions', () => {
             ];
             const store = mockStore({ BudgetViewActions: [] });
 
-            return store.dispatch(actions.budgetVersions(2)).then(() => {
+            return store.dispatch(actions.getBudgetVersions(2)).then(() => {
                 // return of async actions
                 expect(store.getActions()).toEqual(expectedActions)
             })
         });
 
-        it('Should failed to budgetVersions', () => {
+        it('Should fail to getBudgetVersions', () => {
             nock(UI_PLANNING_HOST)
             .get('/api/planning/budgets/2/versions')
             .query(true)
@@ -110,8 +150,48 @@ describe('BudgetViewActions', () => {
 
             const store = mockStore({ BudgetViewActions: [] });
 
-            return store.dispatch(actions.budgetVersions(2)).then(() => {
+            return store.dispatch(actions.getBudgetVersions(2)).then(() => {
                 // return of async actions
+                expect(store.getActions()).toMatchObject(expectedActions)
+            })
+        });
+
+        it('Should handle fetchBudgetConfigData', () => {
+            nock(UI_PLANNING_HOST)
+            .get('/api/planning/config')
+            .replyWithFile(200, join(__dirname, '../..', 'fixtures', 'config.json'), {
+                'Content-Type': 'application/json'
+            });
+
+            const expectedActions = [
+                { type: actions.REQUEST_BUDGETS_CONFIG_DATA },
+                { type: actions.RECEIVE_BUDGETS_CONFIG_DATA, config: configResponse }
+            ];
+            const store = mockStore({ SectionActions: [] });
+
+            return store.dispatch(actions.fetchBudgetConfigData()).then(() =>{
+                expect(store.getActions()).toEqual(expectedActions);
+            });
+        });
+
+        it('Should fail to fetchBudgetConfigData', () => {
+            nock(UI_PLANNING_HOST)
+            .get('/api/planning/config')
+            .reply(500, {
+                code: 'Foo Bar',
+                message: 'Foo Bar'
+            }, {
+                'Content-Type': 'application/json'
+            });
+
+            const expectedActions = [
+                { type: actions.REQUEST_BUDGETS_CONFIG_DATA },
+                { type: 'MESSAGES' }
+            ];
+
+            const store = mockStore({ SectionActions: [] });
+
+            return store.dispatch(actions.fetchBudgetConfigData()).then(() =>{
                 expect(store.getActions()).toMatchObject(expectedActions)
             })
         });
