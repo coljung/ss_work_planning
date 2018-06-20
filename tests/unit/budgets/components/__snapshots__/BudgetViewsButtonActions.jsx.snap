@@ -22,7 +22,7 @@ exports[`BudgetViewsButtonActions should render base layout 1`] = `
     cancelText="Cancel"
     okText="Yes"
     okType="primary"
-    onConfirm="fsdfsdf"
+    onConfirm="func"
     placement="top"
     prefixCls="ant-popover"
     title="Create new Budget version"
@@ -40,7 +40,7 @@ exports[`BudgetViewsButtonActions should render base layout 1`] = `
     </Button>
   </Popconfirm>
    
-  <Filter
+  <Connect(Filter)
     onOverlayClick={[Function]}
     visible={false}
   />
