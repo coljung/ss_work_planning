@@ -5,8 +5,6 @@ import { connect } from 'react-redux';
 import HotTable from 'react-handsontable';
 import { Button, Spin } from 'antd';
 import { withRouter } from 'react-router';
-// import {
-//     resetState } from './SectionActions';
 import {
     sendDataForSpreading } from '../BudgetViewActions';
 import { historyPush } from '../history/HistoryActions';
@@ -43,7 +41,6 @@ class SectionContainer extends Component {
                 const elem = document.getElementsByClassName('wtHolder')[0];
                 elem.scrollTop = this.scrollPosTop;
                 elem.scrollLeft = this.scrollPosLeft;
-                // this.hotTableRef.focus();
                 // reset numbers
                 this.resetScroll();
             }
@@ -253,7 +250,6 @@ SectionContainer.propTypes = {
     isBudgetLoading: PropTypes.bool.isRequired,
     isDataSpreading: PropTypes.bool.isRequired,
     location: PropTypes.object.isRequired,
-    // resetState: PropTypes.func.isRequired,
     router: PropTypes.object.isRequired,
     sendDataForSpreading: PropTypes.func.isRequired,
     version: PropTypes.string.isRequired,
@@ -271,7 +267,6 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return bindActionCreators({
-        // resetState,
         sendDataForSpreading,
         historyPush,
     }, dispatch);
