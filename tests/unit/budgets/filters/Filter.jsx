@@ -2,7 +2,7 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import { shallowToJson } from 'enzyme-to-json';
 import { Button } from 'antd';
-import Filter from '../../../app/components/filters/Filter';
+import Filter from '../../../../app/components/filters/Filter';
 
 describe('Filter', () => {
     it('should render correctly', () => {
