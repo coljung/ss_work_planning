@@ -32,15 +32,18 @@ class Filter extends Component {
     };
 
     buildTreeData = (availMetrics) => {
-        const tempConfig = [];
+        const tempTree = [];
+        const tempCheckedKeys = [];
         availMetrics.forEach((e) => {
             const createEntry = {};
             createEntry.title = e;
             createEntry.key = e.toLowerCase();
-            tempConfig.push(createEntry);
+            tempTree.push(createEntry);
+            tempCheckedKeys.push(createEntry.key);
         });
         this.setState({
-            available_metrics: tempConfig,
+            available_metrics: tempTree,
+            checkedKeys: tempCheckedKeys,
         });
     }
 
@@ -74,11 +77,15 @@ class Filter extends Component {
         this.props.onOverlayClick();
     }
 
+    submitFilters = () => {
+        // debugger;
+    }
+
     render() {
         console.log(this.props.config);
         const footerButtons = (
             <div>
-                <Button type='primary' size='large' id='filterButton'>
+                <Button onClick={this.submitFilters} type='primary' size='large' id='filterButton'>
                     Set Filters
                 </Button>
                 <Button onClick={this.closeModal} size='large' id='filterButton'>
@@ -103,7 +110,6 @@ class Filter extends Component {
                 title='Filters'
                 visible={this.props.visible}
                 className='filterModal'
-                onOk={this.handleOk}
                 width={800}
                 onCancel={this.closeModal}
                 footer={footerButtons}>

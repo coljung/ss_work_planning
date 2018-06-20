@@ -42,9 +42,7 @@ describe('BudgetViewReducer', () => {
         expect(
             reducer(undefined, {
                 type: actions.RECEIVE_BUDGETS_VERSIONS,
-                versions: {
-                    data: [{ foo: 'bar' }]
-                }
+                versions: [{ foo: 'bar' }]
             })
         ).toEqual({
             ...initialState,

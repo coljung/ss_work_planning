@@ -115,7 +115,6 @@ export function fetchBudgetMetricData(budget, version, view, metric, query) {
 
 export function sendDataForSpreading(budget, version, view, updatedObj) {
     return (dispatch) => {
-        console.log(updatedObj);
         dispatch(requestSendDataForSpreading());
         const req = request.put(`${getApiUrl()}planning/budgets/${budget}/versions/${version}/${view}/metrics`);
         return req.send({
