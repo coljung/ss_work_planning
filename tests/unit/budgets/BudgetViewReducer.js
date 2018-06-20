@@ -29,46 +29,92 @@ describe('BudgetViewReducer', () => {
     });
 
     it('should return the initial state', () => {
-        expect(reducer(undefined, {})).toEqual(initialState)
-    });
-
-    it('should handle RECEIVE_BUDGETS_SAVE_NEW_VERSION', () => {
-        const state = {
-            newVersion: null,
-            versions: [],
-        };
+        expect(reducer(undefined, {})).toEqual(initialState);
 
         expect(
-            reducer(state, {
-                type: actions.RECEIVE_BUDGETS_SAVE_NEW_VERSION,
-                version: { hello: 'world' }
+            reducer(undefined, {
+                type: actions.RESET_BUDGETS_VIEW,
             })
-        ).toEqual({
-            newVersion: { hello: 'world' },
-            versions: [{ hello: 'world' }],
-        })
+        ).toEqual(initialState);
     });
-
-
 
     it('should handle RECEIVE_BUDGETS_VERSIONS', () => {
         expect(
             reducer(undefined, {
                 type: actions.RECEIVE_BUDGETS_VERSIONS,
-                versions: [
-                    { foo: 'bar' }
-                ]
+                versions: {
+                    data: [{ foo: 'bar' }]
+                }
             })
         ).toEqual({
-            config: {},
-            isBudgetLoading: false,
-            isDataSpreading: false,
-            isRefreshRequired: false,
-            newVersion: null,
+            ...initialState,
             versions: [{ foo: 'bar' }],
-            view: null,
-            viewData: [],
         })
+    });
+
+    it('should handle RECEIVE_BUDGETS_CONFIG_DATA', () => {
+        const state = {
+            config: null,
+        };
+
+        expect(
+            reducer(state, {
+                type: actions.RECEIVE_BUDGETS_CONFIG_DATA,
+                config: { available_metrics: 'SALES' }
+            })
+        ).toEqual({
+            config: { available_metrics: 'SALES' },
+        })
+    });
+
+    it('should handle REQUEST_BUDGETS_DATA', () => {
+        expect(
+            reducer(undefined, {
+                type: actions.REQUEST_BUDGETS_DATA,
+            })
+        ).toEqual(Object.assign({}, initialState, {
+            isBudgetLoading: true,
+        }))
+    });
+
+    it.skip('should handle RECEIVE_BUDGETS_DATA', () => {
+        // TODO
+    });
+
+    it('should handle REQUEST_SPREAD_DATA', () => {
+        expect(
+            reducer(undefined, {
+                type: actions.REQUEST_SPREAD_DATA,
+            })
+        ).toEqual(Object.assign({}, initialState, {
+            isDataSpreading: true,
+        }))
+    });
+
+    it('should handle RECEIVE_SPREAD_DATA', () => {
+        expect(
+            reducer(undefined, {
+                type: actions.RECEIVE_SPREAD_DATA,
+            })
+        ).toEqual(Object.assign({}, initialState, {
+            isBudgetLoading: true,
+            isDataSpreading: false,
+            isRefreshRequired: true,
+        }))
+    });
+
+    it.skip('should handle RECEIVE_BUDGETS_SAVE_NEW_VERSION', () => {
+        // todo
+    });
+
+    it('should handle SET_TRIGGER_CHANGE', () => {
+        expect(
+            reducer(undefined, {
+                type: actions.SET_TRIGGER_CHANGE,
+            })
+        ).toEqual(Object.assign({}, initialState, {
+            isRefreshRequired: true,
+        }))
     });
 
 });
