@@ -167,9 +167,37 @@ describe('BudgetViewActions', () => {
                 { type: actions.REQUEST_BUDGETS_CONFIG_DATA },
                 { type: actions.RECEIVE_BUDGETS_CONFIG_DATA, config: configResponse }
             ];
-            const store = mockStore({ SectionActions: [] });
+            const store = mockStore({ BudgetViewActions: [] });
 
             return store.dispatch(actions.fetchBudgetConfigData()).then(() =>{
+                expect(store.getActions()).toEqual(expectedActions);
+            });
+        });
+
+        it('Should handle sendDataForSpreading', () => {
+            nock(UI_PLANNING_HOST)
+            .put('/api/planning/budgets/2/versions/V1/men/metrics', {
+                metric: "SALES",
+                dataRow: "tdwp",
+                value: "12",
+                key: "root.SALES.2018.2018.7",
+                dataType: "currency",
+                isReadOnly: false })
+            .reply(200);
+
+            const expectedActions = [
+                { type: actions.REQUEST_SPREAD_DATA },
+                { type: actions.RECEIVE_SPREAD_DATA }
+            ];
+            const store = mockStore({ BudgetViewActions: [] });
+
+            return store.dispatch(actions.sendDataForSpreading(2, 'V1', 'men', {
+                metric: "SALES",
+                dataRow: "tdwp",
+                value: "12",
+                key: "root.SALES.2018.2018.7",
+                dataType: "currency",
+                isReadOnly: false } )).then(() =>{
                 expect(store.getActions()).toEqual(expectedActions);
             });
         });
@@ -189,7 +217,7 @@ describe('BudgetViewActions', () => {
                 { type: 'MESSAGES' }
             ];
 
-            const store = mockStore({ SectionActions: [] });
+            const store = mockStore({ BudgetViewActions: [] });
 
             return store.dispatch(actions.fetchBudgetConfigData()).then(() =>{
                 expect(store.getActions()).toMatchObject(expectedActions)
