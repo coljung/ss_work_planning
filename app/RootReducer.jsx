@@ -1,5 +1,4 @@
 import { combineReducers } from 'redux';
-// import SectionReducers from './budgets/sections/SectionReducers';
 import BudgetReducer from './home/BudgetReducer';
 import BudgetViewReducer from './budgets/BudgetViewReducer';
 import CustomNavigationReducer from './components/customNavigation/CustomNavigationReducer';
