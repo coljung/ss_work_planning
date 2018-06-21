@@ -7,7 +7,6 @@ let initialState;
 describe('CustomNavigationReducer', () => {
     beforeEach(() => {
         initialState = {
-            budgetView: false,
             budgetId: null,
             versionId: null,
             seasonName: null,
@@ -22,17 +21,13 @@ describe('CustomNavigationReducer', () => {
 
     it('should handle GLOBAL_DATA', () => {
 
+        const options = [11, 22, 'SS', 'V1', 'men'];
+
         const urlAction = {
             type: actions.GLOBAL_DATA,
-            budgetView: true,
-            budgetId: 11,
-            versionId: 22,
-            seasonName: 'SS',
-            versionName: 'V1',
-            view: 'men' // important to pass correct payload, that's what the tests are for ;)
+            options,
         };
         expect(reducer({}, urlAction)).toEqual({
-            budgetView: true,
             budgetId: 11,
             versionId: 22,
             seasonName: 'SS',
