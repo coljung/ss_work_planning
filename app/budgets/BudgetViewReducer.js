@@ -12,12 +12,13 @@ export default (state = initialState, action) => {
         case RECEIVE_BUDGETS_SAVE_NEW_VERSION: {
             return Object.assign({}, state, {
                 newVersion: action.version,
+                versions: [action.version, ...state.versions],
             });
         }
         case RECEIVE_BUDGETS_VERSIONS: {
             return {
                 ...state,
-                versions: action.versions.data,
+                versions: action.versions,
             };
         }
         default:

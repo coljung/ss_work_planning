@@ -23,7 +23,7 @@ describe('BudgetViewReducer', () => {
       })
     ).toEqual({
         newVersion: { hello: 'world' },
-        versions: [],
+        versions: [{ hello: 'world' }],
     })
   });
 
@@ -33,11 +33,9 @@ describe('BudgetViewReducer', () => {
     expect(
       reducer(undefined, {
         type: actions.RECEIVE_BUDGETS_VERSIONS,
-        versions: {
-          data: [
+        versions: [
             { foo: 'bar' }
-          ]
-        }
+        ]
       })
     ).toEqual({
         versions: [

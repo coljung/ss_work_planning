@@ -52,20 +52,38 @@ class BudgetViewsContainer extends Component {
 
     componentWillReceiveProps(nextProps) {
         if (nextProps.params.sectionName !== this.props.params.sectionName) {
-            const { budgetId, versionId, seasonName, versionName, sectionName, tab } = nextProps.params;
-            this.props.switchGlobalData(budgetId, versionId, seasonName, versionName, tab);
-            this.setState({
-                budgetId,
-                versionId,
-                seasonName,
-                versionName,
-                sectionName,
-                activeTab: tab,
-            });
-        }
-        if (nextProps.newVersion !== this.props.newVersion) {
+            // const { budgetId, versionId, seasonName, versionName, sectionName, tab } = nextProps.params;
+            // this.props.switchGlobalData(budgetId, versionId, seasonName, versionName, tab);
+            // this.setState({
+            //     budgetId,
+            //     versionId,
+            //     seasonName,
+            //     versionName,
+            //     sectionName,
+            //     activeTab: tab,
+            // });
+            this.newSpecs(nextProps.params);
+        } else if (nextProps.newVersion !== this.props.newVersion) {
             this.handlePushRoute(true, false, nextProps.newVersion, null);
+            this.newSpecs(nextProps.params, nextProps.newVersion);
         }
+    }
+
+    newSpecs = (params, newVersion = null) => {
+        const { budgetId, seasonName, tab, sectionName } = params;
+        const versionId = newVersion ? newVersion.id : params.versionId;
+        const versionName = newVersion ? newVersion.name : params.versionName;
+
+        this.setState({
+            budgetId,
+            versionId,
+            seasonName,
+            versionName,
+            sectionName,
+            activeTab: tab,
+        });
+
+        this.props.switchGlobalData(budgetId, versionId, seasonName, versionName, tab);
     }
 
     saveNewVersion = (budget, version) => {
@@ -84,15 +102,15 @@ class BudgetViewsContainer extends Component {
     }
 
     handleHistory = (historyMove) => {
-        const { activeTab, budgetId, versionId } = this.state;
-        const { historyUndo, historyRedo } = this.props; // eslint-disable-line no-shadow
-        const data = historyMove === 'undo' ? historyUndo(activeTab) : historyRedo(activeTab);
-
-        this.props.refreshGridData(budgetId, versionId, activeTab, data);
+        const { budgetId, versionId } = this.state;
+        const { historyUndo, historyRedo, params: { tab } } = this.props; // eslint-disable-line no-shadow
+        const data = historyMove === 'undo' ? historyUndo(tab) : historyRedo(tab);
+        this.props.refreshGridData(budgetId, versionId, tab, data);
     }
 
     handleVersionClick(event) {
         const { item: { props: { version } } } = event;
+        const { budgetId, seasonName, tab } = this.state;
 
         if (version.id !== this.state.versionId) {
             this.setState({
@@ -101,6 +119,7 @@ class BudgetViewsContainer extends Component {
             });
 
             this.handlePushRoute(false, true, version, null);
+            this.props.switchGlobalData(budgetId, version.id, seasonName, version.name, tab);
         }
     }
 
@@ -138,15 +157,22 @@ class BudgetViewsContainer extends Component {
             return null;
         }
 
-        const { activeTab } = this.state;
-        const { globalBudgetId, globalVersionId, globalSeasonName, globalVersionName, versions, history } = this.props;
+        // const { activeTab } = this.state;
+        const {
+            globalBudgetId,
+            globalVersionId,
+            globalSeasonName,
+            globalVersionName,
+            versions,
+            history,
+            loadingBudget,
+        } = this.props;
 
         // undo disabled / enabled ?
-        const viewHistory = history[activeTab];
-        const undoDisabled = viewHistory ? viewHistory.past.length <= 0 : true;
-        const redoDisabled = viewHistory ? viewHistory.future.length <= 0 : true;
-
-        const currentSection = this.getCurrentSection(activeTab, globalBudgetId, globalVersionId);
+        const viewHistory = history[this.props.params.tab];
+        const undoDisabled = viewHistory && !loadingBudget ? viewHistory.past.length <= 0 : true;
+        const redoDisabled = viewHistory && !loadingBudget ? viewHistory.future.length <= 0 : true;
+        const currentSection = this.getCurrentSection(this.props.params.tab, globalBudgetId, globalVersionId);
 
         return (
             <div>
@@ -196,10 +222,17 @@ BudgetViewsContainer.propTypes = {
     globalVersionId: PropTypes.string,
     globalSeasonName: PropTypes.string,
     globalVersionName: PropTypes.string,
+    loadingBudget: PropTypes.bool.isRequired,
 };
 
 function mapStateToProps(state) {
-    const { BudgetViewReducer, HistoryReducer, CustomNavigationReducer } = state;
+    const {
+        BudgetViewReducer,
+        HistoryReducer,
+        CustomNavigationReducer,
+        SectionReducers,
+    } = state;
+
     return {
         newVersion: BudgetViewReducer.newVersion,
         versions: BudgetViewReducer.versions,
@@ -210,6 +243,7 @@ function mapStateToProps(state) {
         globalVersionName: CustomNavigationReducer.versionName,
         globalTab: CustomNavigationReducer.view,
         budgetView: CustomNavigationReducer.budgetView,
+        loadingBudget: SectionReducers.loading,
     };
 }
 

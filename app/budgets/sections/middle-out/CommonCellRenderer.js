@@ -5,6 +5,7 @@ import {
     enableEdit,
     emptyCell,
     percentageFormat,
+    numericFormat,
     borderBottom,
     gridColors,
     currencyFormat } from '../../components/TableHelpers';
@@ -51,6 +52,12 @@ export function cellValueRenderer(instance, td, row, col, prop, value, cellPrope
 
             case 'percentage':
                 instance.setCellMeta(row, col, 'numericFormat', percentageFormat);
+                // eslint-disable-next-line prefer-rest-params
+                Handsontable.renderers.NumericRenderer.apply(this, arguments);
+                break;
+
+            case 'number':
+                instance.setCellMeta(row, col, 'numericFormat', numericFormat);
                 // eslint-disable-next-line prefer-rest-params
                 Handsontable.renderers.NumericRenderer.apply(this, arguments);
                 break;

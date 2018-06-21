@@ -8,7 +8,7 @@ export const HISTORY_PUSH = 'HISTORY_PUSH';
 export const historyPush = (view, item) => ({
     type: HISTORY_PUSH,
     view,
-    item
+    item,
 });
 
 export const historyUndo = view => (dispatch, getState) => {
@@ -18,7 +18,7 @@ export const historyUndo = view => (dispatch, getState) => {
 
     dispatch({
         type: HISTORY_UNDO,
-        view
+        view,
     });
 
     return previous;
@@ -31,7 +31,7 @@ export const historyRedo = view => (dispatch, getState) => {
 
     dispatch({
         type: HISTORY_REDO,
-        view
+        view,
     });
 
     return next;

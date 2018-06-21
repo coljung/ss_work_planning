@@ -64,7 +64,7 @@ export function fetchBudgets() {
         dispatch(requestBudgets());
         return request
             .get(`${getApiUrl()}planning/budgets`)
-            .query({ page_size: 1000 })
+            .query()
             .then(
             res => dispatch(receiveBudgets(res.body)),
             err => dispatch(messages({ content: err, response: err.response, isError: true })),

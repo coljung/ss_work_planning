@@ -23,6 +23,7 @@ class CustomNavigation extends Component {
 
     handleClick(e) {
         this.setState({ current: e.key });
+        this.props.triggerMenuCollapse();
     }
 
     render() {
@@ -169,6 +170,7 @@ CustomNavigation.propTypes = {
     versionId: PropTypes.string,
     seasonName: PropTypes.string,
     versionName: PropTypes.string,
+    triggerMenuCollapse: PropTypes.func,
 };
 
 function mapStateToProps(state) {

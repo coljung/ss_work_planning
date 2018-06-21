@@ -33,14 +33,29 @@ class SectionContainer extends Component {
 
         // set a reference to the Handsontable
         this.hotTableRef = null;
-        this.setHotTableRef = (element) => {
-            this.hotTableRef = element;
-        };
+
+        this.resetScroll();
 
         this.lastEditCell = null;
 
         this.emptyChange = false;
     }
+
+    setHotTableRef = (element) => {
+        if (element) {
+            this.hotTableRef = element;
+            if (this.scrollPosTop !== 0 || this.scrollPosLeft !== 0) {
+                // selects cell
+                this.hotTableRef.hotInstance.selectCell(this.row, this.column, this.row, this.column, false, false);
+                // scrolls to exact position
+                const elem = document.getElementsByClassName('wtHolder')[0];
+                elem.scrollTop = this.scrollPosTop;
+                elem.scrollLeft = this.scrollPosLeft;
+                // reset numbers
+                this.resetScroll();
+            }
+        }
+    };
 
     componentDidMount() {
         const promise = this.props.fetchBudgetConfigData();
@@ -63,6 +78,7 @@ class SectionContainer extends Component {
 
     componentWillReceiveProps = (nextProps) => {
         const setData = nextProps.viewData ? nextProps.viewData[nextProps.view] : {};
+        // console.log(nextProps);
         if (this.props.viewData.length !== setData && !!setData) {
             this.setState({
                 headers: setData.headers,
@@ -75,7 +91,22 @@ class SectionContainer extends Component {
         if (nextProps.refreshData) {
             this.metricData();
         }
+
+        if (nextProps.version !== this.props.version) {
+            this.setState(
+                {
+                    version: nextProps.version,
+                }, () => this.metricData(),
+            );
+        }
     };
+
+    resetScroll = () => {
+        this.row = 0;
+        this.column = 0;
+        this.scrollPosLeft = 0;
+        this.scrollPosTop = 0;
+    }
 
     resize = () => this.hotTableRef.hotInstance.render();
 
@@ -142,6 +173,14 @@ class SectionContainer extends Component {
                 const { historyPush } = this.props; // eslint-disable-line no-shadow
                 const viewHistory = history[view];
 
+                // set row/col for scrollpositioning
+                this.row = row;
+                this.column = Object.keys(this.state.data[row]).indexOf(col[0]);
+
+                const element = document.getElementsByClassName('wtHolder')[0];
+                this.scrollPosTop = element.scrollTop;
+                this.scrollPosLeft = element.scrollLeft;
+
                 this.props.refreshGridData(budget, version, view, dataToSend)
                     .then((res) => {
                         // Send old value into history for future undo
@@ -178,6 +217,18 @@ class SectionContainer extends Component {
         return columns.map(column => this.createColumn(column, renderer));
     }
 
+    detectCollapse = () => {
+        const elem = document.getElementsByClassName('ant-layout-sider-collapsed');
+        if (!elem.length) {
+            const resizeTimeout = setInterval(() => {
+                if (elem.length) {
+                    this.resize();
+                    clearInterval(resizeTimeout);
+                }
+            }, 500);
+        }
+    }
+
     buildTable = () => {
         const columnTitles = this.state.headers;
         const columnInfos = this.createColumnInfos(Object.getOwnPropertyNames(this.state.data.length ? this.state.data[0] : []));
@@ -187,6 +238,7 @@ class SectionContainer extends Component {
                 {refreshLoad}
                 <HotTable
                     afterChange={this.changeCell}
+                    afterRender={this.detectCollapse}
                     colHeaders={true}
                     rowHeaders={true}
                     columns={columnInfos}
