@@ -18,6 +18,7 @@ import { historyUndo, historyRedo } from './history/HistoryActions';
 
 import TopDownSection from './sections/top-down/TopDownSection';
 import MiddleOutSection from './sections/middle-out/MiddleOutSection';
+import filterData from './components/ManageFilters';
 import { ROUTE_BUDGET } from '../Routes';
 
 class BudgetViewsContainer extends Component {
@@ -50,8 +51,7 @@ class BudgetViewsContainer extends Component {
         getBudgetVersions(budgetId);
 
         // get config data, then fetch metrics based on config
-        const promise = fetchBudgetConfigData();
-        promise.then(this.getMetricData);
+        fetchBudgetConfigData().then(this.setFilters);
     }
 
     componentWillUnmount() {
@@ -88,6 +88,12 @@ class BudgetViewsContainer extends Component {
     //
     //     this.props.setGlobalData(budgetId, versionId, seasonName, versionName, tab);
     // }
+
+    setFilters = () => {
+        const { config } = this.props;
+        const test = filterData(config);
+        debugger;
+    }
 
     getMetricData = () => {
         const { budgetId, versionId, tab } = this.state;
