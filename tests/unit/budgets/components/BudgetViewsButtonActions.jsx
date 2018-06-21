@@ -7,7 +7,7 @@ import BudgetViewsButtonActions from '../../../../app/budgets/components/BudgetV
 describe('BudgetViewsButtonActions', () => {
     it('should render base layout', () => {
         const output = shallow(
-            <BudgetViewsButtonActions saveNew="fsdfsdf">Hello Jest!</BudgetViewsButtonActions>
+            <BudgetViewsButtonActions saveNew="func">Hello Jest!</BudgetViewsButtonActions>
         );
         expect(shallowToJson(output)).toMatchSnapshot();
     });

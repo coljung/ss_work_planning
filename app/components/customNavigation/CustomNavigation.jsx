@@ -27,7 +27,8 @@ class CustomNavigation extends Component {
     }
 
     render() {
-        const { budgetView, budgetId, versionId, seasonName, versionName } = this.props;
+        const { budgetId, versionId, seasonName, versionName } = this.props;
+        const configLoaded = !Object.keys(this.props.config).length;
         return (
             <Menu
                 onClick={this.handleClick}
@@ -46,7 +47,7 @@ class CustomNavigation extends Component {
                 <Menu.Divider />
                 <SubMenu
                     key='sub2'
-                    disabled={!budgetView}
+                    disabled={configLoaded}
                     title={<span><Icon type="mail" /><span>Top Down</span></span>}>
                         <Menu.Item key="sub2-1">
                             <Link to={`${ROUTE_BUDGET}/${seasonName}/${budgetId}/version/${versionName}/${versionId}/top-down/exec`}>
@@ -75,7 +76,7 @@ class CustomNavigation extends Component {
                 </SubMenu>
                 <SubMenu
                     key="sub3"
-                    disabled={!budgetView}
+                    disabled={configLoaded}
                     title={<span><Icon type="team" /><span>Middle Out Summary</span></span>}>
                     <Menu.Item key="sub3-1">
                         <Link to={`${ROUTE_BUDGET}/${seasonName}/${budgetId}/version/${versionName}/${versionId}/middle-out/bg-women`}>
@@ -110,7 +111,7 @@ class CustomNavigation extends Component {
                 </SubMenu>
                 <SubMenu
                     key="sub4"
-                    disabled={!budgetView}
+                    disabled={configLoaded}
                     title={<span><Icon type="file" /><span>Bottom Up</span></span>}
                   >
                   <Menu.Item key="sub4-1">
@@ -164,22 +165,22 @@ class CustomNavigation extends Component {
 }
 
 CustomNavigation.propTypes = {
-    pathname: PropTypes.string.isRequired,
-    budgetView: PropTypes.bool.isRequired,
     budgetId: PropTypes.string,
-    versionId: PropTypes.string,
+    config: PropTypes.object,
+    pathname: PropTypes.string.isRequired,
     seasonName: PropTypes.string,
+    versionId: PropTypes.string,
     versionName: PropTypes.string,
     triggerMenuCollapse: PropTypes.func,
 };
 
 function mapStateToProps(state) {
-    const { CustomNavigationReducer } = state;
+    const { BudgetViewReducer, CustomNavigationReducer } = state;
     return {
-        budgetView: CustomNavigationReducer.budgetView,
         budgetId: CustomNavigationReducer.budgetId,
-        versionId: CustomNavigationReducer.versionId,
+        config: BudgetViewReducer.config,
         seasonName: CustomNavigationReducer.seasonName,
+        versionId: CustomNavigationReducer.versionId,
         versionName: CustomNavigationReducer.versionName,
     };
 }

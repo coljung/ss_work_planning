@@ -1,15 +1,33 @@
 import reducer from '../../../app/home/BudgetReducer';
 import * as actions from '../../../app/home/BudgetActions';
+import * as sinon from 'sinon';
+
+let sandbox;
+let initialState;
+
 
 describe('BudgetReducer', () => {
-    it('should return the initial state', () => {
-        expect(reducer(undefined, {})).toEqual({
+
+    beforeAll(() => {
+        sandbox = sinon.sandbox.create();
+    });
+
+    beforeEach(() => {
+        initialState = {
             budgets: [],
             seasons: [],
             budgetsFetched: false,
             seasonsFetched: false,
             budgetCreateFetched: true,
-        })
+        };
+    });
+
+    afterEach(() => {
+        sandbox.restore();
+    });
+
+    it('should return the initial state', () => {
+        expect(reducer(undefined, {})).toEqual(initialState)
     });
 
     it('should handle REQUEST_BUDGETS', () => {
@@ -17,13 +35,9 @@ describe('BudgetReducer', () => {
             reducer(undefined, {
                 type: actions.REQUEST_BUDGETS
             })
-        ).toEqual({
-            budgets: [],
-            seasons: [],
+        ).toEqual(Object.assign({}, initialState, {
             budgetsFetched: false,
-            seasonsFetched: false,
-            budgetCreateFetched: true,
-        })
+        }))
     });
 
     it('should handle RECEIVE_BUDGETS', () => {
@@ -34,97 +48,75 @@ describe('BudgetReducer', () => {
                     { foo: 'bar' }
                 ]
             })
-        ).toEqual({
+        ).toEqual(Object.assign({}, initialState, {
             budgets: [
                 { foo: 'bar' }
             ],
-            seasons: [],
             budgetsFetched: true,
-            seasonsFetched: false,
-            budgetCreateFetched: true,
-        })
+        }))
     });
+
     it('should handle REQUEST_CREATE_BUDGET', () => {
         expect(
             reducer(undefined, {
                 type: actions.REQUEST_CREATE_BUDGET
             })
-        ).toEqual({
-            budgets: [],
-            seasons: [],
-            budgetsFetched: false,
-            seasonsFetched: false,
+        ).toEqual(Object.assign({}, initialState, {
             budgetCreateFetched: false,
-        })
+        }))
     });
 
     it('should handle RECEIVE_CREATE_BUDGET', () => {
-        expect(
-            reducer(undefined, {
-                type: actions.RECEIVE_CREATE_BUDGETS,
-            })
-        ).toEqual({
-            budgets: [],
+        const state = {
+            budgets: [
+                { test: 'bb' }
+            ],
             seasons: [],
             budgetsFetched: false,
             seasonsFetched: false,
             budgetCreateFetched: true,
-        })
+        }
+        expect(
+            reducer(state, {
+                type: actions.RECEIVE_CREATE_BUDGET,
+                budget: { foo: 'bar' }
+            })
+        ).toEqual(Object.assign({}, state, {
+            budgets: [
+                { test: 'bb' },
+                { foo: 'bar' }
+            ],
+            budgetCreateFetched: true,
+        }))
     });
 
     it('should handle REQUEST_SEASONS OR RESET_SEASONS_VIEW', () => {
-        const state = {
-            budgets: [],
-            seasons: [],
-            budgetsFetched: true,
-            seasonsFetched: true, // this will turn to false
-        };
-
         expect(
-            reducer(state, {
+            reducer(undefined, {
                 type: actions.REQUEST_SEASONS
             })
-        ).toEqual({
-            budgets: [],
-            seasons: [],
-            budgetsFetched: true,
+        ).toEqual(Object.assign({}, initialState, {
             seasonsFetched: false,
-        })
+        }))
 
         expect(
-            reducer(state, {
+            reducer(undefined, {
                 type: actions.RESET_SEASONS_VIEW
             })
-        ).toEqual({
-            budgets: [],
-            seasons: [],
-            budgetsFetched: true,
+        ).toEqual(Object.assign({}, initialState, {
             seasonsFetched: false,
-        })
+        }))
     });
 
     it('should handle RECEIVE_SEASONS', () => {
-        const state = {
-            budgets: [
-                { foo: 'bar' }
-            ],
-            seasons: [],
-            budgetsFetched: true,
-            seasonsFetched: false,
-        };
-
         expect(
-            reducer(state, {
+            reducer(undefined, {
                 type: actions.RECEIVE_SEASONS,
                 seasons: [{ name: 'season 1' }]
             })
-        ).toEqual({
-            budgets: [
-                { foo: 'bar' }
-            ],
+        ).toEqual(Object.assign({}, initialState, {
             seasons: [{ name: 'season 1' }],
-            budgetsFetched: true,
             seasonsFetched: true,
-        })
+        }))
     });
 });

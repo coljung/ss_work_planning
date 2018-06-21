@@ -113,7 +113,6 @@ describe('Common view cell rendering', () => {
         createCell(instance, 0, 0, { prop: { dataType: 'currency' } }, 99);
 
         expect(spy.called).to.equal(true);
-        console.log('................', spy.getCall(0).args);
         expect(spy.getCall(0).args[2]).to.equal('numericFormat');
         expect(spy.getCall(0).args[3]).to.equal(currencyFormat);
     });

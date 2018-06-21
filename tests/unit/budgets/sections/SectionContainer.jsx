@@ -14,12 +14,13 @@ Enzyme.configure({ adapter: new Adapter() });
 const initialProps = {
     budget: 'SS2018',
     version: 'V1',
-    view: 'exec',
-    viewData: {},
-    viewDataFetched: false,
-    saveBudget: jest.fn(),
+    view: 'men',
+    data: {},
     fetchBudgetMetricData: jest.fn(),
-    resetState: jest.fn(),
+    BudgetViewReducer: {
+        isBudgetLoading: false,
+        isDataSpreading: false,
+    },
     router: {
         location: {},
     },
@@ -32,7 +33,7 @@ const initialState = {
     headers: [],
     info: {},
     season: '',
-    viewData: {},
+    data: {},
     viewDataFetched: false,
     config: [],
 };
@@ -40,10 +41,9 @@ const initialState = {
 function setup(props = {}) {
     let store = configureMockStore([thunk])({
         ...initialState,
-        SectionReducers: {
-            viewData: props.viewData,
-            viewDataFetched: props.viewDataFetched,
-            config: props.config,
+        BudgetViewReducer: {
+            isBudgetLoading: false,
+            isDataSpreading: false,
         },
     });
 

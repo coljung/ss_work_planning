@@ -6,7 +6,6 @@ import { Button, Modal, Select, Spin, Radio } from 'antd';
 import { createBudget, fetchAvailableSeasons, resetState } from './BudgetActions';
 import LoadingOverlay from '../components/common/LoadingOverlay';
 
-
 const Option = Select.Option;
 const RadioGroup = Radio.Group;
 

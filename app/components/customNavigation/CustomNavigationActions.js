@@ -1,16 +1,10 @@
-// Action names
 export const GLOBAL_DATA = 'GLOBAL_DATA';
 export const CLEAR_GLOBAL_DATA = 'CLEAR_GLOBAL_DATA';
 
-// Internal actions
-export function switchGlobalData(budgetId, versionId, seasonName, versionName, view) {
+export function setGlobalData(...options) {
     return {
         type: GLOBAL_DATA,
-        budgetId,
-        versionId,
-        seasonName,
-        versionName,
-        view,
+        options,
     };
 }
 
