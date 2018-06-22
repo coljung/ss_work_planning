@@ -26,7 +26,6 @@ class BudgetViewsContainer extends Component {
         super(props, context);
 
         const { budgetId, versionId, seasonName, versionName, sectionName, tab } = this.props.params;
-        const { router: { location } } = this.props;
 
         this.state = {
             budgetId,
@@ -76,16 +75,15 @@ class BudgetViewsContainer extends Component {
 
     setFilters = () => {
         const { config } = this.props;
-        // const test = filterData(config);
+        // PLACEHOLDER FOR BETTER IMPLEMENTATION OF FILTERS
         this.getMetricData();
     }
 
     getMetricData = (filters = null) => {
         const { budgetId, versionId, tab } = this.state;
         const { config, router: { location } } = this.props;
-        // this.props.fetchBudgetMetricData(budgetId, versionId, tab, config.available_metrics, location.query);
-        console.log(this.props);
-        this.props.fetchBudgetMetricData(budgetId, versionId, tab, filters || ['Sales'], location.query);
+        // this.props.fetchBudgetMetricData(budgetId, versionId, tab, filters || ['Sales'], location.query);
+        this.props.fetchBudgetMetricData(budgetId, versionId, tab, filters || config.available_metrics, location.query);
     }
 
     saveNewVersion = (budget, version) => {
@@ -167,7 +165,6 @@ class BudgetViewsContainer extends Component {
         if (!Object.keys(this.props.config).length) {
             return null;
         }
-        console.log(this.props.filters);
 
         // const { activeTab } = this.state;
         const {
