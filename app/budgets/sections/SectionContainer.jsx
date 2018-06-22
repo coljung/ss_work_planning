@@ -24,6 +24,8 @@ class SectionContainer extends Component {
         // set a reference to the Handsontable
         this.hotTableRef = null;
 
+        this.resize = this.resize.bind(this);
+
         this.resetScroll();
 
         this.lastEditCell = null;
@@ -49,18 +51,13 @@ class SectionContainer extends Component {
 
     componentWillMount() {
         // refresh grid on window resize
-        let resizeTimeout = '';
-        window.addEventListener('resize', (event) => {
-            clearTimeout(resizeTimeout);
-            resizeTimeout = setTimeout(() => {
-                this.resize();
-            }, 500);
-        });
+        this.resizeTimeout = '';
+        window.addEventListener('resize', this.resize, false);
     }
 
     componentWillUnmount() {
         // this.props.resetState();
-        window.removeEventListener('resize', this.resize);
+        window.removeEventListener('resize', this.resize, false);
     }
 
     componentWillReceiveProps = (nextProps) => {
@@ -82,7 +79,12 @@ class SectionContainer extends Component {
         this.scrollPosTop = 0;
     }
 
-    resize = () => this.hotTableRef.hotInstance.render();
+    resize = () => {
+        clearTimeout(this.resizeTimeout);
+        this.resizeTimeout = setTimeout(() => {
+            this.hotTableRef.hotInstance.render();
+        }, 500);
+    }
 
     /**
      *  Handsontable Change cell row index
