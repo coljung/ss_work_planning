@@ -15,6 +15,7 @@ export const REQUEST_SPREAD_DATA = 'REQUEST_SPREAD_DATA';
 export const RECEIVE_SPREAD_DATA = 'RECEIVE_SPREAD_DATA';
 export const REQUEST_BUDGETS_SAVE_NEW_VERSION = 'REQUEST_BUDGETS_SAVE_NEW_VERSION';
 export const RECEIVE_BUDGETS_SAVE_NEW_VERSION = 'RECEIVE_BUDGETS_SAVE_NEW_VERSION';
+export const SET_FILTER_SETUP = 'SET_FILTER_SETUP';
 export const RESET_BUDGETS_DATA = 'RESET_BUDGETS_DATA';
 export const SET_TRIGGER_CHANGE = 'SET_TRIGGER_CHANGE';
 
@@ -61,6 +62,11 @@ export const requestBudgetSaveNewVersion = () => ({
 export const receiveBudgetSaveNewVersion = version => ({
     type: RECEIVE_BUDGETS_SAVE_NEW_VERSION,
     version,
+});
+
+export const filterSetup = filters => ({
+    type: SET_FILTER_SETUP,
+    filters,
 });
 
 export const triggerChange = () => ({

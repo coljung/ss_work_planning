@@ -7,12 +7,14 @@ import {
          RECEIVE_SPREAD_DATA,
          REQUEST_BUDGETS_SAVE_NEW_VERSION,
          RECEIVE_BUDGETS_SAVE_NEW_VERSION,
+         SET_FILTER_SETUP,
          SET_TRIGGER_CHANGE,
          RESET_BUDGETS_DATA,
      } from './BudgetViewActions';
 
 const initialState = {
     config: {},
+    filters: [],
     isBudgetLoading: false,
     isDataSpreading: false,
     isRefreshRequired: false,
@@ -63,6 +65,10 @@ export default (state = initialState, action) => {
             return Object.assign({}, state, {
                 newVersion: action.version,
                 versions: [action.version, ...state.versions],
+            });
+        case SET_FILTER_SETUP:
+            return Object.assign({}, state, {
+                filters: action.filters,
             });
         case SET_TRIGGER_CHANGE:
             return Object.assign({}, state, {
