@@ -18,6 +18,7 @@ import { historyUndo, historyRedo } from './history/HistoryActions';
 
 import TopDownSection from './sections/top-down/TopDownSection';
 import MiddleOutSection from './sections/middle-out/MiddleOutSection';
+import filterData from './components/ManageFilters';
 import { ROUTE_BUDGET } from '../Routes';
 
 class BudgetViewsContainer extends Component {
@@ -50,8 +51,7 @@ class BudgetViewsContainer extends Component {
         getBudgetVersions(budgetId);
 
         // get config data, then fetch metrics based on config
-        const promise = fetchBudgetConfigData();
-        promise.then(this.getMetricData);
+        fetchBudgetConfigData().then(this.setFilters);
     }
 
     componentWillUnmount() {
@@ -67,32 +67,23 @@ class BudgetViewsContainer extends Component {
         if (nextProps.newVersion !== this.props.newVersion) {
             this.handleVersionChange(null, nextProps.newVersion);
         }
-        if (nextProps.isRefreshRequired && nextProps.isRefreshRequired !== this.props.isRefreshRequired) {
-            this.getMetricData();
+        if ((nextProps.isRefreshRequired && nextProps.isRefreshRequired !== this.props.isRefreshRequired) ||
+            nextProps.filters !== this.props.filters) {
+            this.getMetricData(nextProps.filters);
         }
     }
-    //
-    // newSpecs = (params, newVersion = null) => {
-    //     const { budgetId, seasonName, tab, sectionName } = params;
-    //     const versionId = newVersion ? newVersion.id : params.versionId;
-    //     const versionName = newVersion ? newVersion.name : params.versionName;
-    //
-    //     this.setState({
-    //         budgetId,
-    //         versionId,
-    //         seasonName,
-    //         versionName,
-    //         sectionName,
-    //         tab,
-    //     });
-    //
-    //     this.props.setGlobalData(budgetId, versionId, seasonName, versionName, tab);
-    // }
 
-    getMetricData = () => {
+    setFilters = () => {
+        const { config } = this.props;
+        // PLACEHOLDER FOR BETTER IMPLEMENTATION OF FILTERS
+        this.getMetricData();
+    }
+
+    getMetricData = (filters = null) => {
         const { budgetId, versionId, tab } = this.state;
         const { config, router: { location } } = this.props;
-        this.props.fetchBudgetMetricData(budgetId, versionId, tab, config.available_metrics, location.query);
+        // this.props.fetchBudgetMetricData(budgetId, versionId, tab, filters || ['Sales'], location.query);
+        this.props.fetchBudgetMetricData(budgetId, versionId, tab, filters || config.available_metrics, location.query);
     }
 
     saveNewVersion = (budget, version) => {
@@ -225,9 +216,10 @@ class BudgetViewsContainer extends Component {
 BudgetViewsContainer.propTypes = {
     params: PropTypes.object.isRequired,
     clearGlobalData: PropTypes.func.isRequired,
-    config: PropTypes.object,
+    config: PropTypes.object.isRequired,
     fetchBudgetConfigData: PropTypes.func.isRequired,
     fetchBudgetMetricData: PropTypes.func.isRequired,
+    filters: PropTypes.array.isRequired,
     getBudgetVersions: PropTypes.func.isRequired,
     globalBudgetId: PropTypes.string,
     globalSeasonName: PropTypes.string,
@@ -259,6 +251,7 @@ function mapStateToProps(state) {
 
     return {
         config: BudgetViewReducer.config,
+        filters: BudgetViewReducer.filters,
         globalBudgetId: CustomNavigationReducer.budgetId,
         globalSeasonName: CustomNavigationReducer.seasonName,
         globalTab: CustomNavigationReducer.view,

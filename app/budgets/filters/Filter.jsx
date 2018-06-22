@@ -3,7 +3,8 @@ import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Button, Icon, Modal, List, Checkbox, Row, Col, Tree } from 'antd';
-import { resetState } from '../../home/BudgetActions';
+import { filterSetup, fetchBudgetMetricData, triggerChange } from '../BudgetViewActions';
+import filterData from '../components/ManageFilters';
 
 const TreeNode = Tree.TreeNode;
 
@@ -21,47 +22,36 @@ class Filter extends Component {
 
     componentDidMount = () => {
         if (Object.keys(this.props.config).length) {
-            this.buildTreeData(this.props.config.available_metrics);
+            this.buildTreeData(this.props.config);
         }
     }
 
     componentWillReceiveProps = (nextProps) => {
         if (nextProps.config !== this.props.config) {
-            this.buildTreeData(nextProps.config.available_metrics);
+            this.buildTreeData(nextProps.config);
         }
     };
 
     buildTreeData = (availMetrics) => {
-        const tempTree = [];
-        const tempCheckedKeys = [];
-        availMetrics.forEach((e) => {
-            const createEntry = {};
-            createEntry.title = e;
-            createEntry.key = e.toLowerCase();
-            tempTree.push(createEntry);
-            tempCheckedKeys.push(createEntry.key);
-        });
+        const processedFilters = filterData(availMetrics);
         this.setState({
-            available_metrics: tempTree,
-            checkedKeys: tempCheckedKeys,
+            available_metrics: processedFilters.available_metrics,
+            checkedKeys: processedFilters.checkedKeys,
         });
     }
 
     onExpand = (expandedKeys) => {
-        // console.log('onExpand', arguments);
         // if not set autoExpandParent to false, if children expanded, parent can not collapse.
         // or, you can remove all expanded children keys.
         this.setState({
             autoExpandParent: false,
         });
     };
+
     onCheck = (checkedKeys) => {
         this.setState({ checkedKeys });
     };
-    onSelect = (selectedKeys, info) => {
-        // console.log('onSelect', info);
-        this.setState({ selectedKeys });
-    };
+
     renderTreeNodes = data => data.map((item) => {
         if (item.children) {
             return (
@@ -78,11 +68,11 @@ class Filter extends Component {
     }
 
     submitFilters = () => {
-        // debugger;
+        this.props.filterSetup(this.state.checkedKeys);
+        this.props.onOverlayClick();
     }
 
     render() {
-        console.log(this.props.config);
         const footerButtons = (
             <div>
                 <Button onClick={this.submitFilters} type='primary' size='large' id='filterButton'>
@@ -96,11 +86,11 @@ class Filter extends Component {
         const modalContent = (
             <Tree
                 checkable
+                selectable={false}
                 onExpand={this.onExpand}
                 autoExpandParent={this.state.autoExpandParent}
                 onCheck={this.onCheck}
                 checkedKeys={this.state.checkedKeys}
-                onSelect={this.onSelect}
                 selectedKeys={this.state.selectedKeys}>
                 {this.renderTreeNodes(this.state.available_metrics)}
             </Tree>
@@ -120,9 +110,11 @@ class Filter extends Component {
 }
 
 Filter.propTypes = {
-    visible: PropTypes.bool.isRequired,
-    onOverlayClick: PropTypes.func.isRequired,
     config: PropTypes.object,
+    filterSetup: PropTypes.func.isRequired,
+    onOverlayClick: PropTypes.func.isRequired,
+    triggerChange: PropTypes.func.isRequired,
+    visible: PropTypes.bool.isRequired,
 };
 
 function mapStateToProps(state) {
@@ -132,4 +124,12 @@ function mapStateToProps(state) {
     };
 }
 
-export default connect(mapStateToProps)(Filter);
+function mapDispatchToProps(dispatch) {
+    return bindActionCreators({
+        filterSetup,
+        fetchBudgetMetricData,
+        triggerChange,
+    }, dispatch);
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Filter);

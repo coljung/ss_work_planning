@@ -14,6 +14,7 @@ describe('BudgetViewReducer', () => {
     beforeEach(() => {
         initialState = {
             config: {},
+            filters: [],
             isBudgetLoading: false,
             isDataSpreading: false,
             isRefreshRequired: false,
@@ -124,6 +125,7 @@ describe('BudgetViewReducer', () => {
     it('should handle RECEIVE_BUDGETS_SAVE_NEW_VERSION', () => {
         const state = {
             config: {},
+            filters: [],
             isBudgetLoading: false,
             isDataSpreading: false,
             isRefreshRequired: false,
@@ -147,6 +149,18 @@ describe('BudgetViewReducer', () => {
             ]
         }))
     });
+
+    it('should handle SET_FILTER_SETUP', () => {
+        expect(
+            reducer(undefined, {
+                type: actions.SET_FILTER_SETUP,
+                filters: ['Cogs'],
+            })
+        ).toEqual(Object.assign({}, initialState, {
+            filters: ['Cogs'],
+        }))
+    });
+
 
     it('should handle SET_TRIGGER_CHANGE', () => {
         expect(
