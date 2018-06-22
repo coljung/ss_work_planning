@@ -83,9 +83,8 @@ class BudgetViewsContainer extends Component {
     getMetricData = (filters = null) => {
         const { budgetId, versionId, tab } = this.state;
         const { config, router: { location } } = this.props;
-        // this.props.fetchBudgetMetricData(budgetId, versionId, tab, config.available_metrics, location.query);
-        console.log(this.props);
-        this.props.fetchBudgetMetricData(budgetId, versionId, tab, filters || ['Sales'], location.query);
+        // this.props.fetchBudgetMetricData(budgetId, versionId, tab, filters || ['Sales'], location.query);
+        this.props.fetchBudgetMetricData(budgetId, versionId, tab, filters || config.available_metrics, location.query);
     }
 
     saveNewVersion = (budget, version) => {
