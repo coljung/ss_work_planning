@@ -75,7 +75,7 @@ class Filter extends Component {
     render() {
         const footerButtons = (
             <div>
-                <Button onClick={this.submitFilters} type='primary' size='large' id='filterButton'>
+                <Button onClick={this.submitFilters} disabled={!this.state.checkedKeys.length} type='primary' size='large' id='filterButton'>
                     Set Filters
                 </Button>
                 <Button onClick={this.closeModal} size='large' id='filterButton'>
