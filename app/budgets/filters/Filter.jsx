@@ -17,6 +17,7 @@ class Filter extends Component {
             checkedKeys: [],
             selectedKeys: [],
             available_metrics: [],
+            original_list: [],
         };
     }
 
@@ -36,6 +37,7 @@ class Filter extends Component {
         const processedFilters = filterData(availMetrics);
         this.setState({
             available_metrics: processedFilters.available_metrics,
+            original_list: processedFilters.checkedKeys,
             checkedKeys: processedFilters.checkedKeys,
         });
     }
@@ -68,7 +70,9 @@ class Filter extends Component {
     }
 
     submitFilters = () => {
-        this.props.filterSetup(this.state.checkedKeys);
+        // send filtered metrics in the same order they were provided
+        const orderedSelectedFilters = this.state.original_list.filter(val => this.state.checkedKeys.indexOf(val) !== -1);
+        this.props.filterSetup(orderedSelectedFilters);
         this.props.onOverlayClick();
     }
 
