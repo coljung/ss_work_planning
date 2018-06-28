@@ -1,4 +1,4 @@
-const newRelic = require('newrelic');
+require('newrelic');
 const path = require('path');
 const express = require('express');
 const cors = require('cors');
@@ -12,9 +12,9 @@ const apiPlanningBaseUrl = `http://${config.get('api.planning.host')}:${config.g
 
 const target = process.env.API_HOST || `http://${config.get('api.planning.host')}:${config.get('api.planning.port')}`;
 const proxy = httpProxy({
-  target,
-  changeOrigin: true,
-  pathRewrite: {'^/api' : ''} // <-- this will remove the /api prefix
+    target,
+    changeOrigin: true,
+    pathRewrite: { '^/api': '' }, // <-- this will remove the /api prefix
 });
 
 const app = express();
@@ -24,9 +24,9 @@ console.log('Basic Auth', config.get('auth.enabled'), {
 });
 
 if (config.get('auth.enabled')) {
-  app.use(basicAuth({
-      [config.get('auth.user')]: config.get('auth.password'),
-  }));
+    app.use(basicAuth({
+        [config.get('auth.user')]: config.get('auth.password'),
+    }));
 }
 
 app.use(cors());
