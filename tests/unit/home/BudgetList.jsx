@@ -25,7 +25,7 @@ function setup() {
     const initialState = {
         BudgetActions: [],
         BudgetReducer: {
-            budgets: budgets.data,
+            budgets: budgets,
             seasons,
             budgetsFetched: true,
             seasonsFetched: true

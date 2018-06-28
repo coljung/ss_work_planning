@@ -2,23 +2,24 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { Row, Col, Tabs, Dropdown, Icon } from 'antd';
+import { Row, Col, Dropdown, Icon } from 'antd';
 import BudgetVersionMenu from './components/BudgetVersionMenu';
 import BudgetViewsButtonActions from './components/BudgetViewsButtonActions';
-import SectionContainer from './sections/SectionContainer';
-import { refreshGridData } from './sections/SectionActions';
-import { budgetVersions, saveNewBudgetVersion } from './BudgetViewActions';
-import { switchGlobalData, clearGlobalData } from '../components/customNavigation/CustomNavigationActions';
-import { cellValueRenderer as commonCellValueRenderer } from './sections/top-down/CommonCellRenderer';
-import { cellValueRenderer as execCellValueRenderer } from './sections/top-down/ExecCellRenderer';
+import {
+        getBudgetVersions,
+        fetchBudgetConfigData,
+        fetchBudgetMetricData,
+        saveNewBudgetVersion,
+        sendDataForSpreading,
+        resetState,
+        triggerChange } from './BudgetViewActions';
+import { setGlobalData, clearGlobalData } from '../components/customNavigation/CustomNavigationActions';
 import { historyUndo, historyRedo } from './history/HistoryActions';
 
 import TopDownSection from './sections/top-down/TopDownSection';
 import MiddleOutSection from './sections/middle-out/MiddleOutSection';
+import filterData from './components/ManageFilters';
 import { ROUTE_BUDGET } from '../Routes';
-
-// Sub Component
-const TabPane = Tabs.TabPane;
 
 class BudgetViewsContainer extends Component {
     constructor(props, context) {
@@ -32,70 +33,69 @@ class BudgetViewsContainer extends Component {
             seasonName,
             versionName,
             sectionName,
-            activeTab: tab,
+            tab,
         };
 
-        this.props.switchGlobalData(budgetId, versionId, seasonName, versionName, tab);
+        // set global parameters for budgets
+        // Budget ID, Version ID, Season Name (SSXX/FWXX), Version name (VX), tab/view
+        this.props.setGlobalData(budgetId, versionId, seasonName, versionName, tab);
 
         this.handleTabChange = this.handleTabChange.bind(this);
-        this.handleVersionClick = this.handleVersionClick.bind(this);
+        this.handleVersionChange = this.handleVersionChange.bind(this);
     }
 
-    componentWillMount() {
-        const { budgetVersions, params: { budgetId } } = this.props; // eslint-disable-line no-shadow
-        budgetVersions(budgetId);
+    componentDidMount() {
+        const { getBudgetVersions, fetchBudgetConfigData, params: { budgetId } } = this.props; // eslint-disable-line no-shadow
+
+        // gets list of associated versions
+        getBudgetVersions(budgetId);
+
+        // get config data, then fetch metrics based on config
+        fetchBudgetConfigData().then(this.setFilters);
     }
 
     componentWillUnmount() {
         this.props.clearGlobalData();
+        this.props.resetState();
     }
 
     componentWillReceiveProps(nextProps) {
         if (nextProps.params.sectionName !== this.props.params.sectionName) {
-            // const { budgetId, versionId, seasonName, versionName, sectionName, tab } = nextProps.params;
-            // this.props.switchGlobalData(budgetId, versionId, seasonName, versionName, tab);
-            // this.setState({
-            //     budgetId,
-            //     versionId,
-            //     seasonName,
-            //     versionName,
-            //     sectionName,
-            //     activeTab: tab,
-            // });
-            this.newSpecs(nextProps.params);
-        } else if (nextProps.newVersion !== this.props.newVersion) {
-            this.handlePushRoute(true, false, nextProps.newVersion, null);
-            this.newSpecs(nextProps.params, nextProps.newVersion);
+            // this.newSpecs(nextProps.params);
+        }
+
+        if (nextProps.newVersion !== this.props.newVersion) {
+            this.handleVersionChange(null, nextProps.newVersion);
+        }
+        if ((nextProps.isRefreshRequired && nextProps.isRefreshRequired !== this.props.isRefreshRequired) ||
+            nextProps.filters !== this.props.filters) {
+            this.getMetricData(nextProps.filters);
         }
     }
 
-    newSpecs = (params, newVersion = null) => {
-        const { budgetId, seasonName, tab, sectionName } = params;
-        const versionId = newVersion ? newVersion.id : params.versionId;
-        const versionName = newVersion ? newVersion.name : params.versionName;
+    setFilters = () => {
+        const { config } = this.props;
+        // PLACEHOLDER FOR BETTER IMPLEMENTATION OF FILTERS
+        this.getMetricData();
+    }
 
-        this.setState({
-            budgetId,
-            versionId,
-            seasonName,
-            versionName,
-            sectionName,
-            activeTab: tab,
-        });
-
-        this.props.switchGlobalData(budgetId, versionId, seasonName, versionName, tab);
+    getMetricData = (filters = null) => {
+        const { budgetId, versionId, tab } = this.state;
+        const { config, router: { location } } = this.props;
+        // this.props.fetchBudgetMetricData(budgetId, versionId, tab, filters || ['Sales'], location.query);
+        this.props.fetchBudgetMetricData(budgetId, versionId, tab, filters || config.available_metrics, location.query);
     }
 
     saveNewVersion = (budget, version) => {
         this.props.saveNewBudgetVersion(budget, version);
     };
 
-    handlePushRoute = (useNextProps, switchVersion, newVersion = null, newTab = null) => {
+    handlePushRoute = (newVersion = null, newTab = null) => {
         const { router } = this.props;
         const { budgetId, seasonName, sectionName } = this.state;
 
-        const versionName = useNextProps || switchVersion ? newVersion.name : this.state.versionName;
-        const versionId = useNextProps || switchVersion ? newVersion.id : this.state.versionId;
+        const versionName = newVersion ? newVersion.name : this.state.versionName;
+        const versionId = newVersion ? newVersion.id : this.state.versionId;
         const tab = newTab || this.props.params.tab;
 
         router.push(`${ROUTE_BUDGET}/${seasonName}/${budgetId}/version/${versionName}/${versionId}/${sectionName}/${tab}`);
@@ -105,30 +105,36 @@ class BudgetViewsContainer extends Component {
         const { budgetId, versionId } = this.state;
         const { historyUndo, historyRedo, params: { tab } } = this.props; // eslint-disable-line no-shadow
         const data = historyMove === 'undo' ? historyUndo(tab) : historyRedo(tab);
-        this.props.refreshGridData(budgetId, versionId, tab, data);
+        this.props.sendDataForSpreading(budgetId, versionId, tab, data);
     }
 
-    handleVersionClick(event) {
-        const { item: { props: { version } } } = event;
+    handleVersionChange(event, newVersion = null) {
         const { budgetId, seasonName, tab } = this.state;
+        const version = newVersion || event.item.props.version;
 
         if (version.id !== this.state.versionId) {
-            this.setState({
-                versionId: version.id,
-                versionName: version.name,
-            });
+            this.setState(
+                {
+                    versionId: version.id,
+                    versionName: version.name,
+                }, () => this.props.triggerChange(),
+            );
 
-            this.handlePushRoute(false, true, version, null);
-            this.props.switchGlobalData(budgetId, version.id, seasonName, version.name, tab);
+            this.props.setGlobalData(budgetId, version.id, seasonName, version.name, tab);
+            this.handlePushRoute(version, null);
         }
     }
 
-    handleTabChange(newTabKey) {
-        // set true to load tabbed component
+    handleTabChange(newActiveTab) {
         const { budgetId, versionId, seasonName, versionName } = this.state;
+        this.setState(
+            {
+                tab: newActiveTab,
+            }, () => this.props.triggerChange(),
+        );
 
-        this.handlePushRoute(false, false, null, newTabKey);
-        this.props.switchGlobalData(budgetId, versionId, seasonName, versionName, newTabKey);
+        this.props.setGlobalData(budgetId, versionId, seasonName, versionName, newActiveTab);
+        this.handlePushRoute(null, newActiveTab);
     }
 
     getCurrentSection = (activeTab, globalBudgetId, globalVersionId) => {
@@ -138,6 +144,7 @@ class BudgetViewsContainer extends Component {
                     activeKey={activeTab}
                     changeTab={key => this.handleTabChange(key)}
                     budget={globalBudgetId}
+                    data={this.props.viewData}
                     tab={this.props.params.tab}
                     version={globalVersionId} />);
             case 'middle-out' :
@@ -145,6 +152,7 @@ class BudgetViewsContainer extends Component {
                     activeKey={activeTab}
                     changeTab={key => this.handleTabChange(key)}
                     budget={globalBudgetId}
+                    data={this.props.viewData}
                     tab={this.props.params.tab}
                     version={globalVersionId} />);
             default:
@@ -153,7 +161,8 @@ class BudgetViewsContainer extends Component {
     }
 
     render() {
-        if (!this.props.budgetView) {
+        // make sure config is loaded before moving forward
+        if (!Object.keys(this.props.config).length) {
             return null;
         }
 
@@ -165,13 +174,13 @@ class BudgetViewsContainer extends Component {
             globalVersionName,
             versions,
             history,
-            loadingBudget,
+            isBudgetLoading,
         } = this.props;
 
         // undo disabled / enabled ?
         const viewHistory = history[this.props.params.tab];
-        const undoDisabled = viewHistory && !loadingBudget ? viewHistory.past.length <= 0 : true;
-        const redoDisabled = viewHistory && !loadingBudget ? viewHistory.future.length <= 0 : true;
+        const undoDisabled = viewHistory && !isBudgetLoading ? viewHistory.past.length <= 0 : true;
+        const redoDisabled = viewHistory && !isBudgetLoading ? viewHistory.future.length <= 0 : true;
         const currentSection = this.getCurrentSection(this.props.params.tab, globalBudgetId, globalVersionId);
 
         return (
@@ -183,7 +192,7 @@ class BudgetViewsContainer extends Component {
                                 versions={versions}
                                 currentSeason={globalSeasonName}
                                 currentVersion={globalVersionName}
-                                handleClick={this.handleVersionClick} />
+                                handleClick={this.handleVersionChange} />
                         </Col>
                         <Col span={16} className="col">
                             <BudgetViewsButtonActions
@@ -206,23 +215,31 @@ class BudgetViewsContainer extends Component {
 
 BudgetViewsContainer.propTypes = {
     params: PropTypes.object.isRequired,
-    newVersion: PropTypes.object,
-    saveNewBudgetVersion: PropTypes.func.isRequired,
-    budgetVersions: PropTypes.func.isRequired,
-    switchGlobalData: PropTypes.func.isRequired,
     clearGlobalData: PropTypes.func.isRequired,
-    versions: PropTypes.array.isRequired,
-    router: PropTypes.object,
-    history: PropTypes.object,
-    refreshGridData: PropTypes.func.isRequired,
-    historyUndo: PropTypes.func.isRequired,
-    historyRedo: PropTypes.func.isRequired,
-    budgetView: PropTypes.bool.isRequired,
+    config: PropTypes.object.isRequired,
+    fetchBudgetConfigData: PropTypes.func.isRequired,
+    fetchBudgetMetricData: PropTypes.func.isRequired,
+    filters: PropTypes.array.isRequired,
+    getBudgetVersions: PropTypes.func.isRequired,
     globalBudgetId: PropTypes.string,
-    globalVersionId: PropTypes.string,
     globalSeasonName: PropTypes.string,
+    globalVersionId: PropTypes.string,
     globalVersionName: PropTypes.string,
-    loadingBudget: PropTypes.bool.isRequired,
+    history: PropTypes.object,
+    historyRedo: PropTypes.func.isRequired,
+    historyUndo: PropTypes.func.isRequired,
+    isBudgetLoading: PropTypes.bool.isRequired,
+    isRefreshRequired: PropTypes.bool.isRequired,
+    newVersion: PropTypes.object,
+    resetState: PropTypes.func.isRequired,
+    router: PropTypes.object,
+    saveNewBudgetVersion: PropTypes.func.isRequired,
+    sendDataForSpreading: PropTypes.func.isRequired,
+    setGlobalData: PropTypes.func.isRequired,
+    versions: PropTypes.array.isRequired,
+    view: PropTypes.string,
+    viewData: PropTypes.oneOfType([PropTypes.array, PropTypes.object]).isRequired,
+    triggerChange: PropTypes.func.isRequired,
 };
 
 function mapStateToProps(state) {
@@ -230,32 +247,39 @@ function mapStateToProps(state) {
         BudgetViewReducer,
         HistoryReducer,
         CustomNavigationReducer,
-        SectionReducers,
     } = state;
 
     return {
+        config: BudgetViewReducer.config,
+        filters: BudgetViewReducer.filters,
+        globalBudgetId: CustomNavigationReducer.budgetId,
+        globalSeasonName: CustomNavigationReducer.seasonName,
+        globalTab: CustomNavigationReducer.view,
+        globalVersionId: CustomNavigationReducer.versionId,
+        globalVersionName: CustomNavigationReducer.versionName,
+        history: HistoryReducer,
+        isBudgetLoading: BudgetViewReducer.isBudgetLoading,
+        isRefreshRequired: BudgetViewReducer.isRefreshRequired,
         newVersion: BudgetViewReducer.newVersion,
         versions: BudgetViewReducer.versions,
-        history: HistoryReducer,
-        globalBudgetId: CustomNavigationReducer.budgetId,
-        globalVersionId: CustomNavigationReducer.versionId,
-        globalSeasonName: CustomNavigationReducer.seasonName,
-        globalVersionName: CustomNavigationReducer.versionName,
-        globalTab: CustomNavigationReducer.view,
-        budgetView: CustomNavigationReducer.budgetView,
-        loadingBudget: SectionReducers.loading,
+        view: BudgetViewReducer.view,
+        viewData: BudgetViewReducer.viewData,
     };
 }
 
 function mapDispatchToProps(dispatch) {
     return bindActionCreators({
-        budgetVersions,
-        saveNewBudgetVersion,
-        switchGlobalData,
         clearGlobalData,
-        historyUndo,
+        fetchBudgetConfigData,
+        fetchBudgetMetricData,
+        getBudgetVersions,
         historyRedo,
-        refreshGridData,
+        historyUndo,
+        resetState,
+        saveNewBudgetVersion,
+        sendDataForSpreading,
+        setGlobalData,
+        triggerChange,
     }, dispatch);
 }
 

@@ -46,6 +46,7 @@ exports[`App should render correctly 1`] = `
       >
         <CustomNavigation
           pathname="pathname"
+          triggerMenuCollapse={[Function]}
         />
       </div>
     </div>

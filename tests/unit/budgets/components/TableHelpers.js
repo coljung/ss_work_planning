@@ -30,7 +30,6 @@ describe('Helper functions', () => {
     describe('Numeric Format', () => {
         it('should return a numeric format', () => {
             expect(numericFormat).to.be.an('object');
-            console.log('----', numericFormat.pattern);
             expect(percentageFormat.pattern).to.contain(0);
         });
     });

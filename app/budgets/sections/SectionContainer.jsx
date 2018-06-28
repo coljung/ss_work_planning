@@ -6,11 +6,7 @@ import HotTable from 'react-handsontable';
 import { Button, Spin } from 'antd';
 import { withRouter } from 'react-router';
 import {
-    saveBudget,
-    fetchBudgetMetricData,
-    resetState,
-    fetchBudgetConfigData,
-    refreshGridData } from './SectionActions';
+    sendDataForSpreading } from '../BudgetViewActions';
 import { historyPush } from '../history/HistoryActions';
 import LoadingSpinner from '../../components/common/LoadingSpinner';
 
@@ -18,21 +14,17 @@ class SectionContainer extends Component {
     constructor(props) {
         super(props);
 
-        const { budget, version, view } = this.props;
-
         this.state = {
             data: [],
-            canSave: true,
             headers: [],
             info: {},
             season: '',
-            budget,
-            version,
-            view,
         };
 
         // set a reference to the Handsontable
         this.hotTableRef = null;
+
+        this.resize = this.resize.bind(this);
 
         this.resetScroll();
 
@@ -57,47 +49,26 @@ class SectionContainer extends Component {
         }
     };
 
-    componentDidMount() {
-        const promise = this.props.fetchBudgetConfigData();
-        promise.then(this.metricData);
-
+    componentWillMount() {
         // refresh grid on window resize
-        let resizeTimeout = '';
-        window.addEventListener('resize', (event) => {
-            clearTimeout(resizeTimeout);
-            resizeTimeout = setTimeout(() => {
-                this.resize();
-            }, 500);
-        });
+        this.resizeTimeout = '';
+        window.addEventListener('resize', this.resize, false);
     }
 
     componentWillUnmount() {
-        this.props.resetState();
-        window.removeEventListener('resize', this.resize);
+        // this.props.resetState();
+        window.removeEventListener('resize', this.resize, false);
     }
 
     componentWillReceiveProps = (nextProps) => {
-        const setData = nextProps.viewData ? nextProps.viewData[nextProps.view] : {};
-        // console.log(nextProps);
-        if (this.props.viewData.length !== setData && !!setData) {
+        const setData = nextProps.data ? nextProps.data[nextProps.view] : {};
+        if (this.props.data.length !== setData && !!setData) {
             this.setState({
                 headers: setData.headers,
                 data: setData.data,
                 info: setData.info,
                 season: setData.info.season,
             });
-        }
-
-        if (nextProps.refreshData) {
-            this.metricData();
-        }
-
-        if (nextProps.version !== this.props.version) {
-            this.setState(
-                {
-                    version: nextProps.version,
-                }, () => this.metricData(),
-            );
         }
     };
 
@@ -108,12 +79,11 @@ class SectionContainer extends Component {
         this.scrollPosTop = 0;
     }
 
-    resize = () => this.hotTableRef.hotInstance.render();
-
-    metricData = () => {
-        const { budget, version, view } = this.state;
-        const { config, router: { location } } = this.props;
-        this.props.fetchBudgetMetricData(budget, version, view, config, location.query);
+    resize = () => {
+        clearTimeout(this.resizeTimeout);
+        this.resizeTimeout = setTimeout(() => {
+            this.hotTableRef.hotInstance.render();
+        }, 500);
     }
 
     /**
@@ -169,7 +139,7 @@ class SectionContainer extends Component {
             // handsontable converts to string
             if (parseFloat(prevValue, 10) !== parseFloat(newValue, 10)) {
                 const dataToSend = this.state.data[row][col[0]];
-                const { budget, version, view } = this.state;
+                const { budget, version, view } = this.props;
                 const { historyPush } = this.props; // eslint-disable-line no-shadow
                 const viewHistory = history[view];
 
@@ -181,7 +151,7 @@ class SectionContainer extends Component {
                 this.scrollPosTop = element.scrollTop;
                 this.scrollPosLeft = element.scrollLeft;
 
-                this.props.refreshGridData(budget, version, view, dataToSend)
+                this.props.sendDataForSpreading(budget, version, view, dataToSend)
                     .then((res) => {
                         // Send old value into history for future undo
                         // TODO: Fix this
@@ -213,19 +183,31 @@ class SectionContainer extends Component {
 
     createColumnInfos(columns) {
         const renderer = this.props.cellRenderer ? this.props.cellRenderer.bind(this) : undefined;
-
         return columns.map(column => this.createColumn(column, renderer));
+    }
+
+    detectCollapse = () => {
+        const elem = document.getElementsByClassName('ant-layout-sider-collapsed');
+        if (!elem.length) {
+            const resizeTimeout = setInterval(() => {
+                if (elem.length) {
+                    this.resize();
+                    clearInterval(resizeTimeout);
+                }
+            }, 500);
+        }
     }
 
     buildTable = () => {
         const columnTitles = this.state.headers;
         const columnInfos = this.createColumnInfos(Object.getOwnPropertyNames(this.state.data.length ? this.state.data[0] : []));
-        const refreshLoad = this.props.spreadingData ? (<div className="refreshLoad"><LoadingSpinner /></div>) : null;
+        const refreshLoad = this.props.isDataSpreading ? (<div className="refreshLoad"><LoadingSpinner /></div>) : null;
         return (
-            <div className={`${this.state.view}-view parentDiv`}>
+            <div className={`${this.props.view}-view parentDiv`}>
                 {refreshLoad}
                 <HotTable
                     afterChange={this.changeCell}
+                    afterRender={this.detectCollapse}
                     colHeaders={true}
                     rowHeaders={true}
                     columns={columnInfos}
@@ -250,9 +232,8 @@ class SectionContainer extends Component {
     };
 
     render() {
-        const budgetListData = this.props.viewData[this.props.view] && !this.props.refreshData ? this.buildTable() : <LoadingSpinner />;
-        let buttonStr = this.props.view;
-        buttonStr = `${buttonStr.charAt(0).toUpperCase()}${buttonStr.slice(1)}`;
+        const { data, view, isBudgetLoading } = this.props;
+        const budgetListData = data[view] && !isBudgetLoading ? this.buildTable() : <LoadingSpinner />;
 
         return (
             <div>
@@ -263,45 +244,32 @@ class SectionContainer extends Component {
 }
 
 SectionContainer.propTypes = {
-    viewData: PropTypes.oneOfType([PropTypes.array, PropTypes.object]).isRequired,
-    viewDataFetched: PropTypes.bool.isRequired,
-    saveBudget: PropTypes.func.isRequired,
-    fetchBudgetMetricData: PropTypes.func.isRequired,
-    resetState: PropTypes.func.isRequired,
     budget: PropTypes.string.isRequired,
-    version: PropTypes.string.isRequired,
-    location: PropTypes.object.isRequired,
-    view: PropTypes.string.isRequired,
-    router: PropTypes.object.isRequired,
     cellRenderer: PropTypes.func,
-    fetchBudgetConfigData: PropTypes.func.isRequired,
-    refreshGridData: PropTypes.func.isRequired,
-    refreshData: PropTypes.bool.isRequired,
-    spreadingData: PropTypes.bool.isRequired,
-    config: PropTypes.array,
+    data: PropTypes.oneOfType([PropTypes.array, PropTypes.object]).isRequired,
     history: PropTypes.object.isRequired,
     historyPush: PropTypes.func.isRequired,
+    isBudgetLoading: PropTypes.bool.isRequired,
+    isDataSpreading: PropTypes.bool.isRequired,
+    location: PropTypes.object.isRequired,
+    router: PropTypes.object.isRequired,
+    sendDataForSpreading: PropTypes.func.isRequired,
+    version: PropTypes.string.isRequired,
+    view: PropTypes.string.isRequired,
 };
 
 function mapStateToProps(state) {
-    const { SectionReducers, HistoryReducer } = state;
+    const { BudgetViewReducer, HistoryReducer } = state;
     return {
-        viewData: SectionReducers.viewData,
-        viewDataFetched: SectionReducers.viewDataFetched,
-        config: SectionReducers.config.available_metrics,
-        refreshData: SectionReducers.refreshData,
-        spreadingData: SectionReducers.spreadingData,
         history: HistoryReducer,
+        isBudgetLoading: BudgetViewReducer.isBudgetLoading,
+        isDataSpreading: BudgetViewReducer.isDataSpreading,
     };
 }
 
 function mapDispatchToProps(dispatch) {
     return bindActionCreators({
-        fetchBudgetMetricData,
-        resetState,
-        saveBudget,
-        fetchBudgetConfigData,
-        refreshGridData,
+        sendDataForSpreading,
         historyPush,
     }, dispatch);
 }

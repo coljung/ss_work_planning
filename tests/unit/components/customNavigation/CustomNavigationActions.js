@@ -1,15 +1,12 @@
-import { GLOBAL_DATA, CLEAR_GLOBAL_DATA, switchGlobalData, clearGlobalData } from '../../../../app/components/customNavigation/CustomNavigationActions';
+import { GLOBAL_DATA, CLEAR_GLOBAL_DATA, setGlobalData, clearGlobalData } from '../../../../app/components/customNavigation/CustomNavigationActions';
 
 describe('CustomNavigationActions', () => {
 
     it('should handle GLOBAL_DATA', () => {
-        expect(switchGlobalData(43, 23, 'SS', 'V2', 'men' )).toEqual({
+        const options = [43, 23, 'SS', 'V2', 'men'];
+        expect(setGlobalData(43, 23, 'SS', 'V2', 'men')).toEqual({
             type: GLOBAL_DATA,
-            budgetId: 43,
-            versionId: 23,
-            seasonName: 'SS',
-            versionName: 'V2',
-            view: 'men',
+            options: [43, 23, 'SS', 'V2', 'men'],
         });
     });
 

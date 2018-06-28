@@ -1,34 +1,12 @@
 import React from 'react';
-import sinon from 'sinon';
-import { expect } from 'chai';
-import { shallow } from 'enzyme';
-import { Menu } from 'antd';
+import renderer from 'react-test-renderer';
 import NavigationUser from '../../../../app/components/common/NavigationUser';
 
-const Item = Menu.Item;
-let sandbox;
-
-describe.skip('<NavigationUser />', () => {
-    beforeAll(() => {
-        sandbox = sinon.sandbox.create();
-    });
-
-    afterEach(() => {
-        sandbox.restore();
-    });
-
-    it('should render base layout', () => {
-        const wrapper = shallow(<NavigationUser />);
-
-        const items = wrapper.find(Item);
-        expect(items).to.have.lengthOf(1);
-        expect(wrapper.find(Menu)).to.have.lengthOf(1);
-    });
-
-    it('simulate click event', () => {
-        const wrapper = shallow(<NavigationUser />);
-
-        expect(wrapper.state('current')).to.equal('');
-        wrapper.find(Menu).simulate('click', { key: 'logout' });
+describe('<NavigationUser />', () => {
+    it.skip('should render base layout', () => {
+        const app = renderer.create(
+            <NavigationUser />
+        );
+        expect(app).toMatchSnapshot()
     });
 });
