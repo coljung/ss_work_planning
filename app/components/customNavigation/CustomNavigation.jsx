@@ -45,7 +45,7 @@ class CustomNavigation extends Component {
                     </Tooltip>
                 </Menu.Item>
                 <Menu.Divider />
-                <SubMenu
+                {/* <SubMenu
                     key='sub2'
                     disabled={configLoaded}
                     title={<span><Icon type="mail" /><span>Top Down</span></span>}>
@@ -159,6 +159,7 @@ class CustomNavigation extends Component {
                     <Menu.Item key="sub5-2">Reporting-2</Menu.Item>
                     <Menu.Item key="sub5-2">Reporting-3</Menu.Item>
                 </SubMenu>
+                */}
             </Menu>
         );
     }
