@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Button, Modal, Select, Spin, Radio } from 'antd';
 import { createBudget, fetchAvailableSeasons, resetState } from './BudgetActions';
-import LoadingOverlay from '../components/common/LoadingOverlay';
+import LoadingSpinner from '../components/common/LoadingSpinner';
 
 const Option = Select.Option;
 const RadioGroup = Radio.Group;
@@ -112,7 +112,7 @@ export class BudgetCreate extends Component {
                 {this.createModalContent()}
             </Modal>
         );
-        const createBudgetContent = this.props.budgetCreateFetched ? modal : <LoadingOverlay text='Creating Budget...'/>;
+        const createBudgetContent = this.props.budgetCreateFetched ? modal : <LoadingSpinner classUsed='loadingOverlay' text='Creating Budget...'/>;
         return (createBudgetContent);
     }
 }
