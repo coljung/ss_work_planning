@@ -17,6 +17,7 @@ function setup() {
         visible: true,
         onOverlayClick: jest.fn(),
         fetchAvailableSeasons: jest.fn(),
+        budgetCreateFetched: true,
         createBudget: jest.fn(),
         resetState: jest.fn(),
     }
