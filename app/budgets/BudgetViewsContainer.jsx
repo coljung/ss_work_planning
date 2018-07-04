@@ -82,6 +82,7 @@ class BudgetViewsContainer extends Component {
     getMetricData = (filters = null) => {
         const { budgetId, versionId, tab } = this.state;
         const { config, router: { location } } = this.props;
+        // debugger;
         // this.props.fetchBudgetMetricData(budgetId, versionId, tab, filters || ['Sales'], location.query);
         this.props.fetchBudgetMetricData(budgetId, versionId, tab, filters || config.available_metrics, location.query);
     }
@@ -138,22 +139,25 @@ class BudgetViewsContainer extends Component {
     }
 
     getCurrentSection = (activeTab, globalBudgetId, globalVersionId) => {
+        const { params: { tab }, viewData, location: { query } } = this.props;
         switch (this.state.sectionName) {
             case 'top-down':
                 return (<TopDownSection
                     activeKey={activeTab}
                     changeTab={key => this.handleTabChange(key)}
                     budget={globalBudgetId}
-                    data={this.props.viewData}
-                    tab={this.props.params.tab}
+                    data={viewData}
+                    tab={tab}
+                    query={query}
                     version={globalVersionId} />);
             case 'middle-out' :
                 return (<MiddleOutSection
                     activeKey={activeTab}
                     changeTab={key => this.handleTabChange(key)}
                     budget={globalBudgetId}
-                    data={this.props.viewData}
-                    tab={this.props.params.tab}
+                    data={viewData}
+                    tab={tab}
+                    query={query}
                     version={globalVersionId} />);
             default:
                 return null;
