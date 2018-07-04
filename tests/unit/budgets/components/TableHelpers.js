@@ -15,8 +15,10 @@ import {
 describe('Helper functions', () => {
     describe('Currency Format', () => {
         it('should return a currency format', () => {
-            expect(currencyFormat).to.be.an('object');
-            expect(currencyFormat.pattern).to.contain('$');
+            // expect(currencyFormat).to.be.an('object');
+            const tt = currencyFormat();
+            console.log('------', tt);
+            expect(tt.pattern).to.contain('$');
         });
     });
 

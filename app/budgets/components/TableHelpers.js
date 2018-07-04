@@ -25,11 +25,11 @@ export const borderBottom = (row, rowSpan, td) => {
     }
 };
 
-export const leftHandColors = (column, prop, td) => {
-    if (prop.indexOf(column) !== -1) {
-        td.className += ' leftHandColors';
-    }
-};
+// export const leftHandColors = (column, prop, td) => {
+//     if (prop.indexOf(column) !== -1) {
+//         td.className += ' leftHandColors';
+//     }
+// };
 
 // grid color
 export const gridColors = (dataRow, td) => {
