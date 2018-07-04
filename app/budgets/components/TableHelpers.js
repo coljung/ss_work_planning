@@ -1,9 +1,9 @@
 import moment from 'moment';
 
-export const currencyFormat = {
-    pattern: '$0,000',
+export const currencyFormat = (decimals = false) => ({
+    pattern: decimals ? '$0,000.00' : '$0,000',
     culture: 'en-US',
-};
+});
 
 export const percentageFormat = {
     pattern: '0%',

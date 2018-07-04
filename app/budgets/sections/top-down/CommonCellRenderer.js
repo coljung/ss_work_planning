@@ -23,6 +23,7 @@ const leftHandColumns = [
 export function cellValueRenderer(instance, td, row, col, prop, value, cellProperties) {
     // styling border for each metric
     const rowSpan = this.state.info.row_span;
+    // console.log(this.props.location.query);
     borderBottom(row, rowSpan, td);
 
     const propertyPath = prop;
@@ -79,12 +80,14 @@ export function cellValueRenderer(instance, td, row, col, prop, value, cellPrope
         }
 
         switch (metricInformation.dataType) {
-            case 'currency':
-                instance.setCellMeta(row, col, 'numericFormat', currencyFormat);
+            case 'currency': {
+                // eslint-disable-next-line no-unneeded-ternary
+                const decimals = this.props.location.query.decimals === 'yes' ? true : false;
+                instance.setCellMeta(row, col, 'numericFormat', currencyFormat(decimals));
                 // eslint-disable-next-line prefer-rest-params
                 Handsontable.renderers.NumericRenderer.apply(this, arguments);
                 break;
-
+            }
             case 'percentage':
                 instance.setCellMeta(row, col, 'numericFormat', percentageFormat);
                 // eslint-disable-next-line prefer-rest-params
