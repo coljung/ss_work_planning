@@ -1,24 +1,33 @@
 import Handsontable from 'handsontable';
 import { TAB_TOTAL } from './TopDownSection';
 import {
-    enableCellValidDate,
-    disableEdit,
-    enableEdit,
-    emptyCell,
-    percentageFormat,
-    numericFormat,
     borderBottom,
+    currencyFormat,
+    disableEdit,
+    emptyCell,
+    enableCellValidDate,
+    enableEdit,
     gridColors,
-    currencyFormat } from '../../components/TableHelpers';
+    leftHandColors,
+    numericFormat,
+    percentageFormat,
+ } from '../../components/TableHelpers';
+
+const leftHandColumns = [
+    'pre_mrkdn',
+    'pre_mrkdn_incr',
+    'full',
+    'full_incr',
+];
 
 export function cellValueRenderer(instance, td, row, col, prop, value, cellProperties) {
     // styling border for each metric
     const rowSpan = this.state.info.row_span;
-    borderBottom(row, rowSpan, td, col);
+    borderBottom(row, rowSpan, td);
 
     const propertyPath = prop;
-    const split = propertyPath.split('.');
-    const metricInformation = this.state.data[row][split[0]];
+    const colName = propertyPath.split('.');
+    const metricInformation = this.state.data[row][colName[0]];
 
     if (metricInformation) {
         if (metricInformation.isReadOnly !== undefined) {
@@ -35,6 +44,8 @@ export function cellValueRenderer(instance, td, row, col, prop, value, cellPrope
             }
         }
     }
+
+    leftHandColors(colName[0], leftHandColumns, td);
 
     if (this.props.view === TAB_TOTAL) {
         disableEdit(instance, row, col);
@@ -53,6 +64,10 @@ export function cellValueRenderer(instance, td, row, col, prop, value, cellPrope
             enableEdit(instance, row, col - 1);
         }
         */
+    }
+
+    if (colName[0] === 'previous') {
+        td.className += ' leftCellBorder';
     }
 
     if (metricInformation && metricInformation.dataType !== undefined) {

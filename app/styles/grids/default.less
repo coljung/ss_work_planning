@@ -63,11 +63,17 @@
                 font-weight: bold;
                 // background-color: #eef9ed;
             }
-            td.htDimmed.htNumeric {
-              color: @ssense_grey;
-            }
-            td.cellNA {
-                color: #777 !important;
+            td {
+                border-color: #ddd;
+                &.leftHandColors{
+                    background-color: #f4f4f4;
+                }
+                &.cellNA {
+                    color: #777 !important;
+                }
+                &.htDimmed.htNumeric {
+                    color: @ssense_grey;
+                }
             }
             .ht_clone_top_left_corner {
               tr:last-child th{
