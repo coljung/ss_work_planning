@@ -45,7 +45,7 @@ export function cellValueRenderer(instance, td, row, col, prop, value, cellPrope
         }
     }
 
-    leftHandColors(colName[0], leftHandColumns, td);
+    // leftHandColors(colName[0], leftHandColumns, td);
 
     if (this.props.view === TAB_TOTAL) {
         disableEdit(instance, row, col);
