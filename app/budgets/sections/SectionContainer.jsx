@@ -209,7 +209,7 @@ class SectionContainer extends Component {
                     afterChange={this.changeCell}
                     afterRender={this.detectCollapse}
                     colHeaders={true}
-                    rowHeaders={true}
+                    rowHeaders={false}
                     columns={columnInfos}
                     contextMenu={false}
                     currentColClassName={'currentCol'}
