@@ -13,12 +13,13 @@ import LoadingSpinner from '../../components/common/LoadingSpinner';
 class SectionContainer extends Component {
     constructor(props) {
         super(props);
-
         this.state = {
             data: [],
             headers: [],
             info: {},
             season: '',
+            // eslint-disable-next-line no-unneeded-ternary
+            decimals: this.props.location.query.decimals === 'yes' ? true : false,
         };
 
         // set a reference to the Handsontable

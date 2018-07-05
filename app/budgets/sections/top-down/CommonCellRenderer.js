@@ -81,10 +81,7 @@ export function cellValueRenderer(instance, td, row, col, prop, value, cellPrope
 
         switch (metricInformation.dataType) {
             case 'currency': {
-                // eslint-disable-next-line no-unneeded-ternary
-                // console.log(this.props.location);
-                const decimals = this.props.location.query.decimals === 'yes' ? true : false;
-                instance.setCellMeta(row, col, 'numericFormat', currencyFormat(decimals));
+                instance.setCellMeta(row, col, 'numericFormat', currencyFormat(this.state.decimals));
                 // eslint-disable-next-line prefer-rest-params
                 Handsontable.renderers.NumericRenderer.apply(this, arguments);
                 break;

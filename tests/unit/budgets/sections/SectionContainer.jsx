@@ -16,15 +16,17 @@ const initialProps = {
     version: 'V1',
     view: 'men',
     data: {},
-    fetchBudgetMetricData: jest.fn(),
     BudgetViewReducer: {
         isBudgetLoading: false,
         isDataSpreading: false,
     },
     router: {
-        location: {},
+        location: {
+            query: {
+                decimals: 'yes',
+            }
+        },
     },
-    config: [],
 };
 
 const initialState = {
@@ -98,7 +100,6 @@ describe('Top Down SectionContainer', () => {
             },
             viewDataFetched: true,
         });
-
         expect(wrapper.find(HotTable)).to.have.lengthOf(1);
     });
 });
