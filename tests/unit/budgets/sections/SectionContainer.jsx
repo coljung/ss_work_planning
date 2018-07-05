@@ -100,7 +100,6 @@ describe('Top Down SectionContainer', () => {
             },
             viewDataFetched: true,
         });
-        console.log(wrapper.html());
         expect(wrapper.find(HotTable)).to.have.lengthOf(1);
     });
 });
