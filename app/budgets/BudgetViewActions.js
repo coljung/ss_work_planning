@@ -89,6 +89,10 @@ export function getBudgetVersions(budgetId) {
     };
 }
 
+export function getViewExportFile(budgetId, versionId, view) {
+    window.open(`${getApiUrl()}planning/budgets/${budgetId}/versions/${versionId}/${view}/metrics/export`);
+}
+
 export function fetchBudgetConfigData() {
     return (dispatch) => {
         dispatch(requestBudgetConfigData());

@@ -40,6 +40,7 @@ export default class BudgetViewsButtonActions extends Component {
                 <Button icon="switcher" onClick={this.toggleFilterModal}>Filter</Button>
                 <Button disabled={this.props.undoDisabled} onClick={this.props.onUndo} icon="left">Undo</Button>
                 <Button disabled={this.props.redoDisabled} onClick={this.props.onRedo} icon="right">Redo</Button>
+                <Button onClick={this.props.onExport} icon="export">Export</Button>
             </div>
         );
     }
@@ -51,4 +52,5 @@ BudgetViewsButtonActions.propTypes = {
     onUndo: PropTypes.func,
     redoDisabled: PropTypes.bool,
     onRedo: PropTypes.func,
+    onExport: PropTypes.func,
 };
