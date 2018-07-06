@@ -89,8 +89,13 @@ export function getBudgetVersions(budgetId) {
     };
 }
 
-export function getViewExportFile(budgetId, versionId, view) {
-    window.open(`${getApiUrl()}planning/budgets/${budgetId}/versions/${versionId}/${view}/metrics/export`);
+export function getViewExportFile(budgetId, versionId, view, metric) {
+    const metricList = metric.length > 1 ? metric.join(',') : metric;
+    const queryToSend = `metrics=${metricList}`;
+
+    const url = `${getApiUrl()}planning/budgets/${budgetId}/versions/${versionId}/${view}/metrics/export?${queryToSend}`;
+
+    window.open(url);
 }
 
 export function fetchBudgetConfigData() {
@@ -101,7 +106,7 @@ export function fetchBudgetConfigData() {
             .then(
             res => dispatch(receiveBudgetConfigData(res.body)),
             err => dispatch(messages({ content: err, response: err.response, isError: true })),
-            );
+        );
     };
 }
 

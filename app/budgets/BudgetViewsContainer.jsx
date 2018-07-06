@@ -91,7 +91,7 @@ class BudgetViewsContainer extends Component {
     };
 
     getExportedFile = (budget, version, view) => {
-        this.props.getViewExportFile(budget, version, view);
+        this.props.getViewExportFile(budget, version, view, this.props.filters);
     };
 
     handlePushRoute = (newVersion = null, newTab = null) => {
@@ -225,6 +225,7 @@ BudgetViewsContainer.propTypes = {
     config: PropTypes.object.isRequired,
     fetchBudgetConfigData: PropTypes.func.isRequired,
     fetchBudgetMetricData: PropTypes.func.isRequired,
+    getViewExportFile: PropTypes.func.isRequired,
     filters: PropTypes.array.isRequired,
     getBudgetVersions: PropTypes.func.isRequired,
     globalBudgetId: PropTypes.string,
