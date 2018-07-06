@@ -7,6 +7,7 @@ import BudgetVersionMenu from './components/BudgetVersionMenu';
 import BudgetViewsButtonActions from './components/BudgetViewsButtonActions';
 import {
         getBudgetVersions,
+        getViewExportFile,
         fetchBudgetConfigData,
         fetchBudgetMetricData,
         saveNewBudgetVersion,
@@ -87,6 +88,10 @@ class BudgetViewsContainer extends Component {
 
     saveNewVersion = (budget, version) => {
         this.props.saveNewBudgetVersion(budget, version);
+    };
+
+    getExportedFile = (budget, version, view) => {
+        this.props.getViewExportFile(budget, version, view, this.props.filters);
     };
 
     handlePushRoute = (newVersion = null, newTab = null) => {
@@ -201,6 +206,7 @@ class BudgetViewsContainer extends Component {
                               redoDisabled={redoDisabled}
                               onRedo={() => this.handleHistory('redo')}
                               saveNew={() => this.saveNewVersion(globalBudgetId, globalVersionId)}
+                              onExport={() => this.getExportedFile(globalBudgetId, globalVersionId, this.props.params.tab)}
                             />
                         </Col>
                     </Row>
@@ -219,6 +225,7 @@ BudgetViewsContainer.propTypes = {
     config: PropTypes.object.isRequired,
     fetchBudgetConfigData: PropTypes.func.isRequired,
     fetchBudgetMetricData: PropTypes.func.isRequired,
+    getViewExportFile: PropTypes.func.isRequired,
     filters: PropTypes.array.isRequired,
     getBudgetVersions: PropTypes.func.isRequired,
     globalBudgetId: PropTypes.string,
@@ -272,6 +279,7 @@ function mapDispatchToProps(dispatch) {
         clearGlobalData,
         fetchBudgetConfigData,
         fetchBudgetMetricData,
+        getViewExportFile,
         getBudgetVersions,
         historyRedo,
         historyUndo,
