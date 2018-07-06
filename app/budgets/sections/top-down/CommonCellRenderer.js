@@ -1,4 +1,4 @@
-import Handsontable from 'handsontable';
+import Handsontable from 'handsontable-pro';
 import { TAB_TOTAL } from './TopDownSection';
 import {
     borderBottom,
