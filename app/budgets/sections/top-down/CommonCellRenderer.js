@@ -20,7 +20,7 @@ const leftHandColumns = [
     'full_incr',
 ];
 
-export default function cellValueRenderer(instance, td, row, col, prop, value, cellProperties) {
+export function cellValueRenderer(instance, td, row, col, prop, value, cellProperties) {
     // styling border for each metric
     const rowSpan = this.state.info.row_span;
     // console.log(this.props.location.query);

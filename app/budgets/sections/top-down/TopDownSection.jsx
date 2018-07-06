@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Tabs } from 'antd';
 import SectionContainer from '../SectionContainer';
-import commonCellValueRenderer from './CommonCellRenderer';
-import execCellValueRenderer from './ExecCellRenderer';
+import { cellValueRenderer as commonCellValueRenderer } from './CommonCellRenderer';
+import { cellValueRenderer as execCellValueRenderer } from './ExecCellRenderer';
 
 // Sub Component
 const TabPane = Tabs.TabPane;

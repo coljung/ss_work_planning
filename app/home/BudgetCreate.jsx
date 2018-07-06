@@ -9,7 +9,8 @@ import LoadingSpinner from '../components/common/LoadingSpinner';
 const Option = Select.Option;
 const RadioGroup = Radio.Group;
 
-class BudgetCreate extends Component {
+export class BudgetCreate extends Component {
+
     constructor(props) {
         super(props);
         this.state = {

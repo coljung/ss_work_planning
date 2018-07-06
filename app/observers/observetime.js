@@ -1,19 +1,17 @@
-import newrelic from 'newrelic';
-
 export function observeAsyncTime(indicator) {
     return (
         target,
         propertyKey,
-        descriptor,
+        descriptor
     ) => {
         const method = descriptor.value;
         const key = indicator
             ? `Custom/${indicator}`
             : `Custom/${target.constructor.name}/${propertyKey}`;
 
-        descriptor.value = async (...args) => {
+        descriptor.value = async function() {
             const start = (new Date()).getTime();
-            const result = await method.call(this, ...args);
+            const result = await method.call(this, ...arguments);
             const end = (new Date()).getTime();
 
             // Record in NewRelic metric for analysis
@@ -34,14 +32,15 @@ export function observeTime(indicator) {
     return (target,
             propertyKey,
             descriptor) => {
+
         const method = descriptor.value;
         const key = indicator
             ? `Custom/${indicator}`
             : `Custom/${target.constructor.name}/${propertyKey}`;
 
-        descriptor.value = (...args) => {
+        descriptor.value = function () {
             const start = (new Date()).getTime();
-            const result = method.call(this, ...args);
+            const result = method.call(this, ...arguments);
             const end = (new Date()).getTime();
 
             // Record in NewRelic metric for analysis

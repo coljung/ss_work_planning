@@ -26,13 +26,22 @@ class BudgetHome extends Component {
         this.setState({
             createModalActive: !this.state.createModalActive,
         });
-    };
+    }
+
+    setButtonVisibility = (len) => {
+        console.log(len);
+        if (this.state.oldBudgetsAvailable) {
+            this.setState({
+                oldBudgetsAvailable: false,
+            });
+        }
+    }
 
     toggleViewArchivedModal = () => {
         this.setState({
             viewArchivedModalActive: !this.state.viewArchivedModalActive,
         });
-    };
+    }
 
     render() {
         return (
