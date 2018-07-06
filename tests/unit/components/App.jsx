@@ -6,7 +6,6 @@ import { shallow } from 'enzyme';
 import sinon from 'sinon';
 import renderer from 'react-test-renderer';
 import App from '../../../app/components/App';
-import HeaderContent from '../../../app/components/common/HeaderContent';
 
 let props;
 
@@ -14,6 +13,7 @@ describe('App', () => {
     beforeAll(() => {
         props = { location: { pathname: 'pathname' } };
     });
+
     it('should render correctly', () => {
         const app = renderer.create(
             <App location={{ pathname: 'pathname'}} />

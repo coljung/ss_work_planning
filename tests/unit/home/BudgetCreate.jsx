@@ -1,7 +1,7 @@
 import { join } from 'path';
 import nock from 'nock';
 import React from 'react'
-import Enzyme, { mount, shallow } from 'enzyme'
+import Enzyme, { mount } from 'enzyme'
 import Adapter from 'enzyme-adapter-react-16';
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk'
@@ -20,9 +20,9 @@ function setup() {
         budgetCreateFetched: true,
         createBudget: jest.fn(),
         resetState: jest.fn(),
-    }
+    };
 
-    const middlewares = [thunk]
+    const middlewares = [thunk];
     const mockStore = configureStore(middlewares);
 
     // Could be imported from app/home/BudgetReducer.js
@@ -79,7 +79,7 @@ function setupPureComponent() {
         fetchAvailableSeasons: jest.fn(),
         createBudget: jest.fn(),
         resetState: jest.fn()
-    }
+    };
 
     const enzymeWrapper = mount(<PureBudgetCreate {...props} />);
 

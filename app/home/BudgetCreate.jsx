@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { Button, Modal, Select, Spin, Radio } from 'antd';
+import { Button, Modal, Select, Radio } from 'antd';
 import { createBudget, fetchAvailableSeasons, resetState } from './BudgetActions';
 import LoadingSpinner from '../components/common/LoadingSpinner';
 
@@ -10,7 +10,6 @@ const Option = Select.Option;
 const RadioGroup = Radio.Group;
 
 export class BudgetCreate extends Component {
-
     constructor(props) {
         super(props);
         this.state = {
@@ -32,13 +31,13 @@ export class BudgetCreate extends Component {
             year: splitValue[1],
             season: splitValue[0],
         });
-    }
+    };
 
     onChange = (e) => {
         this.setState({
             createNewValue: e.target.value,
         });
-    }
+    };
 
     saveNewBudget = () => {
         const budget = {
@@ -48,12 +47,12 @@ export class BudgetCreate extends Component {
         };
         this.props.createBudget(budget);
         this.closeModal();
-    }
+    };
 
     closeModal = () => {
         this.props.resetState();
         this.props.onOverlayClick();
-    }
+    };
 
     createModalContent = () => {
         const { seasons } = this.props;
@@ -85,7 +84,7 @@ export class BudgetCreate extends Component {
                 {useData}
             </div>
         );
-    }
+    };
 
     render() {
         const footerButtons = (<div>

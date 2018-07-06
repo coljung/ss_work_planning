@@ -30,10 +30,6 @@ describe('History Actions', () => {
     it('Should test history undo', () => {
         store = mockStore({ HistoryReducer: {} });
         const view = 'men';
-        const expectedAction = {
-            type: actions.HISTORY_UNDO,
-            view
-        };
 
         store.dispatch(actions.historyUndo(view));
 
@@ -45,10 +41,6 @@ describe('History Actions', () => {
     it('Should test goForward', () => {
         store = mockStore({ HistoryReducer: {} });
         const view = 'men';
-        const expectedAction = {
-            type: actions.HISTORY_REDO,
-            view
-        };
 
         store.dispatch(actions.historyRedo(view));
 

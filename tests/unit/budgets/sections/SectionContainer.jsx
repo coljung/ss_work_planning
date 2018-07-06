@@ -30,7 +30,6 @@ const initialProps = {
 };
 
 const initialState = {
-    data: [],
     canSave: true,
     headers: [],
     info: {},

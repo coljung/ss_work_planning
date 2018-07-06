@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Layout, Icon } from 'antd';
-import { Content, Header, Sider } from 'antd/lib/layout';
 import HeaderContent from './common/HeaderContent';
 import CustomNavigation from './customNavigation/CustomNavigation';
 import NotificationManager from '../notifications/NotificationManager';
+
+const { Content, Header, Sider } = Layout;
 
 export default class App extends Component {
     constructor(props) {
@@ -30,6 +31,7 @@ export default class App extends Component {
             }, 7000);
         }
     }
+
     render() {
         const getClassname = this.props.location.pathname === '/' ? 'app_layout_home' : 'app_layout';
         return (

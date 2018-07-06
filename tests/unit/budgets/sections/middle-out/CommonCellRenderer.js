@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import Handsontable from 'handsontable';
-import { cellValueRenderer } from '../../../../../app/budgets/sections/middle-out/CommonCellRenderer';
+import cellValueRenderer from '../../../../../app/budgets/sections/middle-out/CommonCellRenderer';
 import * as sinon from 'sinon';
 import { currencyFormat, percentageFormat } from '../../../../../app/budgets/components/TableHelpers';
 
@@ -20,7 +20,7 @@ const createCell = (instance, row, col, data = {}, value = '', props = {}) => {
     let td = document.createElement('td');
 
     return cellValueRenderer.call(stateContainer, instance, td, row, col, 'prop', value, {});
-}
+};
 
 describe('Common view cell rendering', () => {
     it('should set readonly based on data', () => {
