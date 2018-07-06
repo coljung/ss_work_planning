@@ -281,10 +281,10 @@ describe('BudgetViewActions', () => {
         });
 
         it('Should handle getViewExportFile', () => {
-                const expectedAction = {
-                    type: actions.REQUEST_VIEW_DOWNLOAD
-                };
-                expect(actions.requestViewDownload()).toEqual(expectedAction);
-            });
+            const expectedAction = {
+                type: actions.REQUEST_VIEW_DOWNLOAD
+            };
+            expect(actions.requestViewDownload()).toEqual(expectedAction);
+        });
     });
 });
