@@ -68,6 +68,14 @@ exports[`BudgetViewsButtonActions should render base layout 1`] = `
     prefixCls="ant-btn"
   >
     Redo
+    </Button>
+  <Button
+    ghost={false}
+    icon="export"
+    loading={false}
+    prefixCls="ant-btn"
+  >
+    Export
   </Button>
 </div>
 `;
