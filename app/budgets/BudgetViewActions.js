@@ -102,9 +102,7 @@ export function getViewExportFile(budgetId, versionId, view, metric) {
     return (dispatch) => {
         const metricList = metric.length > 1 ? metric.join(',') : metric;
         const queryToSend = `metrics=${metricList}`;
-
         const url = `${getApiUrl()}planning/budgets/${budgetId}/versions/${versionId}/${view}/metrics/export?${queryToSend}`;
-
         window.open(url);
 
         return dispatch(requestViewDownload(budgetId, versionId, view, metric));
