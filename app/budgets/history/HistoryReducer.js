@@ -1,7 +1,6 @@
 import { HISTORY_UNDO, HISTORY_REDO, HISTORY_PUSH } from './HistoryActions';
 import { CLEAR_GLOBAL_DATA } from '../../components/customNavigation/CustomNavigationActions';
-
-import { getView, push, pop, canGo, viewLength } from './utils';
+import getView, { push, pop, canGo, viewLength } from './utils';
 
 const initialState = {
     // men: {

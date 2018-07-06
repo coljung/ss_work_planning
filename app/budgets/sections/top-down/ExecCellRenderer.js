@@ -1,11 +1,11 @@
-import Handsontable from 'handsontable';
+import Handsontable from 'handsontable-pro';
 import {
     borderBottom,
     percentageFormat,
     currencyFormat,
     emptyCell } from '../../components/TableHelpers';
 
-export function cellValueRenderer(instance, td, row, col, prop, value, cellProperties) {
+export default function cellValueRenderer(instance, td, row, col, prop, value, cellProperties) {
     if ((row === 0 && col > 0) || (row === 5 && col > 1) || (row === 10 && col > 1)) {
         td.style.background = '#eee';
     }

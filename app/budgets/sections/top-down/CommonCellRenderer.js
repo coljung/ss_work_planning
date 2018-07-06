@@ -1,4 +1,4 @@
-import Handsontable from 'handsontable';
+import Handsontable from 'handsontable-pro';
 import { TAB_TOTAL } from './TopDownSection';
 import {
     borderBottom,
@@ -20,7 +20,7 @@ const leftHandColumns = [
     'full_incr',
 ];
 
-export function cellValueRenderer(instance, td, row, col, prop, value, cellProperties) {
+export default function cellValueRenderer(instance, td, row, col, prop, value, cellProperties) {
     // styling border for each metric
     const rowSpan = this.state.info.row_span;
     // console.log(this.props.location.query);

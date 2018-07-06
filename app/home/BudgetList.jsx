@@ -10,7 +10,6 @@ import LoadingSpinner from '../components/common/LoadingSpinner';
 import { ROUTE_BUDGET } from '../Routes';
 
 export default class BudgetList extends Component {
-
     constructor(props) {
         super(props);
         this.restOfBudgets = '';
