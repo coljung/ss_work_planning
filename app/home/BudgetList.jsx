@@ -1,16 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
 import { Link } from 'react-router';
-import { Button, Modal, Spin, Row, Col } from 'antd';
-import PopoverBudgetLink from './PopoverBudgetLink';
+import { Modal } from 'antd';
 import LoadingSpinner from '../components/common/LoadingSpinner';
 
 import { ROUTE_BUDGET } from '../Routes';
 
 export default class BudgetList extends Component {
-
     constructor(props) {
         super(props);
         this.restOfBudgets = '';
@@ -26,7 +22,7 @@ export default class BudgetList extends Component {
         }
 
         return 0;
-    }
+    };
 
     archiveBudgetList = (oldBudgets) => {
         // take rest of  4 budgets
@@ -39,7 +35,7 @@ export default class BudgetList extends Component {
                 </h4>
             </li>,
         );
-    }
+    };
 
     recentBudgetList = (budgets) => {
         const hasVersions = budgets
@@ -74,7 +70,7 @@ export default class BudgetList extends Component {
         }
 
         return recentBudgets;
-    }
+    };
 
     createList = () => {
         const { budgets } = this.props;
@@ -85,7 +81,7 @@ export default class BudgetList extends Component {
                 {budgetListContent}
             </ul>
         );
-    }
+    };
 
     render() {
         const budgetListData = this.props.budgetsFetched ? this.createList() : <LoadingSpinner />;

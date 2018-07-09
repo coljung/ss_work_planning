@@ -14,7 +14,6 @@ exports[`MiddleOutSection should render base layout 1`] = `
     tab="Brand Groups Women"
   >
     <Connect(withRouter(SectionContainer))
-      cellRenderer={[Function]}
       key="bg-women"
       view="bg-women"
     />
