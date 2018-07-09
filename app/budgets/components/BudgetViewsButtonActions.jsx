@@ -12,12 +12,12 @@ export default class BudgetViewsButtonActions extends Component {
             filterModalActive: false,
         };
     }
+
     toggleFilterModal = () => {
         this.setState({
             filterModalActive: !this.state.filterModalActive,
         });
-    }
-
+    };
 
     render() {
         return (

@@ -18,6 +18,8 @@
       }
     ],
     "no-param-reassign": ["error", { "props": false }],
-    "max-len": [1, 180, 2]
+    "import/no-extraneous-dependencies": 1,
+    "import/no-named-as-default": 0,
+    "max-len": 0
   }
 }

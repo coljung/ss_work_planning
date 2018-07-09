@@ -1,7 +1,6 @@
 import { expect } from 'chai';
 import Handsontable from 'handsontable';
-// import { cellValueRenderer } from 'views/sections/top-down/ExecCellRenderer';
-import { cellValueRenderer } from '../../../../../app/budgets/sections/top-down/ExecCellRenderer';
+import cellValueRenderer from '../../../../../app/budgets/sections/top-down/ExecCellRenderer';
 import * as sinon from 'sinon';
 import { currencyFormat, percentageFormat } from '../../../../../app/budgets/components/TableHelpers';
 
@@ -19,7 +18,7 @@ const createCell = (instance, row, col, data = {}, value = '') => {
     let td = document.createElement('td');
 
     return cellValueRenderer.call(stateContainer, instance, td, row, col, 'prop', value, {});
-}
+};
 
 describe('Exec view cell rendering', () => {
     it('should set a different background for some rows and cols', () => {

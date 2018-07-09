@@ -3,14 +3,13 @@ import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import HotTable from 'react-handsontable';
-import { Button, Spin } from 'antd';
 import { withRouter } from 'react-router';
 import {
     sendDataForSpreading } from '../BudgetViewActions';
 import { historyPush } from '../history/HistoryActions';
 import LoadingSpinner from '../../components/common/LoadingSpinner';
 
-class SectionContainer extends Component {
+export class SectionContainer extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -19,7 +18,7 @@ class SectionContainer extends Component {
             info: {},
             season: '',
             // eslint-disable-next-line no-unneeded-ternary
-            decimals: this.props.location.query.decimals === 'yes' ? true : false,
+            decimals: this.props.location.query.decimals === 'yes',
         };
 
         // set a reference to the Handsontable
@@ -78,14 +77,14 @@ class SectionContainer extends Component {
         this.column = 0;
         this.scrollPosLeft = 0;
         this.scrollPosTop = 0;
-    }
+    };
 
     resize = () => {
         clearTimeout(this.resizeTimeout);
         this.resizeTimeout = setTimeout(() => {
             this.hotTableRef.hotInstance.render();
         }, 500);
-    }
+    };
 
     /**
      *  Handsontable Change cell row index
@@ -153,7 +152,7 @@ class SectionContainer extends Component {
                 this.scrollPosLeft = element.scrollLeft;
 
                 this.props.sendDataForSpreading(budget, version, view, dataToSend)
-                    .then((res) => {
+                    .then(() => {
                         // Send old value into history for future undo
                         // TODO: Fix this
                         // I did this because if the second+ edited cell is not the same
@@ -180,7 +179,7 @@ class SectionContainer extends Component {
         readOnly: false,
         type: 'text',
         renderer,
-    })
+    });
 
     createColumnInfos(columns) {
         const renderer = this.props.cellRenderer ? this.props.cellRenderer.bind(this) : undefined;
@@ -197,7 +196,7 @@ class SectionContainer extends Component {
                 }
             }, 500);
         }
-    }
+    };
 
     buildTable = () => {
         const columnTitles = this.state.headers;

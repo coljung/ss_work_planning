@@ -1,8 +1,8 @@
 import { expect } from 'chai';
 import Handsontable from 'handsontable';
-import { cellValueRenderer } from '../../../../../app/budgets/sections/top-down/CommonCellRenderer';
+import cellValueRenderer from '../../../../../app/budgets/sections/top-down/CommonCellRenderer';
 import * as sinon from 'sinon';
-import { currencyFormat, percentageFormat, numericFormat } from '../../../../../app/budgets/components/TableHelpers';
+import { percentageFormat, numericFormat } from '../../../../../app/budgets/components/TableHelpers';
 import { TAB_TOTAL } from '../../../../../app/budgets/sections/top-down/TopDownSection';
 
 const createCell = (instance, row, col, data = {}, value = '', props = {}) => {
@@ -23,7 +23,7 @@ const createCell = (instance, row, col, data = {}, value = '', props = {}) => {
     let td = document.createElement('td');
 
     return cellValueRenderer.call(stateContainer, instance, td, row, col, 'prop', value, {});
-}
+};
 
 describe('Common view cell rendering', () => {
     it('should set readonly based on data', () => {

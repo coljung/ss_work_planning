@@ -1,5 +1,5 @@
 import { defaultView } from './HistoryReducer';
-import { getView } from './utils';
+import getView from './utils';
 
 export const HISTORY_UNDO = 'HISTORY_UNDO';
 export const HISTORY_REDO = 'HISTORY_REDO';

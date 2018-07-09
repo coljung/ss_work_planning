@@ -30,6 +30,7 @@ export default class App extends Component {
             }, 7000);
         }
     }
+
     render() {
         const getClassname = this.props.location.pathname === '/' ? 'app_layout_home' : 'app_layout';
         return (
