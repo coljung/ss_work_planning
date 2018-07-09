@@ -29,6 +29,8 @@ notifications:
     - 'Compare: <%{compare_url}|%{commit}>'
     - 'Duration: %{duration} - Elapsed time: %{elapsed_time}'
     - 'Result: %{result}: %{message}'
+    on_success: change
+    on_failure: always
 env:
   global:
   - COMMIT_HASH=${TRAVIS_COMMIT::8}
