@@ -18,6 +18,15 @@ export const RECEIVE_BUDGETS_SAVE_NEW_VERSION = 'RECEIVE_BUDGETS_SAVE_NEW_VERSIO
 export const SET_FILTER_SETUP = 'SET_FILTER_SETUP';
 export const RESET_BUDGETS_DATA = 'RESET_BUDGETS_DATA';
 export const SET_TRIGGER_CHANGE = 'SET_TRIGGER_CHANGE';
+export const REQUEST_VIEW_DOWNLOAD = 'REQUEST_VIEW_DOWNLOAD';
+
+export const requestViewDownload = (budgetId, versionId, view, metric) => ({
+    type: REQUEST_VIEW_DOWNLOAD,
+    budgetId,
+    versionId,
+    view,
+    metric,
+});
 
 export const requestBudgetVersions = () => ({
     type: REQUEST_BUDGETS_VERSIONS,
@@ -90,12 +99,14 @@ export function getBudgetVersions(budgetId) {
 }
 
 export function getViewExportFile(budgetId, versionId, view, metric) {
-    const metricList = metric.length > 1 ? metric.join(',') : metric;
-    const queryToSend = `metrics=${metricList}`;
+    return (dispatch) => {
+        const metricList = metric.length > 1 ? metric.join(',') : metric;
+        const queryToSend = `metrics=${metricList}`;
+        const url = `${getApiUrl()}planning/budgets/${budgetId}/versions/${versionId}/${view}/metrics/export?${queryToSend}`;
+        window.open(url);
 
-    const url = `${getApiUrl()}planning/budgets/${budgetId}/versions/${versionId}/${view}/metrics/export?${queryToSend}`;
-
-    window.open(url);
+        return dispatch(requestViewDownload(budgetId, versionId, view, metric));
+    };
 }
 
 export function fetchBudgetConfigData() {

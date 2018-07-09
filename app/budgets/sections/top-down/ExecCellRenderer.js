@@ -1,4 +1,4 @@
-import Handsontable from 'handsontable-pro';
+import Handsontable from 'handsontable';
 import {
     borderBottom,
     percentageFormat,
