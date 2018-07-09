@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import HotTable from 'react-handsontable';
+import { HotTable } from '@handsontable-pro/react';
 import { Button, Spin } from 'antd';
 import { withRouter } from 'react-router';
 import {

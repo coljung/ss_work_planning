@@ -2,7 +2,7 @@ import { expect } from 'chai';
 import Enzyme, { mount } from 'enzyme'
 import Adapter from 'enzyme-adapter-react-16';
 import React from 'react';
-import HotTable from 'react-handsontable';
+import { HotTable } from '@handsontable-pro/react';
 import { MemoryRouter } from 'react-router-dom';
 import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'

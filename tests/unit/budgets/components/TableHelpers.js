@@ -17,22 +17,21 @@ describe('Helper functions', () => {
         it('should return a currency format', () => {
             // expect(currencyFormat).to.be.an('object');
             const tt = currencyFormat();
-            console.log('------', tt);
-            expect(tt.pattern).to.contain('$');
+            expect(tt.pattern.output).to.contain('currency');
         });
     });
 
     describe('Percentage Format', () => {
         it('should return a percentage format', () => {
             expect(percentageFormat).to.be.an('object');
-            expect(percentageFormat.pattern).to.contain('%');
+            expect(percentageFormat.pattern.output).to.contain('percent');
         });
     });
 
     describe('Numeric Format', () => {
         it('should return a numeric format', () => {
             expect(numericFormat).to.be.an('object');
-            expect(percentageFormat.pattern).to.contain(0);
+            expect(numericFormat.pattern).to.contain(0);
         });
     });
 
