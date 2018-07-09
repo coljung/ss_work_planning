@@ -31,7 +31,7 @@ exports[`App should render correctly 1`] = `
     className="ant-layout ant-layout-has-sider"
   >
     <div
-      className="ant-layout-sider ant-layout-sider-collapsed"
+      className="ant-layout-sider ant-layout-sider-dark ant-layout-sider-collapsed"
       style={
         Object {
           "flex": "0 0 80px",
