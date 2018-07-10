@@ -1,15 +1,15 @@
 export const getMetricName = (metric) => {
     switch (metric) {
-        case 'BOM COST': return 'BOP';
-        case 'RECEIVED COST': return 'RECEIPT $';
-        case 'RECEIPT %': return 'RECEIPT %';
-        case 'COGS': return 'COGS';
-        case 'SALES': return 'SALES';
-        case 'GM$': return 'GM$';
-        case 'GM%': return 'GM%';
-        case 'TURNOVER': return 'TO';
-        case 'iRETAIL': return 'iSALES';
-        case 'iGM%': return 'iGM%';
+        case 'Bom': return 'BOP';
+        case 'Receipt': return 'RECEIPT $';
+        case 'ReceiptPercentage': return 'RECEIPT %';
+        case 'Cogs': return 'COGS';
+        case 'Sales': return 'SALES';
+        case 'GmDollar': return 'GM$';
+        case 'GmPercentage': return 'GM%';
+        case 'Turnover': return 'TO';
+        case 'iSales': return 'iSALES';
+        case 'iGmPercentage': return 'iGM%';
         default: return metric;
     }
 };

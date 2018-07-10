@@ -1,9 +1,11 @@
+import { getMetricName } from '../../resources/resourceHelper';
+
 const filterData = (configData) => {
     const tempTree = [];
     const tempCheckedKeys = [];
     configData.available_metrics.forEach((e) => {
         const createEntry = {};
-        createEntry.title = e;
+        createEntry.title = getMetricName(e);
         createEntry.key = e;
         // pending ms-planning ticket for metrics to not be case sensitive
         // createEntry.key = e.toLowerCase();

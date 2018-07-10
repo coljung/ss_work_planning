@@ -4,43 +4,43 @@ import { getDataRowName, getMetricName } from '../../../app/resources/resourceHe
 describe('Resource helper', () => {
     describe('getMetricName', () => {
         it('should return correct metric name', () => {
-            expect(getMetricName('BOM COST')).to.equal('BOP');
+            expect(getMetricName('Bom')).to.equal('BOP');
         });
 
         it('should return correct metric name', () => {
-            expect(getMetricName('RECEIVED COST')).to.equal('RECEIPT $');
+            expect(getMetricName('Receipt')).to.equal('RECEIPT $');
         });
 
         it('should return correct metric name', () => {
-            expect(getMetricName('RECEIPT %')).to.equal('RECEIPT %');
+            expect(getMetricName('ReceiptPercentage')).to.equal('RECEIPT %');
         });
 
         it('should return correct metric name', () => {
-            expect(getMetricName('COGS')).to.equal('COGS');
+            expect(getMetricName('Cogs')).to.equal('COGS');
         });
 
         it('should return correct metric name', () => {
-            expect(getMetricName('SALES')).to.equal('SALES');
+            expect(getMetricName('Sales')).to.equal('SALES');
         });
 
         it('should return correct metric name', () => {
-            expect(getMetricName('GM$')).to.equal('GM$');
+            expect(getMetricName('GmDollar')).to.equal('GM$');
         });
 
         it('should return correct metric name', () => {
-            expect(getMetricName('GM%')).to.equal('GM%');
+            expect(getMetricName('GmPercentage')).to.equal('GM%');
         });
 
         it('should return correct metric name', () => {
-            expect(getMetricName('TURNOVER')).to.equal('TO');
+            expect(getMetricName('Turnover')).to.equal('TO');
         });
 
         it('should return correct metric name', () => {
-            expect(getMetricName('iRETAIL')).to.equal('iSALES');
+            expect(getMetricName('iSales')).to.equal('iSALES');
         });
 
         it('should return correct metric name', () => {
-            expect(getMetricName('iGM%')).to.equal('iGM%');
+            expect(getMetricName('iGmPercentage')).to.equal('iGM%');
         });
 
         it('should return default same value', () => {
