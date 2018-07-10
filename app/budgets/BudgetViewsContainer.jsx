@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { Row, Col, Dropdown, Icon } from 'antd';
+import { Row, Col } from 'antd';
 import BudgetVersionMenu from './components/BudgetVersionMenu';
 import BudgetViewsButtonActions from './components/BudgetViewsButtonActions';
 import {
@@ -19,7 +19,6 @@ import { historyUndo, historyRedo } from './history/HistoryActions';
 
 import TopDownSection from './sections/top-down/TopDownSection';
 import MiddleOutSection from './sections/middle-out/MiddleOutSection';
-import filterData from './components/ManageFilters';
 import { ROUTE_BUDGET } from '../Routes';
 
 class BudgetViewsContainer extends Component {
@@ -78,13 +77,13 @@ class BudgetViewsContainer extends Component {
         const { config } = this.props;
         // PLACEHOLDER FOR BETTER IMPLEMENTATION OF FILTERS
         this.getMetricData();
-    }
+    };
 
     getMetricData = (filters = null) => {
         const { budgetId, versionId, tab } = this.state;
         const { config, router: { location } } = this.props;
         this.props.fetchBudgetMetricData(budgetId, versionId, tab, filters || config.available_metrics, location.query);
-    }
+    };
 
     saveNewVersion = (budget, version) => {
         this.props.saveNewBudgetVersion(budget, version);
@@ -103,14 +102,14 @@ class BudgetViewsContainer extends Component {
         const tab = newTab || this.props.params.tab;
 
         router.push(`${ROUTE_BUDGET}/${seasonName}/${budgetId}/version/${versionName}/${versionId}/${sectionName}/${tab}`);
-    }
+    };
 
     handleHistory = (historyMove) => {
         const { budgetId, versionId } = this.state;
         const { historyUndo, historyRedo, params: { tab } } = this.props; // eslint-disable-line no-shadow
         const data = historyMove === 'undo' ? historyUndo(tab) : historyRedo(tab);
         this.props.sendDataForSpreading(budgetId, versionId, tab, data);
-    }
+    };
 
     handleVersionChange(event, newVersion = null) {
         const { budgetId, seasonName, tab } = this.state;
@@ -163,7 +162,7 @@ class BudgetViewsContainer extends Component {
             default:
                 return null;
         }
-    }
+    };
 
     render() {
         // make sure config is loaded before moving forward

@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Tabs } from 'antd';
 import SectionContainer from '../SectionContainer';
-import commonCellValueRenderer from './CommonCellRenderer';
 
 // Sub Component
 const TabPane = Tabs.TabPane;
@@ -48,7 +47,6 @@ export default class MiddleOutSection extends Component {
                         <SectionContainer
                             budget={budget}
                             version={version}
-                            cellRenderer={commonCellValueRenderer}
                             key={TAB_BG_WOMEN}
                             view={TAB_BG_WOMEN}
                         />
@@ -59,7 +57,6 @@ export default class MiddleOutSection extends Component {
                         <SectionContainer
                             budget={budget}
                             version={version}
-                            cellRenderer={commonCellValueRenderer}
                             key={TAB_BG_MEN}
                             view={TAB_BG_MEN}
                         />

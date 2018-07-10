@@ -8,6 +8,7 @@ import {
     sendDataForSpreading } from '../BudgetViewActions';
 import { historyPush } from '../history/HistoryActions';
 import LoadingSpinner from '../../components/common/LoadingSpinner';
+import rowHeaderCellRenderer from './top-down/RowHeaderCellRenderer';
 
 export class SectionContainer extends Component {
     constructor(props) {
@@ -151,7 +152,10 @@ export class SectionContainer extends Component {
                 this.scrollPosTop = element.scrollTop;
                 this.scrollPosLeft = element.scrollLeft;
 
-                this.props.sendDataForSpreading(budget, version, view, dataToSend)
+                const metric = this.state.data[row].info.metric;
+                const dataRow = this.state.data[row].info.dataRow;
+
+                this.props.sendDataForSpreading(budget, version, view, { ...dataToSend, metric, dataRow })
                     .then(() => {
                         // Send old value into history for future undo
                         // TODO: Fix this
@@ -160,10 +164,10 @@ export class SectionContainer extends Component {
                         // same a first push
                         // this would cause a double undo / redo click when changing cell
                         if (this.lastEditCell !== cellEditKey) {
-                            historyPush(view, { ...dataToSend, value: +prevValue });
+                            historyPush(view, { ...dataToSend, value: +prevValue, metric, dataRow });
                         }
 
-                        historyPush(view, dataToSend);
+                        historyPush(view, { ...dataToSend, metric, dataRow });
 
                         this.lastEditCell = cellEditKey;
                     })
@@ -182,8 +186,20 @@ export class SectionContainer extends Component {
     });
 
     createColumnInfos(columns) {
+        const titleColumn = {
+            data: columns[0],
+            readOnly: true,
+            type: 'text',
+            renderer: rowHeaderCellRenderer.bind(this),
+        };
+
         const renderer = this.props.cellRenderer ? this.props.cellRenderer.bind(this) : undefined;
-        return columns.map(column => this.createColumn(column, renderer));
+        const valueColumns = columns.slice(1).map(column => this.createColumn(column, renderer));
+
+        return [
+            titleColumn,
+            ...valueColumns,
+        ];
     }
 
     detectCollapse = () => {
@@ -199,7 +215,6 @@ export class SectionContainer extends Component {
     };
 
     buildTable = () => {
-        const columnTitles = this.state.headers;
         const columnInfos = this.createColumnInfos(Object.getOwnPropertyNames(this.state.data.length ? this.state.data[0] : []));
         const refreshLoad = this.props.isDataSpreading ? (<div className="refreshLoad"><LoadingSpinner /></div>) : null;
         return (
@@ -211,6 +226,7 @@ export class SectionContainer extends Component {
                     colHeaders={true}
                     rowHeaders={false}
                     columns={columnInfos}
+                    colWidths={[160]}
                     contextMenu={false}
                     currentColClassName={'currentCol'}
                     currentRowClassName={'currentRow'}
@@ -219,7 +235,12 @@ export class SectionContainer extends Component {
                     fixedRowsTop={0}
                     formulas={false}
                     licenseKey='a389a-f2591-70b41-a480d-1911a'
-                    nestedHeaders={columnTitles}
+                    nestedHeaders={[
+                        [
+                            '&nbsp;', // For the first header column; an empty header makes a smaller cell than having a nbsp, so that's why we're setting this
+                            ...this.state.headers[0].slice(1),
+                        ],
+                    ]}
                     observeChanges={true}
                     persistentState={true}
                     ref={this.setHotTableRef}

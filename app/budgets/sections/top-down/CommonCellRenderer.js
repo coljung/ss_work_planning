@@ -5,9 +5,7 @@ import {
     currencyFormat,
     disableEdit,
     emptyCell,
-    enableCellValidDate,
     gridColors,
-    leftHandColors,
     numericFormat,
     percentageFormat,
  } from '../../components/TableHelpers';
@@ -15,11 +13,9 @@ import {
 export default function cellValueRenderer(instance, td, row, col, prop, value, cellProperties) {
     // styling border for each metric
     const rowSpan = this.state.info.row_span;
-    // console.log(this.props.location.query);
     borderBottom(row, rowSpan, td);
 
-    const propertyPath = prop;
-    const colName = propertyPath.split('.');
+    const colName = prop.split('.');
     const metricInformation = this.state.data[row][colName[0]];
 
     if (metricInformation) {
@@ -27,36 +23,16 @@ export default function cellValueRenderer(instance, td, row, col, prop, value, c
             instance.setCellMeta(row, col, 'readOnly', metricInformation.isReadOnly);
         }
 
-        if (metricInformation.dataRow === 'tdwp' || metricInformation.dataRow === 'achd') {
-            // get this from json TODO
-            const budgetYear = (this.state.info.year).slice(2, 4);
-            const currentRowValue = this.state.data[row].metric.value;
-            const currentRowSeason = currentRowValue.split('- ')[1].slice(2, 4);
-            if (budgetYear === currentRowSeason) {
-                gridColors(metricInformation.dataRow, td);
-            }
+        const rowInformation = this.state.data[row].info;
+        const rowYear = rowInformation.year.toString().slice(2, 4);
+        const budgetYear = this.state.info.year.slice(2, 4);
+        if (budgetYear === rowYear) {
+            gridColors(rowInformation.dataRow, td);
         }
     }
 
-    // leftHandColors(colName[0], leftHandColumns, td);
-
     if (this.props.view === TAB_TOTAL) {
         disableEdit(instance, row, col);
-        /*
-    } else if (col > 7) {
-        const currentRowSeasonYear = instance.getDataAtCell(row, 1);
-        const compareCodes = enableCellValidDate(prop, currentRowSeasonYear);
-
-        // if code combination of this cell's year + month greater than the actual month / year, then enable field
-        if (compareCodes.cellCode >= compareCodes.viewCode && this.props.view !== TAB_TOTAL) {
-            enableEdit(instance, row, col);
-        }
-
-        // similar logic to 'future', but here we check the next column instead of the previous
-        if (((this.state.season === 'FW' && prop === 'feb1') || (this.state.season === 'SS' && prop === 'aug0')) && this.props.view !== TAB_TOTAL) {
-            enableEdit(instance, row, col - 1);
-        }
-        */
     }
 
     if (colName[0] === 'previous') {
@@ -100,10 +76,6 @@ export default function cellValueRenderer(instance, td, row, col, prop, value, c
     } else {
         return emptyCell(instance, td, row, col);
     }
-
-    // disableRowCell(this.state.columnData.disabledRows || [], instance, row, col);
-    // percentageRow(this.state.columnData.percentageRows || [], instance, row, col);
-    // numberRow(this.state.columnData.numberRows || [], instance, row, col);
 
     return td;
 }
