@@ -91,12 +91,10 @@ export class BudgetCreate extends Component {
             <Button
                 onClick={this.saveNewBudget.bind(this)}
                 type='primary'
-                size='large'
                 id='createButtonSave' >Create Budget
             </Button>
             <Button
                 onClick={this.closeModal}
-                size='large'
                 id='createButtonSave' >Cancel
             </Button>
         </div>);

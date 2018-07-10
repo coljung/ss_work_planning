@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { Button, Icon, Modal, List, Checkbox, Row, Col, Tree } from 'antd';
-import { filterSetup, fetchBudgetMetricData, triggerChange } from '../BudgetViewActions';
+import { Button, Modal, Tree } from 'antd';
+import { filterSetup, triggerChange } from '../BudgetViewActions';
 import filterData from '../components/ManageFilters';
 
 const TreeNode = Tree.TreeNode;
@@ -25,7 +25,7 @@ class Filter extends Component {
         if (Object.keys(this.props.config).length) {
             this.buildTreeData(this.props.config);
         }
-    }
+    };
 
     componentWillReceiveProps = (nextProps) => {
         if (nextProps.config !== this.props.config) {
@@ -40,9 +40,9 @@ class Filter extends Component {
             original_list: processedFilters.checkedKeys,
             checkedKeys: processedFilters.checkedKeys,
         });
-    }
+    };
 
-    onExpand = (expandedKeys) => {
+    onExpand = () => {
         // if not set autoExpandParent to false, if children expanded, parent can not collapse.
         // or, you can remove all expanded children keys.
         this.setState({
@@ -67,22 +67,22 @@ class Filter extends Component {
 
     closeModal = () => {
         this.props.onOverlayClick();
-    }
+    };
 
     submitFilters = () => {
         // send filtered metrics in the same order they were provided
         const orderedSelectedFilters = this.state.original_list.filter(val => this.state.checkedKeys.indexOf(val) !== -1);
         this.props.filterSetup(orderedSelectedFilters);
         this.props.onOverlayClick();
-    }
+    };
 
     render() {
         const footerButtons = (
             <div>
-                <Button onClick={this.submitFilters} disabled={!this.state.checkedKeys.length} type='primary' size='large' id='filterButton'>
+                <Button onClick={this.submitFilters} disabled={!this.state.checkedKeys.length} type='primary' id='filterButton'>
                     Set Filters
                 </Button>
-                <Button onClick={this.closeModal} size='large' id='filterButton'>
+                <Button onClick={this.closeModal} id='filterButton'>
                     Cancel
                 </Button>
             </div>
@@ -100,15 +100,16 @@ class Filter extends Component {
             </Tree>
         );
         return (
-            this.state.available_metrics && <Modal
+            this.state.available_metrics &&
+            <Modal
                 title='Filters'
                 visible={this.props.visible}
                 className='filterModal'
                 width={800}
                 onCancel={this.closeModal}
                 footer={footerButtons}>
-            {modalContent}
-        </Modal>
+                {modalContent}
+            </Modal>
         );
     }
 }
@@ -131,7 +132,6 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
     return bindActionCreators({
         filterSetup,
-        fetchBudgetMetricData,
         triggerChange,
     }, dispatch);
 }
