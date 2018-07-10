@@ -79,10 +79,10 @@ class Filter extends Component {
     render() {
         const footerButtons = (
             <div>
-                <Button onClick={this.submitFilters} disabled={!this.state.checkedKeys.length} type='primary' size='large' id='filterButton'>
+                <Button onClick={this.submitFilters} disabled={!this.state.checkedKeys.length} type='primary' id='filterButton'>
                     Set Filters
                 </Button>
-                <Button onClick={this.closeModal} size='large' id='filterButton'>
+                <Button onClick={this.closeModal} id='filterButton'>
                     Cancel
                 </Button>
             </div>
@@ -100,15 +100,16 @@ class Filter extends Component {
             </Tree>
         );
         return (
-            this.state.available_metrics && <Modal
+            this.state.available_metrics &&
+            <Modal
                 title='Filters'
                 visible={this.props.visible}
                 className='filterModal'
                 width={800}
                 onCancel={this.closeModal}
                 footer={footerButtons}>
-            {modalContent}
-        </Modal>
+                {modalContent}
+            </Modal>
         );
     }
 }

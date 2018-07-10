@@ -1,4 +1,4 @@
-#app{
+#ms-planning{
     .ant-btn-xl {
       padding: 6px 20px 6px 15px;
       font-size: 1.8rem;
@@ -112,5 +112,40 @@
     .ant-dropdown.ant-dropdown-placement-bottomLeft.ant-dropdown-hidden,
     .ant-dropdown-menu-submenu.ant-dropdown-menu-submenu-popup.ant-dropdown-menu-light.ant-dropdown-menu-submenu-placement-rightTop {
         z-index: 999;
+    }
+
+    .ant-modal-content {
+        border-radius: 0;
+    }
+
+    .ant-tree-checkbox-inner {
+        border-radius: 0;
+    }
+    .ant-tree-checkbox-checked:after {
+        border-color: @ssense_black;
+        border-radius: 0;
+    }
+
+    .ant-tree-checkbox-checked .ant-tree-checkbox-inner,
+    .ant-tree-checkbox-indeterminate .ant-tree-checkbox-inner {
+        background-color: @ssense_black;
+        border-color: @ssense_black;
+    }
+
+    .ant-select-focused .ant-select-selection,
+    .ant-select-selection:active, .ant-select-selection:focus,
+    .ant-select-selection:hover,
+    .ant-radio-checked .ant-radio-inner,
+    .ant-radio-checked:after {
+        border-color: @ssense_black;
+    }
+    .ant-radio-inner:after {
+        background-color: @ssense_black;
+    }
+
+    .ant-select-dropdown-menu-item-active,
+    .ant-select-dropdown-menu-item:hover,
+    .ant-tree li .ant-tree-node-content-wrapper:hover {
+        background-color: #ddd;
     }
 }
