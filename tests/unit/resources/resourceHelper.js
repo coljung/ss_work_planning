@@ -4,11 +4,11 @@ import { getDataRowName, getMetricName } from '../../../app/resources/resourceHe
 describe('Resource helper', () => {
     describe('getMetricName', () => {
         it('should return correct metric name', () => {
-            expect(getMetricName('Bom')).to.equal('BOP');
+            expect(getMetricName('BOM COST')).to.equal('BOP');
         });
 
         it('should return correct metric name', () => {
-            expect(getMetricName('Receipt')).to.equal('RECEIPT $');
+            expect(getMetricName('RECEIVED COST')).to.equal('RECEIPT $');
         });
 
         it('should return correct metric name', () => {
@@ -16,11 +16,11 @@ describe('Resource helper', () => {
         });
 
         it('should return correct metric name', () => {
-            expect(getMetricName('Cogs')).to.equal('COGS');
+            expect(getMetricName('COGS')).to.equal('COGS');
         });
 
         it('should return correct metric name', () => {
-            expect(getMetricName('Sales')).to.equal('SALES');
+            expect(getMetricName('SALES')).to.equal('SALES');
         });
 
         it('should return correct metric name', () => {
@@ -32,11 +32,11 @@ describe('Resource helper', () => {
         });
 
         it('should return correct metric name', () => {
-            expect(getMetricName('Turnover')).to.equal('TO');
+            expect(getMetricName('TURNOVER')).to.equal('TO');
         });
 
         it('should return correct metric name', () => {
-            expect(getMetricName('iSales')).to.equal('iSALES');
+            expect(getMetricName('iRETAIL')).to.equal('iSALES');
         });
 
         it('should return correct metric name', () => {
