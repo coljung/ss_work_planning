@@ -25,14 +25,6 @@ export default class BudgetViewsButtonActions extends Component {
                 <Link to={ROUTE_DASHBOARD} >
                     <Button icon="arrow-left">Back</Button>
                 </Link>
-                <Popconfirm
-                    placement="top"
-                    title='Create new Budget version'
-                    okText="Yes"
-                    cancelText="Cancel"
-                    onConfirm={ this.props.saveNew }>
-                    <Button type="primary" icon="switcher">Save New Version</Button>
-                </Popconfirm>&nbsp;
                 <Filter
                     visible={this.state.filterModalActive}
                     onOverlayClick={this.toggleFilterModal.bind(this)} />
@@ -47,7 +39,6 @@ export default class BudgetViewsButtonActions extends Component {
 }
 
 BudgetViewsButtonActions.propTypes = {
-    saveNew: PropTypes.func.isRequired,
     undoDisabled: PropTypes.bool,
     onUndo: PropTypes.func,
     redoDisabled: PropTypes.bool,
