@@ -50,7 +50,7 @@ describe('Resource helper', () => {
 
     describe('getDataRowName', () => {
         it('should return correct data row name', () => {
-            expect(getDataRowName('tdwp')).to.equal('TDWP');
+            expect(getDataRowName('wp')).to.equal('WORKING PLAN');
         });
 
         it('should return correct data row name', () => {

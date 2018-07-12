@@ -63,13 +63,13 @@ describe('Helper functions', () => {
     describe('Grid Classes', () => {
         it('should return proper class for gridColors function', () => {
             const td = document.createElement("td");
-            gridColors('tdwp', td);
-            expect(td.className).to.contain(' tdwpActive');
+            gridColors('wp', td);
+            expect(td.className).to.contain(' wpActive');
             gridColors('achd', td);
             expect(td.className).to.contain(' actualActive');
             const td2 = document.createElement("td");
             gridColors('test', td2);
-            expect(td2.className).not.contain(' actualActive tdwpActive');
+            expect(td2.className).not.contain(' actualActive wpActive');
         });
     });
 
