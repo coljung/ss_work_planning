@@ -226,7 +226,7 @@ export class SectionContainer extends Component {
                     colHeaders={true}
                     rowHeaders={false}
                     columns={columnInfos}
-                    colWidths={[160]}
+                    colWidths={[205]}
                     contextMenu={false}
                     currentColClassName={'currentCol'}
                     currentRowClassName={'currentRow'}
