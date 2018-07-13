@@ -1,3 +1,4 @@
+import i18n from 'i18next';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Tabs } from 'antd';
@@ -39,8 +40,6 @@ export default class TopDownSection extends Component {
                 activeTab: nextProps.tab,
                 [nextProps.tab]: true,
             });
-
-            // this.props.changeTab(nextProps.tab);
         }
     }
 
@@ -73,7 +72,7 @@ export default class TopDownSection extends Component {
                         />
                     }
                 </TabPane>
-                <TabPane tab="Total" key={TAB_TOTAL}>
+                <TabPane tab={i18n.t('budgetView.totalTab')} key={TAB_TOTAL}>
                     {(activeTab === TAB_TOTAL) &&
                         <SectionContainer
                             budget={budget}
@@ -85,7 +84,7 @@ export default class TopDownSection extends Component {
                         />
                     }
                 </TabPane>
-                <TabPane tab="Women" key={TAB_WOMEN}>
+                <TabPane tab={i18n.t('budgetView.womenTab')} key={TAB_WOMEN}>
                     {(activeTab === TAB_WOMEN) &&
                         <SectionContainer
                             budget={budget}
@@ -97,7 +96,7 @@ export default class TopDownSection extends Component {
                         />
                     }
                 </TabPane>
-                <TabPane tab="Men" key={TAB_MEN}>
+                <TabPane tab={i18n.t('budgetView.menTab')} key={TAB_MEN}>
                     {(activeTab === TAB_MEN) &&
                         <SectionContainer
                             budget={budget}

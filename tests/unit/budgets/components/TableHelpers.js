@@ -11,13 +11,13 @@ import {
     numericFormat,
     gridColors,
     emptyCell } from '../../../../app/budgets/components/TableHelpers';
+import i18n from 'i18next';
 
 describe('Helper functions', () => {
     describe('Currency Format', () => {
         it('should return a currency format', () => {
             // expect(currencyFormat).to.be.an('object');
             const tt = currencyFormat();
-            console.log('------', tt);
             expect(tt.pattern).to.contain('$');
         });
     });
@@ -101,12 +101,17 @@ describe('Helper functions', () => {
 
     describe('Empty cell', () => {
         it('should return a cell with N/A', () => {
+            const spy = sinon.stub(i18n, 't');
+            spy.withArgs('notAvailable').returns('N/A');
+
             const instance = new Handsontable(document.createElement("div"));
             let td = new Handsontable(document.createElement("td"));
 
             td = emptyCell(instance, td, 0, 0);
 
             expect(td.innerHTML).to.equal('N/A');
+            expect(spy.called).to.equal(true);
+            expect(spy.getCall(0).args[0]).to.equal('notAvailable');
         });
 
         it('should return a cell with proper class', () => {

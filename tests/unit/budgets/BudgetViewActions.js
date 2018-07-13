@@ -2,15 +2,15 @@ import nock from 'nock';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import { join } from 'path';
-import getApiUrl from '../../../app/Helpers';
 import * as actions from '../../../app/budgets/BudgetViewActions';
-
 import configResponse from '../../fixtures/config.json';
 import versionsResponse from '../../fixtures/versions.json';
 import versionsDuplicate from '../../fixtures/versionsDuplicate.json';
+import sinon from 'sinon';
+import i18n from 'i18next';
 
-const middlewares = [thunk]
-const mockStore = configureMockStore(middlewares)
+const middlewares = [thunk];
+const mockStore = configureMockStore(middlewares);
 
 describe('BudgetViewActions', () => {
     afterEach(() => {
@@ -251,6 +251,9 @@ describe('BudgetViewActions', () => {
         });
 
         it('Should fail saveNewBudgetVersion', () => {
+            const i18nStub = sinon.stub(i18n, 't');
+            i18nStub.withArgs('notification.errorFound').returns('Error found');
+
             nock(UI_PLANNING_HOST)
             .post('/api/planning/budgets/2/versions', { versionId: 'V1' })
             .reply(500, {
@@ -277,7 +280,9 @@ describe('BudgetViewActions', () => {
             return store.dispatch(actions.saveNewBudgetVersion()).then(() => {
                 // return of async actions
                 expect(store.getActions()).toEqual(expectedActions)
-            })
+            });
+
+            i18nStub.restore();
         });
 
         it('Should handle getViewExportFile', () => {
