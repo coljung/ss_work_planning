@@ -52,5 +52,5 @@ metric:
   iRETAIL: 'iSALES'
   iGmPercentage: 'iGM%'
 plan:
-  tdwp: 'TDWP'
+  tdwp: 'WORKING PLAN'
   achd: 'Actual'

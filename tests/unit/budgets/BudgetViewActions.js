@@ -178,7 +178,7 @@ describe('BudgetViewActions', () => {
             nock(UI_PLANNING_HOST)
             .put('/api/planning/budgets/2/versions/V1/men/metrics', {
                 metric: "SALES",
-                dataRow: "tdwp",
+                dataRow: "wp",
                 value: "12",
                 key: "root.SALES.2018.2018.7",
                 dataType: "currency",
@@ -193,7 +193,7 @@ describe('BudgetViewActions', () => {
 
             return store.dispatch(actions.sendDataForSpreading(2, 'V1', 'men', {
                 metric: "SALES",
-                dataRow: "tdwp",
+                dataRow: "wp",
                 value: "12",
                 key: "root.SALES.2018.2018.7",
                 dataType: "currency",

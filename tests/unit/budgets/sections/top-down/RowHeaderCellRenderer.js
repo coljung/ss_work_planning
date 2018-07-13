@@ -31,13 +31,13 @@ describe('Common view cell rendering', () => {
     it('should set proper row header', () => {
         const i18nStub = sinon.stub(i18n, 't');
         i18nStub.withArgs('metric.SALES').returns('SALES');
-        i18nStub.withArgs('plan.tdwp').returns('TDWP');
+        i18nStub.withArgs('plan.wp').returns('WORKING PLAN');
 
         const instance = new Handsontable(document.createElement('div'));
 
-        const cell = createCell(instance, 0, 0, {}, '', {}, { year: 2018, season: 'SS', metric: 'SALES', dataRow: 'tdwp' });
+        const cell = createCell(instance, 0, 0, {}, '', {}, { year: 2018, season: 'SS', metric: 'SALES', dataRow: 'wp' });
 
-        expect(cell.innerHTML).to.equal('SALES - SS18 - TDWP');
+        expect(cell.innerHTML).to.equal('SALES - SS18 - WORKING PLAN');
 
         i18nStub.restore();
     });
@@ -55,12 +55,12 @@ describe('Common view cell rendering', () => {
         expect(spy.getCall(0).args[3]).to.equal(true);
     });
 
-    it('should set class when same year for tdwp', () => {
+    it('should set class when same year for wp', () => {
         const instance = new Handsontable(document.createElement('div'));
 
-        const cell = createCell(instance, 0, 0, { prop: { isReadOnly: true } }, '', {}, { year: 2018, season: 'SS', dataRow: 'tdwp' });
+        const cell = createCell(instance, 0, 0, { prop: { isReadOnly: true } }, '', {}, { year: 2018, season: 'SS', dataRow: 'wp' });
 
-        expect(cell.className).to.contain('tdwpActive');
+        expect(cell.className).to.contain('wpActive');
     });
 
     it('should set class when same year for achd', () => {
@@ -71,12 +71,12 @@ describe('Common view cell rendering', () => {
         expect(cell.className).to.contain('actualActive');
     });
 
-    it('should set not class when different year for tdwp', () => {
+    it('should set not class when different year for wp', () => {
         const instance = new Handsontable(document.createElement('div'));
 
-        const cell = createCell(instance, 0, 0, { prop: { isReadOnly: true } }, '', {}, { year: 2019, season: 'SS', dataRow: 'tdwp' });
+        const cell = createCell(instance, 0, 0, { prop: { isReadOnly: true } }, '', {}, { year: 2019, season: 'SS', dataRow: 'wp' });
 
-        expect(cell.className).to.not.contain('tdwpActive');
+        expect(cell.className).to.not.contain('wpActive');
     });
 
     it('should set not class when different year for achd', () => {

@@ -27,8 +27,8 @@ export const borderBottom = (row, rowSpan, td) => {
 
 // grid color
 export const gridColors = (dataRow, td) => {
-    if (dataRow === 'tdwp') {
-        td.className += ' tdwpActive';
+    if (dataRow === 'wp') {
+        td.className += ' wpActive';
     } else if (dataRow === 'achd') {
         td.className += ' actualActive';
     }
