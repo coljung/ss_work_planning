@@ -2,12 +2,8 @@ import nock from 'nock';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import { join } from 'path';
-import getApiUrl from '../../../app/Helpers';
 import * as actions from '../../../app/budgets/BudgetViewActions';
-
 import configResponse from '../../fixtures/config.json';
-import versionsResponse from '../../fixtures/versions.json';
-import versionsDuplicate from '../../fixtures/versionsDuplicate.json';
 
 const middlewares = [thunk]
 const mockStore = configureMockStore(middlewares)
@@ -92,68 +88,6 @@ describe('BudgetViewActions', () => {
                 type: actions.RESET_BUDGETS_DATA
             };
             expect(actions.resetState()).toEqual(expectedAction);
-        });
-
-        it('Should handle requestBudgetSaveNewVersion', () => {
-            const expectedAction = {
-                type: actions.REQUEST_BUDGETS_SAVE_NEW_VERSION
-            };
-            expect(actions.requestBudgetSaveNewVersion()).toEqual(expectedAction);
-        });
-
-        it('Should handle receiveBudgetSaveNewVersion', () => {
-            const version = {
-                foo: 'Bar'
-            };
-            const expectedAction = {
-                type: actions.RECEIVE_BUDGETS_SAVE_NEW_VERSION,
-                version
-            };
-            expect(actions.receiveBudgetSaveNewVersion(version)).toEqual(expectedAction);
-        });
-
-        it('Should handle getBudgetVersions', () => {
-            nock(UI_PLANNING_HOST)
-            .get('/api/planning/budgets/2/versions')
-            .query(true)
-            .replyWithFile(200, join(__dirname, '..', '..', 'fixtures', 'versions.json'), {
-                'Content-Type': 'application/json'
-            });
-
-            const expectedActions = [
-                { type: actions.REQUEST_BUDGETS_VERSIONS },
-                { type: actions.RECEIVE_BUDGETS_VERSIONS, versions: versionsResponse }
-            ];
-            const store = mockStore({ BudgetViewActions: [] });
-
-            return store.dispatch(actions.getBudgetVersions(2)).then(() => {
-                // return of async actions
-                expect(store.getActions()).toEqual(expectedActions)
-            })
-        });
-
-        it('Should fail to getBudgetVersions', () => {
-            nock(UI_PLANNING_HOST)
-            .get('/api/planning/budgets/2/versions')
-            .query(true)
-            .reply(500, {
-                code: 'Foo Bar',
-                message: 'Foo Bar'
-            }, {
-                'Content-Type': 'application/json'
-            });
-
-            const expectedActions = [
-                { type: actions.REQUEST_BUDGETS_VERSIONS },
-                { type: 'MESSAGES' }
-            ];
-
-            const store = mockStore({ BudgetViewActions: [] });
-
-            return store.dispatch(actions.getBudgetVersions(2)).then(() => {
-                // return of async actions
-                expect(store.getActions()).toMatchObject(expectedActions)
-            })
         });
 
         it('Should handle fetchBudgetConfigData', () => {
