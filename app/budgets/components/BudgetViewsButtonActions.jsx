@@ -1,17 +1,23 @@
 import i18n from 'i18next';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Button } from 'antd';
 import { Link } from 'react-router';
 import { ROUTE_DASHBOARD } from '../../Routes';
 import Filter from '../filters/Filter';
+import { filterSetup, triggerChange } from '../BudgetViewActions';
 
-export default class BudgetViewsButtonActions extends Component {
+class BudgetViewsButtonActions extends Component {
     constructor(props) {
         super(props);
         this.state = {
             filterModalActive: false,
         };
+
+        this.toggleFilterModal = this.toggleFilterModal.bind(this);
+        this.applyFilters = this.applyFilters.bind(this);
     }
 
     toggleFilterModal = () => {
@@ -20,15 +26,24 @@ export default class BudgetViewsButtonActions extends Component {
         });
     };
 
+    applyFilters = (filters) => {
+        this.props.filterSetup(filters);
+        this.toggleFilterModal();
+    };
+
     render() {
         return (
             <div className="budgetBtns">
                 <Link to={ROUTE_DASHBOARD} >
                     <Button icon="arrow-left">{i18n.t('budgetView.backButton')}</Button>
                 </Link>
+
                 <Filter
                     visible={this.state.filterModalActive}
-                    onOverlayClick={this.toggleFilterModal.bind(this)} />
+                    onCancel={this.toggleFilterModal}
+                    onSave={this.applyFilters}
+                    filters={this.props.config}
+                />
 
                 <Button icon="switcher" onClick={this.toggleFilterModal}>{i18n.t('budgetView.filter')}</Button>
                 <Button disabled={this.props.undoDisabled} onClick={this.props.onUndo} icon="left">{i18n.t('budgetView.undoButton')}</Button>
@@ -40,9 +55,28 @@ export default class BudgetViewsButtonActions extends Component {
 }
 
 BudgetViewsButtonActions.propTypes = {
+    filterSetup: PropTypes.func.isRequired,
+    config: PropTypes.object,
+
     undoDisabled: PropTypes.bool,
     onUndo: PropTypes.func,
     redoDisabled: PropTypes.bool,
     onRedo: PropTypes.func,
     onExport: PropTypes.func,
 };
+
+function mapStateToProps(state) {
+    const { BudgetViewReducer } = state;
+    return {
+        config: BudgetViewReducer.config,
+    };
+}
+
+function mapDispatchToProps(dispatch) {
+    return bindActionCreators({
+        filterSetup,
+        triggerChange,
+    }, dispatch);
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(BudgetViewsButtonActions);
