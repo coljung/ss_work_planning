@@ -158,61 +158,6 @@ describe('BudgetViewActions', () => {
             })
         });
 
-        it('Should handle saveNewBudgetVersion', () => {
-            nock(UI_PLANNING_HOST)
-            .post('/api/planning/budgets/2/versions', { versionId: 'V1' })
-            .reply(200, versionsDuplicate);
-
-            const message = {
-                content: 'New Version Saved successfully!',
-                isError: false,
-                messageType: 'success',
-                response: ''
-            };
-
-            const expectedActions = [
-                { type: actions.REQUEST_BUDGETS_SAVE_NEW_VERSION },
-                { type: 'MESSAGES', message},
-                { type: actions.RECEIVE_BUDGETS_SAVE_NEW_VERSION, version: versionsDuplicate },
-            ];
-
-            const store = mockStore({ BudgetViewActions: [] });
-
-            return store.dispatch(actions.saveNewBudgetVersion(2, 'V1')).then(() => {
-                // return of async actions
-                expect(store.getActions()).toEqual(expectedActions)
-            })
-        });
-
-        it('Should fail saveNewBudgetVersion', () => {
-            nock(UI_PLANNING_HOST)
-            .post('/api/planning/budgets/2/versions', { versionId: 'V1' })
-            .reply(500, {
-                code: 'Foo Bar',
-                message: 'Foo Bar'
-            }, {
-                'Content-Type': 'application/json'
-            });
-
-            const message = {
-                content: 'Error found',
-                isError: true,
-                messageType: 'error',
-                response: undefined
-            };
-
-            const expectedActions = [
-                { type: actions.REQUEST_BUDGETS_SAVE_NEW_VERSION },
-                { type: 'MESSAGES', message },
-            ];
-
-            const store = mockStore({ BudgetViewActions: [] });
-
-            return store.dispatch(actions.saveNewBudgetVersion()).then(() => {
-                // return of async actions
-                expect(store.getActions()).toEqual(expectedActions)
-            })
-        });
 
         it('Should handle getViewExportFile', () => {
             const expectedAction = {

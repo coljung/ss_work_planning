@@ -18,7 +18,6 @@ exports[`BudgetViewsButtonActions should render base layout 1`] = `
       Back
     </Button>
   </Link>
-   
   <Connect(Filter)
     onOverlayClick={[Function]}
     visible={false}
