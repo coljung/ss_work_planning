@@ -1,9 +1,10 @@
+import i18n from 'i18next';
 import React from 'react';
 import { Spin } from 'antd';
 import PropTypes from 'prop-types';
 
 const LoadingSpinner = ({ text, classUsed = 'spinDiv' }) => {
-    const loadingText = text || 'Loading...';
+    const loadingText = text || i18n.t('spinner.loading');
 
     return (
         <div className={classUsed}>

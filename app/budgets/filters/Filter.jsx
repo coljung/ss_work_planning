@@ -1,3 +1,4 @@
+import i18n from 'i18next';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
@@ -80,35 +81,33 @@ class Filter extends Component {
         const footerButtons = (
             <div>
                 <Button onClick={this.submitFilters} disabled={!this.state.checkedKeys.length} type='primary' id='filterButton'>
-                    Set Filters
+                    {i18n.t('filterModal.saveButton')}
                 </Button>
                 <Button onClick={this.closeModal} id='filterButton'>
-                    Cancel
+                    {i18n.t('filterModal.cancelButton')}
                 </Button>
             </div>
         );
-        const modalContent = (
-            <Tree
-                checkable
-                selectable={false}
-                onExpand={this.onExpand}
-                autoExpandParent={this.state.autoExpandParent}
-                onCheck={this.onCheck}
-                checkedKeys={this.state.checkedKeys}
-                selectedKeys={this.state.selectedKeys}>
-                {this.renderTreeNodes(this.state.available_metrics)}
-            </Tree>
-        );
+
         return (
             this.state.available_metrics &&
             <Modal
-                title='Filters'
+                title={i18n.t('filterModal.title')}
                 visible={this.props.visible}
                 className='filterModal'
                 width={800}
                 onCancel={this.closeModal}
                 footer={footerButtons}>
-                {modalContent}
+                <Tree
+                    checkable
+                    selectable={false}
+                    onExpand={this.onExpand}
+                    autoExpandParent={this.state.autoExpandParent}
+                    onCheck={this.onCheck}
+                    checkedKeys={this.state.checkedKeys}
+                    selectedKeys={this.state.selectedKeys}>
+                    {this.renderTreeNodes(this.state.available_metrics)}
+                </Tree>
             </Modal>
         );
     }

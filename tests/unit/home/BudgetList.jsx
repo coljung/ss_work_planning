@@ -89,7 +89,6 @@ describe('BudgetList', () => {
         expect(component.instance().props.visible).toBeTruthy();
 
         const modal = shallow(component.find('Modal').get(0));
-        console.log('-----------', modal.instance());
         expect(modal.find('Link').length).toBe(4);
         expect(modal.find('Link').first().prop('children').join('')).toBe('FW2019');
     });

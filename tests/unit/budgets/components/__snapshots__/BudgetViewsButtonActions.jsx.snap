@@ -18,28 +18,6 @@ exports[`BudgetViewsButtonActions should render base layout 1`] = `
       Back
     </Button>
   </Link>
-  <Popconfirm
-    cancelText="Cancel"
-    okText="Yes"
-    okType="primary"
-    onConfirm="func"
-    placement="top"
-    prefixCls="ant-popover"
-    title="Create new Budget version"
-    transitionName="zoom-big"
-    trigger="click"
-  >
-    <Button
-      ghost={false}
-      icon="switcher"
-      loading={false}
-      prefixCls="ant-btn"
-      type="primary"
-    >
-      Save New Version
-    </Button>
-  </Popconfirm>
-   
   <Connect(Filter)
     onOverlayClick={[Function]}
     visible={false}

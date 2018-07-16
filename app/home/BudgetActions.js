@@ -1,3 +1,4 @@
+import i18n from 'i18next';
 import agent from 'superagent';
 import wrap from 'superagent-promise';
 import getApiUrl from '../Helpers';
@@ -92,12 +93,12 @@ export function createBudget(budget) {
             .then(
             (res) => {
                 fetchBudgets()(dispatch);
-                dispatch(messages({ content: 'Budget created successfully!', response: '', isError: false }));
+                dispatch(messages({ content: i18n.t('home.notification.budgetCreated'), response: '', isError: false }));
                 return dispatch(receiveBudgetCreate(res.body));
             },
             (err) => {
                 dispatch(messages({ content: err, response: err.response, isError: true }));
             },
-            );
+        );
     };
 }

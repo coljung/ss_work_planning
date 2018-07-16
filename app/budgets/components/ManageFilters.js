@@ -1,11 +1,11 @@
-import { getMetricName } from '../../resources/resourceHelper';
+import i18next from 'i18next';
 
 const filterData = (configData) => {
     const tempTree = [];
     const tempCheckedKeys = [];
     configData.available_metrics.forEach((e) => {
         const createEntry = {};
-        createEntry.title = getMetricName(e);
+        createEntry.title = i18next.t(`metric.${e}`);
         createEntry.key = e;
         // pending ms-planning ticket for metrics to not be case sensitive
         // createEntry.key = e.toLowerCase();
