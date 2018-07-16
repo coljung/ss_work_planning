@@ -182,6 +182,7 @@ export class SectionContainer extends Component {
         data: `${column}.value`,
         readOnly: false,
         type: 'text',
+        width: column.includes('incr') ? 50 : 100, // Put less space for incr% columns
         renderer,
     });
 
@@ -190,6 +191,7 @@ export class SectionContainer extends Component {
             data: columns[0],
             readOnly: true,
             type: 'text',
+            width: 205,
             renderer: rowHeaderCellRenderer.bind(this),
         };
 
@@ -226,7 +228,6 @@ export class SectionContainer extends Component {
                     colHeaders={true}
                     rowHeaders={false}
                     columns={columnInfos}
-                    colWidths={[205]}
                     contextMenu={false}
                     currentColClassName={'currentCol'}
                     currentRowClassName={'currentRow'}
