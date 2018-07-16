@@ -2,23 +2,11 @@
 
 exports[`TopDownSection should render base layout 1`] = `
 <Tabs
-  activeKey="exec"
   animated={false}
   hideAdd={false}
   onChange={[Function]}
   prefixCls="ant-tabs"
 >
-  <TabPane
-    key="exec"
-    placeholder={null}
-    tab="Exec Recap"
-  >
-    <Connect(withRouter(SectionContainer))
-      cellRenderer={[Function]}
-      key="exec"
-      view="exec"
-    />
-  </TabPane>
   <TabPane
     key="total"
     placeholder={null}

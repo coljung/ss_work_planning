@@ -1,3 +1,5 @@
+import i18n from 'i18next';
+
 jest.mock('../../../app/components/customNavigation/CustomNavigation', () => 'CustomNavigation');
 jest.mock('../../../app/notifications/NotificationManager', () => 'NotificationManager12345643');
 
@@ -15,10 +17,15 @@ describe('App', () => {
     });
 
     it('should render correctly', () => {
+        const i18nStub = sinon.stub(i18n, 't');
+        i18nStub.withArgs('appTitle').returns('Merchandise Planning Tool');
+
         const app = renderer.create(
             <App location={{ pathname: 'pathname'}} />
         );
-        expect(app).toMatchSnapshot()
+        expect(app).toMatchSnapshot();
+
+        i18nStub.restore();
 	});
 
     it('should handle toggle', () => {
@@ -31,4 +38,4 @@ describe('App', () => {
         expect(wrapper.state('collapsed')).toEqual(true);
         clock.restore();
     });
-})
+});

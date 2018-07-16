@@ -5,6 +5,8 @@ import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
 import configureStore from 'redux-mock-store';
 import BudgetHome from '../../../app/home/BudgetHome';
+import * as sinon from 'sinon';
+import i18n from 'i18next';
 
 Enzyme.configure({ adapter: new Adapter() });
 
@@ -50,6 +52,8 @@ describe('BudgetHome', () => {
     });
 
     it('should render BudgetHome', () => {
+        sinon.stub(i18n, 't').withArgs('home.budgetsDashboard').returns('Budgets Dashboard');
+
         const { enzymeWrapper } = setup();
 
         expect(enzymeWrapper.find('.board h2').text()).toBe('Budgets Dashboard');

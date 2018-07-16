@@ -1,14 +1,13 @@
+import i18n from 'i18next';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Tabs } from 'antd';
 import SectionContainer from '../SectionContainer';
 import commonCellValueRenderer from './CommonCellRenderer';
-import execCellValueRenderer from './ExecCellRenderer';
 
 // Sub Component
 const TabPane = Tabs.TabPane;
 
-export const TAB_EXEC_RECAP = 'exec';
 export const TAB_TOTAL = 'total';
 export const TAB_WOMEN = 'women';
 export const TAB_MEN = 'men';
@@ -20,8 +19,7 @@ export default class TopDownSection extends Component {
         const { activeKey } = this.props;
 
         this.state = {
-            activeTab: activeKey || TAB_EXEC_RECAP,
-            [TAB_EXEC_RECAP]: false,
+            activeTab: activeKey,
             [TAB_TOTAL]: false,
             [TAB_WOMEN]: false,
             [TAB_MEN]: false,
@@ -39,8 +37,6 @@ export default class TopDownSection extends Component {
                 activeTab: nextProps.tab,
                 [nextProps.tab]: true,
             });
-
-            // this.props.changeTab(nextProps.tab);
         }
     }
 
@@ -61,19 +57,7 @@ export default class TopDownSection extends Component {
         const { activeTab } = this.state;
         return (
             <Tabs activeKey={activeTab} onChange={this.handleTabChange} animated={false}>
-                <TabPane tab="Exec Recap" key={TAB_EXEC_RECAP}>
-                    {(activeTab === TAB_EXEC_RECAP || this.state[TAB_EXEC_RECAP]) &&
-                        <SectionContainer
-                            budget={budget}
-                            version={version}
-                            data={data}
-                            cellRenderer={execCellValueRenderer}
-                            key={TAB_EXEC_RECAP}
-                            view={TAB_EXEC_RECAP}
-                        />
-                    }
-                </TabPane>
-                <TabPane tab="Total" key={TAB_TOTAL}>
+                <TabPane tab={i18n.t('budgetView.totalTab')} key={TAB_TOTAL}>
                     {(activeTab === TAB_TOTAL) &&
                         <SectionContainer
                             budget={budget}
@@ -85,7 +69,7 @@ export default class TopDownSection extends Component {
                         />
                     }
                 </TabPane>
-                <TabPane tab="Women" key={TAB_WOMEN}>
+                <TabPane tab={i18n.t('budgetView.womenTab')} key={TAB_WOMEN}>
                     {(activeTab === TAB_WOMEN) &&
                         <SectionContainer
                             budget={budget}
@@ -97,7 +81,7 @@ export default class TopDownSection extends Component {
                         />
                     }
                 </TabPane>
-                <TabPane tab="Men" key={TAB_MEN}>
+                <TabPane tab={i18n.t('budgetView.menTab')} key={TAB_MEN}>
                     {(activeTab === TAB_MEN) &&
                         <SectionContainer
                             budget={budget}

@@ -2,15 +2,15 @@ import nock from 'nock';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import { join } from 'path';
-import getApiUrl from '../../../app/Helpers';
 import * as actions from '../../../app/home/BudgetActions';
-
+import sinon from 'sinon';
+import i18n from 'i18next';
 import budgetResponse from '../../fixtures/budgets.json';
 import seasonAvailableResponse from '../../fixtures/season_available.json';
 import createBudgetResponse from '../../fixtures/create_budget.json';
 
-const middlewares = [thunk]
-const mockStore = configureMockStore(middlewares)
+const middlewares = [thunk];
+const mockStore = configureMockStore(middlewares);
 
 describe('BudgetActions', () => {
     afterEach(() => {
@@ -176,6 +176,9 @@ describe('BudgetActions', () => {
         });
 
         it('Should createBudget', () => {
+            const i18nStub = sinon.stub(i18n, 't');
+            i18nStub.withArgs('home.notification.budgetCreated').returns('Budget created successfully!');
+
             const budget = {
                 year: '2020',
                 season: 'FW'
@@ -188,7 +191,6 @@ describe('BudgetActions', () => {
             };
 
             nock(UI_PLANNING_HOST)
-            .log(console.log)
             .post('/api/planning/budgets', budget)
             .replyWithFile(201, join(__dirname, '..', '..', 'fixtures', 'create_budget.json'), {
                 'Content-Type': 'application/json'
@@ -206,7 +208,9 @@ describe('BudgetActions', () => {
             return store.dispatch(actions.createBudget(budget)).then(() => {
                 // return of async actions
                 expect(store.getActions()).toEqual(expectedActions)
-            })
+            });
+
+            i18nStub.restore();
         });
     });
 });
