@@ -52,5 +52,5 @@ metric:
   iRETAIL: iSALES
   iGmPercentage: iGM%
 plan:
-  tdwp: WORKING PLAN
+  wp: WORKING PLAN
   achd: Actual
