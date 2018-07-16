@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { getDataRowName, getMetricName } from '../../../app/resources/resourceHelper';
+import { getPlanTypeName, getMetricName } from '../../../app/resources/resourceHelper';
 
 describe('Resource helper', () => {
     describe('getMetricName', () => {
@@ -48,17 +48,17 @@ describe('Resource helper', () => {
         });
     });
 
-    describe('getDataRowName', () => {
+    describe('getPlanTypeName', () => {
         it('should return correct data row name', () => {
-            expect(getDataRowName('wp')).to.equal('WORKING PLAN');
+            expect(getPlanTypeName('wp')).to.equal('WORKING PLAN');
         });
 
         it('should return correct data row name', () => {
-            expect(getDataRowName('achd')).to.equal('Actual');
+            expect(getPlanTypeName('achd')).to.equal('Actual');
         });
 
         it('should return default same value', () => {
-            expect(getDataRowName('test')).to.equal('test');
+            expect(getPlanTypeName('test')).to.equal('test');
         });
     });
 });

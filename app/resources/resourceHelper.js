@@ -14,10 +14,10 @@ export const getMetricName = (metric) => {
     }
 };
 
-export const getDataRowName = (dataRow) => {
-    switch (dataRow) {
+export const getPlanTypeName = (plan) => {
+    switch (plan) {
         case 'wp': return 'WORKING PLAN';
         case 'achd': return 'Actual';
-        default: return dataRow;
+        default: return plan;
     }
 };
