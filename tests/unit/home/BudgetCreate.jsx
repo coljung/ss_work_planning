@@ -7,6 +7,8 @@ import { Provider } from 'react-redux';
 import thunk from 'redux-thunk'
 import configureStore from 'redux-mock-store'
 import BudgetCreate, { BudgetCreate as PureBudgetCreate } from '../../../app/home/BudgetCreate';
+import * as sinon from 'sinon';
+import i18n from 'i18next';
 
 Enzyme.configure({ adapter: new Adapter() });
 
@@ -102,7 +104,7 @@ describe('BudgetCreate', () => {
         const { enzymeWrapper } = setup();
 
         // Modal title content
-        expect(enzymeWrapper.find('#rcDialogTitle0').text()).toBe('Create Budget');
+        sinon.stub(i18n, 't');
 
         // Open the <Select />
         enzymeWrapper.find('.ant-select').simulate('click');
@@ -136,7 +138,6 @@ describe('BudgetCreate', () => {
         const spy = jest.spyOn(enzymeWrapper.props(), 'createBudget');
 
         nock(UI_PLANNING_HOST)
-        .log(console.log)
         .post('/api/planning/budgets', budget)
         .replyWithFile(201, join(__dirname, '..', '..', 'fixtures', 'create_budget.json'), {
             'Content-Type': 'application/json'

@@ -8,7 +8,6 @@ export function setGlobalData(...options) {
     };
 }
 
-
 export function clearGlobalData() {
     return {
         type: CLEAR_GLOBAL_DATA,

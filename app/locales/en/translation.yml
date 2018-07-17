@@ -1,0 +1,56 @@
+appTitle: Merchandise Planning Tool
+notAvailable: N/A
+notification:
+  errorFound: Error found
+home:
+  budgetsDashboard: Budgets Dashboard
+  createBudget: Create New Budget
+  noAvailableBudget: No budgets were created previously
+  notification:
+    budgetCreated: Budget created successfully!
+sideMenu:
+  home: Home
+spinner:
+  loading: Loading...
+budgetListModal:
+  title: All Previous Budgets
+createBudgetModal:
+  title: Create Budget
+  saveButton: Create Budget
+  cancelButton: Cancel
+  selectSeason: Select a Season
+  noSeason: No Season found
+  useLastYearData: Use the last year's data
+  spinner: Creating Budget...
+filterModal:
+  title: Filters
+  saveButton: Set Filters
+  cancelButton: Cancel
+budgetView:
+  backButton: Back
+  filter: Filter
+  undoButton: Undo
+  redoButton: Redo
+  exportButton: Export
+  totalTab: Total
+  womenTab: Women
+  menTab: Men
+  notification:
+    spreadingFailed: Spreading failed
+404:
+  title: 404!
+  description: Page not found
+metric:
+  BOM COST: BOP
+  RECEIVED COST: RECEIPT $
+  ReceiptPercentage: RECEIPT %
+  COGS: COGS
+  SALES: SALES
+  GmDollar: GM$
+  GmPercentage: GM%
+  TURNOVER: TO
+  iRETAIL: iSALES
+  iGmPercentage: iGM%
+plan:
+  wp: WORKING PLAN
+  achd: Actual

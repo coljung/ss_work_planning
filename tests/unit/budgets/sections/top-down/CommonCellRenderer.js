@@ -4,6 +4,7 @@ import cellValueRenderer from '../../../../../app/budgets/sections/top-down/Comm
 import * as sinon from 'sinon';
 import { percentageFormat, numericFormat } from '../../../../../app/budgets/components/TableHelpers';
 import { TAB_TOTAL } from '../../../../../app/budgets/sections/top-down/TopDownSection';
+import i18n from 'i18next';
 
 const createCell = (instance, row, col, data = {}, value = '', props = {}, info = { year: 2018, season: 'SS' }) => {
     const stateContainer = {
@@ -55,6 +56,9 @@ describe('Common view cell rendering', () => {
     });
 
     it('should return empty cell when no data type', () => {
+        const i18nStub = sinon.stub(i18n, 't');
+        i18nStub.withArgs('notAvailable').returns('N/A');
+
         const instance = new Handsontable(document.createElement('div'));
 
         const spy = sinon.spy(instance, 'setCellMeta');
@@ -67,9 +71,14 @@ describe('Common view cell rendering', () => {
         expect(spy.called).to.equal(true);
         expect(spy.getCall(0).args[2]).to.equal('readOnly');
         expect(spy.getCall(0).args[3]).to.equal(true);
+
+        i18nStub.restore();
     });
 
     it('should return empty cell when invalid currency', () => {
+        const i18nStub = sinon.stub(i18n, 't');
+        i18nStub.withArgs('notAvailable').returns('N/A');
+
         const instance = new Handsontable(document.createElement('div'));
 
         const spy = sinon.spy(instance, 'setCellMeta');
@@ -81,9 +90,14 @@ describe('Common view cell rendering', () => {
         expect(spy.called).to.equal(true);
         expect(spy.getCall(0).args[2]).to.equal('readOnly');
         expect(spy.getCall(0).args[3]).to.equal(true);
+
+        i18nStub.restore();
     });
 
     it('should return empty cell when invalid percent', () => {
+        const i18nStub = sinon.stub(i18n, 't');
+        i18nStub.withArgs('notAvailable').returns('N/A');
+
         const instance = new Handsontable(document.createElement('div'));
 
         const spy = sinon.spy(instance, 'setCellMeta');
@@ -95,9 +109,14 @@ describe('Common view cell rendering', () => {
         expect(spy.called).to.equal(true);
         expect(spy.getCall(0).args[2]).to.equal('readOnly');
         expect(spy.getCall(0).args[3]).to.equal(true);
+
+        i18nStub.restore();
     });
 
     it('should return empty cell when invalid number', () => {
+        const i18nStub = sinon.stub(i18n, 't');
+        i18nStub.withArgs('notAvailable').returns('N/A');
+
         const instance = new Handsontable(document.createElement('div'));
 
         const spy = sinon.spy(instance, 'setCellMeta');
@@ -109,6 +128,8 @@ describe('Common view cell rendering', () => {
         expect(spy.called).to.equal(true);
         expect(spy.getCall(0).args[2]).to.equal('readOnly');
         expect(spy.getCall(0).args[3]).to.equal(true);
+
+        i18nStub.restore()
     });
 
     it('should return currency cell based on data type', () => {

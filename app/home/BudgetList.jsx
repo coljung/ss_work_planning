@@ -1,3 +1,4 @@
+import i18n from 'i18next';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
@@ -74,7 +75,7 @@ export default class BudgetList extends Component {
 
     createList = () => {
         const { budgets } = this.props;
-        const budgetListContent = this.props.budgets.length ? this.recentBudgetList(budgets) : <p>No budgets were created previously</p>;
+        const budgetListContent = this.props.budgets.length ? this.recentBudgetList(budgets) : <p>{i18n.t('home.noAvailableBudget')}</p>;
 
         return (
             <ul className="budgetList">
@@ -90,7 +91,7 @@ export default class BudgetList extends Component {
             <div>
                 { budgetListData }
                 <Modal
-                    title="All Previous Budgets"
+                    title={i18n.t('budgetListModal.title')}
                     visible={this.props.visible}
                     onCancel={this.props.onOverlayClick}
                     footer={null}>

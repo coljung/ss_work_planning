@@ -1,3 +1,4 @@
+import i18n from 'i18next';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
@@ -66,15 +67,14 @@ export class BudgetCreate extends Component {
                         className="radioNew"
                         onChange={this.onChange}
                         value={this.state.createNewValue}>
-                <Radio selected value='lastyear'>Use the last year's data</Radio>
-                <Radio disabled value='suggested'>Use the suggested data</Radio>
+                <Radio selected value='lastyear'>{i18n.t('createBudgetModal.useLastYearData')}</Radio>
             </RadioGroup>
         );
 
         return (
             <div>
-                <Select placeholder="Select a Season"
-                        notFoundContent="No season found"
+                <Select placeholder={i18n.t('createBudgetModal.selectSeason')}
+                        notFoundContent={i18n.t('createBudgetModal.noSeason')}
                         style={{ width: 180 }}
                         className="dropdownNew"
                         onChange={this.handleSeasonChange}>
@@ -87,21 +87,21 @@ export class BudgetCreate extends Component {
     };
 
     render() {
-        const footerButtons = (<div>
-            <Button
-                onClick={this.saveNewBudget.bind(this)}
-                type='primary'
-                id='createButtonSave' >Create Budget
-            </Button>
-            <Button
-                onClick={this.closeModal}
-                id='createButtonSave' >Cancel
-            </Button>
-        </div>);
+        const footerButtons = (
+            <div>
+                <Button
+                    onClick={this.saveNewBudget.bind(this)}
+                    type='primary'
+                    id='createButtonSave' >{i18n.t('createBudgetModal.saveButton')}
+                </Button>
+                <Button
+                    onClick={this.closeModal}>{i18n.t('createBudgetModal.cancelButton')}
+                </Button>
+            </div>);
 
         const modal = (
             <Modal
-                title="Create Budget"
+                title={i18n.t('createBudgetModal.title')}
                 visible={this.props.visible}
                 onOk={this.handleOk}
                 onCancel={this.closeModal}
@@ -109,7 +109,7 @@ export class BudgetCreate extends Component {
                 {this.createModalContent()}
             </Modal>
         );
-        const createBudgetContent = this.props.budgetCreateFetched ? modal : <LoadingSpinner classUsed='loadingOverlay' text='Creating Budget...'/>;
+        const createBudgetContent = this.props.budgetCreateFetched ? modal : <LoadingSpinner classUsed='loadingOverlay' text={i18n.t('createBudgetModal.spinner')}/>;
         return (createBudgetContent);
     }
 }

@@ -1,4 +1,6 @@
 // Action names
+import i18n from 'i18next';
+
 export const MESSAGES = 'MESSAGES';
 export const CLEAR_MESSAGES = 'CLEAR_MESSAGES';
 
@@ -15,7 +17,7 @@ export function messages(message) {
             messageTxt = `${messageTxt.message}: ${respTxt.error.message}`;
             message.content = messageTxt;
         } else {
-            message.content = 'Error found';
+            message.content = i18n.t('notification.errorFound');
         }
         message.messageType = 'error';
     } else {

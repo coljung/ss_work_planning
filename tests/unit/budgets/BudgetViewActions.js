@@ -4,9 +4,11 @@ import thunk from 'redux-thunk';
 import { join } from 'path';
 import * as actions from '../../../app/budgets/BudgetViewActions';
 import configResponse from '../../fixtures/config.json';
+import sinon from 'sinon';
+import i18n from 'i18next';
 
-const middlewares = [thunk]
-const mockStore = configureMockStore(middlewares)
+const middlewares = [thunk];
+const mockStore = configureMockStore(middlewares);
 
 describe('BudgetViewActions', () => {
     afterEach(() => {

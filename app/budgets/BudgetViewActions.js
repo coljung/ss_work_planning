@@ -1,3 +1,4 @@
+import i18n from 'i18next';
 import agent from 'superagent';
 import wrap from 'superagent-promise';
 import { messages } from 'notifications/NotificationActions';
@@ -131,7 +132,7 @@ export function sendDataForSpreading(budget, version, view, updatedObj) {
                 if (isResponseSuccess) {
                     dispatch(receiveSendDataForSpreading());
                 } else {
-                    dispatch(messages({ content: 'Not OK', response: '', isError: true }));
+                    dispatch(messages({ content: i18n.t('budgetView.notification.spreadingFailed'), response: '', isError: true }));
                 }
 
                 return res.body;

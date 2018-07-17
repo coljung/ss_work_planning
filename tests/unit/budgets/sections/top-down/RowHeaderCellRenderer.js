@@ -2,6 +2,7 @@ import { expect } from 'chai';
 import Handsontable from 'handsontable';
 import cellValueRenderer from '../../../../../app/budgets/sections/top-down/RowHeaderCellRenderer';
 import * as sinon from 'sinon';
+import i18n from 'i18next';
 
 const createCell = (instance, row, col, data = {}, value = '', props = {}, info = { year: 2018, season: 'SS' }) => {
     const stateContainer = {
@@ -28,11 +29,17 @@ const createCell = (instance, row, col, data = {}, value = '', props = {}, info 
 
 describe('Common view cell rendering', () => {
     it('should set proper row header', () => {
+        const i18nStub = sinon.stub(i18n, 't');
+        i18nStub.withArgs('metric.SALES').returns('SALES');
+        i18nStub.withArgs('plan.wp').returns('WORKING PLAN');
+
         const instance = new Handsontable(document.createElement('div'));
 
         const cell = createCell(instance, 0, 0, {}, '', {}, { year: 2018, season: 'SS', metric: 'SALES', plan: 'wp' });
 
         expect(cell.innerHTML).to.equal('SALES - SS18 - WORKING PLAN');
+
+        i18nStub.restore();
     });
 
     it('should set readonly always', () => {

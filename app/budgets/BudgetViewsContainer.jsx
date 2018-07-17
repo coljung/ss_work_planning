@@ -16,7 +16,6 @@ import { setGlobalData, clearGlobalData } from '../components/customNavigation/C
 import { historyUndo, historyRedo } from './history/HistoryActions';
 
 import TopDownSection from './sections/top-down/TopDownSection';
-import MiddleOutSection from './sections/middle-out/MiddleOutSection';
 import { ROUTE_BUDGET } from '../Routes';
 
 class BudgetViewsContainer extends Component {
@@ -133,14 +132,6 @@ class BudgetViewsContainer extends Component {
         switch (this.state.sectionName) {
             case 'top-down':
                 return (<TopDownSection
-                    activeKey={activeTab}
-                    changeTab={key => this.handleTabChange(key)}
-                    budget={globalBudgetId}
-                    data={viewData}
-                    tab={tab}
-                    version={globalVersionId} />);
-            case 'middle-out' :
-                return (<MiddleOutSection
                     activeKey={activeTab}
                     changeTab={key => this.handleTabChange(key)}
                     budget={globalBudgetId}
