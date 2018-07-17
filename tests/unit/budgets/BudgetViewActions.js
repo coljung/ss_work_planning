@@ -12,7 +12,7 @@ import i18n from 'i18next';
 const middlewares = [thunk];
 const mockStore = configureMockStore(middlewares);
 
-describe('BudgetViewActions', () => {
+describe('BudgetViewActionsBar', () => {
     afterEach(() => {
         nock.cleanAll();
     });

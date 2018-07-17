@@ -1,13 +1,8 @@
 import i18n from 'i18next';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { Button, Modal, Tree } from 'antd';
-import { bindActionCreators } from 'redux/index';
-import { filterSetup } from '../BudgetViewActions';
+import { Modal, Tree } from 'antd';
 import ModalActivator from '../../components/common/ModalActivator';
-
-const TreeNode = Tree.TreeNode;
 
 export default class Filter extends Component {
     constructor(props) {
@@ -79,7 +74,7 @@ export default class Filter extends Component {
 
     render() {
         return (
-            <div>
+            <span>
                 <Modal
                     title={i18n.t('filterModal.title')}
                     visible={this.state.filterModalActive}
@@ -95,39 +90,18 @@ export default class Filter extends Component {
                         onCheck={this.onCheck}
                         checkedKeys={this.state.checkedKeys}>
                         {this.state.available_metrics.map(metric =>
-                            <TreeNode title={i18n.t(`metric.${metric}`)} key={metric} dataRef={metric}>
-                            </TreeNode>,
+                            <Tree.TreeNode title={i18n.t(`metric.${metric}`)} key={metric} dataRef={metric}>
+                            </Tree.TreeNode>,
                         )}
                     </Tree>
                 </Modal>
-                <ModalActivator label={i18n.t('budgetView.filter')} showModal={this.showModal}/>
-            </div>
+                <ModalActivator label={i18n.t('budgetView.filter')} showModal={this.showModal} />
+            </span>
         );
     }
 }
 
 Filter.propTypes = {
-    // filterSetup: PropTypes.func.isRequired,
-
-    // visible: PropTypes.bool.isRequired,
-    // label: PropTypes.string.isRequired,
     filters: PropTypes.object.isRequired,
-    // onCancel: PropTypes.func.isRequired,
     onSave: PropTypes.func.isRequired,
 };
-
-// function mapStateToProps(state) {
-//     const { BudgetViewReducer } = state;
-//     return {
-//         config: BudgetViewReducer.config,
-//     };
-// }
-//
-// function mapDispatchToProps(dispatch) {
-//     return bindActionCreators({
-//         filterSetup,
-//         triggerChange,
-//     }, dispatch);
-// }
-
-// export default connect(mapStateToProps, null)(Filter);

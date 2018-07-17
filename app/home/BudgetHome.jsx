@@ -54,7 +54,7 @@ class BudgetHome extends Component {
                                      icon="file"
                                      type="primary"
                                      onClick={this.toggleCreateModal}>
-                                     {i18n.t('home.createBudget')}
+                                     {i18n.t('home.saveButton')}
                                  </Button>
                             </Col>
                         </Row>

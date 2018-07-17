@@ -4,7 +4,7 @@ notification:
   errorFound: Error found
 home:
   budgetsDashboard: Budgets Dashboard
-  createBudget: Create New Budget
+  saveButton: Create New Budget
   noAvailableBudget: No budgets were created previously
   notification:
     budgetCreated: Budget created successfully!

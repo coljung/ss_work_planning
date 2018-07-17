@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Button } from 'antd';
 
-const ModalActivator = (label, showModal) => (
+const ModalActivator = ({ label, showModal }) => (
     <Button icon="switcher" onClick={showModal}>{label}</Button>
 );
 

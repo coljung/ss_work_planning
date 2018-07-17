@@ -3,22 +3,22 @@ import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Row, Col } from 'antd';
-import BudgetVersionMenu from './components/BudgetVersionMenu';
-import BudgetViewsButtonActions from './components/BudgetViewsButtonActions';
 import {
-        getBudgetVersions,
         getViewExportFile,
         fetchBudgetConfigData,
         fetchBudgetMetricData,
         saveNewBudgetVersion,
         sendDataForSpreading,
         resetState,
+        filterSetup,
         triggerChange } from './BudgetViewActions';
 import { setGlobalData, clearGlobalData } from '../components/customNavigation/CustomNavigationActions';
 import { historyUndo, historyRedo } from './history/HistoryActions';
 
 import TopDownSection from './sections/top-down/TopDownSection';
-import { ROUTE_BUDGET } from '../Routes';
+import { ROUTE_BUDGET, ROUTE_DASHBOARD } from '../Routes';
+import BudgetViewActionsBar from './components/BudgetViewActionsBar';
+import Filter from './filters/Filter';
 
 class BudgetViewsContainer extends Component {
     constructor(props, context) {
@@ -41,13 +41,15 @@ class BudgetViewsContainer extends Component {
 
         this.handleTabChange = this.handleTabChange.bind(this);
         this.handleVersionChange = this.handleVersionChange.bind(this);
+        this.saveNewVersion = this.saveNewVersion.bind(this);
+        this.handleUndo = this.handleUndo.bind(this);
+        this.handleRedo = this.handleRedo.bind(this);
+        this.getExportedFile = this.getExportedFile.bind(this);
+        this.applyFilters = this.applyFilters.bind(this);
     }
 
     componentDidMount() {
-        const { getBudgetVersions, fetchBudgetConfigData, params: { budgetId } } = this.props; // eslint-disable-line no-shadow
-
-        // gets list of associated versions
-        getBudgetVersions(budgetId);
+        const { fetchBudgetConfigData, params: { budgetId } } = this.props; // eslint-disable-line no-shadow
 
         // get config data, then fetch metrics based on config
         fetchBudgetConfigData().then(this.setFilters);
@@ -73,7 +75,6 @@ class BudgetViewsContainer extends Component {
     }
 
     setFilters = () => {
-        const { config } = this.props;
         // PLACEHOLDER FOR BETTER IMPLEMENTATION OF FILTERS
         this.getMetricData();
     };
@@ -84,12 +85,12 @@ class BudgetViewsContainer extends Component {
         this.props.fetchBudgetMetricData(budgetId, versionId, tab, filters || config.available_metrics, location.query);
     };
 
-    saveNewVersion = (budget, version) => {
-        this.props.saveNewBudgetVersion(budget, version);
+    saveNewVersion = () => {
+        this.props.saveNewBudgetVersion(this.props.globalBudgetId, this.props.globalVersionId);
     };
 
-    getExportedFile = (budget, version, view) => {
-        this.props.getViewExportFile(budget, version, view, this.props.filters);
+    getExportedFile = () => {
+        this.props.getViewExportFile(this.props.globalBudgetId, this.props.globalVersionId, this.props.params.tab, this.props.filters);
     };
 
     handlePushRoute = (newVersion = null, newTab = null) => {
@@ -103,11 +104,18 @@ class BudgetViewsContainer extends Component {
         router.push(`${ROUTE_BUDGET}/${seasonName}/${budgetId}/version/${versionName}/${versionId}/${sectionName}/${tab}`);
     };
 
-    handleHistory = (historyMove) => {
-        const { budgetId, versionId } = this.state;
-        const { historyUndo, historyRedo, params: { tab } } = this.props; // eslint-disable-line no-shadow
-        const data = historyMove === 'undo' ? historyUndo(tab) : historyRedo(tab);
-        this.props.sendDataForSpreading(budgetId, versionId, tab, data);
+    handleUndo = () => {
+        const { params: { tab } } = this.props;
+        const data = this.props.historyUndo(tab);
+
+        this.props.sendDataForSpreading(this.state.budgetId, this.state.versionId, tab, data);
+    };
+
+    handleRedo = () => {
+        const { params: { tab } } = this.props;
+        const data = this.props.historyRedo(tab);
+
+        this.props.sendDataForSpreading(this.state.budgetId, this.state.versionId, tab, data);
     };
 
     handleVersionChange(event, newVersion = null) {
@@ -139,20 +147,8 @@ class BudgetViewsContainer extends Component {
         this.handlePushRoute(null, newActiveTab);
     }
 
-    getCurrentSection = (activeTab, globalBudgetId, globalVersionId) => {
-        const { params: { tab }, viewData } = this.props;
-        switch (this.state.sectionName) {
-            case 'top-down':
-                return (<TopDownSection
-                    activeKey={activeTab}
-                    changeTab={key => this.handleTabChange(key)}
-                    budget={globalBudgetId}
-                    data={viewData}
-                    tab={tab}
-                    version={globalVersionId} />);
-            default:
-                return null;
-        }
+    applyFilters = (filters) => {
+        this.props.filterSetup(filters);
     };
 
     render() {
@@ -161,48 +157,47 @@ class BudgetViewsContainer extends Component {
             return null;
         }
 
-        // const { activeTab } = this.state;
         const {
             globalBudgetId,
             globalVersionId,
             globalSeasonName,
-            globalVersionName,
-            versions,
             history,
             isBudgetLoading,
         } = this.props;
 
         // undo disabled / enabled ?
         const viewHistory = history[this.props.params.tab];
-        const undoDisabled = viewHistory && !isBudgetLoading ? viewHistory.past.length <= 0 : true;
-        const redoDisabled = viewHistory && !isBudgetLoading ? viewHistory.future.length <= 0 : true;
-        const currentSection = this.getCurrentSection(this.props.params.tab, globalBudgetId, globalVersionId);
 
         return (
             <div>
                 <div className="budgetHeader">
                     <Row type="flex" justify="start" className="innerHeader">
                         <Col span={8} className="col">
-                            <BudgetVersionMenu
-                                versions={versions}
-                                currentSeason={globalSeasonName}
-                                currentVersion={globalVersionName}
-                                handleClick={this.handleVersionChange} />
+                            <h3>
+                                {globalSeasonName}
+                            </h3>
                         </Col>
                         <Col span={16} className="col">
-                            <BudgetViewsButtonActions
-                              undoDisabled={undoDisabled}
-                              onUndo={() => this.handleHistory('undo')}
-                              redoDisabled={redoDisabled}
-                              onRedo={() => this.handleHistory('redo')}
-                              saveNew={() => this.saveNewVersion(globalBudgetId, globalVersionId)}
-                              onExport={() => this.getExportedFile(globalBudgetId, globalVersionId, this.props.params.tab)}
-                            />
+                            <BudgetViewActionsBar
+                                viewHistory={viewHistory}
+                                isLoading={isBudgetLoading}
+                                onBack={ROUTE_DASHBOARD}
+                                onUndo={this.handleUndo}
+                                onRedo={this.handleRedo}
+                                onExport={this.getExportedFile}>
+                                <Filter onSave={this.applyFilters} filters={this.props.config} />
+                            </BudgetViewActionsBar>
                         </Col>
                     </Row>
                 </div>
                 <div className="budgetBody">
-                    {currentSection}
+                    <TopDownSection
+                        activeKey={this.props.params.tab}
+                        changeTab={key => this.handleTabChange(key)}
+                        budget={globalBudgetId}
+                        data={this.props.viewData}
+                        tab={this.props.params.tab}
+                        version={globalVersionId} />
                 </div>
             </div>
         );
@@ -217,7 +212,6 @@ BudgetViewsContainer.propTypes = {
     fetchBudgetMetricData: PropTypes.func.isRequired,
     getViewExportFile: PropTypes.func.isRequired,
     filters: PropTypes.array.isRequired,
-    getBudgetVersions: PropTypes.func.isRequired,
     globalBudgetId: PropTypes.string,
     globalSeasonName: PropTypes.string,
     globalVersionId: PropTypes.string,
@@ -233,9 +227,9 @@ BudgetViewsContainer.propTypes = {
     saveNewBudgetVersion: PropTypes.func.isRequired,
     sendDataForSpreading: PropTypes.func.isRequired,
     setGlobalData: PropTypes.func.isRequired,
-    versions: PropTypes.array.isRequired,
     view: PropTypes.string,
     viewData: PropTypes.oneOfType([PropTypes.array, PropTypes.object]).isRequired,
+    filterSetup: PropTypes.func.isRequired,
     triggerChange: PropTypes.func.isRequired,
 };
 
@@ -258,7 +252,6 @@ function mapStateToProps(state) {
         isBudgetLoading: BudgetViewReducer.isBudgetLoading,
         isRefreshRequired: BudgetViewReducer.isRefreshRequired,
         newVersion: BudgetViewReducer.newVersion,
-        versions: BudgetViewReducer.versions,
         view: BudgetViewReducer.view,
         viewData: BudgetViewReducer.viewData,
     };
@@ -270,13 +263,13 @@ function mapDispatchToProps(dispatch) {
         fetchBudgetConfigData,
         fetchBudgetMetricData,
         getViewExportFile,
-        getBudgetVersions,
         historyRedo,
         historyUndo,
         resetState,
         saveNewBudgetVersion,
         sendDataForSpreading,
         setGlobalData,
+        filterSetup,
         triggerChange,
     }, dispatch);
 }
