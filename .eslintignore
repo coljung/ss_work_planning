@@ -7,3 +7,4 @@ tests
 *.less
 *.scss
 .vscode
+**/translation.yml

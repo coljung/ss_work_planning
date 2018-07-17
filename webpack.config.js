@@ -47,6 +47,11 @@ module.exports = {
                 use: ['babel-loader'],
             },
             {
+                test: /locales/,
+                loader: '@alienfast/i18next-loader',
+                query: { basenameAsNamespace: true },
+            },
+            {
                 test: /(\.css)$/,
                 use: ExtractTextPlugin.extract({
                     fallback: [{

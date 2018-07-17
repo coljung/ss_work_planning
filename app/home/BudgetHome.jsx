@@ -1,3 +1,4 @@
+import i18n from 'i18next';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
@@ -38,7 +39,7 @@ class BudgetHome extends Component {
         return (
             <Row>
                 <Col xs={12}>
-                    <Board title="Budgets Dashboard" style={{ paddingTop: '25px' }}>
+                    <Board title={i18n.t('home.budgetsDashboard')} style={{ paddingTop: '25px' }}>
                         <BudgetList
                             visible={this.state.viewArchivedModalActive}
                             budgets={this.props.budgets}
@@ -53,7 +54,7 @@ class BudgetHome extends Component {
                                      icon="file"
                                      type="primary"
                                      onClick={this.toggleCreateModal}>
-                                     Create New Budget
+                                     {i18n.t('home.createBudget')}
                                  </Button>
                             </Col>
                         </Row>
