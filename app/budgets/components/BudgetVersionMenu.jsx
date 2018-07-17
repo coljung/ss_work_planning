@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 const BudgetVersionMenu = ({ currentSeason, currentVersion }) => (
      <div>
-            <h3> {currentSeason} - {currentVersion} </h3>
+            <h3> {currentSeason} </h3>
      </div>
 );
 
