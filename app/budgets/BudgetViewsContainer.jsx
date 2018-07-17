@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Row, Col } from 'antd';
-import BudgetVersionMenu from './components/BudgetVersionMenu';
 import BudgetViewsButtonActions from './components/BudgetViewsButtonActions';
 import {
         getViewExportFile,
@@ -154,7 +153,6 @@ class BudgetViewsContainer extends Component {
             globalBudgetId,
             globalVersionId,
             globalSeasonName,
-            globalVersionName,
             history,
             isBudgetLoading,
         } = this.props;
@@ -170,9 +168,9 @@ class BudgetViewsContainer extends Component {
                 <div className="budgetHeader">
                     <Row type="flex" justify="start" className="innerHeader">
                         <Col span={8} className="col">
-                            <BudgetVersionMenu
-                                currentSeason={globalSeasonName}
-                                currentVersion={globalVersionName} />
+                            <div>
+                                <h3> {globalSeasonName} </h3>
+                            </div>
                         </Col>
                         <Col span={16} className="col">
                             <BudgetViewsButtonActions
