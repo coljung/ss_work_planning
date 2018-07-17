@@ -3,14 +3,11 @@ import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Row, Col } from 'antd';
-import BudgetVersionMenu from './components/BudgetVersionMenu';
 import BudgetViewsButtonActions from './components/BudgetViewsButtonActions';
 import {
-        getBudgetVersions,
         getViewExportFile,
         fetchBudgetConfigData,
         fetchBudgetMetricData,
-        saveNewBudgetVersion,
         sendDataForSpreading,
         resetState,
         triggerChange } from './BudgetViewActions';
@@ -44,10 +41,7 @@ class BudgetViewsContainer extends Component {
     }
 
     componentDidMount() {
-        const { getBudgetVersions, fetchBudgetConfigData, params: { budgetId } } = this.props; // eslint-disable-line no-shadow
-
-        // gets list of associated versions
-        getBudgetVersions(budgetId);
+        const { fetchBudgetConfigData, params: { budgetId } } = this.props; // eslint-disable-line no-shadow
 
         // get config data, then fetch metrics based on config
         fetchBudgetConfigData().then(this.setFilters);
@@ -63,9 +57,6 @@ class BudgetViewsContainer extends Component {
             // this.newSpecs(nextProps.params);
         }
 
-        if (nextProps.newVersion !== this.props.newVersion) {
-            this.handleVersionChange(null, nextProps.newVersion);
-        }
         if ((nextProps.isRefreshRequired && nextProps.isRefreshRequired !== this.props.isRefreshRequired) ||
             nextProps.filters !== this.props.filters) {
             this.getMetricData(nextProps.filters);
@@ -82,10 +73,6 @@ class BudgetViewsContainer extends Component {
         const { budgetId, versionId, tab } = this.state;
         const { config, router: { location } } = this.props;
         this.props.fetchBudgetMetricData(budgetId, versionId, tab, filters || config.available_metrics, location.query);
-    };
-
-    saveNewVersion = (budget, version) => {
-        this.props.saveNewBudgetVersion(budget, version);
     };
 
     getExportedFile = (budget, version, view) => {
@@ -166,8 +153,6 @@ class BudgetViewsContainer extends Component {
             globalBudgetId,
             globalVersionId,
             globalSeasonName,
-            globalVersionName,
-            versions,
             history,
             isBudgetLoading,
         } = this.props;
@@ -183,11 +168,9 @@ class BudgetViewsContainer extends Component {
                 <div className="budgetHeader">
                     <Row type="flex" justify="start" className="innerHeader">
                         <Col span={8} className="col">
-                            <BudgetVersionMenu
-                                versions={versions}
-                                currentSeason={globalSeasonName}
-                                currentVersion={globalVersionName}
-                                handleClick={this.handleVersionChange} />
+                            <div>
+                                <h3> {globalSeasonName} </h3>
+                            </div>
                         </Col>
                         <Col span={16} className="col">
                             <BudgetViewsButtonActions
@@ -195,7 +178,6 @@ class BudgetViewsContainer extends Component {
                               onUndo={() => this.handleHistory('undo')}
                               redoDisabled={redoDisabled}
                               onRedo={() => this.handleHistory('redo')}
-                              saveNew={() => this.saveNewVersion(globalBudgetId, globalVersionId)}
                               onExport={() => this.getExportedFile(globalBudgetId, globalVersionId, this.props.params.tab)}
                             />
                         </Col>
@@ -217,7 +199,6 @@ BudgetViewsContainer.propTypes = {
     fetchBudgetMetricData: PropTypes.func.isRequired,
     getViewExportFile: PropTypes.func.isRequired,
     filters: PropTypes.array.isRequired,
-    getBudgetVersions: PropTypes.func.isRequired,
     globalBudgetId: PropTypes.string,
     globalSeasonName: PropTypes.string,
     globalVersionId: PropTypes.string,
@@ -230,7 +211,6 @@ BudgetViewsContainer.propTypes = {
     newVersion: PropTypes.object,
     resetState: PropTypes.func.isRequired,
     router: PropTypes.object,
-    saveNewBudgetVersion: PropTypes.func.isRequired,
     sendDataForSpreading: PropTypes.func.isRequired,
     setGlobalData: PropTypes.func.isRequired,
     versions: PropTypes.array.isRequired,
@@ -270,11 +250,9 @@ function mapDispatchToProps(dispatch) {
         fetchBudgetConfigData,
         fetchBudgetMetricData,
         getViewExportFile,
-        getBudgetVersions,
         historyRedo,
         historyUndo,
         resetState,
-        saveNewBudgetVersion,
         sendDataForSpreading,
         setGlobalData,
         triggerChange,

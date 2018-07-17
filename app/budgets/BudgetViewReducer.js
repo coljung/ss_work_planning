@@ -5,8 +5,6 @@ import {
          RECEIVE_BUDGETS_DATA,
          REQUEST_SPREAD_DATA,
          RECEIVE_SPREAD_DATA,
-         REQUEST_BUDGETS_SAVE_NEW_VERSION,
-         RECEIVE_BUDGETS_SAVE_NEW_VERSION,
          SET_FILTER_SETUP,
          SET_TRIGGER_CHANGE,
          RESET_BUDGETS_DATA,
@@ -60,11 +58,6 @@ export default (state = initialState, action) => {
                 isBudgetLoading: true,
                 isDataSpreading: false,
                 isRefreshRequired: true,
-            });
-        case RECEIVE_BUDGETS_SAVE_NEW_VERSION:
-            return Object.assign({}, state, {
-                newVersion: action.version,
-                versions: [action.version, ...state.versions],
             });
         case SET_FILTER_SETUP:
             return Object.assign({}, state, {
