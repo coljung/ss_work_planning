@@ -18,7 +18,7 @@ import { historyUndo, historyRedo } from './history/HistoryActions';
 import TopDownSection from './sections/top-down/TopDownSection';
 import { ROUTE_BUDGET, ROUTE_DASHBOARD } from '../Routes';
 import BudgetViewActionsBar from './components/BudgetViewActionsBar';
-import Filter from './filters/Filter';
+import FilterModal from './filters/FilterModal';
 
 class BudgetViewsContainer extends Component {
     constructor(props, context) {
@@ -185,7 +185,7 @@ class BudgetViewsContainer extends Component {
                                 onUndo={this.handleUndo}
                                 onRedo={this.handleRedo}
                                 onExport={this.getExportedFile}>
-                                <Filter onSave={this.applyFilters} filters={this.props.config} />
+                                <FilterModal onSave={this.applyFilters} filters={this.props.config} />
                             </BudgetViewActionsBar>
                         </Col>
                     </Row>

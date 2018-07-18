@@ -1,12 +1,12 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import { shallowToJson } from 'enzyme-to-json';
-import Filter from '../../../../app/budgets/filters/Filter';
+import FilterModal from '../../../../app/budgets/filters/FilterModal';
 
-describe('Filter', () => {
+describe('FilterModal', () => {
     it('should render correctly', () => {
         const output = shallow(
-            <Filter title="fsdfsdf">Hello Jest!</Filter>
+            <FilterModal title="fsdfsdf">Hello Jest!</FilterModal>
         );
 
         expect(shallowToJson(output)).toMatchSnapshot();

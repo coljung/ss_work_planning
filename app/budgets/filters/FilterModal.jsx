@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { Modal, Tree } from 'antd';
 import ModalActivator from '../../components/common/ModalActivator';
 
-export default class Filter extends Component {
+export default class FilterModal extends Component {
     constructor(props) {
         super(props);
 
@@ -101,7 +101,7 @@ export default class Filter extends Component {
     }
 }
 
-Filter.propTypes = {
+FilterModal.propTypes = {
     filters: PropTypes.object.isRequired,
     onSave: PropTypes.func.isRequired,
 };

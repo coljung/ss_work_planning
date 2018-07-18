@@ -4,21 +4,21 @@ import i18n from 'i18next';
 import { Button } from 'antd';
 import { Link } from 'react-router';
 
-const BudgetViewActionsBar = ({ viewHistory, isLoading, onBack, onUndo, onRedo, onExport, children }) => {
-    const undoDisabled = viewHistory && !isLoading ? viewHistory.past.length <= 0 : true;
-    const redoDisabled = viewHistory && !isLoading ? viewHistory.future.length <= 0 : true;
+const BudgetViewActionsBar = (props) => {
+    const undoDisabled = props.viewHistory && !props.isLoading ? props.viewHistory.past.length <= 0 : true;
+    const redoDisabled = props.viewHistory && !props.isLoading ? props.viewHistory.future.length <= 0 : true;
 
     return (
         <div className="budgetBtns">
-            <Link to={onBack}>
+            <Link to={props.onBack}>
                 <Button icon="arrow-left">{i18n.t('budgetView.backButton')}</Button>
             </Link>
 
-            {children}
+            {props.children}
 
-            <Button onClick={onUndo} icon="left" disabled={undoDisabled}>{i18n.t('budgetView.undoButton')}</Button>
-            <Button onClick={onRedo} icon="right" disabled={redoDisabled}>{i18n.t('budgetView.redoButton')}</Button>
-            <Button onClick={onExport} icon="export" disabled={isLoading}>{i18n.t('budgetView.exportButton')}</Button>
+            <Button onClick={props.onUndo} icon="left" disabled={undoDisabled}>{i18n.t('budgetView.undoButton')}</Button>
+            <Button onClick={props.onRedo} icon="right" disabled={redoDisabled}>{i18n.t('budgetView.redoButton')}</Button>
+            <Button onClick={props.onExport} icon="export" disabled={props.isLoading}>{i18n.t('budgetView.exportButton')}</Button>
         </div>
     );
 };
