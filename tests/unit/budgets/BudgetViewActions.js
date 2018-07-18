@@ -4,6 +4,8 @@ import thunk from 'redux-thunk';
 import { join } from 'path';
 import * as actions from '../../../app/budgets/BudgetViewActions';
 import configResponse from '../../fixtures/config.json';
+import sinon from 'sinon';
+import i18n from 'i18next';
 
 const middlewares = [thunk];
 const mockStore = configureMockStore(middlewares);
@@ -112,7 +114,7 @@ describe('BudgetViewActions', () => {
             nock(UI_PLANNING_HOST)
             .put('/api/planning/budgets/2/versions/V1/men/metrics', {
                 metric: "SALES",
-                dataRow: "wp",
+                plan: "wp",
                 value: "12",
                 key: "root.SALES.2018.2018.7",
                 dataType: "currency",
@@ -127,7 +129,7 @@ describe('BudgetViewActions', () => {
 
             return store.dispatch(actions.sendDataForSpreading(2, 'V1', 'men', {
                 metric: "SALES",
-                dataRow: "wp",
+                plan: "wp",
                 value: "12",
                 key: "root.SALES.2018.2018.7",
                 dataType: "currency",
@@ -157,8 +159,7 @@ describe('BudgetViewActions', () => {
                 expect(store.getActions()).toMatchObject(expectedActions)
             })
         });
-
-
+        
         it('Should handle getViewExportFile', () => {
             const expectedAction = {
                 type: actions.REQUEST_VIEW_DOWNLOAD

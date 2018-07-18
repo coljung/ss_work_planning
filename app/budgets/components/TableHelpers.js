@@ -26,10 +26,10 @@ export const borderBottom = (row, rowSpan, td) => {
 };
 
 // grid color
-export const gridColors = (dataRow, td) => {
-    if (dataRow === 'wp') {
+export const gridColors = (plan, td) => {
+    if (plan === 'wp') {
         td.className += ' wpActive';
-    } else if (dataRow === 'achd') {
+    } else if (plan === 'achd') {
         td.className += ' actualActive';
     }
 };

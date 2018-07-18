@@ -10,14 +10,14 @@ export default function cellRenderer(instance, td, row, col, prop, value, cellPr
     const rowSpan = this.state.info.row_span;
 
     const metric = i18n.t(`metric.${rowInformation.metric}`);
-    const dataRow = i18n.t(`plan.${rowInformation.dataRow}`);
+    const plan = i18n.t(`plan.${rowInformation.plan}`);
     const rowYear = rowInformation.year.toString().slice(2, 4);
     const budgetYear = this.state.info.year.slice(2, 4);
 
-    td.innerHTML = `${metric} - ${rowInformation.season}${rowYear} - ${dataRow}`;
+    td.innerHTML = `${metric} - ${rowInformation.season}${rowYear} - ${plan}`;
 
     if (budgetYear === rowYear) {
-        gridColors(rowInformation.dataRow, td);
+        gridColors(rowInformation.plan, td);
     }
 
     borderBottom(row, rowSpan, td);

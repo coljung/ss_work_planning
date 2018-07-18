@@ -153,9 +153,9 @@ export class SectionContainer extends Component {
                 this.scrollPosLeft = element.scrollLeft;
 
                 const metric = this.state.data[row].info.metric;
-                const dataRow = this.state.data[row].info.dataRow;
+                const plan = this.state.data[row].info.plan;
 
-                this.props.sendDataForSpreading(budget, version, view, { ...dataToSend, metric, dataRow })
+                this.props.sendDataForSpreading(budget, version, view, { ...dataToSend, metric, plan })
                     .then(() => {
                         // Send old value into history for future undo
                         // TODO: Fix this
@@ -164,10 +164,10 @@ export class SectionContainer extends Component {
                         // same a first push
                         // this would cause a double undo / redo click when changing cell
                         if (this.lastEditCell !== cellEditKey) {
-                            historyPush(view, { ...dataToSend, value: +prevValue, metric, dataRow });
+                            historyPush(view, { ...dataToSend, value: +prevValue, metric, plan });
                         }
 
-                        historyPush(view, { ...dataToSend, metric, dataRow });
+                        historyPush(view, { ...dataToSend, metric, plan });
 
                         this.lastEditCell = cellEditKey;
                     })
