@@ -80,7 +80,7 @@ export function getViewExportFile(budgetId, versionId, view, metric) {
     return (dispatch) => {
         const metricList = metric.length > 1 ? metric.join(',') : metric;
         const queryToSend = `metrics=${metricList}`;
-        const url = `${getApiUrl()}planning/budgets/${budgetId}/versions/${versionId}/${view}/metrics/export?${queryToSend}`;
+        const url = `${getApiUrl()}planning/budgets/${budgetId}/${view}/metrics/export?${queryToSend}`;
         window.open(url);
 
         return dispatch(requestViewDownload(budgetId, versionId, view, metric));
@@ -108,7 +108,7 @@ export function fetchBudgetMetricData(budget, version, view, metric, query) {
         };
         dispatch(requestBudgetViewData());
         return request
-            .get(`${getApiUrl()}planning/budgets/${budget}/versions/${version}/${view}/metrics`)
+            .get(`${getApiUrl()}planning/budgets/${budget}/${view}/metrics`)
             .query(queryToSend)
             .then(
             res => dispatch(receiveBudgetViewData(res.body, view)),
@@ -120,7 +120,7 @@ export function fetchBudgetMetricData(budget, version, view, metric, query) {
 export function sendDataForSpreading(budget, version, view, updatedObj) {
     return (dispatch) => {
         dispatch(requestSendDataForSpreading());
-        const req = request.put(`${getApiUrl()}planning/budgets/${budget}/versions/${version}/${view}/metrics`);
+        const req = request.put(`${getApiUrl()}planning/budgets/${budget}/${view}/metrics`);
         return req.send({
             ...updatedObj,
             value: updatedObj.value === 0 ? 0.0001 : updatedObj.value,

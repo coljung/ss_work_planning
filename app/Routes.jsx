@@ -29,7 +29,7 @@ export default (
         <IndexRoute component={Home} />
         <Route path={ROUTE_DASHBOARD} component={Home} />
         <Route path={ROUTE_BUDGET}>
-            <Route path=':seasonName/:budgetId/version/:versionName/:versionId/:sectionName/:tab' component={BudgetViewsContainer} />
+            <Route path=':seasonName/:budgetId/:sectionName/:tab' component={BudgetViewsContainer} />
         </Route>
         <Route path='*' component={NotFound} />
     </Route>

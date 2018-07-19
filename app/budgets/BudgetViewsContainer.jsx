@@ -87,7 +87,7 @@ class BudgetViewsContainer extends Component {
         const versionId = newVersion ? newVersion.id : this.state.versionId;
         const tab = newTab || this.props.params.tab;
 
-        router.push(`${ROUTE_BUDGET}/${seasonName}/${budgetId}/version/${versionName}/${versionId}/${sectionName}/${tab}`);
+        router.push(`${ROUTE_BUDGET}/${seasonName}/${budgetId}/${sectionName}/${tab}`);
     };
 
     handleHistory = (historyMove) => {
