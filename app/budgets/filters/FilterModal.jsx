@@ -1,8 +1,7 @@
 import i18n from 'i18next';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Modal, Tree } from 'antd';
-import ModalActivator from '../../components/common/ModalActivator';
+import { Modal, Tree, Button } from 'antd';
 
 export default class FilterModal extends Component {
     constructor(props) {
@@ -14,7 +13,6 @@ export default class FilterModal extends Component {
             filterModalActive: false,
         };
 
-        this.toggleFilterModal = this.toggleFilterModal.bind(this);
         this.onCheck = this.onCheck.bind(this);
         this.closeModal = this.closeModal.bind(this);
         this.handleSave = this.handleSave.bind(this);
@@ -31,12 +29,6 @@ export default class FilterModal extends Component {
         if (nextProps.filters !== this.props.filters) {
             this.buildTreeData(nextProps.filters);
         }
-    };
-
-    toggleFilterModal = () => {
-        this.setState({
-            filterModalActive: !this.state.filterModalActive,
-        });
     };
 
     buildTreeData = (config) => {
@@ -95,7 +87,7 @@ export default class FilterModal extends Component {
                         )}
                     </Tree>
                 </Modal>
-                <ModalActivator label={i18n.t('budgetView.filter')} showModal={this.showModal} />
+                <Button icon="switcher" onClick={this.showModal}>{i18n.t('budgetView.filter')}</Button>
             </span>
         );
     }
