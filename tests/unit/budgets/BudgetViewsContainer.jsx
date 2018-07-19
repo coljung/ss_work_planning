@@ -11,18 +11,8 @@ Enzyme.configure({ adapter: new Adapter() });
 function setup() {
     const props = { };
 
-    const middlewares = [thunk];
-    const mockStore = configureStore(middlewares);
-
-    const initialState = {
-        newVersion: null,
-        versions: [],
-    };
-
-    let store = mockStore(initialState);
-
     const enzymeWrapper = mount(
-        <Provider store={store}>
+        <Provider >
             <BudgetViewsContainer {...props} />
         </Provider>
     );

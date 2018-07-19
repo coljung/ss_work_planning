@@ -8,9 +8,7 @@ describe('CustomNavigationReducer', () => {
     beforeEach(() => {
         initialState = {
             budgetId: null,
-            versionId: null,
             seasonName: null,
-            versionName: null,
             view: null,
         };
     });
@@ -21,7 +19,7 @@ describe('CustomNavigationReducer', () => {
 
     it('should handle GLOBAL_DATA', () => {
 
-        const options = [11, 22, 'SS', 'V1', 'men'];
+        const options = [11,'SS', 'men'];
 
         const urlAction = {
             type: actions.GLOBAL_DATA,
@@ -29,9 +27,7 @@ describe('CustomNavigationReducer', () => {
         };
         expect(reducer({}, urlAction)).toEqual({
             budgetId: 11,
-            versionId: 22,
             seasonName: 'SS',
-            versionName: 'V1',
             view: 'men'});
     });
 
