@@ -14,8 +14,6 @@ export const REQUEST_BUDGETS_DATA = 'REQUEST_BUDGETS_DATA';
 export const RECEIVE_BUDGETS_DATA = 'RECEIVE_BUDGETS_DATA';
 export const REQUEST_SPREAD_DATA = 'REQUEST_SPREAD_DATA';
 export const RECEIVE_SPREAD_DATA = 'RECEIVE_SPREAD_DATA';
-export const REQUEST_BUDGETS_SAVE_NEW_VERSION = 'REQUEST_BUDGETS_SAVE_NEW_VERSION';
-export const RECEIVE_BUDGETS_SAVE_NEW_VERSION = 'RECEIVE_BUDGETS_SAVE_NEW_VERSION';
 export const SET_FILTER_SETUP = 'SET_FILTER_SETUP';
 export const RESET_BUDGETS_DATA = 'RESET_BUDGETS_DATA';
 export const SET_TRIGGER_CHANGE = 'SET_TRIGGER_CHANGE';
@@ -65,15 +63,6 @@ export const receiveSendDataForSpreading = () => ({
     type: RECEIVE_SPREAD_DATA,
 });
 
-export const requestBudgetSaveNewVersion = () => ({
-    type: REQUEST_BUDGETS_SAVE_NEW_VERSION,
-});
-
-export const receiveBudgetSaveNewVersion = version => ({
-    type: RECEIVE_BUDGETS_SAVE_NEW_VERSION,
-    version,
-});
-
 export const filterSetup = filters => ({
     type: SET_FILTER_SETUP,
     filters,
@@ -86,18 +75,6 @@ export const triggerChange = () => ({
 export const resetState = () => ({
     type: RESET_BUDGETS_DATA,
 });
-
-export function getBudgetVersions(budgetId) {
-    return (dispatch) => {
-        dispatch(requestBudgetVersions());
-        return request
-            .get(`${getApiUrl()}planning/budgets/${budgetId}/versions`)
-            .then(
-            res => dispatch(receiveBudgetVersions(res.body)),
-            err => dispatch(messages({ content: err, response: err.response, isError: true })),
-            );
-    };
-}
 
 export function getViewExportFile(budgetId, versionId, view, metric) {
     return (dispatch) => {
@@ -166,21 +143,5 @@ export function sendDataForSpreading(budget, version, view, updatedObj) {
                 throw err;
             },
             );
-    };
-}
-
-export function saveNewBudgetVersion(budgetId, versionId) {
-    return (dispatch) => {
-        dispatch(requestBudgetSaveNewVersion());
-        return request
-            .post(`${getApiUrl()}planning/budgets/${budgetId}/versions`)
-            .send({ versionId })
-            .then(
-            (res) => {
-                dispatch(messages({ content: 'New Version Saved successfully!', response: '', isError: false }));
-                dispatch(receiveBudgetSaveNewVersion(res.body));
-            },
-            err => dispatch(messages({ content: err, response: err.response, isError: true })),
-        );
     };
 }

@@ -4,10 +4,6 @@ import thunk from 'redux-thunk';
 import { join } from 'path';
 import * as actions from '../../../app/budgets/BudgetViewActions';
 import configResponse from '../../fixtures/config.json';
-import versionsResponse from '../../fixtures/versions.json';
-import versionsDuplicate from '../../fixtures/versionsDuplicate.json';
-import sinon from 'sinon';
-import i18n from 'i18next';
 
 const middlewares = [thunk];
 const mockStore = configureMockStore(middlewares);
@@ -94,68 +90,6 @@ describe('BudgetViewActionsBar', () => {
             expect(actions.resetState()).toEqual(expectedAction);
         });
 
-        it('Should handle requestBudgetSaveNewVersion', () => {
-            const expectedAction = {
-                type: actions.REQUEST_BUDGETS_SAVE_NEW_VERSION
-            };
-            expect(actions.requestBudgetSaveNewVersion()).toEqual(expectedAction);
-        });
-
-        it('Should handle receiveBudgetSaveNewVersion', () => {
-            const version = {
-                foo: 'Bar'
-            };
-            const expectedAction = {
-                type: actions.RECEIVE_BUDGETS_SAVE_NEW_VERSION,
-                version
-            };
-            expect(actions.receiveBudgetSaveNewVersion(version)).toEqual(expectedAction);
-        });
-
-        it('Should handle getBudgetVersions', () => {
-            nock(UI_PLANNING_HOST)
-            .get('/api/planning/budgets/2/versions')
-            .query(true)
-            .replyWithFile(200, join(__dirname, '..', '..', 'fixtures', 'versions.json'), {
-                'Content-Type': 'application/json'
-            });
-
-            const expectedActions = [
-                { type: actions.REQUEST_BUDGETS_VERSIONS },
-                { type: actions.RECEIVE_BUDGETS_VERSIONS, versions: versionsResponse }
-            ];
-            const store = mockStore({ BudgetViewActions: [] });
-
-            return store.dispatch(actions.getBudgetVersions(2)).then(() => {
-                // return of async actions
-                expect(store.getActions()).toEqual(expectedActions)
-            })
-        });
-
-        it('Should fail to getBudgetVersions', () => {
-            nock(UI_PLANNING_HOST)
-            .get('/api/planning/budgets/2/versions')
-            .query(true)
-            .reply(500, {
-                code: 'Foo Bar',
-                message: 'Foo Bar'
-            }, {
-                'Content-Type': 'application/json'
-            });
-
-            const expectedActions = [
-                { type: actions.REQUEST_BUDGETS_VERSIONS },
-                { type: 'MESSAGES' }
-            ];
-
-            const store = mockStore({ BudgetViewActions: [] });
-
-            return store.dispatch(actions.getBudgetVersions(2)).then(() => {
-                // return of async actions
-                expect(store.getActions()).toMatchObject(expectedActions)
-            })
-        });
-
         it('Should handle fetchBudgetConfigData', () => {
             nock(UI_PLANNING_HOST)
             .get('/api/planning/config')
@@ -178,7 +112,7 @@ describe('BudgetViewActionsBar', () => {
             nock(UI_PLANNING_HOST)
             .put('/api/planning/budgets/2/versions/V1/men/metrics', {
                 metric: "SALES",
-                dataRow: "wp",
+                plan: "wp",
                 value: "12",
                 key: "root.SALES.2018.2018.7",
                 dataType: "currency",
@@ -193,7 +127,7 @@ describe('BudgetViewActionsBar', () => {
 
             return store.dispatch(actions.sendDataForSpreading(2, 'V1', 'men', {
                 metric: "SALES",
-                dataRow: "wp",
+                plan: "wp",
                 value: "12",
                 key: "root.SALES.2018.2018.7",
                 dataType: "currency",
@@ -223,68 +157,7 @@ describe('BudgetViewActionsBar', () => {
                 expect(store.getActions()).toMatchObject(expectedActions)
             })
         });
-
-        it('Should handle saveNewBudgetVersion', () => {
-            nock(UI_PLANNING_HOST)
-            .post('/api/planning/budgets/2/versions', { versionId: 'V1' })
-            .reply(200, versionsDuplicate);
-
-            const message = {
-                content: 'New Version Saved successfully!',
-                isError: false,
-                messageType: 'success',
-                response: ''
-            };
-
-            const expectedActions = [
-                { type: actions.REQUEST_BUDGETS_SAVE_NEW_VERSION },
-                { type: 'MESSAGES', message},
-                { type: actions.RECEIVE_BUDGETS_SAVE_NEW_VERSION, version: versionsDuplicate },
-            ];
-
-            const store = mockStore({ BudgetViewActions: [] });
-
-            return store.dispatch(actions.saveNewBudgetVersion(2, 'V1')).then(() => {
-                // return of async actions
-                expect(store.getActions()).toEqual(expectedActions)
-            })
-        });
-
-        it('Should fail saveNewBudgetVersion', () => {
-            const i18nStub = sinon.stub(i18n, 't');
-            i18nStub.withArgs('notification.errorFound').returns('Error found');
-
-            nock(UI_PLANNING_HOST)
-            .post('/api/planning/budgets/2/versions', { versionId: 'V1' })
-            .reply(500, {
-                code: 'Foo Bar',
-                message: 'Foo Bar'
-            }, {
-                'Content-Type': 'application/json'
-            });
-
-            const message = {
-                content: 'Error found',
-                isError: true,
-                messageType: 'error',
-                response: undefined
-            };
-
-            const expectedActions = [
-                { type: actions.REQUEST_BUDGETS_SAVE_NEW_VERSION },
-                { type: 'MESSAGES', message },
-            ];
-
-            const store = mockStore({ BudgetViewActions: [] });
-
-            return store.dispatch(actions.saveNewBudgetVersion()).then(() => {
-                // return of async actions
-                expect(store.getActions()).toEqual(expectedActions)
-            });
-
-            i18nStub.restore();
-        });
-
+        
         it('Should handle getViewExportFile', () => {
             const expectedAction = {
                 type: actions.REQUEST_VIEW_DOWNLOAD

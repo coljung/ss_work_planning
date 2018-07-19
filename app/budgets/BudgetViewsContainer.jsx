@@ -7,7 +7,6 @@ import {
         getViewExportFile,
         fetchBudgetConfigData,
         fetchBudgetMetricData,
-        saveNewBudgetVersion,
         sendDataForSpreading,
         resetState,
         filterSetup,
@@ -40,8 +39,6 @@ class BudgetViewsContainer extends Component {
         this.props.setGlobalData(budgetId, versionId, seasonName, versionName, tab);
 
         this.handleTabChange = this.handleTabChange.bind(this);
-        this.handleVersionChange = this.handleVersionChange.bind(this);
-        this.saveNewVersion = this.saveNewVersion.bind(this);
         this.handleUndo = this.handleUndo.bind(this);
         this.handleRedo = this.handleRedo.bind(this);
         this.getExportedFile = this.getExportedFile.bind(this);
@@ -65,9 +62,6 @@ class BudgetViewsContainer extends Component {
             // this.newSpecs(nextProps.params);
         }
 
-        if (nextProps.newVersion !== this.props.newVersion) {
-            this.handleVersionChange(null, nextProps.newVersion);
-        }
         if ((nextProps.isRefreshRequired && nextProps.isRefreshRequired !== this.props.isRefreshRequired) ||
             nextProps.filters !== this.props.filters) {
             this.getMetricData(nextProps.filters);
@@ -85,20 +79,16 @@ class BudgetViewsContainer extends Component {
         this.props.fetchBudgetMetricData(budgetId, versionId, tab, filters || config.available_metrics, location.query);
     };
 
-    saveNewVersion = () => {
-        this.props.saveNewBudgetVersion(this.props.globalBudgetId, this.props.globalVersionId);
-    };
-
     getExportedFile = () => {
         this.props.getViewExportFile(this.props.globalBudgetId, this.props.globalVersionId, this.props.params.tab, this.props.filters);
     };
 
-    handlePushRoute = (newVersion = null, newTab = null) => {
+    handlePushRoute = (newTab = null) => {
         const { router } = this.props;
         const { budgetId, seasonName, sectionName } = this.state;
 
-        const versionName = newVersion ? newVersion.name : this.state.versionName;
-        const versionId = newVersion ? newVersion.id : this.state.versionId;
+        const versionName = this.state.versionName;
+        const versionId = this.state.versionId;
         const tab = newTab || this.props.params.tab;
 
         router.push(`${ROUTE_BUDGET}/${seasonName}/${budgetId}/version/${versionName}/${versionId}/${sectionName}/${tab}`);
@@ -118,23 +108,6 @@ class BudgetViewsContainer extends Component {
         this.props.sendDataForSpreading(this.state.budgetId, this.state.versionId, tab, data);
     };
 
-    handleVersionChange(event, newVersion = null) {
-        const { budgetId, seasonName, tab } = this.state;
-        const version = newVersion || event.item.props.version;
-
-        if (version.id !== this.state.versionId) {
-            this.setState(
-                {
-                    versionId: version.id,
-                    versionName: version.name,
-                }, () => this.props.triggerChange(),
-            );
-
-            this.props.setGlobalData(budgetId, version.id, seasonName, version.name, tab);
-            this.handlePushRoute(version, null);
-        }
-    }
-
     handleTabChange(newActiveTab) {
         const { budgetId, versionId, seasonName, versionName } = this.state;
         this.setState(
@@ -144,7 +117,7 @@ class BudgetViewsContainer extends Component {
         );
 
         this.props.setGlobalData(budgetId, versionId, seasonName, versionName, newActiveTab);
-        this.handlePushRoute(null, newActiveTab);
+        this.handlePushRoute(newActiveTab);
     }
 
     applyFilters = (filters) => {
@@ -158,8 +131,6 @@ class BudgetViewsContainer extends Component {
         }
 
         const {
-            globalBudgetId,
-            globalVersionId,
             globalSeasonName,
             history,
             isBudgetLoading,
@@ -173,9 +144,9 @@ class BudgetViewsContainer extends Component {
                 <div className="budgetHeader">
                     <Row type="flex" justify="start" className="innerHeader">
                         <Col span={8} className="col">
-                            <h3>
-                                {globalSeasonName}
-                            </h3>
+                            <div>
+                                <h3> {globalSeasonName} </h3>
+                            </div>
                         </Col>
                         <Col span={16} className="col">
                             <BudgetViewActionsBar
@@ -194,10 +165,10 @@ class BudgetViewsContainer extends Component {
                     <TopDownSection
                         activeKey={this.props.params.tab}
                         changeTab={key => this.handleTabChange(key)}
-                        budget={globalBudgetId}
+                        budget={this.props.globalBudgetId}
                         data={this.props.viewData}
                         tab={this.props.params.tab}
-                        version={globalVersionId} />
+                        version={this.props.globalVersionId} />
                 </div>
             </div>
         );
@@ -221,10 +192,8 @@ BudgetViewsContainer.propTypes = {
     historyUndo: PropTypes.func.isRequired,
     isBudgetLoading: PropTypes.bool.isRequired,
     isRefreshRequired: PropTypes.bool.isRequired,
-    newVersion: PropTypes.object,
     resetState: PropTypes.func.isRequired,
     router: PropTypes.object,
-    saveNewBudgetVersion: PropTypes.func.isRequired,
     sendDataForSpreading: PropTypes.func.isRequired,
     setGlobalData: PropTypes.func.isRequired,
     view: PropTypes.string,
@@ -251,7 +220,6 @@ function mapStateToProps(state) {
         history: HistoryReducer,
         isBudgetLoading: BudgetViewReducer.isBudgetLoading,
         isRefreshRequired: BudgetViewReducer.isRefreshRequired,
-        newVersion: BudgetViewReducer.newVersion,
         view: BudgetViewReducer.view,
         viewData: BudgetViewReducer.viewData,
     };
@@ -266,7 +234,6 @@ function mapDispatchToProps(dispatch) {
         historyRedo,
         historyUndo,
         resetState,
-        saveNewBudgetVersion,
         sendDataForSpreading,
         setGlobalData,
         filterSetup,

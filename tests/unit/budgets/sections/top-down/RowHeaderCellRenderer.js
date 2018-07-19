@@ -35,7 +35,7 @@ describe('Common view cell rendering', () => {
 
         const instance = new Handsontable(document.createElement('div'));
 
-        const cell = createCell(instance, 0, 0, {}, '', {}, { year: 2018, season: 'SS', metric: 'SALES', dataRow: 'wp' });
+        const cell = createCell(instance, 0, 0, {}, '', {}, { year: 2018, season: 'SS', metric: 'SALES', plan: 'wp' });
 
         expect(cell.innerHTML).to.equal('SALES - SS18 - WORKING PLAN');
 
@@ -58,7 +58,7 @@ describe('Common view cell rendering', () => {
     it('should set class when same year for wp', () => {
         const instance = new Handsontable(document.createElement('div'));
 
-        const cell = createCell(instance, 0, 0, { prop: { isReadOnly: true } }, '', {}, { year: 2018, season: 'SS', dataRow: 'wp' });
+        const cell = createCell(instance, 0, 0, { prop: { isReadOnly: true } }, '', {}, { year: 2018, season: 'SS', plan: 'wp' });
 
         expect(cell.className).to.contain('wpActive');
     });
@@ -66,7 +66,7 @@ describe('Common view cell rendering', () => {
     it('should set class when same year for achd', () => {
         const instance = new Handsontable(document.createElement('div'));
 
-        const cell = createCell(instance, 0, 0, { prop: { isReadOnly: true } }, '', {}, { year: 2018, season: 'SS', dataRow: 'achd' });
+        const cell = createCell(instance, 0, 0, { prop: { isReadOnly: true } }, '', {}, { year: 2018, season: 'SS', plan: 'achd' });
 
         expect(cell.className).to.contain('actualActive');
     });
@@ -74,7 +74,7 @@ describe('Common view cell rendering', () => {
     it('should set not class when different year for wp', () => {
         const instance = new Handsontable(document.createElement('div'));
 
-        const cell = createCell(instance, 0, 0, { prop: { isReadOnly: true } }, '', {}, { year: 2019, season: 'SS', dataRow: 'wp' });
+        const cell = createCell(instance, 0, 0, { prop: { isReadOnly: true } }, '', {}, { year: 2019, season: 'SS', plan: 'wp' });
 
         expect(cell.className).to.not.contain('wpActive');
     });
@@ -82,7 +82,7 @@ describe('Common view cell rendering', () => {
     it('should set not class when different year for achd', () => {
         const instance = new Handsontable(document.createElement('div'));
 
-        const cell = createCell(instance, 0, 0, { prop: { isReadOnly: true } }, '', {}, { year: 2019, season: 'SS', dataRow: 'achd' });
+        const cell = createCell(instance, 0, 0, { prop: { isReadOnly: true } }, '', {}, { year: 2019, season: 'SS', plan: 'achd' });
 
         expect(cell.className).to.not.contain('actualActive');
     });

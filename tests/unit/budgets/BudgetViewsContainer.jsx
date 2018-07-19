@@ -15,7 +15,6 @@ function setup() {
     const mockStore = configureStore(middlewares);
 
     const initialState = {
-        newVersion: null,
         versions: [],
     };
 

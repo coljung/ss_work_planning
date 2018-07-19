@@ -18,7 +18,6 @@ describe('BudgetViewReducer', () => {
             isBudgetLoading: false,
             isDataSpreading: false,
             isRefreshRequired: false,
-            newVersion: null,
             versions: [],
             view: null,
             viewData: [],
@@ -93,7 +92,6 @@ describe('BudgetViewReducer', () => {
             isBudgetLoading: false,
             isDataSpreading: false,
             isRefreshRequired: false,
-            newVersion: null,
             versions: [],
             view: 'men',
             viewData: { 'men': 'test'},
@@ -119,34 +117,6 @@ describe('BudgetViewReducer', () => {
             isBudgetLoading: true,
             isDataSpreading: false,
             isRefreshRequired: true,
-        }))
-    });
-
-    it('should handle RECEIVE_BUDGETS_SAVE_NEW_VERSION', () => {
-        const state = {
-            config: {},
-            filters: [],
-            isBudgetLoading: false,
-            isDataSpreading: false,
-            isRefreshRequired: false,
-            newVersion: null,
-            versions: [
-                { 'v1': 't1'}
-            ],
-            view: null,
-            viewData: [],
-        };
-        expect(
-            reducer(state, {
-                type: actions.RECEIVE_BUDGETS_SAVE_NEW_VERSION,
-                version: { 'v2' : 't2'}
-            })
-        ).toEqual(Object.assign({}, initialState, {
-            newVersion: { 'v2' : 't2'},
-            versions: [
-                { 'v2' : 't2'},
-                { 'v1': 't1'},
-            ]
         }))
     });
 

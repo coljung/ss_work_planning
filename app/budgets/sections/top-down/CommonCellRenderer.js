@@ -27,7 +27,7 @@ export default function cellValueRenderer(instance, td, row, col, prop, value, c
         const rowYear = rowInformation.year.toString().slice(2, 4);
         const budgetYear = this.state.info.year.slice(2, 4);
         if (budgetYear === rowYear) {
-            gridColors(rowInformation.dataRow, td);
+            gridColors(rowInformation.plan, td);
         }
     }
 
