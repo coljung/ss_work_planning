@@ -82,7 +82,7 @@ export function fetchBudgetConfigData() {
             .get(`${getApiUrl()}planning/config`)
             .then(
             res => dispatch(receiveBudgetConfigData(res.body)),
-            err => dispatch(messages({ content: err, response: err.response, isError: true }))
+            err => dispatch(messages({ content: err, response: err.response, isError: true })),
             );
     };
 }
