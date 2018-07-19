@@ -102,7 +102,7 @@ class BudgetViewsContainer extends Component {
         this.handlePushRoute(newActiveTab);
     }
 
-    getCurrentSection = (activeTab, globalBudgetId ) => {
+    getCurrentSection = (activeTab, globalBudgetId) => {
         const { params: { tab }, viewData } = this.props;
         switch (this.state.sectionName) {
             case 'top-down':
@@ -135,7 +135,7 @@ class BudgetViewsContainer extends Component {
         const viewHistory = history[this.props.params.tab];
         const undoDisabled = viewHistory && !isBudgetLoading ? viewHistory.past.length <= 0 : true;
         const redoDisabled = viewHistory && !isBudgetLoading ? viewHistory.future.length <= 0 : true;
-        const currentSection = this.getCurrentSection(this.props.params.tab, globalBudgetId );
+        const currentSection = this.getCurrentSection(this.props.params.tab, globalBudgetId);
 
         return (
             <div>

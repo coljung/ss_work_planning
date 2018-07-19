@@ -75,7 +75,6 @@ describe('BudgetViewActions', () => {
         });
 
         it('Should handle fetchBudgetConfigData', () => {
-            console.log('UI_PLANNING_HOST --- ',UI_PLANNING_HOST);
             nock(UI_PLANNING_HOST)
             .get('/api/planning/config')
             .replyWithFile(200, join(__dirname, '../..', 'fixtures', 'config.json'), {

@@ -53,7 +53,7 @@ export default class TopDownSection extends Component {
     }
 
     render() {
-        const { budget, version, data } = this.props;
+        const { budget, data } = this.props;
         const { activeTab } = this.state;
         return (
             <Tabs activeKey={activeTab} onChange={this.handleTabChange} animated={false}>
@@ -61,7 +61,6 @@ export default class TopDownSection extends Component {
                     {(activeTab === TAB_TOTAL) &&
                         <SectionContainer
                             budget={budget}
-                            version={version}
                             data={data}
                             cellRenderer={commonCellValueRenderer}
                             key={TAB_TOTAL}
@@ -73,7 +72,6 @@ export default class TopDownSection extends Component {
                     {(activeTab === TAB_WOMEN) &&
                         <SectionContainer
                             budget={budget}
-                            version={version}
                             data={data}
                             cellRenderer={commonCellValueRenderer}
                             key={TAB_WOMEN}
@@ -85,7 +83,6 @@ export default class TopDownSection extends Component {
                     {(activeTab === TAB_MEN) &&
                         <SectionContainer
                             budget={budget}
-                            version={version}
                             data={data}
                             cellRenderer={commonCellValueRenderer}
                             key={TAB_MEN}
