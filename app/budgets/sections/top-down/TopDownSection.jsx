@@ -103,6 +103,5 @@ TopDownSection.propTypes = {
     budget: PropTypes.string.isRequired,
     data: PropTypes.array.isRequired,
     tab: PropTypes.string.isRequired,
-    version: PropTypes.string.isRequired,
     changeTab: PropTypes.func.isRequired,
 };

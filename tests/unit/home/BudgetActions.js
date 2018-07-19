@@ -204,13 +204,13 @@ describe('BudgetActions', () => {
             ];
 
             const store = mockStore({ BudgetActions: [] });
+            i18nStub.restore();
 
             return store.dispatch(actions.createBudget(budget)).then(() => {
                 // return of async actions
                 expect(store.getActions()).toEqual(expectedActions)
             });
 
-            i18nStub.restore();
         });
     });
 });

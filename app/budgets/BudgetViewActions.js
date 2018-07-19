@@ -6,8 +6,6 @@ import getApiUrl from '../Helpers';
 
 const request = wrap(agent, Promise);
 
-export const REQUEST_BUDGETS_VERSIONS = 'REQUEST_BUDGETS_VERSIONS';
-export const RECEIVE_BUDGETS_VERSIONS = 'RECEIVE_BUDGETS_VERSIONS';
 export const REQUEST_BUDGETS_CONFIG_DATA = 'REQUEST_BUDGETS_CONFIG_DATA';
 export const RECEIVE_BUDGETS_CONFIG_DATA = 'RECEIVE_BUDGETS_CONFIG_DATA';
 export const REQUEST_BUDGETS_DATA = 'REQUEST_BUDGETS_DATA';
@@ -19,21 +17,11 @@ export const RESET_BUDGETS_DATA = 'RESET_BUDGETS_DATA';
 export const SET_TRIGGER_CHANGE = 'SET_TRIGGER_CHANGE';
 export const REQUEST_VIEW_DOWNLOAD = 'REQUEST_VIEW_DOWNLOAD';
 
-export const requestViewDownload = (budgetId, versionId, view, metric) => ({
+export const requestViewDownload = (budgetId, view, metric) => ({
     type: REQUEST_VIEW_DOWNLOAD,
     budgetId,
-    versionId,
     view,
     metric,
-});
-
-export const requestBudgetVersions = () => ({
-    type: REQUEST_BUDGETS_VERSIONS,
-});
-
-export const receiveBudgetVersions = versions => ({
-    type: RECEIVE_BUDGETS_VERSIONS,
-    versions,
 });
 
 export const requestBudgetConfigData = () => ({
@@ -76,14 +64,14 @@ export const resetState = () => ({
     type: RESET_BUDGETS_DATA,
 });
 
-export function getViewExportFile(budgetId, versionId, view, metric) {
+export function getViewExportFile(budgetId, view, metric) {
     return (dispatch) => {
         const metricList = metric.length > 1 ? metric.join(',') : metric;
         const queryToSend = `metrics=${metricList}`;
         const url = `${getApiUrl()}planning/budgets/${budgetId}/${view}/metrics/export?${queryToSend}`;
         window.open(url);
 
-        return dispatch(requestViewDownload(budgetId, versionId, view, metric));
+        return dispatch(requestViewDownload(budgetId, view, metric));
     };
 }
 
@@ -99,7 +87,7 @@ export function fetchBudgetConfigData() {
     };
 }
 
-export function fetchBudgetMetricData(budget, version, view, metric, query) {
+export function fetchBudgetMetricData(budget, view, metric, query) {
     return (dispatch) => {
         const metricList = metric.length > 1 ? metric.join(',') : metric;
         const queryToSend = {
@@ -117,7 +105,7 @@ export function fetchBudgetMetricData(budget, version, view, metric, query) {
     };
 }
 
-export function sendDataForSpreading(budget, version, view, updatedObj) {
+export function sendDataForSpreading(budget, view, updatedObj) {
     return (dispatch) => {
         dispatch(requestSendDataForSpreading());
         const req = request.put(`${getApiUrl()}planning/budgets/${budget}/${view}/metrics`);

@@ -140,7 +140,7 @@ export class SectionContainer extends Component {
             // handsontable converts to string
             if (parseFloat(prevValue, 10) !== parseFloat(newValue, 10)) {
                 const dataToSend = this.state.data[row][col[0]];
-                const { budget, version, view } = this.props;
+                const { budget, view } = this.props;
                 const { historyPush } = this.props; // eslint-disable-line no-shadow
                 const viewHistory = history[view];
 
@@ -155,7 +155,7 @@ export class SectionContainer extends Component {
                 const metric = this.state.data[row].info.metric;
                 const plan = this.state.data[row].info.plan;
 
-                this.props.sendDataForSpreading(budget, version, view, { ...dataToSend, metric, plan })
+                this.props.sendDataForSpreading(budget, view, { ...dataToSend, metric, plan })
                     .then(() => {
                         // Send old value into history for future undo
                         // TODO: Fix this
@@ -275,7 +275,6 @@ SectionContainer.propTypes = {
     location: PropTypes.object.isRequired,
     router: PropTypes.object.isRequired,
     sendDataForSpreading: PropTypes.func.isRequired,
-    version: PropTypes.string.isRequired,
     view: PropTypes.string.isRequired,
 };
 
