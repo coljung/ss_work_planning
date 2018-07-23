@@ -30,7 +30,7 @@ export default class BudgetList extends Component {
         this.restOfBudgets = oldBudgets.slice(4).map(budget =>
             <li key={budget.id}>
                 <h4>
-                    <Link id={`${budget.season}-${budget.year}`} to={`${ROUTE_BUDGET}/${budget.season}${budget.year}/${budget.id}/version/${budget.versions[0].name}/${budget.versions[0].id}/top-down/total`}>
+                    <Link id={`${budget.season}-${budget.year}`} to={`${ROUTE_BUDGET}/${budget.season}${budget.year}/${budget.id}/top-down/total`}>
                         {budget.season}{budget.year}
                     </Link>
                 </h4>
@@ -47,12 +47,7 @@ export default class BudgetList extends Component {
         const recentBudgets = hasVersions.slice(0, 4).map(budget =>
             <li key={budget.id}>
                 <h4 className="budgetListLink">
-                    {/* <PopoverBudgetLink
-                        budgetId={budget.id}
-                        seasonName={`${budget.season}${budget.year}`}
-                        versionId={budget.versions[0].id}
-                        versionName={budget.versions[0].name} />  */}
-                    <Link id={`${budget.season}-${budget.year}`} to={`${ROUTE_BUDGET}/${budget.season}${budget.year}/${budget.id}/version/${budget.versions[0].name}/${budget.versions[0].id}/top-down/total`}>
+                    <Link id={`${budget.season}-${budget.year}`} to={`${ROUTE_BUDGET}/${budget.season}${budget.year}/${budget.id}/top-down/total`}>
                         {budget.season}{budget.year}
                     </Link>
                 </h4>

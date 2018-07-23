@@ -21,23 +21,19 @@ class BudgetViewsContainer extends Component {
     constructor(props, context) {
         super(props, context);
 
-        const { budgetId, versionId, seasonName, versionName, sectionName, tab } = this.props.params;
+        const { budgetId, seasonName, sectionName, tab } = this.props.params;
 
         this.state = {
             budgetId,
-            versionId,
             seasonName,
-            versionName,
             sectionName,
             tab,
         };
 
         // set global parameters for budgets
         // Budget ID, Version ID, Season Name (SSXX/FWXX), Version name (VX), tab/view
-        this.props.setGlobalData(budgetId, versionId, seasonName, versionName, tab);
-
+        this.props.setGlobalData(budgetId, seasonName, tab);
         this.handleTabChange = this.handleTabChange.bind(this);
-        this.handleVersionChange = this.handleVersionChange.bind(this);
     }
 
     componentDidMount() {
@@ -70,63 +66,43 @@ class BudgetViewsContainer extends Component {
     };
 
     getMetricData = (filters = null) => {
-        const { budgetId, versionId, tab } = this.state;
+        const { budgetId, tab } = this.state;
         const { config, router: { location } } = this.props;
-        this.props.fetchBudgetMetricData(budgetId, versionId, tab, filters || config.available_metrics, location.query);
+        this.props.fetchBudgetMetricData(budgetId, tab, filters || config.available_metrics, location.query);
     };
 
-    getExportedFile = (budget, version, view) => {
-        this.props.getViewExportFile(budget, version, view, this.props.filters);
+    getExportedFile = (budget, view) => {
+        this.props.getViewExportFile(budget, view, this.props.filters);
     };
 
-    handlePushRoute = (newVersion = null, newTab = null) => {
+    handlePushRoute = (newTab = null) => {
         const { router } = this.props;
         const { budgetId, seasonName, sectionName } = this.state;
-
-        const versionName = newVersion ? newVersion.name : this.state.versionName;
-        const versionId = newVersion ? newVersion.id : this.state.versionId;
         const tab = newTab || this.props.params.tab;
 
-        router.push(`${ROUTE_BUDGET}/${seasonName}/${budgetId}/version/${versionName}/${versionId}/${sectionName}/${tab}`);
+        router.push(`${ROUTE_BUDGET}/${seasonName}/${budgetId}/${sectionName}/${tab}`);
     };
 
     handleHistory = (historyMove) => {
-        const { budgetId, versionId } = this.state;
+        const { budgetId } = this.state;
         const { historyUndo, historyRedo, params: { tab } } = this.props; // eslint-disable-line no-shadow
         const data = historyMove === 'undo' ? historyUndo(tab) : historyRedo(tab);
-        this.props.sendDataForSpreading(budgetId, versionId, tab, data);
+        this.props.sendDataForSpreading(budgetId, tab, data);
     };
 
-    handleVersionChange(event, newVersion = null) {
-        const { budgetId, seasonName, tab } = this.state;
-        const version = newVersion || event.item.props.version;
-
-        if (version.id !== this.state.versionId) {
-            this.setState(
-                {
-                    versionId: version.id,
-                    versionName: version.name,
-                }, () => this.props.triggerChange(),
-            );
-
-            this.props.setGlobalData(budgetId, version.id, seasonName, version.name, tab);
-            this.handlePushRoute(version, null);
-        }
-    }
-
     handleTabChange(newActiveTab) {
-        const { budgetId, versionId, seasonName, versionName } = this.state;
+        const { budgetId, seasonName } = this.state;
         this.setState(
             {
                 tab: newActiveTab,
             }, () => this.props.triggerChange(),
         );
 
-        this.props.setGlobalData(budgetId, versionId, seasonName, versionName, newActiveTab);
-        this.handlePushRoute(null, newActiveTab);
+        this.props.setGlobalData(budgetId, seasonName, newActiveTab);
+        this.handlePushRoute(newActiveTab);
     }
 
-    getCurrentSection = (activeTab, globalBudgetId, globalVersionId) => {
+    getCurrentSection = (activeTab, globalBudgetId) => {
         const { params: { tab }, viewData } = this.props;
         switch (this.state.sectionName) {
             case 'top-down':
@@ -135,8 +111,7 @@ class BudgetViewsContainer extends Component {
                     changeTab={key => this.handleTabChange(key)}
                     budget={globalBudgetId}
                     data={viewData}
-                    tab={tab}
-                    version={globalVersionId} />);
+                    tab={tab} />);
             default:
                 return null;
         }
@@ -151,7 +126,6 @@ class BudgetViewsContainer extends Component {
         // const { activeTab } = this.state;
         const {
             globalBudgetId,
-            globalVersionId,
             globalSeasonName,
             history,
             isBudgetLoading,
@@ -161,7 +135,7 @@ class BudgetViewsContainer extends Component {
         const viewHistory = history[this.props.params.tab];
         const undoDisabled = viewHistory && !isBudgetLoading ? viewHistory.past.length <= 0 : true;
         const redoDisabled = viewHistory && !isBudgetLoading ? viewHistory.future.length <= 0 : true;
-        const currentSection = this.getCurrentSection(this.props.params.tab, globalBudgetId, globalVersionId);
+        const currentSection = this.getCurrentSection(this.props.params.tab, globalBudgetId);
 
         return (
             <div>
@@ -178,7 +152,7 @@ class BudgetViewsContainer extends Component {
                               onUndo={() => this.handleHistory('undo')}
                               redoDisabled={redoDisabled}
                               onRedo={() => this.handleHistory('redo')}
-                              onExport={() => this.getExportedFile(globalBudgetId, globalVersionId, this.props.params.tab)}
+                              onExport={() => this.getExportedFile(globalBudgetId, this.props.params.tab)}
                             />
                         </Col>
                     </Row>
@@ -201,19 +175,15 @@ BudgetViewsContainer.propTypes = {
     filters: PropTypes.array.isRequired,
     globalBudgetId: PropTypes.string,
     globalSeasonName: PropTypes.string,
-    globalVersionId: PropTypes.string,
-    globalVersionName: PropTypes.string,
     history: PropTypes.object,
     historyRedo: PropTypes.func.isRequired,
     historyUndo: PropTypes.func.isRequired,
     isBudgetLoading: PropTypes.bool.isRequired,
     isRefreshRequired: PropTypes.bool.isRequired,
-    newVersion: PropTypes.object,
     resetState: PropTypes.func.isRequired,
     router: PropTypes.object,
     sendDataForSpreading: PropTypes.func.isRequired,
     setGlobalData: PropTypes.func.isRequired,
-    versions: PropTypes.array.isRequired,
     view: PropTypes.string,
     viewData: PropTypes.oneOfType([PropTypes.array, PropTypes.object]).isRequired,
     triggerChange: PropTypes.func.isRequired,
@@ -232,13 +202,9 @@ function mapStateToProps(state) {
         globalBudgetId: CustomNavigationReducer.budgetId,
         globalSeasonName: CustomNavigationReducer.seasonName,
         globalTab: CustomNavigationReducer.view,
-        globalVersionId: CustomNavigationReducer.versionId,
-        globalVersionName: CustomNavigationReducer.versionName,
         history: HistoryReducer,
         isBudgetLoading: BudgetViewReducer.isBudgetLoading,
         isRefreshRequired: BudgetViewReducer.isRefreshRequired,
-        newVersion: BudgetViewReducer.newVersion,
-        versions: BudgetViewReducer.versions,
         view: BudgetViewReducer.view,
         viewData: BudgetViewReducer.viewData,
     };

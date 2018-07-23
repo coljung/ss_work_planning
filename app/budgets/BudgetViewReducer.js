@@ -1,5 +1,4 @@
 import {
-         RECEIVE_BUDGETS_VERSIONS,
          RECEIVE_BUDGETS_CONFIG_DATA,
          REQUEST_BUDGETS_DATA,
          RECEIVE_BUDGETS_DATA,
@@ -16,19 +15,12 @@ const initialState = {
     isBudgetLoading: false,
     isDataSpreading: false,
     isRefreshRequired: false,
-    newVersion: null,
-    versions: [],
     view: null,
     viewData: [],
 };
 
 export default (state = initialState, action) => {
     switch (action.type) {
-        case RECEIVE_BUDGETS_VERSIONS:
-            return {
-                ...state,
-                versions: action.versions,
-            };
         case RECEIVE_BUDGETS_CONFIG_DATA:
             return Object.assign({}, state, {
                 config: action.config,

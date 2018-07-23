@@ -18,8 +18,6 @@ describe('BudgetViewReducer', () => {
             isBudgetLoading: false,
             isDataSpreading: false,
             isRefreshRequired: false,
-            newVersion: null,
-            versions: [],
             view: null,
             viewData: [],
         };
@@ -37,18 +35,6 @@ describe('BudgetViewReducer', () => {
                 type: actions.RESET_BUDGETS_VIEW,
             })
         ).toEqual(initialState);
-    });
-
-    it('should handle RECEIVE_BUDGETS_VERSIONS', () => {
-        expect(
-            reducer(undefined, {
-                type: actions.RECEIVE_BUDGETS_VERSIONS,
-                versions: [{ foo: 'bar' }]
-            })
-        ).toEqual({
-            ...initialState,
-            versions: [{ foo: 'bar' }],
-        })
     });
 
     it('should handle RECEIVE_BUDGETS_CONFIG_DATA', () => {
@@ -93,8 +79,6 @@ describe('BudgetViewReducer', () => {
             isBudgetLoading: false,
             isDataSpreading: false,
             isRefreshRequired: false,
-            newVersion: null,
-            versions: [],
             view: 'men',
             viewData: { 'men': 'test'},
         })
