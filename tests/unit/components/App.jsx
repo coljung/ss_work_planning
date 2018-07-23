@@ -8,6 +8,7 @@ import { shallow } from 'enzyme';
 import sinon from 'sinon';
 import renderer from 'react-test-renderer';
 import App from '../../../app/components/App';
+import CustomNavigation from '../../../app/components/customNavigation/CustomNavigation';
 
 let props;
 
@@ -36,6 +37,35 @@ describe('App', () => {
         expect(wrapper.state('collapsed')).toEqual(false);
         clock.tick(80000);
         expect(wrapper.state('collapsed')).toEqual(true);
+        clock.restore();
+    });
+
+    it('should not change collapsed state by triggerMenuCollapse when already collapsed', () => {
+        const clock = sinon.useFakeTimers();
+        const wrapper = shallow(<App {...props} />);
+
+        expect(wrapper.state('collapsed')).toEqual(true);
+
+        wrapper.find(CustomNavigation).prop('triggerMenuCollapse')();
+
+        expect(wrapper.state('collapsed')).toEqual(true);
+
+        clock.restore();
+    });
+
+    it('should change collapsed state by triggerMenuCollapse when not collapsed', () => {
+        const clock = sinon.useFakeTimers();
+        const wrapper = shallow(<App {...props} />);
+
+        expect(wrapper.state('collapsed')).toEqual(true);
+
+        wrapper.instance().toggle();
+        expect(wrapper.state('collapsed')).toEqual(false);
+
+        wrapper.find(CustomNavigation).prop('triggerMenuCollapse')();
+
+        expect(wrapper.state('collapsed')).toEqual(true);
+
         clock.restore();
     });
 });

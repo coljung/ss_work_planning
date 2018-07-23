@@ -165,7 +165,8 @@
     },
     "collectCoverageFrom": [
       "**/app/**/*.{js,jsx}",
-      "!**/app/components/filters/FilterColumns.jsx",
+      "!app/index.jsx",
+      "!app/observers/observetime.js",
       "!**/app/styles/**",
       "!**/__mocks__/**",
       "!**/__tests__/**"

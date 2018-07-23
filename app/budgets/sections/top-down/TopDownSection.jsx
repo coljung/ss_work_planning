@@ -5,9 +5,6 @@ import { Tabs } from 'antd';
 import SectionContainer from '../SectionContainer';
 import commonCellValueRenderer from './CommonCellRenderer';
 
-// Sub Component
-const TabPane = Tabs.TabPane;
-
 export const TAB_TOTAL = 'total';
 export const TAB_WOMEN = 'women';
 export const TAB_MEN = 'men';
@@ -57,7 +54,7 @@ export default class TopDownSection extends Component {
         const { activeTab } = this.state;
         return (
             <Tabs activeKey={activeTab} onChange={this.handleTabChange} animated={false}>
-                <TabPane tab={i18n.t('budgetView.totalTab')} key={TAB_TOTAL}>
+                <Tabs.TabPane tab={i18n.t('budgetView.totalTab')} key={TAB_TOTAL}>
                     {(activeTab === TAB_TOTAL) &&
                         <SectionContainer
                             budget={budget}
@@ -68,8 +65,8 @@ export default class TopDownSection extends Component {
                             view={TAB_TOTAL}
                         />
                     }
-                </TabPane>
-                <TabPane tab={i18n.t('budgetView.womenTab')} key={TAB_WOMEN}>
+                </Tabs.TabPane>
+                <Tabs.TabPane tab={i18n.t('budgetView.womenTab')} key={TAB_WOMEN}>
                     {(activeTab === TAB_WOMEN) &&
                         <SectionContainer
                             budget={budget}
@@ -80,8 +77,8 @@ export default class TopDownSection extends Component {
                             view={TAB_WOMEN}
                         />
                     }
-                </TabPane>
-                <TabPane tab={i18n.t('budgetView.menTab')} key={TAB_MEN}>
+                </Tabs.TabPane>
+                <Tabs.TabPane tab={i18n.t('budgetView.menTab')} key={TAB_MEN}>
                     {(activeTab === TAB_MEN) &&
                         <SectionContainer
                             budget={budget}
@@ -92,7 +89,7 @@ export default class TopDownSection extends Component {
                             view={TAB_MEN}
                         />
                     }
-                </TabPane>
+                </Tabs.TabPane>
             </Tabs>
         );
     }

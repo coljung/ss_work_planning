@@ -8,7 +8,14 @@ import NotificationManager from '../notifications/NotificationManager';
 export default class App extends Component {
     constructor(props) {
         super(props);
-        this.state = { collapsed: true, showStoreModal: true };
+
+        this.state = {
+            collapsed: true,
+            showStoreModal: true,
+        };
+
+        this.toggleFromOutside = this.toggleFromOutside.bind(this);
+        this.toggle = this.toggle.bind(this);
     }
 
     toggleFromOutside() {
@@ -39,7 +46,7 @@ export default class App extends Component {
                         <Icon
                             className="trigger"
                             type={this.state.collapsed ? 'menu-unfold' : 'menu-fold'}
-                            onClick={ this.toggle.bind(this) } />
+                            onClick={this.toggle} />
                         <HeaderContent />
                     </Layout.Header>
                     <Layout.Sider
@@ -48,7 +55,7 @@ export default class App extends Component {
                         collapsed={this.state.collapsed}>
                         <CustomNavigation
                             pathname={this.props.location.pathname}
-                            triggerMenuCollapse={() => this.toggleFromOutside()} />
+                            triggerMenuCollapse={this.toggleFromOutside} />
                     </Layout.Sider>
                     <Layout.Content>
                         <main style={{ flex: 1, overflowY: 'auto', padding: '0 25px 25px' }}>

@@ -4,7 +4,6 @@ import * as sinon from 'sinon';
 import { shallow } from 'enzyme';
 import { Button, Modal, Select } from 'antd';
 import BudgetCreateModal from '../../../../app/home/components/BudgetCreateModal';
-import { Link } from 'react-router';
 
 describe('BudgetCreateModal', () => {
     it('Should have modal', () => {
