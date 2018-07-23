@@ -175,7 +175,7 @@ describe('BudgetActions', () => {
             })
         });
 
-        it('Should createBudget', () => {
+        it('Should createBudget', async () => {
             const i18nStub = sinon.stub(i18n, 't');
             i18nStub.withArgs('home.notification.budgetCreated').returns('Budget created successfully!');
 
@@ -204,12 +204,14 @@ describe('BudgetActions', () => {
 
             const store = mockStore({ BudgetActions: [] });
 
-            return store.dispatch(actions.createBudget(budget)).then(() => {
+
+            await store.dispatch(actions.createBudget(budget)).then(() => {
                 // return of async actions
                 expect(store.getActions()).toEqual(expectedActions)
             });
 
-            i18nStub.restore();
+            // i18nStub.restore();
+
         });
     });
 });

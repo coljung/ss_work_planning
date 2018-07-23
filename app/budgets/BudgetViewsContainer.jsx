@@ -23,21 +23,18 @@ class BudgetViewsContainer extends Component {
     constructor(props, context) {
         super(props, context);
 
-        const { budgetId, versionId, seasonName, versionName, sectionName, tab } = this.props.params;
+        const { budgetId, seasonName, sectionName, tab } = this.props.params;
 
         this.state = {
             budgetId,
-            versionId,
             seasonName,
-            versionName,
             sectionName,
             tab,
         };
 
         // set global parameters for budgets
-        // Budget ID, Version ID, Season Name (SSXX/FWXX), Version name (VX), tab/view
-        this.props.setGlobalData(budgetId, versionId, seasonName, versionName, tab);
-
+        // Budget ID, Season Name (SSXX/FWXX), tab/view
+        this.props.setGlobalData(budgetId, seasonName, tab);
         this.handleTabChange = this.handleTabChange.bind(this);
         this.handleUndo = this.handleUndo.bind(this);
         this.handleRedo = this.handleRedo.bind(this);
@@ -72,49 +69,46 @@ class BudgetViewsContainer extends Component {
     };
 
     getMetricData = (filters = null) => {
-        const { budgetId, versionId, tab } = this.state;
+        const { budgetId, tab } = this.state;
         const { config, router: { location } } = this.props;
-        this.props.fetchBudgetMetricData(budgetId, versionId, tab, filters || config.available_metrics, location.query);
+        this.props.fetchBudgetMetricData(budgetId, tab, filters || config.available_metrics, location.query);
     };
 
     getExportedFile = () => {
-        this.props.getViewExportFile(this.props.globalBudgetId, this.props.globalVersionId, this.props.params.tab, this.props.filters);
+        this.props.getViewExportFile(this.props.globalBudgetId, this.props.params.tab, this.props.filters);
     };
 
     handlePushRoute = (newTab = null) => {
         const { router } = this.props;
         const { budgetId, seasonName, sectionName } = this.state;
-
-        const versionName = this.state.versionName;
-        const versionId = this.state.versionId;
         const tab = newTab || this.props.params.tab;
 
-        router.push(`${ROUTE_BUDGET}/${seasonName}/${budgetId}/version/${versionName}/${versionId}/${sectionName}/${tab}`);
+        router.push(`${ROUTE_BUDGET}/${seasonName}/${budgetId}/${sectionName}/${tab}`);
     };
 
     handleUndo = () => {
         const { params: { tab } } = this.props;
         const data = this.props.historyUndo(tab);
 
-        this.props.sendDataForSpreading(this.state.budgetId, this.state.versionId, tab, data);
+        this.props.sendDataForSpreading(this.state.budgetId, tab, data);
     };
 
     handleRedo = () => {
         const { params: { tab } } = this.props;
         const data = this.props.historyRedo(tab);
 
-        this.props.sendDataForSpreading(this.state.budgetId, this.state.versionId, tab, data);
+        this.props.sendDataForSpreading(this.state.budgetId, tab, data);
     };
 
     handleTabChange(newActiveTab) {
-        const { budgetId, versionId, seasonName, versionName } = this.state;
+        const { budgetId, seasonName } = this.state;
         this.setState(
             {
                 tab: newActiveTab,
             }, () => this.props.triggerChange(),
         );
 
-        this.props.setGlobalData(budgetId, versionId, seasonName, versionName, newActiveTab);
+        this.props.setGlobalData(budgetId, seasonName, newActiveTab);
         this.handlePushRoute(newActiveTab);
     }
 
@@ -165,8 +159,7 @@ class BudgetViewsContainer extends Component {
                         changeTab={key => this.handleTabChange(key)}
                         budget={this.props.globalBudgetId}
                         data={this.props.viewData}
-                        tab={this.props.params.tab}
-                        version={this.props.globalVersionId} />
+                        tab={this.props.params.tab} />
                 </div>
             </div>
         );
@@ -183,8 +176,6 @@ BudgetViewsContainer.propTypes = {
     filters: PropTypes.array.isRequired,
     globalBudgetId: PropTypes.string,
     globalSeasonName: PropTypes.string,
-    globalVersionId: PropTypes.string,
-    globalVersionName: PropTypes.string,
     history: PropTypes.object,
     historyRedo: PropTypes.func.isRequired,
     historyUndo: PropTypes.func.isRequired,
@@ -213,8 +204,6 @@ function mapStateToProps(state) {
         globalBudgetId: CustomNavigationReducer.budgetId,
         globalSeasonName: CustomNavigationReducer.seasonName,
         globalTab: CustomNavigationReducer.view,
-        globalVersionId: CustomNavigationReducer.versionId,
-        globalVersionName: CustomNavigationReducer.versionName,
         history: HistoryReducer,
         isBudgetLoading: BudgetViewReducer.isBudgetLoading,
         isRefreshRequired: BudgetViewReducer.isRefreshRequired,

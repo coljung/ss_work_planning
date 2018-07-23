@@ -15,24 +15,6 @@ describe('BudgetViewActions', () => {
 
     describe('Action Creators', () => {
 
-        it('Should handle requestBudgetVersions', () => {
-            const expectedAction = {
-                type: actions.REQUEST_BUDGETS_VERSIONS
-            };
-            expect(actions.requestBudgetVersions()).toEqual(expectedAction);
-        });
-
-        it('Should handle receiveBudgetVersions', () => {
-            const versions = {
-                foo: 'Bar'
-            };
-            const expectedAction = {
-                type: actions.RECEIVE_BUDGETS_VERSIONS,
-                versions
-            };
-            expect(actions.receiveBudgetVersions(versions)).toEqual(expectedAction);
-        });
-
         it('Should handle requestBudgetConfigData', () => {
             const expectedAction = {
                 type: actions.REQUEST_BUDGETS_CONFIG_DATA
@@ -110,7 +92,7 @@ describe('BudgetViewActions', () => {
 
         it('Should handle sendDataForSpreading', () => {
             nock(UI_PLANNING_HOST)
-            .put('/api/planning/budgets/2/versions/V1/men/metrics', {
+            .put('/api/planning/budgets/2/men/metrics', {
                 metric: "SALES",
                 plan: "wp",
                 value: "12",
@@ -125,7 +107,7 @@ describe('BudgetViewActions', () => {
             ];
             const store = mockStore({ BudgetViewActions: [] });
 
-            return store.dispatch(actions.sendDataForSpreading(2, 'V1', 'men', {
+            return store.dispatch(actions.sendDataForSpreading(2, 'men', {
                 metric: "SALES",
                 plan: "wp",
                 value: "12",

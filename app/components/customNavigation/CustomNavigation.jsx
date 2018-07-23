@@ -46,8 +46,6 @@ CustomNavigation.propTypes = {
     config: PropTypes.object,
     pathname: PropTypes.string.isRequired,
     seasonName: PropTypes.string,
-    versionId: PropTypes.string,
-    versionName: PropTypes.string,
     triggerMenuCollapse: PropTypes.func,
 };
 
@@ -57,8 +55,6 @@ function mapStateToProps(state) {
         budgetId: CustomNavigationReducer.budgetId,
         config: BudgetViewReducer.config,
         seasonName: CustomNavigationReducer.seasonName,
-        versionId: CustomNavigationReducer.versionId,
-        versionName: CustomNavigationReducer.versionName,
     };
 }
 
