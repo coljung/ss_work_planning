@@ -92,7 +92,6 @@ export function createBudget(budget) {
         return req.send(budget)
             .then(
             (res) => {
-                fetchBudgets()(dispatch);
                 dispatch(messages({ content: i18n.t('home.notification.budgetCreated'), response: '', isError: false }));
                 return dispatch(receiveBudgetCreate(res.body));
             },

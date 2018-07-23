@@ -8,7 +8,7 @@ import configResponse from '../../fixtures/config.json';
 const middlewares = [thunk];
 const mockStore = configureMockStore(middlewares);
 
-describe('BudgetViewActionsBar', () => {
+describe('BudgetViewActions', () => {
     afterEach(() => {
         nock.cleanAll();
     });

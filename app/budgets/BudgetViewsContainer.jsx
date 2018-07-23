@@ -46,10 +46,8 @@ class BudgetViewsContainer extends Component {
     }
 
     componentDidMount() {
-        const { fetchBudgetConfigData, params: { budgetId } } = this.props; // eslint-disable-line no-shadow
-
         // get config data, then fetch metrics based on config
-        fetchBudgetConfigData().then(this.setFilters);
+        this.props.fetchBudgetConfigData().then(this.setFilters);
     }
 
     componentWillUnmount() {

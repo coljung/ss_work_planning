@@ -54,8 +54,7 @@
       background-color: #fff;
       border-color: @ssense_black;
     }
-    .ant-btn[disabled],
-    .saveBtn[disabled] {
+    .ant-btn[disabled] {
         &:hover,
         &:focus {
             color: rgba(0,0,0,.25);
@@ -150,7 +149,10 @@
     .ant-select-selection:active, .ant-select-selection:focus,
     .ant-select-selection:hover,
     .ant-radio-checked .ant-radio-inner,
-    .ant-radio-checked:after {
+    .ant-radio-checked:after,
+    .ant-radio-focused .ant-radio-inner,
+    .ant-radio-wrapper:hover .ant-radio .ant-radio-inner,
+    .ant-radio:hover .ant-radio-inner {
         border-color: @ssense_black;
     }
     .ant-radio-inner:after {

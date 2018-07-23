@@ -3,63 +3,60 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { Row, Col, Button } from 'antd';
-import { fetchBudgets } from './BudgetActions';
+import { Row, Col } from 'antd';
+import { createBudget, fetchAvailableSeasons, fetchBudgets } from './BudgetActions';
 import Board from '../components/Board';
 import BudgetList from './BudgetList';
-import BudgetCreate from './BudgetCreate';
+import BudgetCreateModal from './components/BudgetCreateModal';
+import LoadingSpinner from '../components/common/LoadingSpinner';
 
-class BudgetHome extends Component {
+export class BudgetHome extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-            createModalActive: false,
-            viewArchivedModalActive: false,
-            oldBudgetsAvailable: true,
-        };
+
+        this.saveNewBudget = this.saveNewBudget.bind(this);
     }
 
-    componentWillMount() {
+    componentDidMount() {
+        // Not sure we should load available seasons on load for probably nothing
+        this.props.fetchAvailableSeasons();
         this.props.fetchBudgets();
     }
 
-    toggleCreateModal = () => {
-        this.setState({
-            createModalActive: !this.state.createModalActive,
-        });
+    componentWillReceiveProps = (nextProps) => {
+        if (this.props.budgets.length !== nextProps.budgets.length) {
+            this.props.fetchAvailableSeasons();
+            this.props.fetchBudgets();
+        }
     };
 
-    toggleViewArchivedModal = () => {
-        this.setState({
-            viewArchivedModalActive: !this.state.viewArchivedModalActive,
-        });
+    saveNewBudget = (season, year) => {
+        const budget = {
+            year,
+            season,
+        };
+
+        this.props.createBudget(budget);
     };
+
+    renderBudgetList = () => (
+        !this.props.budgetsFetched || !this.props.budgetCreateFetched
+            ? <LoadingSpinner />
+            : <BudgetList budgets={this.props.budgets} />
+    );
+
+    renderCreateButton = () => (
+        <BudgetCreateModal onSave={this.saveNewBudget} disabled={!this.props.seasonsFetched} seasons={this.props.seasons} />
+    );
 
     render() {
         return (
             <Row>
                 <Col xs={12}>
                     <Board title={i18n.t('home.budgetsDashboard')} style={{ paddingTop: '25px' }}>
-                        <BudgetList
-                            visible={this.state.viewArchivedModalActive}
-                            budgets={this.props.budgets}
-                            onOverlayClick={this.toggleViewArchivedModal.bind(this)}
-                            budgetsFetched={this.props.budgetsFetched} />
-                        <BudgetCreate
-                            visible={this.state.createModalActive}
-                            onOverlayClick={this.toggleCreateModal.bind(this)} />
-                        <Row type="flex" justify="start">
-                            <Col>
-                                 <Button
-                                     icon="file"
-                                     type="primary"
-                                     onClick={this.toggleCreateModal}>
-                                     {i18n.t('home.saveButton')}
-                                 </Button>
-                            </Col>
-                        </Row>
+                        { this.renderBudgetList() }
+                        { this.renderCreateButton() }
                     </Board>
-
                 </Col>
             </Row>
         );
@@ -72,19 +69,27 @@ BudgetHome.propTypes = {
         PropTypes.object,
     ]).isRequired,
     budgetsFetched: PropTypes.bool.isRequired,
+    seasons: PropTypes.array.isRequired,
+    seasonsFetched: PropTypes.bool.isRequired,
+    createBudget: PropTypes.func.isRequired,
     fetchBudgets: PropTypes.func.isRequired,
+    fetchAvailableSeasons: PropTypes.func.isRequired,
+    budgetCreateFetched: PropTypes.bool.isRequired,
 };
 
 function mapStateToProps(state) {
     const { BudgetReducer } = state;
     return {
+        seasons: BudgetReducer.seasons,
+        seasonsFetched: BudgetReducer.seasonsFetched,
         budgets: BudgetReducer.budgets,
         budgetsFetched: BudgetReducer.budgetsFetched,
+        budgetCreateFetched: BudgetReducer.budgetCreateFetched,
     };
 }
 
 function mapDispatchToProps(dispatch) {
-    return bindActionCreators({ fetchBudgets }, dispatch);
+    return bindActionCreators({ fetchAvailableSeasons, fetchBudgets, createBudget }, dispatch);
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(BudgetHome);

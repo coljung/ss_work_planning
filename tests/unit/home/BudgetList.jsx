@@ -1,95 +1,86 @@
 import React from 'react'
-import Enzyme, { mount, shallow } from 'enzyme'
-import Adapter from 'enzyme-adapter-react-16';
-import { Provider } from 'react-redux';
-import thunk from 'redux-thunk';
-import configureStore from 'redux-mock-store';
+import { mount, shallow } from 'enzyme'
+import { Link } from 'react-router';
 import BudgetList from '../../../app/home/BudgetList';
-
-// Import fixture data
-import budgets from '../../fixtures/budgets.json';
-import seasons from '../../fixtures/season_available.json';
-
-Enzyme.configure({ adapter: new Adapter() });
-
-function setup() {
-    const props = {
-        visible: false,
-        onOverlayClick: jest.fn(),
-        budgetsFetched: true,
-        budgets: [
-            {
-                'id':'21',
-                'season':'SS',
-                'year':'2020',
-                'created_at':'2018-06-28T20:16:20.306Z',
-                'updated_at':'2018-06-28T20:16:20.306Z',
-                'name':'SS20',
-                'versions':[
-                    {'id':'52',
-                    'budget_id':'21',
-                    'name':'V1',
-                    'created_at':'2018-06-28T20:16:20.312Z',
-                    'updated_at':'2018-06-28T20:16:20.312Z'}
-                ]
-            }
-        ]
-    }
-
-    const middlewares = [thunk]
-    const mockStore = configureStore(middlewares);
-
-    const initialState = {
-        BudgetActions: [],
-        BudgetReducer: {
-            budgets: budgets,
-            seasons,
-            budgetsFetched: true,
-            seasonsFetched: true
-        }
-    };
-
-    let store = mockStore(initialState);
-
-    const enzymeWrapper = mount(
-        <Provider store={store}>
-            <BudgetList {...props} />
-        </Provider>
-    );
-
-    return {
-        props,
-        enzymeWrapper
-    }
-}
+import PreviousBudgetsModal from '../../../app/home/components/PreviousBudgetsModal';
+import i18n from 'i18next';
+import sinon from 'sinon';
 
 describe('BudgetList', () => {
-    beforeEach(() => {
-        jest.useFakeTimers();
+    it('Should have message when no budgets', () => {
+        const i18nStub = sinon.stub(i18n, 't');
+        i18nStub.withArgs('home.noAvailableBudget').returns('home.noAvailableBudget');
+
+        const output = shallow(
+            <BudgetList budgets={[]}/>
+        );
+
+        expect(output.find('ul')).toHaveLength(0);
+        expect(output.find('p')).toHaveLength(1);
+        expect(output.find('p').text()).toEqual('home.noAvailableBudget');
+
+        i18nStub.restore();
     });
 
-    afterEach(() => {
-        jest.useRealTimers();
+    it('Should have budget list', () => {
+        const budgets = [
+            { id: 1, season: 'FW', year: 2019},
+            { id: 2, season: 'FW', year: 2021},
+            { id: 3, season: 'FW', year: 2020},
+        ];
+
+        const output = shallow(
+            <BudgetList budgets={budgets}/>
+        );
+
+        expect(output.find('ul')).toHaveLength(1);
+        expect(output.find('ul').find('li')).toHaveLength(3);
     });
 
-    it('should render BudgetList', () => {
-        const { enzymeWrapper } = setup();
-        expect(enzymeWrapper.find('li').first().text()).toBe('SS2020');
+    it('Should have ordered budget list', () => {
+        const budgets = [
+            { id: 1, season: 'FW', year: 2019},
+            { id: 2, season: 'FW', year: 2021},
+            { id: 3, season: 'FW', year: 2020},
+        ];
+
+        const output = mount(
+            <BudgetList budgets={budgets}/>
+        );
+
+        const lis = output.find('ul').find('li');
+        expect(lis.at(0).find('h4').find(Link).text()).toEqual('FW2021');
+        expect(lis.at(1).find('h4').find(Link).text()).toEqual('FW2020');
+        expect(lis.at(2).find('h4').find(Link).text()).toEqual('FW2019');
     });
 
-    it.skip('should open BudgetList modal archives', () => {
-        const { enzymeWrapper } = setup();
+    it('Should have links to budgets', () => {
+        const budgets = [
+            { id: 1, season: 'FW', year: 2019},
+        ];
 
-        const component = shallow(enzymeWrapper.find('BudgetList').get(0));
+        const output = shallow(
+            <BudgetList budgets={budgets}/>
+        );
 
-        component.setProps({
-            visible: true,
-        });
+        expect(output.find(Link).prop('to')).toContain('/FW2019/1/top-down/total');
+    });
 
-        expect(component.instance().props.visible).toBeTruthy();
+    it('Should have previous budgets link when more than 4 budgets', () => {
+        const budgets = [
+            { id: 1, season: 'FW', year: 2020},
+            { id: 2, season: 'FW', year: 2019},
+            { id: 3, season: 'FW', year: 2018},
+            { id: 4, season: 'FW', year: 2017},
+            { id: 5, season: 'FW', year: 2016},
+            { id: 6, season: 'FW', year: 2015},
+        ];
 
-        const modal = shallow(component.find('Modal').get(0));
-        expect(modal.find('Link').length).toBe(4);
-        expect(modal.find('Link').first().prop('children').join('')).toBe('FW2019');
+        const output = shallow(
+            <BudgetList budgets={budgets}/>
+        );
+
+        expect(output.find('ul').find('li')).toHaveLength(5);
+        expect(output.find(PreviousBudgetsModal)).toHaveLength(1);
     });
 });

@@ -25,7 +25,7 @@
     "cors": "^2.8.1",
     "express": "^4.16.2",
     "handsontable-pro": "^1.18.1",
-    "history": "^4.3.0",
+    "history": "^3.2.0",
     "http-proxy-middleware": "^0.17.4",
     "i18next": "^11.3.6",
     "moment": "^2.22.2",

@@ -10,7 +10,7 @@ export default class FilterModal extends Component {
         this.state = {
             checkedKeys: [],
             available_metrics: [],
-            filterModalActive: false,
+            isModalActive: false,
         };
 
         this.onCheck = this.onCheck.bind(this);
@@ -54,13 +54,13 @@ export default class FilterModal extends Component {
 
     closeModal = () => {
         this.setState({
-            filterModalActive: false,
+            isModalActive: false,
         });
     };
 
     showModal = () => {
         this.setState({
-            filterModalActive: true,
+            isModalActive: true,
         });
     };
 
@@ -69,7 +69,7 @@ export default class FilterModal extends Component {
             <span>
                 <Modal
                     title={i18n.t('filterModal.title')}
-                    visible={this.state.filterModalActive}
+                    visible={this.state.isModalActive}
                     className='filterModal'
                     onOk={this.handleSave}
                     okText={i18n.t('filterModal.saveButton')}
