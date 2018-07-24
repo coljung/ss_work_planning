@@ -83,7 +83,7 @@ export function fetchBudgetConfigData() {
             .then(
             res => dispatch(receiveBudgetConfigData(res.body)),
             err => dispatch(messages({ content: err, response: err.response, isError: true })),
-            );
+        );
     };
 }
 
@@ -114,22 +114,11 @@ export function sendDataForSpreading(budget, view, updatedObj) {
             value: updatedObj.value === 0 ? 0.0001 : updatedObj.value,
         })
             .then(
-            (res) => {
-                const isResponseSuccess = res.statusCode >= 200 && res.statusCode <= 399;
-
-                if (isResponseSuccess) {
-                    dispatch(receiveSendDataForSpreading());
-                } else {
-                    dispatch(messages({ content: i18n.t('budgetView.notification.spreadingFailed'), response: '', isError: true }));
-                }
-
-                return res.body;
-            },
+            () => dispatch(receiveSendDataForSpreading()),
             (err) => {
                 dispatch(receiveSendDataForSpreading());
                 dispatch(messages({ content: err, response: err.response, isError: true }));
-                throw err;
             },
-            );
+        );
     };
 }

@@ -32,7 +32,7 @@ export default (state = initialState, action) => {
                 viewData: [],
             });
         case RECEIVE_BUDGETS_DATA: {
-            const setData = [];
+            const setData = {};
             setData[action.view] = action.viewData;
             return Object.assign({}, state, {
                 isBudgetLoading: false,

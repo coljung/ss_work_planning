@@ -1,0 +1,191 @@
+{
+  "info":{
+    "season":"SS",
+    "year":"2020",
+    "metrics":10,
+    "start_row":0,
+    "has_gaps":false,
+    "total_cols":25,
+    "row_span":10,
+    "total":100
+  },
+  "headers":[
+    [
+      "Info",
+      "Pre-Mkdn",
+      "Incr%",
+      "Full Season",
+      "Incr%",
+      "Previous",
+      "Aug-2019",
+      "Sep-2019",
+      "Oct-2019",
+      "Nov-2019",
+      "Dec-2019",
+      "Jan-2020",
+      "Feb-2020",
+      "Mar-2020",
+      "Apr-2020",
+      "May-2020",
+      "Jun-2020",
+      "Jul-2020",
+      "Aug-2020",
+      "Sep-2020",
+      "Oct-2020",
+      "Nov-2020",
+      "Dec-2020",
+      "Jan-2021",
+      "Future"
+    ]
+  ],
+  "data":[
+    {
+      "info":{
+        "metric":"BOM COST",
+        "plan":"wp",
+        "year":2020,
+        "season":"SS"
+      },
+      "pre_mrkdn":{
+        "value":null,
+        "dataType":"currency",
+        "isReadOnly":true
+      },
+      "pre_mrkdn_incr":{
+        "value":" ",
+        "dataType":"text",
+        "isReadOnly":true
+      },
+      "full":{
+        "value":null,
+        "dataType":"currency",
+        "isReadOnly":true
+      },
+      "full_incr":{
+        "value":" ",
+        "dataType":"text",
+        "isReadOnly":true
+      },
+      "previous":{
+        "value":null,
+        "key":"root.BOM COST.TOTAL.2020.previous",
+        "dataType":"currency",
+        "isReadOnly":true
+      },
+      "aug0":{
+        "value":0,
+        "key":"root.BOM COST.2020.2019.8",
+        "dataType":"currency",
+        "isReadOnly":true
+      },
+      "sep0":{
+        "value":0,
+        "key":"root.BOM COST.2020.2019.9",
+        "dataType":"currency",
+        "isReadOnly":true
+      },
+      "oct0":{
+        "value":0,
+        "key":"root.BOM COST.2020.2019.10",
+        "dataType":"currency",
+        "isReadOnly":true
+      },
+      "nov0":{
+        "value":0,
+        "key":"root.BOM COST.2020.2019.11",
+        "dataType":"currency",
+        "isReadOnly":true
+      },
+      "dec0":{
+        "value":0,
+        "key":"root.BOM COST.2020.2019.12",
+        "dataType":"currency",
+        "isReadOnly":true
+      },
+      "jan1":{
+        "value":0,
+        "key":"root.BOM COST.2020.2020.1",
+        "dataType":"currency",
+        "isReadOnly":true
+      },
+      "feb1":{
+        "value":0,
+        "key":"root.BOM COST.2020.2020.2",
+        "dataType":"currency",
+        "isReadOnly":true
+      },
+      "mar1":{
+        "value":0,
+        "key":"root.BOM COST.2020.2020.3",
+        "dataType":"currency",
+        "isReadOnly":true
+      },
+      "apr1":{
+        "value":0,
+        "key":"root.BOM COST.2020.2020.4",
+        "dataType":"currency",
+        "isReadOnly":true
+      },
+      "may1":{
+        "value":0,
+        "key":"root.BOM COST.2020.2020.5",
+        "dataType":"currency",
+        "isReadOnly":true
+      },
+      "jun1":{
+        "value":0,
+        "key":"root.BOM COST.2020.2020.6",
+        "dataType":"currency",
+        "isReadOnly":true
+      },
+      "jul1":{
+        "value":0,
+        "key":"root.BOM COST.2020.2020.7",
+        "dataType":"currency",
+        "isReadOnly":true
+      },
+      "aug1":{
+        "value":0,
+        "key":"root.BOM COST.2020.2020.8",
+        "dataType":"currency",
+        "isReadOnly":true
+      },
+      "sep1":{
+        "value":0,
+        "key":"root.BOM COST.2020.2020.9",
+        "dataType":"currency",
+        "isReadOnly":true
+      },
+      "oct1":{
+        "value":0,
+        "key":"root.BOM COST.2020.2020.10",
+        "dataType":"currency",
+        "isReadOnly":true
+      },
+      "nov1":{
+        "value":0,
+        "key":"root.BOM COST.2020.2020.11",
+        "dataType":"currency",
+        "isReadOnly":true
+      },
+      "dec1":{
+        "value":0,
+        "key":"root.BOM COST.2020.2020.12",
+        "dataType":"currency",
+        "isReadOnly":true
+      },
+      "jan2":{
+        "value":0,
+        "key":"root.BOM COST.2020.2021.1",
+        "dataType":"currency",
+        "isReadOnly":true
+      },
+      "future":{
+        "value":null,
+        "key":"root.BOM COST.TOTAL.2020.future",
+        "dataType":"currency",
+        "isReadOnly":true
+      }
+    }
+  ]
+}
