@@ -1,84 +1,115 @@
-import configureMockStore from 'redux-mock-store';
-import thunk from 'redux-thunk';
 import * as actions from '../../../../app/budgets/history/HistoryActions';
+import reducer from '../../../../app/budgets/history/HistoryReducer';
 
 describe('History Reducer', () => {
-    let middlewares;
-    let mockStore;
-    let store;
-    let view;
-    let item;
-    let item2;
+    let initialState;
+    let currentState;
 
-    beforeAll(() => {
-        middlewares = [thunk];
-        mockStore = configureMockStore(middlewares);
-        store = mockStore({ HistoryReducer: {} });
-        view = 'men';
-        item = {
-            foo: 'bar'
-        };
-        item2 = {
-            foo: 'qaz'
+    beforeEach(() => {
+        initialState = {};
+        currentState = {
+            total: {
+                past: [ 'testPast1', 'testPast2' ],
+                present: 'testPresent',
+                future: [ 'testFuture' ],
+            },
         };
     });
 
-    it('should push multiple item into a view', () => {
-        const action = store.dispatch(actions.historyPush(view, item));
-        const expectedFirstPushAction = {
-            item: { foo: 'bar' },
-            type: 'HISTORY_PUSH',
-            view: 'men'
-        };
-
-        expect(action).toEqual(expectedFirstPushAction);
-
-        store.dispatch(actions.historyPush(view, item));
-
-        const expectedActions = [
-            { item: { foo: 'bar' }, type: 'HISTORY_PUSH', view: 'men' },
-            { item: { foo: 'bar' }, type: 'HISTORY_PUSH', view: 'men' }
-        ];
-
-        expect(store.getActions()).toEqual(expectedActions);
+    it('Should return the current state on other type', () => {
+        expect(
+            reducer(currentState, {
+                type: 'test',
+            })
+        ).toEqual(currentState);
     });
 
-    it('Should undo', () => {
-        store = mockStore({ HistoryReducer: {} });
-        store.dispatch(actions.historyPush(view, item));
-        store.dispatch(actions.historyPush(view, item));
-        store.dispatch(actions.historyPush(view, item2));
-        store.dispatch(actions.historyUndo(view));
-
-        const reducerActions = store.getActions();
-
-        expect(reducerActions[reducerActions.length - 1]).toHaveProperty(
-            'type',
-            actions.HISTORY_UNDO
-        );
-        expect(reducerActions[reducerActions.length - 1]).toHaveProperty(
-            'view',
-            view
-        );
+    it('Should return the initial state on CLEAR_GLOBAL_DATA', () => {
+        expect(
+            reducer(currentState, {
+                type: 'CLEAR_GLOBAL_DATA',
+            })
+        ).toEqual({
+            past: [],
+            present: null,
+            future: [],
+        });
     });
 
-    it('Should redo', () => {
-        store = mockStore({ HistoryReducer: {} });
-        store.dispatch(actions.historyPush(view, item));
-        store.dispatch(actions.historyPush(view, item));
-        store.dispatch(actions.historyPush(view, item2));
-        store.dispatch(actions.historyUndo(view));
-        store.dispatch(actions.historyRedo(view));
+    it('Should return the current state on HISTORY_PUSH when pushing the present state', () => {
+        expect(
+            reducer(currentState, {
+                type: actions.HISTORY_PUSH,
+                view: 'total',
+                item: 'testPresent',
+            })
+        ).toEqual(currentState);
+    });
 
-        const reducerActions = store.getActions();
+    it('Should push the new state on HISTORY_PUSH', () => {
+        currentState.total.future = [];
 
-        expect(reducerActions[reducerActions.length - 1]).toHaveProperty(
-            'type',
-            actions.HISTORY_REDO
-        );
-        expect(reducerActions[reducerActions.length - 1]).toHaveProperty(
-            'view',
-            view
-        );
+        expect(
+            reducer(currentState, {
+                type: actions.HISTORY_PUSH,
+                view: 'total',
+                item: 'testPresent2',
+            })
+        ).toEqual(Object.assign({}, initialState, {
+            total: {
+                past: [ 'testPast1', 'testPast2', 'testPresent' ],
+                present: 'testPresent2',
+                future: [],
+            },
+        }));
+    });
+
+    it('Should push the new state on HISTORY_PUSH when no present', () => {
+        currentState.total.present = null;
+        currentState.total.future = [];
+
+        expect(
+            reducer(currentState, {
+                type: actions.HISTORY_PUSH,
+                view: 'total',
+                item: 'testPresent2',
+            })
+        ).toEqual(Object.assign({}, initialState, {
+            total: {
+                past: [ 'testPast1', 'testPast2' ],
+                present: 'testPresent2',
+                future: [],
+            },
+        }));
+    });
+
+    it('Should return the modified state on HISTORY_UNDO', () => {
+        expect(
+            reducer(currentState, {
+                type: actions.HISTORY_UNDO,
+                view: 'total',
+            })
+        ).toEqual(Object.assign({}, initialState, {
+            total: {
+                past: [ 'testPast1' ],
+                present: 'testPast2',
+                future: [ 'testPresent', 'testFuture' ],
+            },
+        }));
+    });
+
+    it('Should return the modified state on HISTORY_REDO', () => {
+        expect(
+            reducer(currentState, {
+                type: actions.HISTORY_REDO,
+                view: 'total',
+            })
+        ).toEqual(Object.assign({}, initialState, {
+            total: {
+                past: [ 'testPast1', 'testPast2', 'testPresent' ],
+                present: 'testFuture',
+                future: [],
+            },
+        }));
     });
 });

@@ -1,9 +1,10 @@
 import reducer from '../../../app/budgets/BudgetViewReducer';
 import * as actions from '../../../app/budgets/BudgetViewActions';
-
-let initialState;
+import * as notifications from 'notifications/NotificationActions';
 
 describe('BudgetViewReducer', () => {
+    let initialState;
+
     beforeEach(() => {
         initialState = {
             config: {},
