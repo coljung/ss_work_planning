@@ -2,11 +2,10 @@ import i18n from 'i18next';
 import React from 'react';
 import * as sinon from 'sinon';
 import { shallow } from 'enzyme';
-import { Modal, Button } from 'antd';
+import { Modal } from 'antd';
 import { Link, Router, Route } from 'react-router';
 import { createMemoryHistory } from 'history';
 import PreviousBudgetsModal from '../../../../app/home/components/PreviousBudgetsModal';
-import { Select } from 'antd/lib/index';
 
 describe('PreviousBudgetsModal', () => {
     it('Should have modal', () => {
