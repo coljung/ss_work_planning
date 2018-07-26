@@ -1,6 +1,5 @@
 import reducer from '../../../app/budgets/BudgetViewReducer';
 import * as actions from '../../../app/budgets/BudgetViewActions';
-import * as notifications from 'notifications/NotificationActions';
 
 describe('BudgetViewReducer', () => {
     let initialState;
@@ -13,7 +12,11 @@ describe('BudgetViewReducer', () => {
             isDataSpreading: false,
             isRefreshRequired: false,
             view: null,
-            viewData: [],
+            viewData: {
+                data: [],
+                headers: [],
+                info: {},
+            },
         };
     });
 
@@ -62,7 +65,7 @@ describe('BudgetViewReducer', () => {
         ).toEqual(Object.assign({}, initialState, {
             isBudgetLoading: false,
             view: 'men',
-            viewData: { men: 'test' },
+            viewData: 'test',
         }));
     });
 
@@ -82,7 +85,6 @@ describe('BudgetViewReducer', () => {
                 type: actions.RECEIVE_SPREAD_DATA,
             })
         ).toEqual(Object.assign({}, initialState, {
-            isBudgetLoading: true,
             isDataSpreading: false,
             isRefreshRequired: true,
         }));

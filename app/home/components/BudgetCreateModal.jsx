@@ -4,26 +4,21 @@ import PropTypes from 'prop-types';
 import { Button, Modal, Select, Radio, Row } from 'antd';
 
 export default class BudgetCreateModal extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            season: undefined,
-            year: undefined,
-            isModalActive: false,
-        };
+    static propTypes = {
+        seasons: PropTypes.array.isRequired,
+        onSave: PropTypes.func.isRequired,
+        disabled: PropTypes.bool,
+    };
 
-        this.changeSeason = this.changeSeason.bind(this);
-        this.handleSave = this.handleSave.bind(this);
-        this.closeModal = this.closeModal.bind(this);
-        this.showModal = this.showModal.bind(this);
-    }
+    static defaultProps = {
+        seasons: [],
+        disabled: false,
+    };
 
-    componentWillReceiveProps = (nextProps) => {
-        if (nextProps.seasons !== this.props.seasons) {
-            this.setState({
-                seasons: nextProps.seasons,
-            });
-        }
+    state = {
+        season: undefined,
+        year: undefined,
+        isModalActive: false,
     };
 
     closeModal = () => {
@@ -53,7 +48,7 @@ export default class BudgetCreateModal extends Component {
     };
 
     createModalContent = () => {
-        const buildSelect = (this.props.seasons || []).map(s =>
+        const buildSelect = this.props.seasons.map(s =>
             <Select.Option key={s.name} value={`${s.season}-${s.year}`}>
                 {s.name}
             </Select.Option>,
@@ -101,9 +96,3 @@ export default class BudgetCreateModal extends Component {
         );
     }
 }
-
-BudgetCreateModal.propTypes = {
-    seasons: PropTypes.array.isRequired,
-    onSave: PropTypes.func.isRequired,
-    disabled: PropTypes.bool,
-};

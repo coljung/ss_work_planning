@@ -1,54 +1,27 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
 import HotTable from 'react-handsontable';
-import { withRouter } from 'react-router';
-import {
-    sendDataForSpreading } from '../BudgetViewActions';
-import { historyPush } from '../history/HistoryActions';
+import { connect } from 'react-redux';
 import LoadingSpinner from '../../components/common/LoadingSpinner';
 import rowHeaderCellRenderer from './top-down/RowHeaderCellRenderer';
+import commonCellValueRenderer from './top-down/CommonCellRenderer';
 
-export class SectionContainer extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            data: [],
-            headers: [],
-            info: {},
-            season: '',
-            // eslint-disable-next-line no-unneeded-ternary
-            decimals: this.props.location.query.decimals === 'yes',
-        };
-
-        // set a reference to the Handsontable
-        this.hotTableRef = null;
-
-        this.resize = this.resize.bind(this);
-
-        this.resetScroll();
-
-        this.lastEditCell = null;
-
-        this.emptyChange = false;
-    }
-
-    setHotTableRef = (element) => {
-        if (element) {
-            this.hotTableRef = element;
-            if (this.scrollPosTop !== 0 || this.scrollPosLeft !== 0) {
-                // selects cell
-                this.hotTableRef.hotInstance.selectCell(this.row, this.column, this.row, this.column, false, false);
-                // scrolls to exact position
-                const elem = document.getElementsByClassName('wtHolder')[0];
-                elem.scrollTop = this.scrollPosTop;
-                elem.scrollLeft = this.scrollPosLeft;
-                // reset numbers
-                this.resetScroll();
-            }
-        }
+class SectionContainer extends Component {
+    static propTypes = {
+        viewData: PropTypes.object.isRequired,
+        isBudgetLoading: PropTypes.bool.isRequired,
+        isDataSpreading: PropTypes.bool.isRequired,
+        onCellChange: PropTypes.func.isRequired,
+        onPushHistory: PropTypes.func.isRequired,
     };
+
+    hotTableRef = null;
+    lastEditCell = null;
+    emptyChange = false;
+    row = 0;
+    column = 0;
+    scrollPosLeft = 0;
+    scrollPosTop = 0;
 
     componentWillMount() {
         // refresh grid on window resize
@@ -57,35 +30,15 @@ export class SectionContainer extends Component {
     }
 
     componentWillUnmount() {
-        // this.props.resetState();
         window.removeEventListener('resize', this.resize, false);
     }
 
-    componentWillReceiveProps = (nextProps) => {
-        const setData = nextProps.data ? nextProps.data[nextProps.view] : {};
-        if (this.props.data.length !== setData && !!setData) {
-            this.setState({
-                headers: setData.headers,
-                data: setData.data,
-                info: setData.info,
-                season: setData.info.season,
-            });
-        }
-    };
-
-    resetScroll = () => {
+    resetScroll() {
         this.row = 0;
         this.column = 0;
         this.scrollPosLeft = 0;
         this.scrollPosTop = 0;
-    };
-
-    resize = () => {
-        clearTimeout(this.resizeTimeout);
-        this.resizeTimeout = setTimeout(() => {
-            this.hotTableRef.hotInstance.render();
-        }, 500);
-    };
+    }
 
     /**
      *  Handsontable Change cell row index
@@ -112,7 +65,7 @@ export class SectionContainer extends Component {
      * @param  {Handsontable~ChangeCell[]} cellEdits An array of {Handsontable~ChangeCell}
      * @return {void}
      */
-    changeCell = async (cellEdits) => {
+    changeCell = (cellEdits) => {
         // checks if previous change was simply a revert
         if (this.emptyChange) {
             this.emptyChange = false;
@@ -127,9 +80,6 @@ export class SectionContainer extends Component {
             const prevValue = cellEdits[0][2];
             const newValue = cellEdits[0][3];
 
-            // future test if cell is numeric
-            const isNumValue = this.hotTableRef.hotInstance.getCellMeta(row, col).numericFormat;
-
             // if user doesnt enter any text
             if (newValue === '') {
                 this.emptyChange = true;
@@ -139,23 +89,20 @@ export class SectionContainer extends Component {
 
             // handsontable converts to string
             if (parseFloat(prevValue, 10) !== parseFloat(newValue, 10)) {
-                const dataToSend = this.state.data[row][col[0]];
-                const { budget, view } = this.props;
-                const { historyPush } = this.props; // eslint-disable-line no-shadow
-                const viewHistory = history[view];
+                const dataToSend = this.props.viewData.data[row][col[0]];
 
                 // set row/col for scrollpositioning
                 this.row = row;
-                this.column = Object.keys(this.state.data[row]).indexOf(col[0]);
+                this.column = Object.keys(this.props.viewData.data[row]).indexOf(col[0]);
 
                 const element = document.getElementsByClassName('wtHolder')[0];
                 this.scrollPosTop = element.scrollTop;
                 this.scrollPosLeft = element.scrollLeft;
 
-                const metric = this.state.data[row].info.metric;
-                const plan = this.state.data[row].info.plan;
+                const metric = this.props.viewData.data[row].info.metric;
+                const plan = this.props.viewData.data[row].info.plan;
 
-                this.props.sendDataForSpreading(budget, view, { ...dataToSend, metric, plan })
+                this.props.onCellChange({ ...dataToSend, metric, plan })
                     .then(() => {
                         // Send old value into history for future undo
                         // TODO: Fix this
@@ -164,10 +111,10 @@ export class SectionContainer extends Component {
                         // same a first push
                         // this would cause a double undo / redo click when changing cell
                         if (this.lastEditCell !== cellEditKey) {
-                            historyPush(view, { ...dataToSend, value: +prevValue, metric, plan });
+                            this.props.onPushHistory({ ...dataToSend, value: +prevValue, metric, plan });
                         }
 
-                        historyPush(view, { ...dataToSend, metric, plan });
+                        this.props.onPushHistory({ ...dataToSend, metric, plan });
 
                         this.lastEditCell = cellEditKey;
                     })
@@ -178,31 +125,28 @@ export class SectionContainer extends Component {
         }
     };
 
-    createColumn = (column, renderer) => ({
-        data: `${column}.value`,
-        readOnly: false,
-        type: 'text',
-        width: column.includes('incr') ? 50 : 100, // Put less space for incr% columns
-        renderer,
-    });
+    setHotTableRef = (element) => {
+        if (element) {
+            this.hotTableRef = element;
+            if (this.scrollPosTop !== 0 || this.scrollPosLeft !== 0) {
+                // selects cell
+                this.hotTableRef.hotInstance.selectCell(this.row, this.column, this.row, this.column, false, false);
+                // scrolls to exact position
+                const elem = document.getElementsByClassName('wtHolder')[0];
+                elem.scrollTop = this.scrollPosTop;
+                elem.scrollLeft = this.scrollPosLeft;
+                // reset numbers
+                this.resetScroll();
+            }
+        }
+    };
 
-    createColumnInfos(columns) {
-        const titleColumn = {
-            data: columns[0],
-            readOnly: true,
-            type: 'text',
-            width: 205,
-            renderer: rowHeaderCellRenderer.bind(this),
-        };
-
-        const renderer = this.props.cellRenderer ? this.props.cellRenderer.bind(this) : undefined;
-        const valueColumns = columns.slice(1).map(column => this.createColumn(column, renderer));
-
-        return [
-            titleColumn,
-            ...valueColumns,
-        ];
-    }
+    resize = () => {
+        clearTimeout(this.resizeTimeout);
+        this.resizeTimeout = setTimeout(() => {
+            this.hotTableRef.hotInstance.render();
+        }, 500);
+    };
 
     detectCollapse = () => {
         const elem = document.getElementsByClassName('ant-layout-sider-collapsed');
@@ -216,11 +160,43 @@ export class SectionContainer extends Component {
         }
     };
 
-    buildTable = () => {
-        const columnInfos = this.createColumnInfos(Object.getOwnPropertyNames(this.state.data.length ? this.state.data[0] : []));
+    createColumn(column, renderer) {
+        return {
+            data: `${column}.value`,
+            readOnly: false,
+            type: 'text',
+            width: column.includes('incr') ? 50 : 100, // Put less space for incr% columns
+            renderer,
+        };
+    }
+
+    createColumnInfos(columns) {
+        const titleColumn = {
+            data: columns[0],
+            readOnly: true,
+            type: 'text',
+            width: 205,
+            renderer: rowHeaderCellRenderer.bind(this),
+        };
+
+        const renderer = commonCellValueRenderer.bind(this);
+        const valueColumns = columns.slice(1).map(column => this.createColumn(column, renderer));
+
+        return [
+            titleColumn,
+            ...valueColumns,
+        ];
+    }
+
+    buildTable() {
+        if (!Object.keys(this.props.viewData).length) {
+            return null;
+        }
+
+        const columnInfos = this.createColumnInfos(Object.getOwnPropertyNames(this.props.viewData.data.length ? this.props.viewData.data[0] : []));
         const refreshLoad = this.props.isDataSpreading ? (<div className="refreshLoad"><LoadingSpinner /></div>) : null;
         return (
-            <div className={`${this.props.view}-view parentDiv`}>
+            <div className='parentDiv'>
                 {refreshLoad}
                 <HotTable
                     afterChange={this.changeCell}
@@ -231,7 +207,7 @@ export class SectionContainer extends Component {
                     contextMenu={false}
                     currentColClassName={'currentCol'}
                     currentRowClassName={'currentRow'}
-                    data={this.state.data}
+                    data={this.props.viewData.data}
                     fixedColumnsLeft={1}
                     fixedRowsTop={0}
                     formulas={false}
@@ -239,7 +215,7 @@ export class SectionContainer extends Component {
                     nestedHeaders={[
                         [
                             '&nbsp;', // For the first header column; an empty header makes a smaller cell than having a nbsp, so that's why we're setting this
-                            ...this.state.headers[0].slice(1),
+                            ...this.props.viewData.headers[0].slice(1),
                         ],
                     ]}
                     observeChanges={true}
@@ -251,11 +227,10 @@ export class SectionContainer extends Component {
                 />
             </div>
         );
-    };
+    }
 
     render() {
-        const { data, view, isBudgetLoading } = this.props;
-        const budgetListData = data[view] && !isBudgetLoading ? this.buildTable() : <LoadingSpinner />;
+        const budgetListData = this.props.isBudgetLoading || !this.props.viewData.data.length ? <LoadingSpinner /> : this.buildTable();
 
         return (
             <div>
@@ -265,34 +240,12 @@ export class SectionContainer extends Component {
     }
 }
 
-SectionContainer.propTypes = {
-    budget: PropTypes.string.isRequired,
-    cellRenderer: PropTypes.func,
-    data: PropTypes.oneOfType([PropTypes.array, PropTypes.object]).isRequired,
-    history: PropTypes.object.isRequired,
-    historyPush: PropTypes.func.isRequired,
-    isBudgetLoading: PropTypes.bool.isRequired,
-    isDataSpreading: PropTypes.bool.isRequired,
-    location: PropTypes.object.isRequired,
-    router: PropTypes.object.isRequired,
-    sendDataForSpreading: PropTypes.func.isRequired,
-    view: PropTypes.string.isRequired,
-};
-
 function mapStateToProps(state) {
-    const { BudgetViewReducer, HistoryReducer } = state;
+    const { BudgetViewReducer } = state;
     return {
-        history: HistoryReducer,
         isBudgetLoading: BudgetViewReducer.isBudgetLoading,
         isDataSpreading: BudgetViewReducer.isDataSpreading,
     };
 }
 
-function mapDispatchToProps(dispatch) {
-    return bindActionCreators({
-        sendDataForSpreading,
-        historyPush,
-    }, dispatch);
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(SectionContainer));
+export default connect(mapStateToProps, null)(SectionContainer);

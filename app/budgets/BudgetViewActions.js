@@ -1,4 +1,3 @@
-import i18n from 'i18next';
 import agent from 'superagent';
 import wrap from 'superagent-promise';
 import { messages } from 'notifications/NotificationActions';

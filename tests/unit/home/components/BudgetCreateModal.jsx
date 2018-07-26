@@ -75,7 +75,7 @@ describe('BudgetCreateModal', () => {
         const output = mount(
             <BudgetCreateModal
                 onSave={jest.fn()}
-                seasons={null} />
+                seasons={[]} />
         );
 
         // Initial state

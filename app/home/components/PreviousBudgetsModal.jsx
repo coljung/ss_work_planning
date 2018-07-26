@@ -6,22 +6,12 @@ import { Link } from 'react-router';
 import { ROUTE_BUDGET } from '../../Routes';
 
 export default class PreviousBudgetsModal extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            isModalActive: false,
-        };
+    static propTypes = {
+        budgets: PropTypes.array.isRequired,
+    };
 
-        this.closeModal = this.closeModal.bind(this);
-        this.showModal = this.showModal.bind(this);
-    }
-
-    componentWillReceiveProps = (nextProps) => {
-        if (nextProps.budgets !== this.props.budgets) {
-            this.setState({
-                budgets: nextProps.budgets,
-            });
-        }
+    state = {
+        isModalActive: false,
     };
 
     closeModal = () => {
@@ -72,6 +62,3 @@ export default class PreviousBudgetsModal extends Component {
     }
 }
 
-PreviousBudgetsModal.propTypes = {
-    budgets: PropTypes.array.isRequired,
-};
