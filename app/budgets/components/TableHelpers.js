@@ -18,7 +18,11 @@ export const percentageFormat = {
 };
 
 export const numericFormat = {
-    pattern: '0',
+    pattern: {
+        output: 'number',
+        mantissa: 0,
+        spaceSeparated: true,
+    },
 };
 
 export const borderLeft = (columns, prop, td) => {

@@ -16,23 +16,34 @@ import i18n from 'i18next';
 describe('Helper functions', () => {
     describe('Currency Format', () => {
         it('should return a currency format', () => {
-            // expect(currencyFormat).to.be.an('object');
             const tt = currencyFormat();
-            expect(tt.pattern.output).to.contain('currency');
+            expect(tt.pattern.output).to.equal('currency');
+        });
+
+        it('should return a currency format with no decimals', () => {
+            const tt = currencyFormat(false);
+            expect(tt.pattern.output).to.equal('currency');
+            expect(tt.pattern.mantissa).to.equal(0);
+        });
+
+        it('should return a currency format with two decimal places', () => {
+            const tt = currencyFormat(true);
+            expect(tt.pattern.output).to.equal('currency');
+            expect(tt.pattern.mantissa).to.equal(2);
         });
     });
 
     describe('Percentage Format', () => {
         it('should return a percentage format', () => {
             expect(percentageFormat).to.be.an('object');
-            expect(percentageFormat.pattern.output).to.contain('percent');
+            expect(percentageFormat.pattern.output).to.equal('percent');
         });
     });
 
     describe('Numeric Format', () => {
         it('should return a numeric format', () => {
             expect(numericFormat).to.be.an('object');
-            expect(numericFormat.pattern).to.contain(0);
+            expect(numericFormat.pattern.output).to.equal('number');
         });
     });
 
