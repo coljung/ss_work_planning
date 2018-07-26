@@ -2,6 +2,7 @@ import i18n from 'i18next';
 import React, { Component } from 'react';
 import { Router, browserHistory } from 'react-router';
 import { Provider } from 'react-redux';
+import 'handsontable-pro/dist/handsontable.full.css';
 import Routes from './Routes';
 import resources from './locales';
 

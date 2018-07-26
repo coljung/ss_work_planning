@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import HotTable from 'react-handsontable';
+import { HotTable } from '@handsontable-pro/react';
 import { connect } from 'react-redux';
 import LoadingSpinner from '../../components/common/LoadingSpinner';
 import rowHeaderCellRenderer from './top-down/RowHeaderCellRenderer';
