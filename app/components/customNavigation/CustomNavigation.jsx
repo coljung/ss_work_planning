@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
 import { Menu, Icon, Tooltip } from 'antd';
-import { ROUTE_DASHBOARD } from '../../Routes';
+import { ROUTE_DASHBOARD } from '../../constants/routes';
 
 export default class CustomNavigation extends Component {
     static propTypes = {

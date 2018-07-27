@@ -1,12 +1,36 @@
-import Enzyme, { mount, shallow } from 'enzyme'
+import Enzyme, { mount } from 'enzyme'
 import Adapter from 'enzyme-adapter-react-16';
 import React from 'react';
-import thunk from 'redux-thunk'
-import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk';
+import configureMockStore from 'redux-mock-store';
 import SectionContainer from '../../../../app/budgets/sections/SectionContainer';
 import LoadingSpinner from '../../../../app/components/common/LoadingSpinner';
 
 Enzyme.configure({ adapter: new Adapter() });
+
+class LocalStorageMock {
+    constructor() {
+        this.store = {};
+    }
+
+    clear() {
+        this.store = {};
+    }
+
+    getItem(key) {
+        return this.store[key] || null;
+    }
+
+    setItem(key, value) {
+        this.store[key] = value.toString();
+    }
+
+    removeItem(key) {
+        delete this.store[key];
+    }
+};
+
+global.localStorage = new LocalStorageMock();
 
 function setup(state = {}, props = {}) {
     const initialState = {
@@ -30,11 +54,16 @@ function setup(state = {}, props = {}) {
 
     let store = configureMockStore([thunk])(initialState);
 
+    let container = document.createElement('div');
+    container.id = 'hotContainer';
+    document.body.appendChild(container);
+
     return mount(
         <SectionContainer
             store={store}
             {...initialProps}
-        />
+        />,
+        { attachTo: document.getElementById('hotContainer') }
     );
 }
 

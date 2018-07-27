@@ -13,11 +13,11 @@ import {
         filterSetup,
         triggerChange } from './BudgetViewActions';
 import { historyUndo, historyRedo, historyPush } from './history/HistoryActions';
-import { ROUTE_BUDGET, ROUTE_DASHBOARD } from '../Routes';
 import BudgetViewActionsBar from './components/BudgetViewActionsBar';
 import FilterModal from './filters/FilterModal';
 import ViewPicker from './sections/top-down/ViewPicker';
 import SectionContainer from './sections/SectionContainer';
+import { ROUTE_BUDGET, ROUTE_DASHBOARD } from '../constants/routes';
 
 class BudgetViewsContainer extends Component {
     static propTypes = {

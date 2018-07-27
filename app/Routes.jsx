@@ -4,6 +4,7 @@ import App from './components/App';
 import BudgetViewsContainer from './budgets/BudgetViewsContainer';
 import Home from './home/BudgetHome';
 import NotFound from './components/NotFound';
+import { ROUTE_BUDGET, ROUTE_DASHBOARD } from './constants/routes';
 
 /*
 const requireAuth = ((next, replace, callback) => {
@@ -19,10 +20,6 @@ const authOnChange = ((prev, next, replace, callback) => {
     requireAuth(next, replace, callback);
 });
 */
-
-// For testing purposes
-export const ROUTE_DASHBOARD = '/home';
-export const ROUTE_BUDGET = '/budget';
 
 export default (
     <Route path="/" component={App}>

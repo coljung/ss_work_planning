@@ -2,10 +2,7 @@ import i18n from 'i18next';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Tabs } from 'antd';
-
-export const TAB_TOTAL = 'total';
-export const TAB_WOMEN = 'women';
-export const TAB_MEN = 'men';
+import { TAB_MEN, TAB_TOTAL, TAB_WOMEN } from '../../../constants/views';
 
 const ViewPicker = props => (
     <Tabs activeKey={props.tab} onChange={props.onTabChange} animated={false}>

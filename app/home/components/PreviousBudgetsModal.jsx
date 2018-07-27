@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Modal } from 'antd';
 import { Link } from 'react-router';
-import { ROUTE_BUDGET } from '../../Routes';
+import { ROUTE_BUDGET } from '../../constants/routes';
 
 export default class PreviousBudgetsModal extends Component {
     static propTypes = {
