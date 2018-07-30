@@ -2,8 +2,8 @@ import { expect } from 'chai';
 import * as sinon from 'sinon';
 import i18n from 'i18next';
 import Handsontable from 'handsontable';
-import { percentageFormat, numericFormat } from '../../../../../app/budgets/components/TableHelpers';
 import cellValueRenderer from '../../../../../app/budgets/sections/top-down/CommonCellRenderer';
+import { percentageFormat, numericFormat } from '../../../../../app/budgets/components/TableHelpers';
 
 const createCell = (instance, row, col, data = {}, value = '', props = {}, info = { year: 2018, season: 'SS' }) => {
     const stateContainer = {
