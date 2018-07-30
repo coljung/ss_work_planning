@@ -3,7 +3,6 @@ import Handsontable from 'handsontable';
 import cellValueRenderer from '../../../../../app/budgets/sections/top-down/CommonCellRenderer';
 import * as sinon from 'sinon';
 import { percentageFormat, numericFormat } from '../../../../../app/budgets/components/TableHelpers';
-import { TAB_TOTAL } from '../../../../../app/budgets/sections/top-down/TopDownSection';
 import i18n from 'i18next';
 
 const createCell = (instance, row, col, data = {}, value = '', props = {}, info = { year: 2018, season: 'SS' }) => {
@@ -177,18 +176,6 @@ describe('Common view cell rendering', () => {
         expect(spy.called).to.equal(true);
         expect(spy.getCall(0).args[2]).to.equal('numericFormat');
         expect(spy.getCall(0).args[3]).to.equal(null);
-    });
-
-    it('should set readonly in total view', () => {
-        const instance = new Handsontable(document.createElement('div'));
-
-        const spy = sinon.spy(instance, 'setCellMeta');
-
-        createCell(instance, 0, 0, { prop: { dataType: 'currency' } }, 99, { view: TAB_TOTAL, location: { query: { decimals: 'yes ' }} });
-
-        expect(spy.called).to.equal(true);
-        expect(spy.getCall(0).args[2]).to.equal('readOnly');
-        expect(spy.getCall(0).args[3]).to.equal(true);
     });
 
     it('should set class when same year for wp', () => {
