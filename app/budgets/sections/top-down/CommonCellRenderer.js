@@ -31,14 +31,6 @@ export default function cellValueRenderer(instance, td, row, col, prop, value, c
         }
     }
 
-    if (this.props.view === TAB_TOTAL) {
-        disableEdit(instance, row, col);
-    }
-
-    if (colName[0] === 'previous') {
-        td.className += ' leftCellBorder';
-    }
-
     if (metricInformation && metricInformation.dataType !== undefined) {
         if ((metricInformation.dataType === 'currency'
                 || metricInformation.dataType === 'percentage'
