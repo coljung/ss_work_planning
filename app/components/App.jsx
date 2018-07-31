@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Layout, Icon } from 'antd';
-import { Content, Header, Sider } from 'antd/lib/layout';
 import HeaderContent from './common/HeaderContent';
 import CustomNavigation from './customNavigation/CustomNavigation';
 import NotificationManager from '../notifications/NotificationManager';
@@ -9,7 +8,14 @@ import NotificationManager from '../notifications/NotificationManager';
 export default class App extends Component {
     constructor(props) {
         super(props);
-        this.state = { collapsed: true, showStoreModal: true };
+
+        this.state = {
+            collapsed: true,
+            showStoreModal: true,
+        };
+
+        this.toggleFromOutside = this.toggleFromOutside.bind(this);
+        this.toggle = this.toggle.bind(this);
     }
 
     toggleFromOutside() {
@@ -35,28 +41,28 @@ export default class App extends Component {
         const getClassname = this.props.location.pathname === '/' ? 'app_layout_home' : 'app_layout';
         return (
             <div className={getClassname}>
-                <Header>
-                    <Icon
-                        className="trigger"
-                        type={this.state.collapsed ? 'menu-unfold' : 'menu-fold'}
-                        onClick={ this.toggle.bind(this) } />
-                        <HeaderContent />
-                </Header>
                 <Layout>
-                    <Sider
+                    <Layout.Header>
+                        <Icon
+                            className="trigger"
+                            type={this.state.collapsed ? 'menu-unfold' : 'menu-fold'}
+                            onClick={this.toggle} />
+                        <HeaderContent />
+                    </Layout.Header>
+                    <Layout.Sider
                         trigger={null}
                         collapsible
                         collapsed={this.state.collapsed}>
                         <CustomNavigation
                             pathname={this.props.location.pathname}
-                            triggerMenuCollapse={() => this.toggleFromOutside()} />
-                    </Sider>
-                    <Content>
+                            triggerMenuCollapse={this.toggleFromOutside} />
+                    </Layout.Sider>
+                    <Layout.Content>
                         <main style={{ flex: 1, overflowY: 'auto', padding: '0 25px 25px' }}>
                             {this.props.children}
                             <NotificationManager />
                         </main>
-                    </Content>
+                    </Layout.Content>
                 </Layout>
             </div>
         );

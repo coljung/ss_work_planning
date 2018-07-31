@@ -3,21 +3,22 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
 import { Menu, Icon, Tooltip } from 'antd';
-import { connect } from 'react-redux';
-import { ROUTE_DASHBOARD } from '../../Routes';
+import { ROUTE_DASHBOARD } from '../../constants/routes';
 
-class CustomNavigation extends Component {
-    constructor(props) {
-        super(props);
-        // @TODO: fix routes keys for active state
-        this.state = { current: props.pathname };
-        this.handleClick = this.handleClick.bind(this);
-    }
+export default class CustomNavigation extends Component {
+    static propTypes = {
+        pathname: PropTypes.string.isRequired,
+        triggerMenuCollapse: PropTypes.func,
+    };
 
-    handleClick(e) {
+    state = {
+        current: this.props.pathname,
+    };
+
+    handleClick = (e) => {
         this.setState({ current: e.key });
         this.props.triggerMenuCollapse();
-    }
+    };
 
     render() {
         return (
@@ -40,22 +41,3 @@ class CustomNavigation extends Component {
         );
     }
 }
-
-CustomNavigation.propTypes = {
-    budgetId: PropTypes.string,
-    config: PropTypes.object,
-    pathname: PropTypes.string.isRequired,
-    seasonName: PropTypes.string,
-    triggerMenuCollapse: PropTypes.func,
-};
-
-function mapStateToProps(state) {
-    const { BudgetViewReducer, CustomNavigationReducer } = state;
-    return {
-        budgetId: CustomNavigationReducer.budgetId,
-        config: BudgetViewReducer.config,
-        seasonName: CustomNavigationReducer.seasonName,
-    };
-}
-
-export default connect(mapStateToProps, null, null, { pure: false })(CustomNavigation);

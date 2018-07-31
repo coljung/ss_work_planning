@@ -75,13 +75,6 @@ describe('BudgetActions', () => {
             };
             expect(actions.receiveBudgetCreate(budget)).toEqual(expectedAction);
         });
-
-        it('Should test resetState', () => {
-            const expectedAction = {
-                type: actions.RESET_SEASONS_VIEW
-            };
-            expect(actions.resetState()).toEqual(expectedAction);
-        });
     });
 
     describe('Async Action Creators', () => {
@@ -198,7 +191,6 @@ describe('BudgetActions', () => {
 
             const expectedActions = [
                 { type: actions.REQUEST_CREATE_BUDGET, budget },
-                { type: actions.REQUEST_BUDGETS },
                 { type: 'MESSAGES', message},
                 { type: actions.RECEIVE_CREATE_BUDGET, budget: createBudgetResponse }
             ];

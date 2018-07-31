@@ -1,16 +1,28 @@
 import i18n from 'i18next';
 
 export const currencyFormat = (decimals = false) => ({
-    pattern: decimals ? '$0,000.00' : '$0,000',
+    pattern: {
+        output: 'currency',
+        mantissa: decimals ? 2 : 0,
+        thousandSeparated: true,
+    },
     culture: 'en-US',
 });
 
 export const percentageFormat = {
-    pattern: '0%',
+    pattern: {
+        output: 'percent',
+        mantissa: 0,
+        spaceSeparated: true,
+    },
 };
 
 export const numericFormat = {
-    pattern: '0',
+    pattern: {
+        output: 'number',
+        mantissa: 0,
+        spaceSeparated: true,
+    },
 };
 
 export const borderLeft = (columns, prop, td) => {

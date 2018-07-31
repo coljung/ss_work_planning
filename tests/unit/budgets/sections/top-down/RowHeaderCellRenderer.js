@@ -6,17 +6,19 @@ import i18n from 'i18next';
 
 const createCell = (instance, row, col, data = {}, value = '', props = {}, info = { year: 2018, season: 'SS' }) => {
     const stateContainer = {
-        state: {
-            data: [],
-            info: {
-                year: 'SS18',
+        props: {
+            ...props,
+            viewData: {
+                data: [],
+                info: {
+                    year: 'SS18',
+                },
             },
         },
-        props,
     };
 
     for (let i = 0; i <= row; i++) {
-        stateContainer.state.data.push({
+        stateContainer.props.viewData.data.push({
             info,
             ...data
         });

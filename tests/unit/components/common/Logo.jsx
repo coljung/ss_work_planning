@@ -3,8 +3,6 @@ import { expect } from 'chai';
 import { shallow } from 'enzyme';
 import Logo from '../../../../app/components/common/Logo';
 
-let props;
-
 describe('<Logo />', () => {
     it('should render base layout', () => {
         const wrapper = shallow(<Logo />);

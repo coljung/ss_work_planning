@@ -16,7 +16,11 @@ const initialState = {
     isDataSpreading: false,
     isRefreshRequired: false,
     view: null,
-    viewData: [],
+    viewData: {
+        data: [],
+        headers: [],
+        info: {},
+    },
 };
 
 export default (state = initialState, action) => {
@@ -29,25 +33,20 @@ export default (state = initialState, action) => {
             return Object.assign({}, state, {
                 isBudgetLoading: true,
                 isRefreshRequired: false,
-                viewData: [],
             });
         case RECEIVE_BUDGETS_DATA: {
-            const setData = [];
-            setData[action.view] = action.viewData;
             return Object.assign({}, state, {
                 isBudgetLoading: false,
                 view: action.view,
-                viewData: setData,
+                viewData: action.viewData,
             });
         }
         case REQUEST_SPREAD_DATA:
             return Object.assign({}, state, {
-                isBudgetLoading: false,
                 isDataSpreading: true,
             });
         case RECEIVE_SPREAD_DATA:
             return Object.assign({}, state, {
-                isBudgetLoading: true,
                 isDataSpreading: false,
                 isRefreshRequired: true,
             });

@@ -4,7 +4,7 @@ notification:
   errorFound: Error found
 home:
   budgetsDashboard: Budgets Dashboard
-  createBudget: Create New Budget
+  createButton: Create New Budget
   noAvailableBudget: No budgets were created previously
   notification:
     budgetCreated: Budget created successfully!
@@ -14,6 +14,8 @@ spinner:
   loading: Loading...
 budgetListModal:
   title: All Previous Budgets
+previousBudgetsModal:
+  title: Previous budgets
 createBudgetModal:
   title: Create Budget
   saveButton: Create Budget

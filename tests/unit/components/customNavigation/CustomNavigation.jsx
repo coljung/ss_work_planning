@@ -3,7 +3,7 @@ import { expect } from 'chai';
 import { shallow } from 'enzyme';
 import * as sinon from 'sinon';
 import configureMockStore from 'redux-mock-store';
-import CustomNavigationDefault, { CustomNavigation } from '../../../../app/components/customNavigation/CustomNavigation';
+import CustomNavigation from '../../../../app/components/customNavigation/CustomNavigation';
 
 let props;
 let sandbox;

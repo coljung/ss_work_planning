@@ -1,23 +1,26 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import { shallowToJson } from 'enzyme-to-json';
-import { Button } from 'antd';
 import Board from '../../../app/components/Board';
 
 describe('Board', () => {
-    it('should render correctly', () => {
+    it('Should display title', () => {
         const output = shallow(
-            <Board title="fsdfsdf">Hello Jest!</Board>
+            <Board title="test">
+                <div />
+            </Board>
         );
-        expect(shallowToJson(output)).toMatchSnapshot();
+
+        expect(output.find('h2').text()).toEqual('test');
     });
 
-    it('should render correctly with btnInTitle', () => {
+    it('Should contain children', () => {
         const output = shallow(
-            <Board title="Hello World!" btnInTitle={<Button>Foo Bar</Button>}>Hello Jest!</Board>
+            <Board title="test">
+                <p>Test</p>
+            </Board>
         );
 
-        expect(output.find('Button').render().text()).toBe('Foo Bar');
-        expect(shallowToJson(output)).toMatchSnapshot();
+        expect(output.find('p')).toHaveLength(1);
+        expect(output.find('p').text()).toEqual('Test');
     });
 });
