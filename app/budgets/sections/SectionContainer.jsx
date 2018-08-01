@@ -8,11 +8,13 @@ import commonCellValueRenderer from './top-down/CommonCellRenderer';
 
 class SectionContainer extends Component {
     static propTypes = {
+        view: PropTypes.string.isRequired,
         viewData: PropTypes.object.isRequired,
         isBudgetLoading: PropTypes.bool.isRequired,
         isDataSpreading: PropTypes.bool.isRequired,
         onCellChange: PropTypes.func.isRequired,
         onPushHistory: PropTypes.func.isRequired,
+        historyData: PropTypes.object,
     };
 
     hotTableRef = null;
@@ -31,6 +33,15 @@ class SectionContainer extends Component {
 
     componentWillUnmount() {
         window.removeEventListener('resize', this.resize, false);
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.historyData && nextProps.historyData !== this.props.historyData && nextProps.historyData.focusPosition) {
+            this.column = nextProps.historyData.focusPosition.col;
+            this.row = nextProps.historyData.focusPosition.row;
+            this.scrollPosTop = nextProps.historyData.focusPosition.scrollPosTop;
+            this.scrollPosLeft = nextProps.historyData.focusPosition.scrollPosLeft;
+        }
     }
 
     resetScroll() {
@@ -96,11 +107,14 @@ class SectionContainer extends Component {
                 this.column = Object.keys(this.props.viewData.data[row]).indexOf(col[0]);
 
                 const element = document.getElementsByClassName('wtHolder')[0];
-                this.scrollPosTop = element.scrollTop;
-                this.scrollPosLeft = element.scrollLeft;
-
                 const metric = this.props.viewData.data[row].info.metric;
                 const plan = this.props.viewData.data[row].info.plan;
+                const focusPosition = {
+                    col: this.column,
+                    row: this.row,
+                    scrollPosTop: element.scrollTop,
+                    scrollPosLeft: element.scrollLeft,
+                };
 
                 this.props.onCellChange({ ...dataToSend, metric, plan })
                     .then(() => {
@@ -111,10 +125,10 @@ class SectionContainer extends Component {
                         // same a first push
                         // this would cause a double undo / redo click when changing cell
                         if (this.lastEditCell !== cellEditKey) {
-                            this.props.onPushHistory({ ...dataToSend, value: +prevValue, metric, plan });
+                            this.props.onPushHistory({ ...dataToSend, value: +prevValue, metric, plan }, focusPosition);
                         }
 
-                        this.props.onPushHistory({ ...dataToSend, metric, plan });
+                        this.props.onPushHistory({ ...dataToSend, metric, plan }, focusPosition);
 
                         this.lastEditCell = cellEditKey;
                     })
@@ -240,11 +254,16 @@ class SectionContainer extends Component {
     }
 }
 
-function mapStateToProps(state) {
-    const { BudgetViewReducer } = state;
+function mapStateToProps(state, ownProps) {
+    const { BudgetViewReducer, HistoryReducer } = state;
+    let historyData = null;
+    if (ownProps && HistoryReducer && HistoryReducer[ownProps.view]) {
+        historyData = HistoryReducer[ownProps.view].present;
+    }
     return {
         isBudgetLoading: BudgetViewReducer.isBudgetLoading,
         isDataSpreading: BudgetViewReducer.isDataSpreading,
+        historyData,
     };
 }
 

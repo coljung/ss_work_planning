@@ -86,22 +86,22 @@ class BudgetViewsContainer extends Component {
         this.props.getViewExportFile(this.props.params.budgetId, this.props.params.tab, this.props.filters);
     };
 
-    pushToHistory = (dataObject) => {
-        this.props.historyPush(this.props.params.tab, dataObject);
+    pushToHistory = (dataObject, focusPosition) => {
+        this.props.historyPush(this.props.params.tab, { dataObject, focusPosition });
     };
 
     undo = () => {
         const tab = this.props.params.tab;
         const data = this.props.historyUndo(tab);
 
-        return this.changeCellValue(data);
+        return this.changeCellValue(data.dataObject);
     };
 
     redo = () => {
         const tab = this.props.params.tab;
         const data = this.props.historyRedo(tab);
 
-        return this.changeCellValue(data);
+        return this.changeCellValue(data.dataObject);
     };
 
     changeCellValue = dataObject =>
@@ -147,6 +147,7 @@ class BudgetViewsContainer extends Component {
                 <div className="budgetBody">
                     <ViewPicker tab={this.props.params.tab} onTabChange={this.changeTab} />
                     <SectionContainer
+                        view={this.props.params.tab}
                         viewData={this.props.viewData}
                         onPushHistory={this.pushToHistory}
                         onCellChange={this.changeCellValue} />
