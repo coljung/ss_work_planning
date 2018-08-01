@@ -31,7 +31,7 @@ export default class CustomNavigation extends Component {
                 <Menu.Item key={ROUTE_DASHBOARD}>
                     <Tooltip placement="right">
                         <Link to={ROUTE_DASHBOARD}>
-                            <Icon type="calendar" />
+                            <Icon type="home"/>
                             <span className="nav-text">{i18n.t('sideMenu.home')}</span>
                         </Link>
                     </Tooltip>
