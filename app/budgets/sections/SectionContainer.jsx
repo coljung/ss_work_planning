@@ -14,7 +14,7 @@ class SectionContainer extends Component {
         isDataSpreading: PropTypes.bool.isRequired,
         onCellChange: PropTypes.func.isRequired,
         onPushHistory: PropTypes.func.isRequired,
-        focusData: PropTypes.object,
+        historyData: PropTypes.object,
     };
 
     hotTableRef = null;
@@ -36,11 +36,11 @@ class SectionContainer extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if (nextProps.focusData && nextProps.focusData !== this.props.focusData && nextProps.focusData.focusPosition) {
-            this.column = nextProps.focusData.focusPosition.col;
-            this.row = nextProps.focusData.focusPosition.row;
-            this.scrollPosTop = nextProps.focusData.focusPosition.scrollPosTop;
-            this.scrollPosLeft = nextProps.focusData.focusPosition.scrollPosLeft;
+        if (nextProps.historyData && nextProps.historyData !== this.props.historyData && nextProps.historyData.focusPosition) {
+            this.column = nextProps.historyData.focusPosition.col;
+            this.row = nextProps.historyData.focusPosition.row;
+            this.scrollPosTop = nextProps.historyData.focusPosition.scrollPosTop;
+            this.scrollPosLeft = nextProps.historyData.focusPosition.scrollPosLeft;
         }
     }
 
@@ -256,14 +256,14 @@ class SectionContainer extends Component {
 
 function mapStateToProps(state, ownProps) {
     const { BudgetViewReducer, HistoryReducer } = state;
-    let focusData = null;
+    let historyData = null;
     if (ownProps && HistoryReducer && HistoryReducer[ownProps.view]) {
-        focusData = HistoryReducer[ownProps.view].present;
+        historyData = HistoryReducer[ownProps.view].present;
     }
     return {
         isBudgetLoading: BudgetViewReducer.isBudgetLoading,
         isDataSpreading: BudgetViewReducer.isDataSpreading,
-        focusData,
+        historyData,
     };
 }
 
