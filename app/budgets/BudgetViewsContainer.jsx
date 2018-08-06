@@ -32,6 +32,7 @@ class BudgetViewsContainer extends Component {
         historyUndo: PropTypes.func.isRequired,
         historyPush: PropTypes.func.isRequired,
         isBudgetLoading: PropTypes.bool.isRequired,
+        isDataSpreading: PropTypes.bool.isRequired,
         isRefreshRequired: PropTypes.bool.isRequired,
         resetState: PropTypes.func.isRequired,
         router: PropTypes.object,
@@ -134,7 +135,7 @@ class BudgetViewsContainer extends Component {
                         <Col span={16} className="col">
                             <BudgetViewActionsBar
                                 viewHistory={viewHistory}
-                                isLoading={this.props.isBudgetLoading}
+                                isLoading={this.props.isBudgetLoading || this.props.isDataSpreading}
                                 onBack={ROUTE_DASHBOARD}
                                 onUndo={this.undo}
                                 onRedo={this.redo}
@@ -168,6 +169,7 @@ function mapStateToProps(state) {
         filters: BudgetViewReducer.filters,
         history: HistoryReducer,
         isBudgetLoading: BudgetViewReducer.isBudgetLoading,
+        isDataSpreading: BudgetViewReducer.isDataSpreading,
         isRefreshRequired: BudgetViewReducer.isRefreshRequired,
         viewData: BudgetViewReducer.viewData,
     };
