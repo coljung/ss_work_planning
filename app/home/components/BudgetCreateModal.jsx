@@ -16,33 +16,36 @@ export default class BudgetCreateModal extends Component {
     };
 
     state = {
-        season: undefined,
-        year: undefined,
+        selectedValue: undefined,
         isModalActive: false,
     };
 
     closeModal = () => {
         this.setState({
+            selectedValue: undefined,
             isModalActive: false,
         });
     };
 
     showModal = () => {
         this.setState({
+            selectedValue: undefined,
             isModalActive: true,
         });
     };
 
     changeSeason = (value) => {
-        const splitValue = value.split('-');
         this.setState({
-            season: splitValue[0],
-            year: splitValue[1],
+            selectedValue: value,
         });
     };
 
     handleSave = () => {
-        this.props.onSave(this.state.season, this.state.year);
+        const splitValue = this.state.selectedValue.split('-');
+        const season = splitValue[0];
+        const year = splitValue[1];
+
+        this.props.onSave(season, year);
 
         this.closeModal();
     };
@@ -66,6 +69,7 @@ export default class BudgetCreateModal extends Component {
                     <Select placeholder={i18n.t('createBudgetModal.selectSeason')}
                             notFoundContent={i18n.t('createBudgetModal.noSeason')}
                             style={{ width: 180 }}
+                            value={this.state.selectedValue}
                             onChange={this.changeSeason}>
                         {buildSelect}
                     </Select>
@@ -86,7 +90,7 @@ export default class BudgetCreateModal extends Component {
                     visible={this.state.isModalActive}
                     onOk={this.handleSave}
                     okText={i18n.t('createBudgetModal.saveButton')}
-                    okButtonProps={{ disabled: !this.state.season }}
+                    okButtonProps={{ disabled: !this.state.selectedValue }}
                     onCancel={this.closeModal}
                     cancelText={i18n.t('createBudgetModal.cancelButton')}>
                     {this.createModalContent()}
