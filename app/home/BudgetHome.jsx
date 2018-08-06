@@ -46,7 +46,7 @@ export class BudgetHome extends Component {
     );
 
     renderCreateButton = () => (
-        <BudgetCreateModal onSave={this.saveNewBudget} disabled={!this.props.seasonsFetched} seasons={this.props.seasons} />
+        <BudgetCreateModal onSave={this.saveNewBudget} disabled={!this.props.seasonsFetched || !this.props.budgetCreateFetched} seasons={this.props.seasons} />
     );
 
     render() {

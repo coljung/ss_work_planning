@@ -137,6 +137,14 @@ describe('BudgetHome', () => {
         expect(enzymeWrapper.find(BudgetCreateModal).prop('disabled')).toBeTruthy();
     });
 
+    it('Should disable budget creation button when creating budget', () => {
+        const { enzymeWrapper } = setup({
+            budgetCreateFetched: false,
+        });
+
+        expect(enzymeWrapper.find(BudgetCreateModal).prop('disabled')).toBeTruthy();
+    });
+
     it('Should enable budget creation button after fetching seasons', () => {
         const { enzymeWrapper } = setup({
             seasonsFetched: true,
