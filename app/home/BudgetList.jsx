@@ -2,7 +2,7 @@ import i18n from 'i18next';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
-import PreviousBudgetsModal from './components/PreviousBudgetsModal';
+import PreviousBudgetsModal from './PreviousBudgetsModal';
 import { ROUTE_BUDGET } from '../constants/routes';
 
 const BudgetList = (props) => {

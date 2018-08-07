@@ -5,7 +5,7 @@ import { shallow } from 'enzyme';
 import { Modal } from 'antd';
 import { Link, Router, Route } from 'react-router';
 import { createMemoryHistory } from 'history';
-import PreviousBudgetsModal from '../../../../app/home/components/PreviousBudgetsModal';
+import PreviousBudgetsModal from '../../../app/home/PreviousBudgetsModal';
 
 describe('PreviousBudgetsModal', () => {
     it('Should have modal', () => {

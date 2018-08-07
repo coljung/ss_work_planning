@@ -4,13 +4,27 @@ import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Row, Col } from 'antd';
-import { createBudget, fetchAvailableSeasons, fetchBudgets } from './BudgetActions';
+import { homeOperations } from './duck';
 import Board from '../components/Board';
 import BudgetList from './BudgetList';
-import BudgetCreateModal from './components/BudgetCreateModal';
+import BudgetCreateModal from './BudgetCreateModal';
 import LoadingSpinner from '../components/common/LoadingSpinner';
 
 export class BudgetHome extends Component {
+    static propTypes = {
+        budgets: PropTypes.oneOfType([
+            PropTypes.array,
+            PropTypes.object,
+        ]).isRequired,
+        budgetsFetched: PropTypes.bool.isRequired,
+        seasons: PropTypes.array.isRequired,
+        seasonsFetched: PropTypes.bool.isRequired,
+        createBudget: PropTypes.func.isRequired,
+        fetchBudgets: PropTypes.func.isRequired,
+        fetchAvailableSeasons: PropTypes.func.isRequired,
+        budgetCreateFetched: PropTypes.bool.isRequired,
+    };
+
     constructor(props) {
         super(props);
 
@@ -63,33 +77,23 @@ export class BudgetHome extends Component {
     }
 }
 
-BudgetHome.propTypes = {
-    budgets: PropTypes.oneOfType([
-        PropTypes.array,
-        PropTypes.object,
-    ]).isRequired,
-    budgetsFetched: PropTypes.bool.isRequired,
-    seasons: PropTypes.array.isRequired,
-    seasonsFetched: PropTypes.bool.isRequired,
-    createBudget: PropTypes.func.isRequired,
-    fetchBudgets: PropTypes.func.isRequired,
-    fetchAvailableSeasons: PropTypes.func.isRequired,
-    budgetCreateFetched: PropTypes.bool.isRequired,
-};
-
 function mapStateToProps(state) {
-    const { BudgetReducer } = state;
+    const { homeReducer } = state;
     return {
-        seasons: BudgetReducer.seasons,
-        seasonsFetched: BudgetReducer.seasonsFetched,
-        budgets: BudgetReducer.budgets,
-        budgetsFetched: BudgetReducer.budgetsFetched,
-        budgetCreateFetched: BudgetReducer.budgetCreateFetched,
+        seasons: homeReducer.seasons,
+        seasonsFetched: homeReducer.seasonsFetched,
+        budgets: homeReducer.budgets,
+        budgetsFetched: homeReducer.budgetsFetched,
+        budgetCreateFetched: homeReducer.budgetCreateFetched,
     };
 }
 
 function mapDispatchToProps(dispatch) {
-    return bindActionCreators({ fetchAvailableSeasons, fetchBudgets, createBudget }, dispatch);
+    return bindActionCreators({
+        fetchAvailableSeasons: homeOperations.fetchAvailableSeasons,
+        fetchBudgets: homeOperations.fetchBudgets,
+        createBudget: homeOperations.createBudget,
+    }, dispatch);
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(BudgetHome);

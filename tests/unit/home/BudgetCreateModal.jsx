@@ -3,7 +3,7 @@ import React from 'react';
 import * as sinon from 'sinon';
 import { shallow } from 'enzyme';
 import { Button, Modal, Select } from 'antd';
-import BudgetCreateModal from '../../../../app/home/components/BudgetCreateModal';
+import BudgetCreateModal from '../../../app/home/BudgetCreateModal';
 
 describe('BudgetCreateModal', () => {
     it('Should have modal', () => {

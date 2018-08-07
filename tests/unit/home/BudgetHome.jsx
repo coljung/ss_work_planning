@@ -9,7 +9,7 @@ import * as sinon from 'sinon';
 import i18n from 'i18next';
 import LoadingSpinner from '../../../app/components/common/LoadingSpinner';
 import BudgetList from '../../../app/home/BudgetList';
-import BudgetCreateModal from '../../../app/home/components/BudgetCreateModal';
+import BudgetCreateModal from '../../../app/home/BudgetCreateModal';
 
 Enzyme.configure({ adapter: new Adapter() });
 
@@ -24,7 +24,7 @@ function setup(state = {}) {
     const mockStore = configureMockStore(middlewares);
 
     const initialState = {
-        BudgetReducer: {
+        homeReducer: {
             budgets: [],
             budgetsFetched: true,
             seasons: [

@@ -1,10 +1,9 @@
-import reducer from '../../../app/home/BudgetReducer';
-import * as actions from '../../../app/home/BudgetActions';
+import reducer from '../../../../app/home/duck';
+import types from '../../../../app/home/duck/types';
 import * as sinon from 'sinon';
 
 let sandbox;
 let initialState;
-
 
 describe('BudgetReducer', () => {
 
@@ -27,23 +26,23 @@ describe('BudgetReducer', () => {
     });
 
     it('should return the initial state', () => {
-        expect(reducer(undefined, {})).toEqual(initialState)
+        expect(reducer(undefined, {})).toEqual(initialState);
     });
 
     it('should handle REQUEST_BUDGETS', () => {
         expect(
             reducer(undefined, {
-                type: actions.REQUEST_BUDGETS
+                type: types.REQUEST_BUDGETS
             })
         ).toEqual(Object.assign({}, initialState, {
             budgetsFetched: false,
-        }))
+        }));
     });
 
     it('should handle RECEIVE_BUDGETS', () => {
         expect(
             reducer(undefined, {
-                type: actions.RECEIVE_BUDGETS,
+                type: types.RECEIVE_BUDGETS,
                 budgets: [
                     { foo: 'bar' }
                 ]
@@ -53,17 +52,17 @@ describe('BudgetReducer', () => {
                 { foo: 'bar' }
             ],
             budgetsFetched: true,
-        }))
+        }));
     });
 
     it('should handle REQUEST_CREATE_BUDGET', () => {
         expect(
             reducer(undefined, {
-                type: actions.REQUEST_CREATE_BUDGET
+                type: types.REQUEST_CREATE_BUDGET
             })
         ).toEqual(Object.assign({}, initialState, {
             budgetCreateFetched: false,
-        }))
+        }));
     });
 
     it('should handle RECEIVE_CREATE_BUDGET', () => {
@@ -75,10 +74,11 @@ describe('BudgetReducer', () => {
             budgetsFetched: false,
             seasonsFetched: false,
             budgetCreateFetched: true,
-        }
+        };
+
         expect(
             reducer(state, {
-                type: actions.RECEIVE_CREATE_BUDGET,
+                type: types.RECEIVE_CREATE_BUDGET,
                 budget: { foo: 'bar' }
             })
         ).toEqual(Object.assign({}, state, {
@@ -87,36 +87,28 @@ describe('BudgetReducer', () => {
                 { foo: 'bar' }
             ],
             budgetCreateFetched: true,
-        }))
+        }));
     });
 
-    it('should handle REQUEST_SEASONS OR RESET_SEASONS_VIEW', () => {
+    it('should handle REQUEST_SEASONS', () => {
         expect(
             reducer(undefined, {
-                type: actions.REQUEST_SEASONS
+                type: types.REQUEST_SEASONS
             })
         ).toEqual(Object.assign({}, initialState, {
             seasonsFetched: false,
-        }))
-
-        expect(
-            reducer(undefined, {
-                type: actions.RESET_SEASONS_VIEW
-            })
-        ).toEqual(Object.assign({}, initialState, {
-            seasonsFetched: false,
-        }))
+        }));
     });
 
     it('should handle RECEIVE_SEASONS', () => {
         expect(
             reducer(undefined, {
-                type: actions.RECEIVE_SEASONS,
+                type: types.RECEIVE_SEASONS,
                 seasons: [{ name: 'season 1' }]
             })
         ).toEqual(Object.assign({}, initialState, {
             seasons: [{ name: 'season 1' }],
             seasonsFetched: true,
-        }))
+        }));
     });
 });
