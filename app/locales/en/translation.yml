@@ -55,4 +55,5 @@ metric:
   iGmPercentage: iGM%
 plan:
   wp: WORKING PLAN
+  dsrp: FORECAST
   achd: Actual
