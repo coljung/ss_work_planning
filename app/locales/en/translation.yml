@@ -51,7 +51,7 @@ metric:
   GmDollar: GM$
   GmPercentage: GM%
   TURNOVER: TO
-  SellThrough: SELL-THROUGH %
+  SellThrough: ST%
   iRETAIL: iSALES
   iGmPercentage: iGM%
 plan:
