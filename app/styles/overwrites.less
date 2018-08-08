@@ -103,16 +103,21 @@
         border-radius: 0;
     }
 
-    .ant-tree-checkbox-inner {
+    .ant-checkbox-group-item {
+        display: block;
+        padding: 2px 0;
+    }
+
+    .ant-checkbox-inner {
         border-radius: 0;
     }
-    .ant-tree-checkbox-checked:after {
+    .ant-checkbox-checked:after {
         border-color: @ssense_black;
         border-radius: 0;
     }
 
-    .ant-tree-checkbox-checked .ant-tree-checkbox-inner,
-    .ant-tree-checkbox-indeterminate .ant-tree-checkbox-inner {
+    .ant-checkbox-checked .ant-checkbox-inner,
+    .ant-checkbox-indeterminate .ant-checkbox-inner {
         background-color: @ssense_black;
         border-color: @ssense_black;
     }
@@ -133,7 +138,7 @@
 
     .ant-select-dropdown-menu-item-active,
     .ant-select-dropdown-menu-item:hover,
-    .ant-tree li .ant-tree-node-content-wrapper:hover {
+    .ant-tree li .ant-node-content-wrapper:hover {
         background-color: #ddd;
     }
 }
