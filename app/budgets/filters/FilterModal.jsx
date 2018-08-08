@@ -60,12 +60,10 @@ export default class FilterModal extends Component {
     };
 
     render() {
-        const options = this.props.availableFilters.map((x) => {
-            return {
-                label: i18n.t(`metric.${x}`),
-                value: x,
-            };
-        });
+        const options = this.props.availableFilters.map(x => ({
+            label: i18n.t(`metric.${x}`),
+            value: x,
+        }));
 
         return (
             <span>
