@@ -23,10 +23,10 @@ class BudgetViewsContainer extends Component {
     static propTypes = {
         params: PropTypes.object.isRequired,
         config: PropTypes.object.isRequired,
+        filters: PropTypes.array.isRequired,
         fetchBudgetConfigData: PropTypes.func.isRequired,
         fetchBudgetMetricData: PropTypes.func.isRequired,
         getViewExportFile: PropTypes.func.isRequired,
-        filters: PropTypes.array.isRequired,
         history: PropTypes.object,
         historyRedo: PropTypes.func.isRequired,
         historyUndo: PropTypes.func.isRequired,
@@ -44,7 +44,9 @@ class BudgetViewsContainer extends Component {
 
     componentDidMount() {
         // get config data, then fetch metrics based on config
-        this.props.fetchBudgetConfigData().then(this.setFilters);
+        this.props.fetchBudgetConfigData().then((config) => {
+            this.applyFilters(config.config.available_metrics);
+        });
     }
 
     componentWillUnmount() {
@@ -77,11 +79,6 @@ class BudgetViewsContainer extends Component {
             query: location.query,
         });
     }
-
-    setFilters = () => {
-        // PLACEHOLDER FOR BETTER IMPLEMENTATION OF FILTERS
-        this.getMetricData(this.props.params.budgetId, this.props.params.tab, this.props.filters);
-    };
 
     getExportedFile = () => {
         this.props.getViewExportFile(this.props.params.budgetId, this.props.params.tab, this.props.filters);
@@ -140,7 +137,7 @@ class BudgetViewsContainer extends Component {
                                 onUndo={this.undo}
                                 onRedo={this.redo}
                                 onExport={this.getExportedFile}>
-                                <FilterModal onSave={this.applyFilters} filters={this.props.config} />
+                                <FilterModal onSave={this.applyFilters} availableFilters={this.props.config.available_metrics} filters={this.props.filters} />
                             </BudgetViewActionsBar>
                         </Col>
                     </Row>
