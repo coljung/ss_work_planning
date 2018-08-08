@@ -82,7 +82,7 @@ export default class FilterModal extends Component {
                         indeterminate={this.state.indeterminate}
                         onChange={this.onCheckAllChange}
                         checked={this.state.checkAll}>
-                        Check all
+                        {i18n.t('filterModal.selectAll')}
                     </Checkbox>
                     <hr />
                     <Checkbox.Group options={options} value={this.state.checkedList} onChange={this.onChange} />
