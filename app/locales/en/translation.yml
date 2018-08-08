@@ -26,6 +26,7 @@ createBudgetModal:
   spinner: Creating Budget...
 filterModal:
   title: Filters
+  selectAll: Select all
   saveButton: Set Filters
   cancelButton: Cancel
 budgetView:
