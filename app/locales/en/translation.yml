@@ -26,6 +26,7 @@ createBudgetModal:
   spinner: Creating Budget...
 filterModal:
   title: Filters
+  selectAll: Select all
   saveButton: Set Filters
   cancelButton: Cancel
 budgetView:
@@ -51,8 +52,10 @@ metric:
   GmDollar: GM$
   GmPercentage: GM%
   TURNOVER: TO
+  SellThrough: ST%
   iRETAIL: iSALES
   iGmPercentage: iGM%
 plan:
   wp: WORKING PLAN
+  dsrp: FORECAST
   achd: Actual

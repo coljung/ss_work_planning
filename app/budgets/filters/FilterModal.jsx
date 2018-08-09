@@ -1,51 +1,40 @@
 import i18n from 'i18next';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Modal, Tree, Button } from 'antd';
+import { Modal, Button, Checkbox } from 'antd';
 
 export default class FilterModal extends Component {
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            checkedKeys: [],
-            available_metrics: [],
-            isModalActive: false,
-        };
-
-        this.onCheck = this.onCheck.bind(this);
-        this.closeModal = this.closeModal.bind(this);
-        this.handleSave = this.handleSave.bind(this);
-        this.showModal = this.showModal.bind(this);
-    }
-
-    componentDidMount = () => {
-        if (Object.keys(this.props.filters).length) {
-            this.buildTreeData(this.props.filters);
-        }
+    static propTypes = {
+        filters: PropTypes.array.isRequired,
+        availableFilters: PropTypes.array.isRequired,
+        onSave: PropTypes.func.isRequired,
     };
 
-    componentWillReceiveProps = (nextProps) => {
-        if (nextProps.filters !== this.props.filters) {
-            this.buildTreeData(nextProps.filters);
-        }
+    state = {
+        isModalActive: false,
+        checkedList: [],
+        indeterminate: true,
+        checkAll: false,
     };
 
-    buildTreeData = (config) => {
+    onChange = (checkedList) => {
         this.setState({
-            available_metrics: config.available_metrics,
-            checkedKeys: config.available_metrics,
+            checkedList,
+            indeterminate: !!checkedList.length && (checkedList.length < this.props.availableFilters.length),
+            checkAll: checkedList.length === this.props.availableFilters.length,
         });
     };
 
-    onCheck = (checkedKeys) => {
+    onCheckAllChange = (e) => {
         this.setState({
-            checkedKeys,
+            checkedList: e.target.checked ? this.props.availableFilters : [],
+            indeterminate: false,
+            checkAll: e.target.checked,
         });
     };
 
     handleSave = () => {
-        const orderedSelectedFilters = this.state.available_metrics.filter(val => this.state.checkedKeys.indexOf(val) !== -1);
+        const orderedSelectedFilters = this.props.availableFilters.filter(val => this.state.checkedList.indexOf(val) !== -1);
 
         this.props.onSave(orderedSelectedFilters);
 
@@ -54,17 +43,28 @@ export default class FilterModal extends Component {
 
     closeModal = () => {
         this.setState({
+            checkedList: [],
+            indeterminate: false,
+            checkAll: false,
             isModalActive: false,
         });
     };
 
     showModal = () => {
         this.setState({
+            checkedList: this.props.filters,
+            indeterminate: !!this.props.filters.length && (this.props.filters.length < this.props.availableFilters.length),
+            checkAll: this.props.filters.length === this.props.availableFilters.length,
             isModalActive: true,
         });
     };
 
     render() {
+        const options = this.props.availableFilters.map(x => ({
+            label: i18n.t(`metric.${x}`),
+            value: x,
+        }));
+
         return (
             <span>
                 <Modal
@@ -73,27 +73,20 @@ export default class FilterModal extends Component {
                     className='filterModal'
                     onOk={this.handleSave}
                     okText={i18n.t('filterModal.saveButton')}
-                    okButtonProps={{ disabled: !this.state.checkedKeys.length }}
+                    okButtonProps={{ disabled: !this.state.checkedList.length }}
                     onCancel={this.closeModal}
                     cancelText={i18n.t('filterModal.cancelButton')}>
-                    <Tree
-                        checkable
-                        selectable={false}
-                        onCheck={this.onCheck}
-                        checkedKeys={this.state.checkedKeys}>
-                        {this.state.available_metrics.map(metric =>
-                            <Tree.TreeNode title={i18n.t(`metric.${metric}`)} key={metric} dataRef={metric}>
-                            </Tree.TreeNode>,
-                        )}
-                    </Tree>
+                    <Checkbox
+                        indeterminate={this.state.indeterminate}
+                        onChange={this.onCheckAllChange}
+                        checked={this.state.checkAll}>
+                        {i18n.t('filterModal.selectAll')}
+                    </Checkbox>
+                    <hr />
+                    <Checkbox.Group options={options} value={this.state.checkedList} onChange={this.onChange} />
                 </Modal>
                 <Button icon="switcher" onClick={this.showModal}>{i18n.t('budgetView.filter')}</Button>
             </span>
         );
     }
 }
-
-FilterModal.propTypes = {
-    filters: PropTypes.object.isRequired,
-    onSave: PropTypes.func.isRequired,
-};

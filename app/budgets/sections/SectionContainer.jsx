@@ -235,6 +235,7 @@ class SectionContainer extends Component {
                     observeChanges={true}
                     persistentState={true}
                     ref={this.setHotTableRef}
+                    id='hot'
                     root='hot'
                     viewportColumnRenderingOffset={20}
                     viewportRowRenderingOffset={100}

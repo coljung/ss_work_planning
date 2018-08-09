@@ -2,7 +2,7 @@ import i18n from 'i18next';
 import React from 'react';
 import * as sinon from 'sinon';
 import { shallow } from 'enzyme';
-import { Modal, Tree, Button } from 'antd';
+import { Modal, Checkbox, Button } from 'antd';
 import FilterModal from '../../../../app/budgets/filters/FilterModal';
 
 describe('FilterModal', () => {
@@ -24,7 +24,8 @@ describe('FilterModal', () => {
         const output = shallow(
             <FilterModal
                 onSave={jest.fn()}
-                filters={{}}/>
+                filters={[]}
+                availableFilters={[]} />
         );
 
         const modal = output.find(Modal).first();
@@ -39,7 +40,8 @@ describe('FilterModal', () => {
         const output = shallow(
             <FilterModal
                 onSave={jest.fn()}
-                filters={{}} />
+                filters={[]}
+                availableFilters={[]} />
         );
 
         expect(output.find(Button).prop('icon')).toEqual('switcher');
@@ -49,7 +51,8 @@ describe('FilterModal', () => {
         const output = shallow(
             <FilterModal
                 onSave={jest.fn()}
-                filters={{}} />
+                filters={[]}
+                availableFilters={[]} />
         );
 
         const modal = output.find(Modal);
@@ -60,7 +63,8 @@ describe('FilterModal', () => {
         const output = shallow(
             <FilterModal
                 onSave={jest.fn()}
-                filters={{}} />
+                filters={[]}
+                availableFilters={[]} />
         );
 
         expect(output.find(Modal).prop('visible')).toBeFalsy();
@@ -73,7 +77,8 @@ describe('FilterModal', () => {
         const output = mount(
             <FilterModal
                 onSave={jest.fn()}
-                filters={{}} />
+                filters={[]}
+                availableFilters={[]} />
         );
 
         // Initial state
@@ -90,11 +95,13 @@ describe('FilterModal', () => {
 
     it('Should call save handle when clicking ok button', () => {
         const onSave = jest.fn();
+        const filters = ['test1'];
 
         const output = mount(
             <FilterModal
                 onSave={onSave}
-                filters={{ available_metrics: ['test'] }} />
+                filters={filters}
+                availableFilters={filters} />
         );
 
         // Click the open button
@@ -108,11 +115,13 @@ describe('FilterModal', () => {
 
     it('Should pass the checked items in save handle', () => {
         const onSave = jest.fn();
+        const filters = ['test'];
 
         const output = mount(
             <FilterModal
                 onSave={onSave}
-                filters={{ available_metrics: ['test'] }} />
+                filters={filters}
+                availableFilters={filters} />
         );
 
         // Click the open button
@@ -127,18 +136,20 @@ describe('FilterModal', () => {
 
     it('Should pass the changed checked items in save handle', () => {
         const onSave = jest.fn();
+        const filters = ['test1', 'test2'];
 
         const output = mount(
             <FilterModal
                 onSave={onSave}
-                filters={{ available_metrics: ['test1', 'test2'] }} />
+                filters={filters}
+                availableFilters={filters} />
         );
 
         // Click the open button
         output.find(Button).first().simulate('click');
 
         // Unselect the first node
-        output.find(Modal).find(Tree).find(Tree.TreeNode).first().find('.ant-tree-checkbox').simulate('click');
+        output.find(Modal).find(Checkbox.Group).find('.ant-checkbox-input').first().simulate('change', { target: { checked: false } });
 
         // Click the save button
         output.find(Modal).find(Button).at(1).simulate('click');
@@ -147,11 +158,58 @@ describe('FilterModal', () => {
         expect(onSave).toBeCalledWith(['test2']);
     });
 
+    it('Should pass all items after checking all', () => {
+        const onSave = jest.fn();
+        const filters = ['test1', 'test2'];
+
+        const output = mount(
+            <FilterModal
+                onSave={onSave}
+                filters={[]}
+                availableFilters={filters} />
+        );
+
+        // Click the open button
+        output.find(Button).first().simulate('click');
+
+        // Click the Select All option
+        output.find(Modal).find('.ant-checkbox-input').first().simulate('change', { target: { checked: true } });
+
+        // Click the save button
+        output.find(Modal).find(Button).at(1).simulate('click');
+
+        expect(onSave).toHaveBeenCalledTimes(1);
+        expect(onSave).toBeCalledWith(['test1', 'test2']);
+    });
+
+    it('Should disable apply button after checking none', () => {
+        const onSave = jest.fn();
+        const filters = ['test1', 'test2'];
+
+        const output = mount(
+            <FilterModal
+                onSave={onSave}
+                filters={filters}
+                availableFilters={filters} />
+        );
+
+        // Click the open button
+        output.find(Button).first().simulate('click');
+
+        // Click the Select All option
+        output.find(Modal).find('.ant-checkbox-input').first().simulate('change', { target: { checked: false } });
+
+        expect(output.find(Modal).find(Button).at(1).prop('disabled')).toBeTruthy();
+    });
+
     it('Should close modal after saving', () => {
+        const filters = ['test1'];
+
         const output = mount(
             <FilterModal
                 onSave={jest.fn()}
-                filters={{ available_metrics: ['test'] }} />
+                filters={filters}
+                availableFilters={filters} />
         );
 
         // Initial state
@@ -168,95 +226,89 @@ describe('FilterModal', () => {
 
     it('Should disable save button when no checked items', () => {
         const onSave = jest.fn();
+        const filters = ['test1', 'test2'];
 
         const output = mount(
             <FilterModal
                 onSave={onSave}
-                filters={{ available_metrics: ['test1', 'test2'] }} />
+                filters={filters}
+                availableFilters={filters} />
         );
 
         // Click the open button
         output.find(Button).first().simulate('click');
 
         // Unselect nodes
-        output.find(Modal).find(Tree).find(Tree.TreeNode).at(0).find('.ant-tree-checkbox').simulate('click');
-        output.find(Modal).find(Tree).find(Tree.TreeNode).at(1).find('.ant-tree-checkbox').simulate('click');
+        output.find(Modal).find(Checkbox.Group).find('.ant-checkbox-input').at(0).simulate('change', { target: { checked: false } });
+        output.find(Modal).find(Checkbox.Group).find('.ant-checkbox-input').at(1).simulate('change', { target: { checked: false } });
 
         expect(output.find(Modal).find(Button).at(1).prop('disabled')).toBeTruthy();
     });
 
     it('Should contain a list of available metrics', () => {
-        setResource('metric.test1');
-        setResource('metric.test2');
+        const filters = ['test1', 'test2'];
 
-        const output = shallow(
+        const output = mount(
             <FilterModal
                 onSave={jest.fn()}
-                filters={{ available_metrics: ['test1', 'test2'] }} />
+                filters={filters}
+                availableFilters={filters} />
         );
 
         output.find(Button).first().simulate('click');
 
-        const tree = output.find(Modal).find(Tree);
-        expect(tree.prop('checkedKeys')).toContain('test1');
-        expect(tree.prop('checkedKeys')).toContain('test2');
+        const tree = output.find(Modal).find(Checkbox.Group);
+        expect(tree.prop('value')).toContain('test1');
+        expect(tree.prop('value')).toContain('test2');
 
-        const nodes = output.find(Modal).find(Tree).find(Tree.TreeNode);
+        const nodes = tree.find(Checkbox);
         expect(nodes).toHaveLength(2);
 
-        expect(nodes.at(0).prop('title')).toEqual('metric.test1');
-        expect(nodes.at(1).prop('title')).toEqual('metric.test2');
+        expect(nodes.at(0).prop('value')).toEqual('test1');
+        expect(nodes.at(1).prop('value')).toEqual('test2');
     });
 
     it('Should contain a list of same available metrics', () => {
-        setResource('metric.test1');
-        setResource('metric.test2');
-        setResource('metric.test3');
-        setResource('metric.test4');
+        let filters = ['test1', 'test2'];
 
-        let filters = { available_metrics: ['test1', 'test2'] };
-
-        const output = shallow(
+        const output = mount(
             <FilterModal
                 onSave={jest.fn()}
-                filters={filters} />
+                filters={filters}
+                availableFilters={filters} />
         );
 
         output.setProps({ filters });
 
         output.find(Button).first().simulate('click');
 
-        const nodes = output.find(Modal).find(Tree).find(Tree.TreeNode);
+        const nodes = output.find(Modal).find(Checkbox.Group).find(Checkbox);
         expect(nodes).toHaveLength(2);
 
-        expect(nodes.at(0).prop('title')).toEqual('metric.test1');
-        expect(nodes.at(1).prop('title')).toEqual('metric.test2');
+        expect(nodes.at(0).prop('value')).toEqual('test1');
+        expect(nodes.at(1).prop('value')).toEqual('test2');
     });
 
     it('Should contain a list of changed available metrics', () => {
-        setResource('metric.test1');
-        setResource('metric.test2');
-        setResource('metric.test3');
-        setResource('metric.test4');
+        let filters = ['test1', 'test2'];
 
-        let filters = { available_metrics: ['test1', 'test2'] };
-
-        const output = shallow(
+        const output = mount(
             <FilterModal
                 onSave={jest.fn()}
-                filters={filters} />
+                filters={filters}
+                availableFilters={filters} />
         );
 
-        filters = { available_metrics: ['test3', 'test4'] };
-        output.setProps({ filters });
+        filters = ['test3', 'test4'];
+        output.setProps({ availableFilters: filters });
 
         output.find(Button).first().simulate('click');
 
-        const nodes = output.find(Modal).find(Tree).find(Tree.TreeNode);
+        const nodes = output.find(Modal).find(Checkbox.Group).find(Checkbox);
         expect(nodes).toHaveLength(2);
 
-        expect(nodes.at(0).prop('title')).toEqual('metric.test3');
-        expect(nodes.at(1).prop('title')).toEqual('metric.test4');
+        expect(nodes.at(0).prop('value')).toEqual('test3');
+        expect(nodes.at(1).prop('value')).toEqual('test4');
     });
 
     const setResource = (key) => {
