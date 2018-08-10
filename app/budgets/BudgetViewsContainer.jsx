@@ -4,14 +4,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import { Row, Col } from 'antd';
-import {
-        getViewExportFile,
-        fetchBudgetConfigData,
-        fetchBudgetMetricData,
-        sendDataForSpreading,
-        resetState,
-        filterSetup,
-        triggerChange } from './BudgetViewActions';
+import { budgetViewOperations } from './duck';
 import { historyUndo, historyRedo, historyPush } from './history/HistoryActions';
 import BudgetViewActionsBar from './components/BudgetViewActionsBar';
 import FilterModal from './filters/FilterModal';
@@ -39,7 +32,6 @@ class BudgetViewsContainer extends Component {
         sendDataForSpreading: PropTypes.func.isRequired,
         viewData: PropTypes.object.isRequired,
         filterSetup: PropTypes.func.isRequired,
-        triggerChange: PropTypes.func.isRequired,
     };
 
     componentDidMount() {
@@ -157,33 +149,32 @@ class BudgetViewsContainer extends Component {
 
 function mapStateToProps(state) {
     const {
-        BudgetViewReducer,
+        budgetViewReducer,
         HistoryReducer,
     } = state;
 
     return {
-        config: BudgetViewReducer.config,
-        filters: BudgetViewReducer.filters,
+        config: budgetViewReducer.config,
+        filters: budgetViewReducer.filters,
         history: HistoryReducer,
-        isBudgetLoading: BudgetViewReducer.isBudgetLoading,
-        isDataSpreading: BudgetViewReducer.isDataSpreading,
-        isRefreshRequired: BudgetViewReducer.isRefreshRequired,
-        viewData: BudgetViewReducer.viewData,
+        isBudgetLoading: budgetViewReducer.isBudgetLoading,
+        isDataSpreading: budgetViewReducer.isDataSpreading,
+        isRefreshRequired: budgetViewReducer.isRefreshRequired,
+        viewData: budgetViewReducer.viewData,
     };
 }
 
 function mapDispatchToProps(dispatch) {
     return bindActionCreators({
-        fetchBudgetConfigData,
-        fetchBudgetMetricData,
-        getViewExportFile,
+        fetchBudgetConfigData: budgetViewOperations.fetchBudgetConfigData,
+        fetchBudgetMetricData: budgetViewOperations.fetchBudgetMetricData,
+        getViewExportFile: budgetViewOperations.getViewExportFile,
         historyRedo,
         historyUndo,
         historyPush,
-        resetState,
-        sendDataForSpreading,
-        filterSetup,
-        triggerChange,
+        resetState: budgetViewOperations.resetState,
+        sendDataForSpreading: budgetViewOperations.sendDataForSpreading,
+        filterSetup: budgetViewOperations.filterSetup,
     }, dispatch);
 }
 

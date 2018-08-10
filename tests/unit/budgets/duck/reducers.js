@@ -1,8 +1,14 @@
-import reducer from '../../../app/budgets/BudgetViewReducer';
-import * as actions from '../../../app/budgets/BudgetViewActions';
+import * as sinon from 'sinon';
+import reducer from '../../../../app/budgets/duck';
+import types from '../../../../app/budgets/duck/types';
 
-describe('BudgetViewReducer', () => {
-    let initialState;
+let sandbox;
+let initialState;
+
+describe('Budget View Reducer', () => {
+    beforeAll(() => {
+        sandbox = sinon.sandbox.create();
+    });
 
     beforeEach(() => {
         initialState = {
@@ -20,12 +26,16 @@ describe('BudgetViewReducer', () => {
         };
     });
 
+    afterEach(() => {
+        sandbox.restore();
+    });
+
     it('should return the initial state on RESET_BUDGETS_DATA', () => {
         expect(reducer(undefined, {})).toEqual(initialState);
 
         expect(
             reducer(undefined, {
-                type: actions.RESET_BUDGETS_DATA,
+                type: types.RESET_BUDGETS_DATA,
             })
         ).toEqual(initialState);
     });
@@ -37,7 +47,7 @@ describe('BudgetViewReducer', () => {
 
         expect(
             reducer(state, {
-                type: actions.RECEIVE_BUDGETS_CONFIG_DATA,
+                type: types.RECEIVE_BUDGETS_CONFIG_DATA,
                 config: { available_metrics: 'SALES' }
             })
         ).toEqual({
@@ -48,7 +58,7 @@ describe('BudgetViewReducer', () => {
     it('should handle REQUEST_BUDGETS_DATA', () => {
         expect(
             reducer(undefined, {
-                type: actions.REQUEST_BUDGETS_DATA,
+                type: types.REQUEST_BUDGETS_DATA,
             })
         ).toEqual(Object.assign({}, initialState, {
             isBudgetLoading: true,
@@ -58,7 +68,7 @@ describe('BudgetViewReducer', () => {
     it('should handle RECEIVE_BUDGETS_DATA', () => {
         expect(
             reducer(undefined, {
-                type: actions.RECEIVE_BUDGETS_DATA,
+                type: types.RECEIVE_BUDGETS_DATA,
                 view: 'men',
                 viewData: 'test',
             })
@@ -72,7 +82,7 @@ describe('BudgetViewReducer', () => {
     it('should handle REQUEST_SPREAD_DATA', () => {
         expect(
             reducer(undefined, {
-                type: actions.REQUEST_SPREAD_DATA,
+                type: types.REQUEST_SPREAD_DATA,
             })
         ).toEqual(Object.assign({}, initialState, {
             isDataSpreading: true,
@@ -82,7 +92,7 @@ describe('BudgetViewReducer', () => {
     it('should handle RECEIVE_SPREAD_DATA', () => {
         expect(
             reducer(undefined, {
-                type: actions.RECEIVE_SPREAD_DATA,
+                type: types.RECEIVE_SPREAD_DATA,
             })
         ).toEqual(Object.assign({}, initialState, {
             isDataSpreading: false,
@@ -93,21 +103,11 @@ describe('BudgetViewReducer', () => {
     it('should handle SET_FILTER_SETUP', () => {
         expect(
             reducer(undefined, {
-                type: actions.SET_FILTER_SETUP,
+                type: types.SET_FILTER_SETUP,
                 filters: ['Cogs'],
             })
         ).toEqual(Object.assign({}, initialState, {
             filters: ['Cogs'],
-        }));
-    });
-
-    it('should handle SET_TRIGGER_CHANGE', () => {
-        expect(
-            reducer(undefined, {
-                type: actions.SET_TRIGGER_CHANGE,
-            })
-        ).toEqual(Object.assign({}, initialState, {
-            isRefreshRequired: true,
         }));
     });
 });

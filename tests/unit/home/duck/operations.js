@@ -1,11 +1,10 @@
 import nock from 'nock';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
-import { join } from 'path';
-import { homeOperations } from '../../../../app/home/duck';
-import types from '../../../../app/home/duck/types';
 import sinon from 'sinon';
 import i18n from 'i18next';
+import { homeOperations } from '../../../../app/home/duck';
+import types from '../../../../app/home/duck/types';
 import budgetResponse from '../../../fixtures/budgets.json';
 import seasonAvailableResponse from '../../../fixtures/season_available.json';
 import createBudgetResponse from '../../../fixtures/create_budget.json';
@@ -22,9 +21,7 @@ describe('Home operations', () => {
         nock(UI_PLANNING_HOST)
         .get('/api/planning/budgets')
         .query(true)
-        .replyWithFile(200, join(__dirname, '..', '..', '..', 'fixtures', 'budgets.json'), {
-            'Content-Type': 'application/json'
-        });
+        .reply(200, budgetResponse);
 
         const expectedActions = [
             { type: types.REQUEST_BUDGETS },
@@ -46,8 +43,6 @@ describe('Home operations', () => {
         .reply(500, {
             code: 'Foo Bar',
             message: 'Foo Bar'
-        }, {
-            'Content-Type': 'application/json'
         });
 
         const expectedActions = [
@@ -67,9 +62,7 @@ describe('Home operations', () => {
         nock(UI_PLANNING_HOST)
         .get('/api/planning/budgets/show/available')
         .query(true)
-        .replyWithFile(200, join(__dirname, '..', '..', '..', 'fixtures', 'season_available.json'), {
-            'Content-Type': 'application/json'
-        });
+        .reply(200, seasonAvailableResponse);
 
         const expectedActions = [
             { type: types.REQUEST_SEASONS },
@@ -91,8 +84,6 @@ describe('Home operations', () => {
         .reply(500, {
             code: 'Foo Bar',
             message: 'Foo Bar'
-        }, {
-            'Content-Type': 'application/json'
         });
 
         const expectedActions = [
@@ -125,9 +116,7 @@ describe('Home operations', () => {
 
         nock(UI_PLANNING_HOST)
         .post('/api/planning/budgets', budget)
-        .replyWithFile(201, join(__dirname, '..', '..', '..', 'fixtures', 'create_budget.json'), {
-            'Content-Type': 'application/json'
-        });
+        .reply(201, createBudgetResponse);
 
         const expectedActions = [
             { type: types.REQUEST_CREATE_BUDGET, budget },
@@ -159,8 +148,6 @@ describe('Home operations', () => {
             .reply(500, {
                 code: 'Foo Bar',
                 message: 'Foo Bar'
-            }, {
-                'Content-Type': 'application/json'
             });
 
         const expectedActions = [

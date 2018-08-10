@@ -256,14 +256,14 @@ class SectionContainer extends Component {
 }
 
 function mapStateToProps(state, ownProps) {
-    const { BudgetViewReducer, HistoryReducer } = state;
+    const { budgetViewReducer, HistoryReducer } = state;
     let historyData = null;
     if (ownProps && HistoryReducer && HistoryReducer[ownProps.view]) {
         historyData = HistoryReducer[ownProps.view].present;
     }
     return {
-        isBudgetLoading: BudgetViewReducer.isBudgetLoading,
-        isDataSpreading: BudgetViewReducer.isDataSpreading,
+        isBudgetLoading: budgetViewReducer.isBudgetLoading,
+        isDataSpreading: budgetViewReducer.isDataSpreading,
         historyData,
     };
 }

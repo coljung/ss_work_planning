@@ -1,12 +1,11 @@
+import * as sinon from 'sinon';
 import reducer from '../../../../app/home/duck';
 import types from '../../../../app/home/duck/types';
-import * as sinon from 'sinon';
 
 let sandbox;
 let initialState;
 
-describe('BudgetReducer', () => {
-
+describe('Home Reducer', () => {
     beforeAll(() => {
         sandbox = sinon.sandbox.create();
     });

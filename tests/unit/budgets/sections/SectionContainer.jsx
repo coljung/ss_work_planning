@@ -34,7 +34,7 @@ global.localStorage = new LocalStorageMock();
 
 function setup(state = {}, props = {}) {
     const initialState = {
-        BudgetViewReducer: {
+        budgetViewReducer: {
             isBudgetLoading: false,
             isDataSpreading: false,
         },
@@ -42,6 +42,7 @@ function setup(state = {}, props = {}) {
     };
 
     const initialProps = {
+        view: 'total',
         viewData: {
             data: [],
             headers: [],
@@ -70,7 +71,7 @@ function setup(state = {}, props = {}) {
 describe('Top Down SectionContainer', () => {
     it('Should render loading spinner while loading', () => {
         const state = {
-            BudgetViewReducer: {
+            budgetViewReducer: {
                 isBudgetLoading: true,
                 isDataSpreading: false,
             },
@@ -91,7 +92,7 @@ describe('Top Down SectionContainer', () => {
 
     it('Should render loading spinner when no data', () => {
         const state = {
-            BudgetViewReducer: {
+            budgetViewReducer: {
                 isBudgetLoading: false,
                 isDataSpreading: false,
             },
@@ -104,7 +105,7 @@ describe('Top Down SectionContainer', () => {
 
     it.skip('Should render loading spinner when spreading', () => {
         const state = {
-            BudgetViewReducer: {
+            budgetViewReducer: {
                 isBudgetLoading: false,
                 isDataSpreading: true,
             },
@@ -128,7 +129,7 @@ describe('Top Down SectionContainer', () => {
 
     it.skip('Should render base table', () => {
         const state = {
-            BudgetViewReducer: {
+            budgetViewReducer: {
                 isBudgetLoading: false,
                 isDataSpreading: false,
             },
