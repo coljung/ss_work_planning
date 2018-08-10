@@ -3,9 +3,9 @@ import React from 'react';
 import * as sinon from 'sinon';
 import { shallow } from 'enzyme';
 import { Button, Modal, Select } from 'antd';
-import BudgetCreateModal from '../../../app/home/BudgetCreateModal';
+import CreateBudgetModal from '../../../app/home/CreateBudgetModal';
 
-describe('BudgetCreateModal', () => {
+describe('CreateBudgetModal', () => {
     it('Should have modal', () => {
         const i18nStub = sinon.stub(i18n, 't');
         i18nStub.withArgs('createBudgetModal.title').returns('createBudgetModal.title');
@@ -13,7 +13,7 @@ describe('BudgetCreateModal', () => {
         i18nStub.withArgs('createBudgetModal.cancelButton').returns('createBudgetModal.cancelButton');
 
         const output = shallow(
-            <BudgetCreateModal
+            <CreateBudgetModal
                 onSave={jest.fn()}
                 seasons={[]}/>
         );
@@ -28,7 +28,7 @@ describe('BudgetCreateModal', () => {
 
     it('Should have activator button', () => {
         const output = shallow(
-            <BudgetCreateModal
+            <CreateBudgetModal
                 onSave={jest.fn()}
                 seasons={[]}/>
         );
@@ -38,7 +38,7 @@ describe('BudgetCreateModal', () => {
 
     it('Should disable activator button when disabled from props', () => {
         const output = mount(
-            <BudgetCreateModal
+            <CreateBudgetModal
                 onSave={jest.fn()}
                 disabled={true}
                 seasons={[]}/>
@@ -49,7 +49,7 @@ describe('BudgetCreateModal', () => {
 
     it('Should not show modal by default', () => {
         const output = shallow(
-            <BudgetCreateModal
+            <CreateBudgetModal
                 onSave={jest.fn()}
                 seasons={[]}/>
         );
@@ -60,7 +60,7 @@ describe('BudgetCreateModal', () => {
 
     it('Should show modal when clicking the activator button', () => {
         const output = shallow(
-            <BudgetCreateModal
+            <CreateBudgetModal
                 onSave={jest.fn()}
                 seasons={[]}/>
         );
@@ -73,7 +73,7 @@ describe('BudgetCreateModal', () => {
 
     it('Should close modal when clicking the cancel button', () => {
         const output = mount(
-            <BudgetCreateModal
+            <CreateBudgetModal
                 onSave={jest.fn()}
                 seasons={[]} />
         );
@@ -94,7 +94,7 @@ describe('BudgetCreateModal', () => {
         const onSave = jest.fn();
 
         const output = mount(
-            <BudgetCreateModal
+            <CreateBudgetModal
                 onSave={onSave}
                 seasons={[{ name: 'FW19', season: 'FW', year: 2019 }]} />
         );
@@ -115,7 +115,7 @@ describe('BudgetCreateModal', () => {
         const onSave = jest.fn();
 
         const output = mount(
-            <BudgetCreateModal
+            <CreateBudgetModal
                 onSave={onSave}
                 seasons={[{ name: 'FW19', season: 'FW', year: 2019 }]} />
         );
@@ -135,7 +135,7 @@ describe('BudgetCreateModal', () => {
 
     it('Should close modal after saving', () => {
         const output = mount(
-            <BudgetCreateModal
+            <CreateBudgetModal
                 onSave={jest.fn()}
                 seasons={[{ name: 'FW19', season: 'FW', year: 2019 }]} />
         );
@@ -159,7 +159,7 @@ describe('BudgetCreateModal', () => {
         const onSave = jest.fn();
 
         const output = mount(
-            <BudgetCreateModal
+            <CreateBudgetModal
                 onSave={onSave}
                 seasons={[{ name: 'FW19', season: 'FW', year: 2019 }]} />
         );
@@ -172,7 +172,7 @@ describe('BudgetCreateModal', () => {
 
     it('Should contain a list of available seasons', () => {
         const output = shallow(
-            <BudgetCreateModal
+            <CreateBudgetModal
                 onSave={jest.fn()}
                 seasons={[
                     { name: 'FW19', season: 'FW', year: 2019 },
@@ -191,7 +191,7 @@ describe('BudgetCreateModal', () => {
 
     it('Should contain a list of changed available seasons', () => {
         const output = shallow(
-            <BudgetCreateModal
+            <CreateBudgetModal
                 onSave={jest.fn()}
                 seasons={[
                     { name: 'FW19', season: 'FW', year: 2019 },
@@ -217,7 +217,7 @@ describe('BudgetCreateModal', () => {
 
     it('Should not set seasons on other props change', () => {
         const output = shallow(
-            <BudgetCreateModal
+            <CreateBudgetModal
                 onSave={jest.fn()}
                 seasons={[
                     { name: 'FW19', season: 'FW', year: 2019 },

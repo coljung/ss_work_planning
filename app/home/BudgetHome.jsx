@@ -7,7 +7,7 @@ import { Row, Col } from 'antd';
 import { homeOperations } from './duck';
 import Board from '../components/Board';
 import BudgetList from './BudgetList';
-import BudgetCreateModal from './BudgetCreateModal';
+import CreateBudgetModal from './CreateBudgetModal';
 import LoadingSpinner from '../components/common/LoadingSpinner';
 
 export class BudgetHome extends Component {
@@ -60,7 +60,7 @@ export class BudgetHome extends Component {
     );
 
     renderCreateButton = () => (
-        <BudgetCreateModal onSave={this.saveNewBudget} disabled={!this.props.seasonsFetched || !this.props.budgetCreateFetched} seasons={this.props.seasons} />
+        <CreateBudgetModal onSave={this.saveNewBudget} disabled={!this.props.seasonsFetched || !this.props.budgetCreateFetched} seasons={this.props.seasons} />
     );
 
     render() {

@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Button, Modal, Select, Radio, Row } from 'antd';
 
-export default class BudgetCreateModal extends Component {
+export default class CreateBudgetModal extends Component {
     static propTypes = {
         seasons: PropTypes.array.isRequired,
         onSave: PropTypes.func.isRequired,
