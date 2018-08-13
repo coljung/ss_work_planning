@@ -92,13 +92,17 @@ export default class FilterModal extends Component {
                         <hr />
                         <Row>
                             <Col span={12}>
+                                <div>
                                    <Checkbox
-                                        indeterminate={this.state.indeterminate}
+                                       style={{ width: '100%', margin: '0px 0px 20px 0px' }}
+                                       indeterminate={this.state.indeterminate}
                                         onChange={this.onCheckAllChange}
                                         checked={this.state.checkAllMetric}>
                                         {i18n.t('filterModal.selectAll')}
                                    </Checkbox>
+
                                    <Checkbox.Group options={metricOptions} value={this.state.metricCheckedList} onChange={this.onChange} />
+                                </div>
                             </Col>
                             <Col span={12}>
                                 <Checkbox.Group options={planOptions} value={this.state.planCheckedList} onChange={this.onChange} />
