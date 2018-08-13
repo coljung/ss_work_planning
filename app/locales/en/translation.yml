@@ -26,8 +26,10 @@ createBudgetModal:
   spinner: Creating Budget...
 filterModal:
   title: Filters
+  metric: Metric
+  planType: Plan Type
   selectAll: Select all
-  saveButton: Set Filters
+  saveButton: Apply Filter
   cancelButton: Cancel
 budgetView:
   backButton: Back
@@ -58,4 +60,4 @@ metric:
 plan:
   wp: WORKING PLAN
   dsrp: FORECAST
-  achd: Actual
+  achd: ACTUAL

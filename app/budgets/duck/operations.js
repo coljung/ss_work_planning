@@ -29,12 +29,14 @@ function fetchBudgetConfigData() {
     };
 }
 
-function fetchBudgetMetricData(budget, view, metric, query) {
+function fetchBudgetMetricData(budget, view, metric, plan, query) {
     return (dispatch) => {
         const metricList = metric.length > 1 ? metric.join(',') : metric;
+        const planList = plan.length > 1 ? plan.join(',') : plan;
         const queryToSend = {
             ...query,
             metrics: query && query.metrics ? query.metrics : metricList,
+            plans: query && query.plan ? query.plan : planList,
         };
         dispatch(actions.requestBudgetViewData());
         return request
