@@ -1,67 +1,75 @@
 import i18n from 'i18next';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Modal, Button, Checkbox } from 'antd';
+import { Modal, Button, Checkbox, Row, Col } from 'antd';
 
 export default class FilterModal extends Component {
     static propTypes = {
-        filters: PropTypes.array.isRequired,
-        availableFilters: PropTypes.array.isRequired,
+        filters: PropTypes.object.isRequired,
+        availableOptions: PropTypes.object.isRequired,
         onSave: PropTypes.func.isRequired,
     };
 
     state = {
         isModalActive: false,
-        checkedList: [],
+        metricCheckedList: [],
+        planCheckedList: [],
         indeterminate: true,
-        checkAll: false,
+        checkAllMetric: false,
+        checkAllPlan: false,
     };
 
-    onChange = (checkedList) => {
+    onChange = (metricCheckedList, planCheckedList) => {
         this.setState({
-            checkedList,
-            indeterminate: !!checkedList.length && (checkedList.length < this.props.availableFilters.length),
-            checkAll: checkedList.length === this.props.availableFilters.length,
+            metricCheckedList,
+            planCheckedList,
+            indeterminate: !!metricCheckedList.length && (metricCheckedList.length < this.props.availableOptions.available_metrics.length),
+            checkAllMetric: metricCheckedList.length === this.props.availableOptions.available_metrics.length,
         });
     };
 
     onCheckAllChange = (e) => {
         this.setState({
-            checkedList: e.target.checked ? this.props.availableFilters : [],
+            metricCheckedList: e.target.checked ? this.props.availableOptions.available_metrics : [],
             indeterminate: false,
-            checkAll: e.target.checked,
+            checkAllMetric: e.target.checked,
         });
     };
 
     handleSave = () => {
-        const orderedSelectedFilters = this.props.availableFilters.filter(val => this.state.checkedList.indexOf(val) !== -1);
+        const orderedSelectedFilters = this.props.availableOptions.filter(val => this.state.metricCheckedList.indexOf(val) !== -1);
 
-        this.props.onSave(orderedSelectedFilters);
+        this.props.onSave({ available_metrics: orderedSelectedFilters });
 
         this.closeModal();
     };
 
     closeModal = () => {
         this.setState({
-            checkedList: [],
+            metricCheckedList: [],
             indeterminate: false,
-            checkAll: false,
+            checkAllMetric: false,
             isModalActive: false,
         });
     };
 
     showModal = () => {
         this.setState({
-            checkedList: this.props.filters,
-            indeterminate: !!this.props.filters.length && (this.props.filters.length < this.props.availableFilters.length),
-            checkAll: this.props.filters.length === this.props.availableFilters.length,
+            metricCheckedList: this.props.filters.available_metrics,
+            planCheckedList: this.props.filters.available_rows,
+            indeterminate: !!this.props.filters.available_metrics.length && (this.props.filters.available_metrics.length < this.props.availableOptions.available_metrics.length),
+            checkAllMetric: this.props.filters.available_metrics.length === this.props.availableOptions.available_metrics.length,
             isModalActive: true,
         });
     };
 
     render() {
-        const options = this.props.availableFilters.map(x => ({
+        const metricOptions = this.props.availableOptions.available_metrics.map(x => ({
             label: i18n.t(`metric.${x}`),
+            value: x,
+        }));
+        const planOptions = this.props.availableOptions.available_rows.map(x => ({
+            label: i18n.t(`plan.${x}`),
             value: x,
         }));
 
@@ -73,17 +81,30 @@ export default class FilterModal extends Component {
                     className='filterModal'
                     onOk={this.handleSave}
                     okText={i18n.t('filterModal.saveButton')}
-                    okButtonProps={{ disabled: !this.state.checkedList.length }}
+                    okButtonProps={{ disabled: !this.state.metricCheckedList.length }}
                     onCancel={this.closeModal}
                     cancelText={i18n.t('filterModal.cancelButton')}>
-                    <Checkbox
-                        indeterminate={this.state.indeterminate}
-                        onChange={this.onCheckAllChange}
-                        checked={this.state.checkAll}>
-                        {i18n.t('filterModal.selectAll')}
-                    </Checkbox>
-                    <hr />
-                    <Checkbox.Group options={options} value={this.state.checkedList} onChange={this.onChange} />
+                    <div>
+                        <Row>
+                          <Col span={12}>Metric</Col>
+                          <Col span={12}>Plan Type</Col>
+                        </Row>
+                        <hr />
+                        <Row>
+                            <Col span={12}>
+                                   <Checkbox
+                                        indeterminate={this.state.indeterminate}
+                                        onChange={this.onCheckAllChange}
+                                        checked={this.state.checkAllMetric}>
+                                        {i18n.t('filterModal.selectAll')}
+                                   </Checkbox>
+                                   <Checkbox.Group options={metricOptions} value={this.state.metricCheckedList} onChange={this.onChange} />
+                            </Col>
+                            <Col span={12}>
+                                <Checkbox.Group options={planOptions} value={this.state.planCheckedList} onChange={this.onChange} />
+                            </Col>
+                        </Row>
+                    </div>
                 </Modal>
                 <Button icon="switcher" onClick={this.showModal}>{i18n.t('budgetView.filter')}</Button>
             </span>

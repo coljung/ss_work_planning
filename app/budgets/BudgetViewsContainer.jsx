@@ -16,7 +16,7 @@ class BudgetViewsContainer extends Component {
     static propTypes = {
         params: PropTypes.object.isRequired,
         config: PropTypes.object.isRequired,
-        filters: PropTypes.array.isRequired,
+        filters: PropTypes.object.isRequired,
         fetchBudgetConfigData: PropTypes.func.isRequired,
         fetchBudgetMetricData: PropTypes.func.isRequired,
         getViewExportFile: PropTypes.func.isRequired,
@@ -44,7 +44,7 @@ class BudgetViewsContainer extends Component {
     componentDidMount() {
         // get config data, then fetch metrics based on config
         this.props.fetchBudgetConfigData().then((config) => {
-            this.applyFilters(config.config.available_metrics);
+            this.applyFilters(config.config);
         });
     }
 
@@ -63,7 +63,7 @@ class BudgetViewsContainer extends Component {
 
     getMetricData(budgetId, tab, filters = null) {
         const { config, router: { location } } = this.props;
-        this.props.fetchBudgetMetricData(budgetId, tab, filters && filters.length ? filters : config.available_metrics, location.query);
+        this.props.fetchBudgetMetricData(budgetId, tab, filters && filters.available_metrics.length ? filters.available_metrics : config.available_metrics, location.query);
     }
 
     pushRoute(newTab = null) {
@@ -80,7 +80,7 @@ class BudgetViewsContainer extends Component {
     }
 
     getExportedFile = () => {
-        this.props.getViewExportFile(this.props.params.budgetId, this.props.params.tab, this.props.filters);
+        this.props.getViewExportFile(this.props.params.budgetId, this.props.params.tab, this.props.filters.available_metrics);
     };
 
     pushToHistory = (dataObject, focusPosition) => {
@@ -136,7 +136,7 @@ class BudgetViewsContainer extends Component {
                                 onUndo={this.undo}
                                 onRedo={this.redo}
                                 onExport={this.getExportedFile}>
-                                <FilterModal onSave={this.applyFilters} availableFilters={this.props.config.available_metrics} filters={this.props.filters} />
+                                <FilterModal onSave={this.applyFilters} availableOptions={this.props.config} filters={this.props.filters} />
                             </BudgetViewActionsBar>
                         </Col>
                     </Row>

@@ -2,7 +2,7 @@ import types from './types';
 
 const initialState = {
     config: {},
-    filters: [],
+    filters: { available_metrics: [], available_rows: [] },
     isBudgetLoading: false,
     isDataSpreading: false,
     isRefreshRequired: false,
