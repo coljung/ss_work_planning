@@ -40,7 +40,14 @@ class BudgetViewsContainer extends Component {
         viewData: PropTypes.object.isRequired,
         filterSetup: PropTypes.func.isRequired,
         triggerChange: PropTypes.func.isRequired,
+        location: PropTypes.object,
     };
+
+    useDecimals = false;
+
+    componentWillMount() {
+        this.useDecimals = this.props.location.query && this.props.location.query.decimals === 'yes';
+    }
 
     componentDidMount() {
         // get config data, then fetch metrics based on config
@@ -147,6 +154,7 @@ class BudgetViewsContainer extends Component {
                     <SectionContainer
                         view={this.props.params.tab}
                         viewData={this.props.viewData}
+                        useDecimals={this.useDecimals}
                         onPushHistory={this.pushToHistory}
                         onCellChange={this.changeCellValue} />
                 </div>

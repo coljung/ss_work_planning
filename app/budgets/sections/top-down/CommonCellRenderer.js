@@ -39,8 +39,7 @@ export default function cellValueRenderer(instance, td, row, col, prop, value, c
 
         switch (metricInformation.dataType) {
             case 'currency': {
-                const decimals = location.query && location.query.decimals === 'yes';
-                instance.setCellMeta(row, col, 'numericFormat', currencyFormat(decimals));
+                instance.setCellMeta(row, col, 'numericFormat', currencyFormat(this.props.useDecimals));
                 // eslint-disable-next-line prefer-rest-params
                 Handsontable.renderers.NumericRenderer.apply(this, arguments);
                 break;
