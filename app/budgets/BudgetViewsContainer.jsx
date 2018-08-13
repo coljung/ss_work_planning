@@ -6,10 +6,10 @@ import { withRouter } from 'react-router';
 import { Row, Col } from 'antd';
 import { budgetViewOperations } from './duck';
 import { historyUndo, historyRedo, historyPush } from './history/HistoryActions';
-import BudgetViewActionsBar from './components/BudgetViewActionsBar';
-import FilterModal from './filters/FilterModal';
-import ViewPicker from './sections/top-down/ViewPicker';
-import SectionContainer from './sections/SectionContainer';
+import BudgetViewActionsBar from './BudgetViewActionsBar';
+import FilterModal from './FilterModal';
+import ViewPicker from './ViewPicker';
+import SectionContainer from './TableContainer';
 import { ROUTE_BUDGET, ROUTE_DASHBOARD } from '../constants/routes';
 
 class BudgetViewsContainer extends Component {

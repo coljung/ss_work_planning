@@ -2,7 +2,7 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import { Link } from 'react-router';
 import { Button } from 'antd';
-import BudgetViewsButtonActions from '../../../../app/budgets/components/BudgetViewActionsBar';
+import BudgetViewsButtonActions from '../../../app/budgets/BudgetViewActionsBar';
 
 describe('BudgetViewActionsBar', () => {
     it('Should pass children in props', () => {

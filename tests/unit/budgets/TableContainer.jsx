@@ -3,8 +3,8 @@ import Adapter from 'enzyme-adapter-react-16';
 import React from 'react';
 import thunk from 'redux-thunk';
 import configureMockStore from 'redux-mock-store';
-import SectionContainer from '../../../../app/budgets/sections/SectionContainer';
-import LoadingSpinner from '../../../../app/components/common/LoadingSpinner';
+import SectionContainer from '../../../app/budgets/TableContainer';
+import LoadingSpinner from '../../../app/components/common/LoadingSpinner';
 
 Enzyme.configure({ adapter: new Adapter() });
 

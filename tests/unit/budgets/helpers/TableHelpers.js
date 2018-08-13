@@ -10,7 +10,7 @@ import {
     disableEdit,
     numericFormat,
     gridColors,
-    emptyCell } from '../../../../app/budgets/components/TableHelpers';
+    emptyCell } from '../../../../app/budgets/helpers/TableHelpers';
 import i18n from 'i18next';
 
 describe('Helper functions', () => {

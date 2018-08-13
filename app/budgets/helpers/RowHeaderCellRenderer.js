@@ -3,7 +3,7 @@ import {
     borderBottom,
     disableEdit,
     gridColors,
-} from '../../components/TableHelpers';
+} from './TableHelpers';
 
 export default function cellRenderer(instance, td, row, col, prop, value, cellProperties) {
     const rowInformation = this.props.viewData.data[row].info;

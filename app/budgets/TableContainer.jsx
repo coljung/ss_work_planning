@@ -2,11 +2,11 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { HotTable } from '@handsontable/react';
 import { connect } from 'react-redux';
-import LoadingSpinner from '../../components/common/LoadingSpinner';
-import rowHeaderCellRenderer from './top-down/RowHeaderCellRenderer';
-import commonCellValueRenderer from './top-down/CommonCellRenderer';
+import LoadingSpinner from '../components/common/LoadingSpinner';
+import rowHeaderCellRenderer from './helpers/RowHeaderCellRenderer';
+import commonCellValueRenderer from './helpers/CommonCellRenderer';
 
-class SectionContainer extends Component {
+class TableContainer extends Component {
     static propTypes = {
         view: PropTypes.string.isRequired,
         viewData: PropTypes.object.isRequired,
@@ -268,4 +268,4 @@ function mapStateToProps(state, ownProps) {
     };
 }
 
-export default connect(mapStateToProps, null)(SectionContainer);
+export default connect(mapStateToProps, null)(TableContainer);

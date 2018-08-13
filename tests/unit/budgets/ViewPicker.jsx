@@ -3,7 +3,7 @@ import { shallow } from 'enzyme';
 import { Tabs } from 'antd';
 import * as sinon from 'sinon';
 import i18n from 'i18next';
-import ViewPicker from '../../../../../app/budgets/sections/top-down/ViewPicker';
+import ViewPicker from '../../../app/budgets/ViewPicker';
 
 describe('ViewPicker', () => {
     it('Should pass children in props', () => {

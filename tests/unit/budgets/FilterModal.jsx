@@ -3,7 +3,7 @@ import React from 'react';
 import * as sinon from 'sinon';
 import { shallow } from 'enzyme';
 import { Modal, Checkbox, Button } from 'antd';
-import FilterModal from '../../../../app/budgets/filters/FilterModal';
+import FilterModal from '../../../app/budgets/FilterModal';
 
 describe('FilterModal', () => {
     let i18nStub;

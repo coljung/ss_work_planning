@@ -6,7 +6,7 @@ import {
     gridColors,
     numericFormat,
     percentageFormat,
- } from '../../components/TableHelpers';
+ } from './TableHelpers';
 
 export default function cellValueRenderer(instance, td, row, col, prop, value, cellProperties) {
     // styling border for each metric
