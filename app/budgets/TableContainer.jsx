@@ -14,6 +14,7 @@ class TableContainer extends Component {
         isDataSpreading: PropTypes.bool.isRequired,
         onCellChange: PropTypes.func.isRequired,
         onPushHistory: PropTypes.func.isRequired,
+        useDecimals: PropTypes.bool.isRequired,
         historyData: PropTypes.object,
     };
 
