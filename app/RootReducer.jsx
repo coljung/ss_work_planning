@@ -1,13 +1,13 @@
 import { combineReducers } from 'redux';
-import BudgetReducer from './home/BudgetReducer';
-import BudgetViewReducer from './budgets/BudgetViewReducer';
 import CustomNavigationReducer from './components/customNavigation/CustomNavigationReducer';
 import HistoryReducer from './budgets/history/HistoryReducer';
 import Message from './notifications/NotificationReducer';
+import homeReducer from './home/duck';
+import budgetViewReducer from './budgets/duck';
 
 export default combineReducers({
-    BudgetReducer,
-    BudgetViewReducer,
+    homeReducer,
+    budgetViewReducer,
     CustomNavigationReducer,
     HistoryReducer,
     Message,

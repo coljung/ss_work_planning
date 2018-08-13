@@ -9,7 +9,7 @@ import * as sinon from 'sinon';
 import i18n from 'i18next';
 import LoadingSpinner from '../../../app/components/common/LoadingSpinner';
 import BudgetList from '../../../app/home/BudgetList';
-import BudgetCreateModal from '../../../app/home/components/BudgetCreateModal';
+import CreateBudgetModal from '../../../app/home/CreateBudgetModal';
 
 Enzyme.configure({ adapter: new Adapter() });
 
@@ -24,7 +24,7 @@ function setup(state = {}) {
     const mockStore = configureMockStore(middlewares);
 
     const initialState = {
-        BudgetReducer: {
+        homeReducer: {
             budgets: [],
             budgetsFetched: true,
             seasons: [
@@ -126,7 +126,7 @@ describe('BudgetHome', () => {
     it('Should have budget creation button', () => {
         const { enzymeWrapper } = setup();
 
-        expect(enzymeWrapper.find(BudgetCreateModal)).toHaveLength(1);
+        expect(enzymeWrapper.find(CreateBudgetModal)).toHaveLength(1);
     });
 
     it('Should disable budget creation button when fetching seasons', () => {
@@ -134,7 +134,7 @@ describe('BudgetHome', () => {
             seasonsFetched: false,
         });
 
-        expect(enzymeWrapper.find(BudgetCreateModal).prop('disabled')).toBeTruthy();
+        expect(enzymeWrapper.find(CreateBudgetModal).prop('disabled')).toBeTruthy();
     });
 
     it('Should disable budget creation button when creating budget', () => {
@@ -142,7 +142,7 @@ describe('BudgetHome', () => {
             budgetCreateFetched: false,
         });
 
-        expect(enzymeWrapper.find(BudgetCreateModal).prop('disabled')).toBeTruthy();
+        expect(enzymeWrapper.find(CreateBudgetModal).prop('disabled')).toBeTruthy();
     });
 
     it('Should enable budget creation button after fetching seasons', () => {
@@ -150,7 +150,7 @@ describe('BudgetHome', () => {
             seasonsFetched: true,
         });
 
-        expect(enzymeWrapper.find(BudgetCreateModal).prop('disabled')).toBeFalsy();
+        expect(enzymeWrapper.find(CreateBudgetModal).prop('disabled')).toBeFalsy();
     });
 
     it('Should fetch available seasons when receiving new budgets', () => {
@@ -212,7 +212,7 @@ describe('BudgetHome', () => {
 
         const spy = jest.spyOn(enzymeWrapper.props(), 'createBudget');
 
-        enzymeWrapper.find("BudgetCreateModal").prop('onSave')('FW', 2020);
+        enzymeWrapper.find("CreateBudgetModal").prop('onSave')('FW', 2020);
 
         jest.runAllTimers();
 

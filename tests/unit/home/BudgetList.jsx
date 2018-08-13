@@ -2,7 +2,7 @@ import React from 'react'
 import { mount, shallow } from 'enzyme'
 import { Link } from 'react-router';
 import BudgetList from '../../../app/home/BudgetList';
-import PreviousBudgetsModal from '../../../app/home/components/PreviousBudgetsModal';
+import PreviousBudgetsModal from '../../../app/home/PreviousBudgetsModal';
 import i18n from 'i18next';
 import sinon from 'sinon';
 
