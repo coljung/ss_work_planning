@@ -9,7 +9,6 @@ import {
     enableEdit,
     disableEdit,
     numericFormat,
-    gridColors,
     emptyCell } from '../../../../app/budgets/helpers/TableHelpers';
 import i18n from 'i18next';
 
@@ -68,19 +67,6 @@ describe('Helper functions', () => {
             const td = document.createElement("td");
             borderBottom(4, 5, td, 10);
             expect(td.className).to.contain(' bottomCellBorder');
-        });
-    });
-
-    describe('Grid Classes', () => {
-        it('should return proper class for gridColors function', () => {
-            const td = document.createElement("td");
-            gridColors('wp', td);
-            expect(td.className).to.contain(' wpActive');
-            gridColors('achd', td);
-            expect(td.className).to.contain(' actualActive');
-            const td2 = document.createElement("td");
-            gridColors('test', td2);
-            expect(td2.className).not.contain(' actualActive wpActive');
         });
     });
 

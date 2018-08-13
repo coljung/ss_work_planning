@@ -3,7 +3,6 @@ import {
     borderBottom,
     currencyFormat,
     emptyCell,
-    gridColors,
     numericFormat,
     percentageFormat,
  } from './TableHelpers';
@@ -19,13 +18,6 @@ export default function cellValueRenderer(instance, td, row, col, prop, value, c
     if (metricInformation) {
         if (metricInformation.isReadOnly !== undefined) {
             instance.setCellMeta(row, col, 'readOnly', metricInformation.isReadOnly);
-        }
-
-        const rowInformation = this.props.viewData.data[row].info;
-        const rowYear = rowInformation.year.toString().slice(2, 4);
-        const budgetYear = this.props.viewData.info.year.slice(2, 4);
-        if (budgetYear === rowYear) {
-            gridColors(rowInformation.plan, td);
         }
     }
 

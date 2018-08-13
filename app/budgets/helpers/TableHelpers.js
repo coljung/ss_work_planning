@@ -37,15 +37,6 @@ export const borderBottom = (row, rowSpan, td) => {
     }
 };
 
-// grid color
-export const gridColors = (plan, td) => {
-    if (plan === 'wp') {
-        td.className += ' wpActive';
-    } else if (plan === 'achd') {
-        td.className += ' actualActive';
-    }
-};
-
 export const disableEdit = (instance, row, col) => {
     instance.setCellMeta(row, col, 'readOnly', true);
 };
