@@ -71,15 +71,17 @@ describe('Budget view action creators', () => {
     it('Should handle requestViewDownload', () => {
         const budget = 1;
         const view = 'total';
-        const metric = [ 'SALES' ];
+        const metrics = [ 'SALES' ];
+        const plans = [ 'wp' ];
 
         const expectedAction = {
             type: types.REQUEST_VIEW_DOWNLOAD,
             budgetId: budget,
             view,
-            metric
+            metrics,
+            plans
         };
 
-        expect(actions.requestViewDownload(budget, view, metric)).toEqual(expectedAction);
+        expect(actions.requestViewDownload(budget, view, metrics, plans)).toEqual(expectedAction);
     });
 });

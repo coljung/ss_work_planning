@@ -144,12 +144,12 @@ describe('Budget view operations', () => {
     describe('fetchBudgetMetricData', () => {
         const budget = 1;
         const view = 'total';
-        const metric = [ 'SALES' ];
-        const query = undefined;
+        const metrics = [ 'SALES' ];
+        const plans = [ 'wp' ];
 
         it('Should handle fetching budget data ', async () => {
             nock(UI_PLANNING_HOST)
-                .get('/api/planning/budgets/1/total/metrics?metrics=SALES')
+                .get('/api/planning/budgets/1/total/metrics?metrics=SALES&plans=wp')
                 .reply(200, viewResponse);
 
             const expectedActions = [
@@ -159,7 +159,7 @@ describe('Budget view operations', () => {
 
             const store = mockStore({});
 
-            await store.dispatch(budgetViewOperations.fetchBudgetMetricData(budget, view, metric, query));
+            await store.dispatch(budgetViewOperations.fetchBudgetMetricData(budget, view, metrics, plans));
 
             expect(store.getActions()).toEqual(expectedActions);
         });
@@ -168,7 +168,7 @@ describe('Budget view operations', () => {
             const metrics = [ 'SALES', 'COGS' ];
 
             nock(UI_PLANNING_HOST)
-                .get('/api/planning/budgets/1/total/metrics?metrics=SALES%2CCOGS')
+                .get('/api/planning/budgets/1/total/metrics?metrics=SALES%2CCOGS&plans=wp')
                 .reply(200, viewResponse);
 
             const expectedActions = [
@@ -178,41 +178,7 @@ describe('Budget view operations', () => {
 
             const store = mockStore({});
 
-            await store.dispatch(budgetViewOperations.fetchBudgetMetricData(budget, view, metrics, query));
-
-            expect(store.getActions()).toEqual(expectedActions);
-        });
-
-        it('Should handle fetching budget data for metrics with query string', async () => {
-            nock(UI_PLANNING_HOST)
-                .get('/api/planning/budgets/1/total/metrics?plan=wp&metrics=SALES')
-                .reply(200, viewResponse);
-
-            const expectedActions = [
-                { type: types.REQUEST_BUDGETS_DATA },
-                { type: types.RECEIVE_BUDGETS_DATA, viewData: viewResponse, view },
-            ];
-
-            const store = mockStore({});
-
-            await store.dispatch(budgetViewOperations.fetchBudgetMetricData(budget, view, metric, { plan: 'wp' }));
-
-            expect(store.getActions()).toEqual(expectedActions);
-        });
-
-        it('Should handle fetching budget data for metrics with metrics in query string', async () => {
-            nock(UI_PLANNING_HOST)
-                .get('/api/planning/budgets/1/total/metrics?metrics=COGS')
-                .reply(200, viewResponse);
-
-            const expectedActions = [
-                { type: types.REQUEST_BUDGETS_DATA },
-                { type: types.RECEIVE_BUDGETS_DATA, viewData: viewResponse, view },
-            ];
-
-            const store = mockStore({});
-
-            await store.dispatch(budgetViewOperations.fetchBudgetMetricData(budget, view, [ 'SALES' ], { metrics: 'COGS' }));
+            await store.dispatch(budgetViewOperations.fetchBudgetMetricData(budget, view, metrics, plans));
 
             expect(store.getActions()).toEqual(expectedActions);
         });
@@ -229,7 +195,68 @@ describe('Budget view operations', () => {
 
             const store = mockStore({});
 
-            await store.dispatch(budgetViewOperations.fetchBudgetMetricData(budget, view, metric, query));
+            await store.dispatch(budgetViewOperations.fetchBudgetMetricData(budget, view, metrics, plans));
+
+            expect(store.getActions()).toMatchObject(expectedActions);
+        });
+    });
+
+
+    describe('fetchBudgetMetricPlanTypeData', () => {
+        const budget = 1;
+        const view = 'total';
+        const metrics = [ 'SALES' ];
+        const plans = [ 'wp' ];
+
+        it('Should handle fetching budget data ', async () => {
+            nock(UI_PLANNING_HOST)
+                .get('/api/planning/budgets/1/total/metrics?metrics=SALES&plans=wp')
+                .reply(200, viewResponse);
+
+            const expectedActions = [
+                { type: types.REQUEST_BUDGETS_DATA },
+                { type: types.RECEIVE_BUDGETS_DATA, viewData: viewResponse, view },
+            ];
+
+            const store = mockStore({});
+
+            await store.dispatch(budgetViewOperations.fetchBudgetMetricData(budget, view, metrics, plans));
+
+            expect(store.getActions()).toEqual(expectedActions);
+        });
+
+        it('Should handle fetching budget data for multiple plan types for multiple metrics', async () => {
+            const plans = [ 'wp','tdop'];
+            const metrics = [ 'SALES','COGS' ];
+            nock(UI_PLANNING_HOST)
+                .get('/api/planning/budgets/1/total/metrics?metrics=SALES%2CCOGS&plans=wp%2Ctdop')
+                .reply(200, viewResponse);
+
+            const expectedActions = [
+                { type: types.REQUEST_BUDGETS_DATA },
+                { type: types.RECEIVE_BUDGETS_DATA, viewData: viewResponse, view},
+            ];
+
+            const store = mockStore({});
+
+            await store.dispatch(budgetViewOperations.fetchBudgetMetricData(budget, view, metrics, plans));
+
+            expect(store.getActions()).toEqual(expectedActions);
+        });
+
+        it('Should fail to fetchBudgetMetricData', async () => {
+            nock(UI_PLANNING_HOST)
+                .get('/api/planning/budgets/1/total/metrics?metrics=SALES')
+                .reply(500);
+
+            const expectedActions = [
+                { type: types.REQUEST_BUDGETS_DATA },
+                { type: notifications.MESSAGES }
+            ];
+
+            const store = mockStore({});
+
+            await store.dispatch(budgetViewOperations.fetchBudgetMetricData(budget, view, metrics, plans));
 
             expect(store.getActions()).toMatchObject(expectedActions);
         });
@@ -238,18 +265,19 @@ describe('Budget view operations', () => {
     describe('getViewExportFile', () => {
         const budget = 1;
         const view = 'total';
-        const metric = [ 'SALES' ];
+        const metrics = [ 'SALES' ];
+        const plans = [ 'wp','achd' ];
 
         it('Should handle exporting', async () => {
             window.open = jest.fn();
 
             const expectedActions = [
-                { type: types.REQUEST_VIEW_DOWNLOAD, budgetId: budget, view, metric },
+                { type: types.REQUEST_VIEW_DOWNLOAD, budgetId: budget, view, metrics, plans },
             ];
 
             const store = mockStore({});
 
-            await store.dispatch(budgetViewOperations.getViewExportFile(budget, view, metric));
+            await store.dispatch(budgetViewOperations.getViewExportFile(budget, view, metrics, plans));
 
             expect(store.getActions()).toEqual(expectedActions);
         });
@@ -259,22 +287,23 @@ describe('Budget view operations', () => {
 
             const store = mockStore({});
 
-            await store.dispatch(budgetViewOperations.getViewExportFile(budget, view, metric));
+            await store.dispatch(budgetViewOperations.getViewExportFile(budget, view, metrics, plans));
 
             expect(openSpy).toHaveBeenCalledTimes(1);
-            expect(openSpy).toBeCalledWith('http://127.0.0.1/api/planning/budgets/1/total/metrics/export?metrics=SALES');
+            expect(openSpy).toBeCalledWith('http://127.0.0.1/api/planning/budgets/1/total/metrics/export?metrics=SALES&plans=wp,achd');
         });
 
-        it('Should call window.open while exporting for multiple metrics', async () => {
+        it('Should call window.open while exporting for multiple metrics, multiple plan type', async () => {
             const metrics = [ 'SALES', 'COGS' ];
+            const plans = [ 'wp', 'achd' ];
             const openSpy = window.open = jest.fn();
 
             const store = mockStore({});
 
-            await store.dispatch(budgetViewOperations.getViewExportFile(budget, view, metrics));
+            await store.dispatch(budgetViewOperations.getViewExportFile(budget, view, metrics, plans));
 
             expect(openSpy).toHaveBeenCalledTimes(1);
-            expect(openSpy).toBeCalledWith('http://127.0.0.1/api/planning/budgets/1/total/metrics/export?metrics=SALES,COGS');
+            expect(openSpy).toBeCalledWith('http://127.0.0.1/api/planning/budgets/1/total/metrics/export?metrics=SALES,COGS&plans=wp,achd');
         });
     });
 

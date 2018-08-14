@@ -13,7 +13,7 @@ describe('Budget View Reducer', () => {
     beforeEach(() => {
         initialState = {
             config: {},
-            filters: [],
+            filters: {"available_metrics": [], "available_plans": []},
             isBudgetLoading: false,
             isDataSpreading: false,
             isRefreshRequired: false,

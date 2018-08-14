@@ -30,14 +30,13 @@ function fetchBudgetConfigData() {
     };
 }
 
-function fetchBudgetMetricData(budget, view, metric, plan, query) {
+function fetchBudgetMetricData(budget, view, metrics, plans) {
     return (dispatch) => {
-        const metricList = metric.length > 1 ? metric.join(',') : metric;
-        const planList = plan.length > 1 ? plan.join(',') : plan;
+        const metricList = metrics.length > 1 ? metrics.join(',') : metrics;
+        const planList = plans.length > 1 ? plans.join(',') : plans;
         const queryToSend = {
-            ...query,
-            metrics: query && query.metrics ? query.metrics : metricList,
-            plans: query && query.plan ? query.plan : planList,
+            metrics: metricList,
+            plans: planList,
         };
         dispatch(actions.requestBudgetViewData());
         return request
