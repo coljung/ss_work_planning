@@ -351,8 +351,6 @@ describe('FilterModal', () => {
         output.setProps({selectedMetrics:metric_filters, selectedPlanTypes:plan_filters});
 
         const filters = ['test3', 'test4'];
-        //output.setProps({{available_metrics:filters, available_plans:plan_filters}});
-        // output.setProps({selectedMetrics:filters, selectedPlanTypes:plan_filters});
         output.setProps({ availableOptions: { available_metrics: filters , available_plans:plan_filters} });
         output.find(Button).first().simulate('click');
 

@@ -200,8 +200,7 @@ describe('Budget view operations', () => {
             expect(store.getActions()).toMatchObject(expectedActions);
         });
     });
-
-
+    
     describe('fetchBudgetMetricPlanTypeData', () => {
         const budget = 1;
         const view = 'total';

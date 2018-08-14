@@ -90,32 +90,27 @@ export default class FilterModal extends Component {
                     okButtonProps={{ disabled: !this.state.metricCheckedList.length || !this.state.planCheckedList.length }}
                     onCancel={this.closeModal}
                     cancelText={i18n.t('filterModal.cancelButton')}>
-                    <div>
                         <Row>
                           <Col span={12}>{i18n.t('filterModal.metric')}</Col>
                           <Col span={12}>{i18n.t('filterModal.planType')}</Col>
                         </Row>
                         <Row>
                             <Col span={12}>
-                                <div>
-                                    <hr />
-                                   <Checkbox
-                                         style={{ width: '100%', margin: '0px 0px 20px 0px' }}
-                                       indeterminate={this.state.indeterminate}
-                                       onChange={this.onMetricCheckAllChange}
-                                       checked={this.state.checkAllMetric}>
-                                       {i18n.t('filterModal.selectAll')}
-                                   </Checkbox>
-
-                                   <Checkbox.Group options={metricOptions} value={this.state.metricCheckedList} onChange={this.onMetricCheckedListChange} />
-                                </div>
+                               <hr />
+                               <Checkbox
+                                   style={{ width: '100%', margin: '0px 0px 20px 0px' }}
+                                   indeterminate={this.state.indeterminate}
+                                   onChange={this.onMetricCheckAllChange}
+                                   checked={this.state.checkAllMetric}>
+                                   {i18n.t('filterModal.selectAll')}
+                               </Checkbox>
+                               <Checkbox.Group options={metricOptions} value={this.state.metricCheckedList} onChange={this.onMetricCheckedListChange} />
                             </Col>
                             <Col span={12}>
-                                    <hr />
-                                <Checkbox.Group options={planOptions} value={this.state.planCheckedList} onChange={this.onPlanCheckedListChange} />
+                               <hr />
+                               <Checkbox.Group options={planOptions} value={this.state.planCheckedList} onChange={this.onPlanCheckedListChange} />
                             </Col>
                         </Row>
-                    </div>
                 </Modal>
                 <Button icon="switcher" onClick={this.showModal}>{i18n.t('budgetView.filter')}</Button>
             </span>
