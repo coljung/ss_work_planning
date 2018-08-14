@@ -44,7 +44,8 @@ class BudgetViewsContainer extends Component {
     componentDidMount() {
         // get config data, then fetch metrics based on config
         this.props.fetchBudgetConfigData().then((config) => {
-            this.applyFilters(config.config);
+            const filter = { selectedMetrics: config.config.available_metrics, selectedPlanTypes: config.config.available_plans };
+            this.applyFilters(filter);
         });
     }
 
@@ -57,13 +58,13 @@ class BudgetViewsContainer extends Component {
             || nextProps.filters !== this.props.filters
             || nextProps.params.tab !== this.props.params.tab
             || nextProps.params.budgetId !== this.props.params.budgetId) {
-            this.getMetricData(nextProps.params.budgetId, nextProps.params.tab, nextProps.filters.available_metrics, nextProps.filters.available_plans);
+            this.getMetricData(nextProps.params.budgetId, nextProps.params.tab, nextProps.filters.selectedMetrics, nextProps.filters.selectedPlanTypes);
         }
     }
 
     getMetricData(budgetId, tab, metricFilter = null, planFilter = null) {
         const { config, router: { location } } = this.props;
-        this.props.fetchBudgetMetricData(budgetId, tab, metricFilter && metricFilter.length ? metricFilter : config.available_metrics, planFilter && planFilter.length ? planFilter : config.available_plans, location.query);
+        this.props.fetchBudgetMetricData(budgetId, tab, metricFilter, planFilter);
     }
 
     pushRoute(newTab = null) {
@@ -80,7 +81,7 @@ class BudgetViewsContainer extends Component {
     }
 
     getExportedFile = () => {
-        this.props.getViewExportFile(this.props.params.budgetId, this.props.params.tab, this.props.filters.available_metrics);
+        this.props.getViewExportFile(this.props.params.budgetId, this.props.params.tab, this.props.filters.selectedMetrics, this.props.filters.selectedPlanTypes);
     };
 
     pushToHistory = (dataObject, focusPosition) => {

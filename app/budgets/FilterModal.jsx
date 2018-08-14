@@ -45,7 +45,7 @@ export default class FilterModal extends Component {
         const selectedMetricFilters = this.props.availableOptions.available_metrics.filter(val => this.state.metricCheckedList.indexOf(val) !== -1);
         const selectedPlanFilters = this.props.availableOptions.available_plans.filter(val => this.state.planCheckedList.indexOf(val) !== -1);
 
-        this.props.onSave({ selectedMetrics: selectedMetricFilters, selectedPlanType: selectedPlanFilters });
+        this.props.onSave({ selectedMetrics: selectedMetricFilters, selectedPlanTypes: selectedPlanFilters });
 
         this.closeModal();
     };
@@ -61,10 +61,10 @@ export default class FilterModal extends Component {
 
     showModal = () => {
         this.setState({
-            metricCheckedList: this.props.filters.available_metrics,
-            planCheckedList: this.props.filters.available_plans,
-            indeterminate: !!this.props.filters.available_metrics.length && (this.props.filters.available_metrics.length < this.props.availableOptions.available_metrics.length),
-            checkAllMetric: this.props.filters.available_metrics.length === this.props.availableOptions.available_metrics.length,
+            metricCheckedList: this.props.filters.selectedMetrics,
+            planCheckedList: this.props.filters.selectedPlanTypes,
+            indeterminate: !!this.props.filters.selectedMetrics.length && (this.props.filters.selectedMetrics.length < this.props.availableOptions.available_metrics.length),
+            checkAllMetric: this.props.filters.selectedMetrics.length === this.props.availableOptions.available_metrics.length,
             isModalActive: true,
         });
     };
@@ -87,7 +87,7 @@ export default class FilterModal extends Component {
                     className='filterModal'
                     onOk={this.handleSave}
                     okText={i18n.t('filterModal.saveButton')}
-                    okButtonProps={{ disabled: !this.state.metricCheckedList.length }}
+                    okButtonProps={{ disabled: !this.state.metricCheckedList.length || !this.state.planCheckedList.length }}
                     onCancel={this.closeModal}
                     cancelText={i18n.t('filterModal.cancelButton')}>
                     <div>

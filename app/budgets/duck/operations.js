@@ -6,14 +6,15 @@ import { messages } from '../../notifications/NotificationActions';
 
 const request = wrap(agent, Promise);
 
-function getViewExportFile(budgetId, view, metric) {
+function getViewExportFile(budgetId, view, metrics, plans) {
     return (dispatch) => {
-        const metricList = metric.length > 1 ? metric.join(',') : metric;
-        const queryToSend = `metrics=${metricList}`;
+        const metricList = metrics.length > 1 ? metrics.join(',') : metrics;
+        const planList = plans.length > 1 ? plans.join(',') : plans;
+        const queryToSend = `metrics=${metricList}&plans=${planList}`;
         const url = `${getApiUrl()}planning/budgets/${budgetId}/${view}/metrics/export?${queryToSend}`;
         window.open(url);
 
-        return dispatch(actions.requestViewDownload(budgetId, view, metric));
+        return dispatch(actions.requestViewDownload(budgetId, view, metrics, plans));
     };
 }
 
