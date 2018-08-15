@@ -94,15 +94,15 @@ describe('FilterModal', () => {
     });
 
     it('Should call save handle when clicking ok button', () => {
-        const metric_filters = ['Sales'];
-        const plan_filters = ['dsrp'];
+        const metricFilters = ['Sales'];
+        const planFilters = ['dsrp'];
         const onSave = jest.fn();
 
         const output = mount(
             <FilterModal
                 onSave={onSave}
-                filters={{selectedMetrics:metric_filters, selectedPlanTypes:plan_filters}}
-                availableOptions={{availableMetrics:metric_filters, availablePlans:plan_filters}} />
+                filters={{selectedMetrics:metricFilters, selectedPlanTypes:planFilters}}
+                availableOptions={{availableMetrics:metricFilters, availablePlans:planFilters}} />
         );
 
         // Click the open button
@@ -115,15 +115,15 @@ describe('FilterModal', () => {
     });
 
     it('Should pass the checked items in save handle', () => {
-        const metric_filters = ['Sales'];
-        const plan_filters = ['dsrp'];
+        const metricFilters = ['Sales'];
+        const planFilters = ['dsrp'];
         const onSave = jest.fn();
 
         const output = mount(
             <FilterModal
                 onSave={onSave}
-                filters={{selectedMetrics:metric_filters, selectedPlanTypes:plan_filters}}
-                availableOptions={{availableMetrics:metric_filters, availablePlans:plan_filters}} />
+                filters={{selectedMetrics:metricFilters, selectedPlanTypes:planFilters}}
+                availableOptions={{availableMetrics:metricFilters, availablePlans:planFilters}} />
         );
 
         // Click the open button
@@ -137,15 +137,15 @@ describe('FilterModal', () => {
     });
 
     it('Should pass the changed checked items in save handle', () => {
-        const metric_filters = ['Sales', 'Cogs'];
-        const plan_filters = ['dsrp'];
+        const metricFilters = ['Sales', 'Cogs'];
+        const planFilters = ['dsrp'];
         const onSave = jest.fn();
 
         const output = mount(
             <FilterModal
                 onSave={onSave}
-                filters={{selectedMetrics:metric_filters, selectedPlanTypes:plan_filters}}
-                availableOptions={{availableMetrics:metric_filters, availablePlans:plan_filters}} />
+                filters={{selectedMetrics:metricFilters, selectedPlanTypes:planFilters}}
+                availableOptions={{availableMetrics:metricFilters, availablePlans:planFilters}} />
         );
         // Click the open button
         output.find(Button).first().simulate('click');
@@ -161,15 +161,15 @@ describe('FilterModal', () => {
     });
 
     it('Should pass all items after checking all', () => {
-        const metric_filters = ['Sales', 'Cogs'];
-        const plan_filters = ['dsrp'];
+        const metricFilters = ['Sales', 'Cogs'];
+        const planFilters = ['dsrp'];
         const onSave = jest.fn();
 
         const output = mount(
             <FilterModal
                 onSave={onSave}
-                filters={{selectedMetrics:metric_filters, selectedPlanTypes:plan_filters}}
-                availableOptions={{availableMetrics:metric_filters, availablePlans:plan_filters}} />
+                filters={{selectedMetrics:metricFilters, selectedPlanTypes:planFilters}}
+                availableOptions={{availableMetrics:metricFilters, availablePlans:planFilters}} />
         );
 
 
@@ -187,14 +187,14 @@ describe('FilterModal', () => {
     });
 
     it('Should disable apply button after checking none', () => {
-        const metric_filters = ['Sales', 'Cogs'];
-        const plan_filters = ['dsrp'];
+        const metricFilters = ['Sales', 'Cogs'];
+        const planFilters = ['dsrp'];
 
         const output = mount(
             <FilterModal
                 onSave={jest.fn()}
-                filters={{selectedMetrics:metric_filters, selectedPlanTypes:plan_filters}}
-                availableOptions={{availableMetrics:metric_filters, availablePlans:plan_filters}} />
+                filters={{selectedMetrics:metricFilters, selectedPlanTypes:planFilters}}
+                availableOptions={{availableMetrics:metricFilters, availablePlans:planFilters}} />
         );
         // Click the open button
         output.find(Button).first().simulate('click');
@@ -206,14 +206,14 @@ describe('FilterModal', () => {
     });
 
     it('Should close modal after saving', () => {
-        const metric_filters = ['Sales', 'Cogs'];
-        const plan_filters = ['dsrp'];
+        const metricFilters = ['Sales', 'Cogs'];
+        const planFilters = ['dsrp'];
 
         const output = mount(
             <FilterModal
                 onSave={jest.fn()}
-                filters={{selectedMetrics:metric_filters, selectedPlanTypes:plan_filters}}
-                availableOptions={{availableMetrics:metric_filters, availablePlans:plan_filters}} />
+                filters={{selectedMetrics:metricFilters, selectedPlanTypes:planFilters}}
+                availableOptions={{availableMetrics:metricFilters, availablePlans:planFilters}} />
         );
 
         // Initial state
@@ -229,14 +229,14 @@ describe('FilterModal', () => {
     });
 
     it('Should disable save button when no checked Metrics', () => {
-        const metric_filters = ['Sales', 'Cogs'];
-        const plan_filters = ['dsrp'];
+        const metricFilters = ['Sales', 'Cogs'];
+        const planFilters = ['dsrp'];
 
         const output = mount(
             <FilterModal
                 onSave={jest.fn()}
-                filters={{selectedMetrics:metric_filters, selectedPlanTypes:plan_filters}}
-                availableOptions={{availableMetrics:metric_filters, availablePlans:plan_filters}} />
+                filters={{selectedMetrics:metricFilters, selectedPlanTypes:planFilters}}
+                availableOptions={{availableMetrics:metricFilters, availablePlans:planFilters}} />
         );
 
         // Click the open button
@@ -250,14 +250,14 @@ describe('FilterModal', () => {
     });
 
     it('Should disable save button when no checked plans', () => {
-        const metric_filters = ['Sales', 'Cogs'];
-        const plan_filters = ['dsrp'];
+        const metricFilters = ['Sales', 'Cogs'];
+        const planFilters = ['dsrp'];
 
         const output = mount(
             <FilterModal
                 onSave={jest.fn()}
-                filters={{selectedMetrics:metric_filters, selectedPlanTypes:plan_filters}}
-                availableOptions={{availableMetrics:metric_filters, availablePlans:plan_filters}} />
+                filters={{selectedMetrics:metricFilters, selectedPlanTypes:planFilters}}
+                availableOptions={{availableMetrics:metricFilters, availablePlans:planFilters}} />
         );
 
         // Click the open button
@@ -270,14 +270,14 @@ describe('FilterModal', () => {
     });
 
     it('Should contain a list of available metrics', () => {
-        const metric_filters = ['Sales', 'Cogs'];
-        const plan_filters = ['dsrp'];
+        const metricFilters = ['Sales', 'Cogs'];
+        const planFilters = ['dsrp'];
 
         const output = mount(
             <FilterModal
                 onSave={jest.fn()}
-                filters={{selectedMetrics:metric_filters, selectedPlanTypes:plan_filters}}
-                availableOptions={{availableMetrics:metric_filters, availablePlans:plan_filters}} />
+                filters={{selectedMetrics:metricFilters, selectedPlanTypes:planFilters}}
+                availableOptions={{availableMetrics:metricFilters, availablePlans:planFilters}} />
         );
 
         output.find(Button).first().simulate('click');
@@ -294,14 +294,14 @@ describe('FilterModal', () => {
     });
 
     it('Should contain a list of available plans', () => {
-        const metric_filters = ['Sales', 'Cogs'];
-        const plan_filters = ['dsrp','wp'];
+        const metricFilters = ['Sales', 'Cogs'];
+        const planFilters = ['dsrp','wp'];
 
         const output = mount(
             <FilterModal
                 onSave={jest.fn()}
-                filters={{selectedMetrics:metric_filters, selectedPlanTypes:plan_filters}}
-                availableOptions={{availableMetrics:metric_filters, availablePlans:plan_filters}} />
+                filters={{selectedMetrics:metricFilters, selectedPlanTypes:planFilters}}
+                availableOptions={{availableMetrics:metricFilters, availablePlans:planFilters}} />
         );
 
         output.find(Button).first().simulate('click');
@@ -318,16 +318,16 @@ describe('FilterModal', () => {
     });
 
     it('Should contain a list of same available metrics', () => {
-        const metric_filters = ['Sales', 'Cogs'];
-        const plan_filters = ['dsrp'];
+        const metricFilters = ['Sales', 'Cogs'];
+        const planFilters = ['dsrp'];
 
         const output = mount(
             <FilterModal
                 onSave={jest.fn()}
-                filters={{selectedMetrics:metric_filters, selectedPlanTypes:plan_filters}}
-                availableOptions={{availableMetrics:metric_filters, availablePlans:plan_filters}} />
+                filters={{selectedMetrics:metricFilters, selectedPlanTypes:planFilters}}
+                availableOptions={{availableMetrics:metricFilters, availablePlans:planFilters}} />
         );
-        output.setProps({ availableOptions: { availableMetrics: metric_filters , availablePlans:plan_filters} });
+        output.setProps({ availableOptions: { availableMetrics: metricFilters , availablePlans:planFilters} });
 
         output.find(Button).first().simulate('click');
 
@@ -339,16 +339,16 @@ describe('FilterModal', () => {
     });
 
     it('Should contain a list of same available plans', () => {
-        const metric_filters = ['Sales', 'Cogs'];
-        const plan_filters = ['dsrp'];
+        const metricFilters = ['Sales', 'Cogs'];
+        const planFilters = ['dsrp'];
 
         const output = mount(
             <FilterModal
                 onSave={jest.fn()}
-                filters={{selectedMetrics:metric_filters, selectedPlanTypes:plan_filters}}
-                availableOptions={{availableMetrics:metric_filters, availablePlans:plan_filters}} />
+                filters={{selectedMetrics:metricFilters, selectedPlanTypes:planFilters}}
+                availableOptions={{availableMetrics:metricFilters, availablePlans:planFilters}} />
         );
-        output.setProps({ availableOptions: { availableMetrics: metric_filters , availablePlans:plan_filters} });
+        output.setProps({ availableOptions: { availableMetrics: metricFilters , availablePlans:planFilters} });
 
         output.find(Button).first().simulate('click');
 
@@ -359,19 +359,18 @@ describe('FilterModal', () => {
     });
 
     it('Should contain a list of changed available metrics', () => {
-        const metric_filters = ['Sales', 'Cogs'];
-        const plan_filters = ['dsrp'];
+        const metricFilters = ['Sales', 'Cogs'];
+        const planFilters = ['dsrp'];
 
         const output = mount(
             <FilterModal
                 onSave={jest.fn()}
-                filters={{selectedMetrics:metric_filters, selectedPlanTypes:plan_filters}}
-                availableOptions={{availableMetrics:metric_filters, availablePlans:plan_filters}} />
+                filters={{selectedMetrics:metricFilters, selectedPlanTypes:planFilters}}
+                availableOptions={{availableMetrics:metricFilters, availablePlans:planFilters}} />
         );
-        output.setProps({selectedMetrics:metric_filters, selectedPlanTypes:plan_filters});
 
         const filters = ['test3', 'test4'];
-        output.setProps({ availableOptions: { availableMetrics: filters , availablePlans:plan_filters} });
+        output.setProps({ availableOptions: { availableMetrics: filters , availablePlans:planFilters} });
         output.find(Button).first().simulate('click');
 
         const nodes = output.find(Modal).find(Checkbox.Group).at(0).find(Checkbox);
@@ -382,19 +381,18 @@ describe('FilterModal', () => {
     });
 
     it('Should contain a list of changed available plans', () => {
-        const metric_filters = ['Sales', 'Cogs'];
-        const plan_filters = ['dsrp'];
+        const metricFilters = ['Sales', 'Cogs'];
+        const planFilters = ['dsrp'];
 
         const output = mount(
             <FilterModal
                 onSave={jest.fn()}
-                filters={{selectedMetrics:metric_filters, selectedPlanTypes:plan_filters}}
-                availableOptions={{availableMetrics:metric_filters, availablePlans:plan_filters}} />
+                filters={{selectedMetrics:metricFilters, selectedPlanTypes:planFilters}}
+                availableOptions={{availableMetrics:metricFilters, availablePlans:planFilters}} />
         );
-        output.setProps({selectedMetrics:metric_filters, selectedPlanTypes:plan_filters});
 
         const changesPlanFilters = ['test3', 'test4'];
-        output.setProps({ availableOptions: { availableMetrics: metric_filters , availablePlans:changesPlanFilters} });
+        output.setProps({ availableOptions: { availableMetrics: metricFilters , availablePlans:changesPlanFilters} });
         output.find(Button).first().simulate('click');
 
         const nodes = output.find(Modal).find(Checkbox.Group).at(1).find(Checkbox);
