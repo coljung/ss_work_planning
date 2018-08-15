@@ -90,9 +90,8 @@ export default class FilterModal extends Component {
                     onCancel={this.closeModal}
                     cancelText={i18n.t('filterModal.cancelButton')}>
                         <Row>
-                          <Col className='filter-divider-line-pre' span={12}>{i18n.t('filterModal.metric')}
-                              <Checkbox
-                                  className='check-all-option'
+                          <Col span={6}>{i18n.t('filterModal.metric')}</Col>
+                             <Col className='filter-divider-line-pre' span={6}> <Checkbox
                                   metricInderterminateCheck={this.state.metricInderterminateCheck}
                                   onChange={this.onMetricCheckAllChange}
                                   checked={this.state.checkAllMetric}>
