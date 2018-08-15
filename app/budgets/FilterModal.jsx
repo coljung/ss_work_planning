@@ -90,22 +90,23 @@ export default class FilterModal extends Component {
                     onCancel={this.closeModal}
                     cancelText={i18n.t('filterModal.cancelButton')}>
                         <Row>
-                          <Col span={12}>{i18n.t('filterModal.metric')}</Col>
-                          <Col span={12}>{i18n.t('filterModal.planType')}</Col>
-                        </Row>
-                        <Row>
-                            <Col span={12}>
-                               <hr />
-                               <Checkbox
-                                   className='check-all-option'
-                                   metricInderterminateCheck={this.state.metricInderterminateCheck}
-                                   onChange={this.onMetricCheckAllChange}
-                                   checked={this.state.checkAllMetric}>
+                          <Col className='filter-divider-line-pre' span={12}>{i18n.t('filterModal.metric')}
+                              <Checkbox
+                                  className='check-all-option'
+                                  metricInderterminateCheck={this.state.metricInderterminateCheck}
+                                  onChange={this.onMetricCheckAllChange}
+                                  checked={this.state.checkAllMetric}>
                                    {i18n.t('filterModal.selectAll')}
                                </Checkbox>
+                          </Col>
+                          <Col className='filter-divider-line-post' span={12}>{i18n.t('filterModal.planType')}</Col>
+                        </Row>
+                        <Row>
+                            <Col className='filter-divider-line-pre' span={12}>
+                               <hr />
                                <Checkbox.Group options={metricOptions} value={this.state.metricCheckedList} onChange={this.onMetricCheckedListChange} />
                             </Col>
-                            <Col span={12}>
+                            <Col className='filter-divider-line-post' span={12}>
                                <hr />
                                <Checkbox.Group options={planOptions} value={this.state.planCheckedList} onChange={this.onPlanCheckedListChange} />
                             </Col>
