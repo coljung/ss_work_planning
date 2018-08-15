@@ -24,8 +24,8 @@ describe('FilterModal', () => {
         const output = shallow(
             <FilterModal
                 onSave={jest.fn()}
-                filters={[]}
-                availableFilters={[]} />
+                filters={{selectedMetrics:[], selectedPlanTypes:[]}}
+                availableOptions={{availableMetrics:[], availablePlans:[]}} />
         );
 
         const modal = output.find(Modal).first();
@@ -40,8 +40,8 @@ describe('FilterModal', () => {
         const output = shallow(
             <FilterModal
                 onSave={jest.fn()}
-                filters={[]}
-                availableFilters={[]} />
+                filters={{selectedMetrics:[], selectedPlanTypes:[]}}
+                availableOptions={{availableMetrics:[], availablePlans:[]}} />
         );
 
         expect(output.find(Button).prop('icon')).toEqual('switcher');
@@ -51,8 +51,8 @@ describe('FilterModal', () => {
         const output = shallow(
             <FilterModal
                 onSave={jest.fn()}
-                filters={[]}
-                availableFilters={[]} />
+                filters={{selectedMetrics:[], selectedPlanTypes:[]}}
+                availableOptions={{availableMetrics:[], availablePlans:[]}} />
         );
 
         const modal = output.find(Modal);
@@ -63,8 +63,8 @@ describe('FilterModal', () => {
         const output = shallow(
             <FilterModal
                 onSave={jest.fn()}
-                filters={[]}
-                availableFilters={[]} />
+                filters={{selectedMetrics:[], selectedPlanTypes:[]}}
+                availableOptions={{availableMetrics:[], availablePlans:[]}} />
         );
 
         expect(output.find(Modal).prop('visible')).toBeFalsy();
@@ -77,8 +77,8 @@ describe('FilterModal', () => {
         const output = mount(
             <FilterModal
                 onSave={jest.fn()}
-                filters={[]}
-                availableFilters={[]} />
+                filters={{selectedMetrics:[], selectedPlanTypes:[]}}
+                availableOptions={{availableMetrics:[], availablePlans:[]}} />
         );
 
         // Initial state
@@ -94,14 +94,15 @@ describe('FilterModal', () => {
     });
 
     it('Should call save handle when clicking ok button', () => {
+        const metricFilters = ['Sales'];
+        const planFilters = ['dsrp'];
         const onSave = jest.fn();
-        const filters = ['test1'];
 
         const output = mount(
             <FilterModal
                 onSave={onSave}
-                filters={filters}
-                availableFilters={filters} />
+                filters={{selectedMetrics:metricFilters, selectedPlanTypes:planFilters}}
+                availableOptions={{availableMetrics:metricFilters, availablePlans:planFilters}} />
         );
 
         // Click the open button
@@ -114,14 +115,15 @@ describe('FilterModal', () => {
     });
 
     it('Should pass the checked items in save handle', () => {
+        const metricFilters = ['Sales'];
+        const planFilters = ['dsrp'];
         const onSave = jest.fn();
-        const filters = ['test'];
 
         const output = mount(
             <FilterModal
                 onSave={onSave}
-                filters={filters}
-                availableFilters={filters} />
+                filters={{selectedMetrics:metricFilters, selectedPlanTypes:planFilters}}
+                availableOptions={{availableMetrics:metricFilters, availablePlans:planFilters}} />
         );
 
         // Click the open button
@@ -131,20 +133,20 @@ describe('FilterModal', () => {
         output.find(Modal).find(Button).at(1).simulate('click');
 
         expect(onSave).toHaveBeenCalledTimes(1);
-        expect(onSave).toBeCalledWith(['test']);
+        expect(onSave).toBeCalledWith( {selectedMetrics:['Sales'], selectedPlanTypes:['dsrp']});
     });
 
     it('Should pass the changed checked items in save handle', () => {
+        const metricFilters = ['Sales', 'Cogs'];
+        const planFilters = ['dsrp'];
         const onSave = jest.fn();
-        const filters = ['test1', 'test2'];
 
         const output = mount(
             <FilterModal
                 onSave={onSave}
-                filters={filters}
-                availableFilters={filters} />
+                filters={{selectedMetrics:metricFilters, selectedPlanTypes:planFilters}}
+                availableOptions={{availableMetrics:metricFilters, availablePlans:planFilters}} />
         );
-
         // Click the open button
         output.find(Button).first().simulate('click');
 
@@ -155,19 +157,21 @@ describe('FilterModal', () => {
         output.find(Modal).find(Button).at(1).simulate('click');
 
         expect(onSave).toHaveBeenCalledTimes(1);
-        expect(onSave).toBeCalledWith(['test2']);
+        expect(onSave).toBeCalledWith({"selectedMetrics": ["Cogs"], "selectedPlanTypes": ["dsrp"]});
     });
 
     it('Should pass all items after checking all', () => {
+        const metricFilters = ['Sales', 'Cogs'];
+        const planFilters = ['dsrp'];
         const onSave = jest.fn();
-        const filters = ['test1', 'test2'];
 
         const output = mount(
             <FilterModal
                 onSave={onSave}
-                filters={[]}
-                availableFilters={filters} />
+                filters={{selectedMetrics:metricFilters, selectedPlanTypes:planFilters}}
+                availableOptions={{availableMetrics:metricFilters, availablePlans:planFilters}} />
         );
+
 
         // Click the open button
         output.find(Button).first().simulate('click');
@@ -179,20 +183,19 @@ describe('FilterModal', () => {
         output.find(Modal).find(Button).at(1).simulate('click');
 
         expect(onSave).toHaveBeenCalledTimes(1);
-        expect(onSave).toBeCalledWith(['test1', 'test2']);
+        expect(onSave).toBeCalledWith({"selectedMetrics": ["Sales", "Cogs"], "selectedPlanTypes": ["dsrp"]});
     });
 
     it('Should disable apply button after checking none', () => {
-        const onSave = jest.fn();
-        const filters = ['test1', 'test2'];
+        const metricFilters = ['Sales', 'Cogs'];
+        const planFilters = ['dsrp'];
 
         const output = mount(
             <FilterModal
-                onSave={onSave}
-                filters={filters}
-                availableFilters={filters} />
+                onSave={jest.fn()}
+                filters={{selectedMetrics:metricFilters, selectedPlanTypes:planFilters}}
+                availableOptions={{availableMetrics:metricFilters, availablePlans:planFilters}} />
         );
-
         // Click the open button
         output.find(Button).first().simulate('click');
 
@@ -203,13 +206,14 @@ describe('FilterModal', () => {
     });
 
     it('Should close modal after saving', () => {
-        const filters = ['test1'];
+        const metricFilters = ['Sales', 'Cogs'];
+        const planFilters = ['dsrp'];
 
         const output = mount(
             <FilterModal
                 onSave={jest.fn()}
-                filters={filters}
-                availableFilters={filters} />
+                filters={{selectedMetrics:metricFilters, selectedPlanTypes:planFilters}}
+                availableOptions={{availableMetrics:metricFilters, availablePlans:planFilters}} />
         );
 
         // Initial state
@@ -224,87 +228,174 @@ describe('FilterModal', () => {
         expect(output.find(Modal).prop('visible')).toBeFalsy();
     });
 
-    it('Should disable save button when no checked items', () => {
-        const onSave = jest.fn();
-        const filters = ['test1', 'test2'];
+    it('Should disable save button when no checked Metrics', () => {
+        const metricFilters = ['Sales', 'Cogs'];
+        const planFilters = ['dsrp'];
 
         const output = mount(
             <FilterModal
-                onSave={onSave}
-                filters={filters}
-                availableFilters={filters} />
+                onSave={jest.fn()}
+                filters={{selectedMetrics:metricFilters, selectedPlanTypes:planFilters}}
+                availableOptions={{availableMetrics:metricFilters, availablePlans:planFilters}} />
         );
 
         // Click the open button
         output.find(Button).first().simulate('click');
 
         // Unselect nodes
-        output.find(Modal).find(Checkbox.Group).find('.ant-checkbox-input').at(0).simulate('change', { target: { checked: false } });
-        output.find(Modal).find(Checkbox.Group).find('.ant-checkbox-input').at(1).simulate('change', { target: { checked: false } });
+        output.find(Modal).find(Checkbox.Group).at(0).find('.ant-checkbox-input').at(0).simulate('change', { target: { checked: false } });
+        output.find(Modal).find(Checkbox.Group).at(0).find('.ant-checkbox-input').at(1).simulate('change', { target: { checked: false } });
+
+        expect(output.find(Modal).find(Button).at(1).prop('disabled')).toBeTruthy();
+    });
+
+    it('Should disable save button when no checked plans', () => {
+        const metricFilters = ['Sales', 'Cogs'];
+        const planFilters = ['dsrp'];
+
+        const output = mount(
+            <FilterModal
+                onSave={jest.fn()}
+                filters={{selectedMetrics:metricFilters, selectedPlanTypes:planFilters}}
+                availableOptions={{availableMetrics:metricFilters, availablePlans:planFilters}} />
+        );
+
+        // Click the open button
+        output.find(Button).first().simulate('click');
+
+        // Unselect nodes
+        output.find(Modal).find(Checkbox.Group).at(1).find('.ant-checkbox-input').at(0).simulate('change', { target: { checked: false } });
 
         expect(output.find(Modal).find(Button).at(1).prop('disabled')).toBeTruthy();
     });
 
     it('Should contain a list of available metrics', () => {
-        const filters = ['test1', 'test2'];
+        const metricFilters = ['Sales', 'Cogs'];
+        const planFilters = ['dsrp'];
 
         const output = mount(
             <FilterModal
                 onSave={jest.fn()}
-                filters={filters}
-                availableFilters={filters} />
+                filters={{selectedMetrics:metricFilters, selectedPlanTypes:planFilters}}
+                availableOptions={{availableMetrics:metricFilters, availablePlans:planFilters}} />
         );
 
         output.find(Button).first().simulate('click');
 
-        const tree = output.find(Modal).find(Checkbox.Group);
-        expect(tree.prop('value')).toContain('test1');
-        expect(tree.prop('value')).toContain('test2');
+        const tree = output.find(Modal).find(Checkbox.Group).at(0);
+        expect(tree.prop('value')).toContain('Sales');
+        expect(tree.prop('value')).toContain('Cogs');
 
         const nodes = tree.find(Checkbox);
         expect(nodes).toHaveLength(2);
 
-        expect(nodes.at(0).prop('value')).toEqual('test1');
-        expect(nodes.at(1).prop('value')).toEqual('test2');
+        expect(nodes.at(0).prop('value')).toEqual('Sales');
+        expect(nodes.at(1).prop('value')).toEqual('Cogs');
+    });
+
+    it('Should contain a list of available plans', () => {
+        const metricFilters = ['Sales', 'Cogs'];
+        const planFilters = ['dsrp','wp'];
+
+        const output = mount(
+            <FilterModal
+                onSave={jest.fn()}
+                filters={{selectedMetrics:metricFilters, selectedPlanTypes:planFilters}}
+                availableOptions={{availableMetrics:metricFilters, availablePlans:planFilters}} />
+        );
+
+        output.find(Button).first().simulate('click');
+
+        const tree = output.find(Modal).find(Checkbox.Group).at(1);
+        expect(tree.prop('value')).toContain('dsrp');
+        expect(tree.prop('value')).toContain('wp');
+
+        const nodes = tree.find(Checkbox);
+        expect(nodes).toHaveLength(2);
+
+        expect(nodes.at(0).prop('value')).toEqual('dsrp');
+        expect(nodes.at(1).prop('value')).toEqual('wp');
     });
 
     it('Should contain a list of same available metrics', () => {
-        let filters = ['test1', 'test2'];
+        const metricFilters = ['Sales', 'Cogs'];
+        const planFilters = ['dsrp'];
 
         const output = mount(
             <FilterModal
                 onSave={jest.fn()}
-                filters={filters}
-                availableFilters={filters} />
+                filters={{selectedMetrics:metricFilters, selectedPlanTypes:planFilters}}
+                availableOptions={{availableMetrics:metricFilters, availablePlans:planFilters}} />
         );
-
-        output.setProps({ filters });
+        output.setProps({ availableOptions: { availableMetrics: metricFilters , availablePlans:planFilters} });
 
         output.find(Button).first().simulate('click');
 
-        const nodes = output.find(Modal).find(Checkbox.Group).find(Checkbox);
+        const nodes = output.find(Modal).find(Checkbox.Group).at(0).find(Checkbox);
         expect(nodes).toHaveLength(2);
 
-        expect(nodes.at(0).prop('value')).toEqual('test1');
-        expect(nodes.at(1).prop('value')).toEqual('test2');
+        expect(nodes.at(0).prop('value')).toEqual('Sales');
+        expect(nodes.at(1).prop('value')).toEqual('Cogs');
+    });
+
+    it('Should contain a list of same available plans', () => {
+        const metricFilters = ['Sales', 'Cogs'];
+        const planFilters = ['dsrp'];
+
+        const output = mount(
+            <FilterModal
+                onSave={jest.fn()}
+                filters={{selectedMetrics:metricFilters, selectedPlanTypes:planFilters}}
+                availableOptions={{availableMetrics:metricFilters, availablePlans:planFilters}} />
+        );
+        output.setProps({ availableOptions: { availableMetrics: metricFilters , availablePlans:planFilters} });
+
+        output.find(Button).first().simulate('click');
+
+        const nodes = output.find(Modal).find(Checkbox.Group).at(1).find(Checkbox);
+        expect(nodes).toHaveLength(1);
+
+        expect(nodes.at(0).prop('value')).toEqual('dsrp');
     });
 
     it('Should contain a list of changed available metrics', () => {
-        let filters = ['test1', 'test2'];
+        const metricFilters = ['Sales', 'Cogs'];
+        const planFilters = ['dsrp'];
 
         const output = mount(
             <FilterModal
                 onSave={jest.fn()}
-                filters={filters}
-                availableFilters={filters} />
+                filters={{selectedMetrics:metricFilters, selectedPlanTypes:planFilters}}
+                availableOptions={{availableMetrics:metricFilters, availablePlans:planFilters}} />
         );
 
-        filters = ['test3', 'test4'];
-        output.setProps({ availableFilters: filters });
-
+        const filters = ['test3', 'test4'];
+        output.setProps({ availableOptions: { availableMetrics: filters , availablePlans:planFilters} });
         output.find(Button).first().simulate('click');
 
-        const nodes = output.find(Modal).find(Checkbox.Group).find(Checkbox);
+        const nodes = output.find(Modal).find(Checkbox.Group).at(0).find(Checkbox);
+        expect(nodes).toHaveLength(2);
+
+        expect(nodes.at(0).prop('value')).toEqual('test3');
+        expect(nodes.at(1).prop('value')).toEqual('test4');
+    });
+
+    it('Should contain a list of changed available plans', () => {
+        const metricFilters = ['Sales', 'Cogs'];
+        const planFilters = ['dsrp'];
+
+        const output = mount(
+            <FilterModal
+                onSave={jest.fn()}
+                filters={{selectedMetrics:metricFilters, selectedPlanTypes:planFilters}}
+                availableOptions={{availableMetrics:metricFilters, availablePlans:planFilters}} />
+        );
+
+        const changesPlanFilters = ['test3', 'test4'];
+        output.setProps({ availableOptions: { availableMetrics: metricFilters , availablePlans:changesPlanFilters} });
+        output.find(Button).first().simulate('click');
+
+        const nodes = output.find(Modal).find(Checkbox.Group).at(1).find(Checkbox);
         expect(nodes).toHaveLength(2);
 
         expect(nodes.at(0).prop('value')).toEqual('test3');
