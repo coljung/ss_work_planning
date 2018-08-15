@@ -183,47 +183,6 @@ describe('Budget view operations', () => {
             expect(store.getActions()).toEqual(expectedActions);
         });
 
-        it('Should fail to fetchBudgetMetricData', async () => {
-            nock(UI_PLANNING_HOST)
-                .get('/api/planning/budgets/1/total/metrics?metrics=SALES')
-                .reply(500);
-
-            const expectedActions = [
-                { type: types.REQUEST_BUDGETS_DATA },
-                { type: notifications.MESSAGES }
-            ];
-
-            const store = mockStore({});
-
-            await store.dispatch(budgetViewOperations.fetchBudgetMetricData(budget, view, metrics, plans));
-
-            expect(store.getActions()).toMatchObject(expectedActions);
-        });
-    });
-    
-    describe('fetchBudgetMetricPlanTypeData', () => {
-        const budget = 1;
-        const view = 'total';
-        const metrics = [ 'SALES' ];
-        const plans = [ 'wp' ];
-
-        it('Should handle fetching budget data ', async () => {
-            nock(UI_PLANNING_HOST)
-                .get('/api/planning/budgets/1/total/metrics?metrics=SALES&plans=wp')
-                .reply(200, viewResponse);
-
-            const expectedActions = [
-                { type: types.REQUEST_BUDGETS_DATA },
-                { type: types.RECEIVE_BUDGETS_DATA, viewData: viewResponse, view },
-            ];
-
-            const store = mockStore({});
-
-            await store.dispatch(budgetViewOperations.fetchBudgetMetricData(budget, view, metrics, plans));
-
-            expect(store.getActions()).toEqual(expectedActions);
-        });
-
         it('Should handle fetching budget data for multiple plan types for multiple metrics', async () => {
             const plans = [ 'wp','tdop'];
             const metrics = [ 'SALES','COGS' ];

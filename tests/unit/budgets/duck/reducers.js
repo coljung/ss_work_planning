@@ -13,7 +13,10 @@ describe('Budget View Reducer', () => {
     beforeEach(() => {
         initialState = {
             config: {},
-            filters: {"available_metrics": [], "available_plans": []},
+            filters: {
+                availableMetrics: [],
+                availablePlans: []
+            },
             isBudgetLoading: false,
             isDataSpreading: false,
             isRefreshRequired: false,
@@ -48,10 +51,10 @@ describe('Budget View Reducer', () => {
         expect(
             reducer(state, {
                 type: types.RECEIVE_BUDGETS_CONFIG_DATA,
-                config: { available_metrics: 'SALES' }
+                config: { availableMetrics: 'SALES' }
             })
         ).toEqual({
-            config: { available_metrics: 'SALES' },
+            config: { availableMetrics: 'SALES' },
         });
     });
 

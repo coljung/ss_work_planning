@@ -14,16 +14,15 @@ export default class FilterModal extends Component {
         isModalActive: false,
         metricCheckedList: [],
         planCheckedList: [],
-        indeterminate: true,
+        metricInderterminateCheck: true,
         checkAllMetric: false,
-        checkAllPlan: false,
     };
 
     onMetricCheckedListChange = (metricCheckedList) => {
         this.setState({
             metricCheckedList,
-            indeterminate: !!metricCheckedList.length && (metricCheckedList.length < this.props.availableOptions.available_metrics.length),
-            checkAllMetric: metricCheckedList.length === this.props.availableOptions.available_metrics.length,
+            metricInderterminateCheck: !!metricCheckedList.length && (metricCheckedList.length < this.props.availableOptions.availableMetrics.length),
+            checkAllMetric: metricCheckedList.length === this.props.availableOptions.availableMetrics.length,
         });
     };
 
@@ -35,15 +34,15 @@ export default class FilterModal extends Component {
 
     onMetricCheckAllChange = (e) => {
         this.setState({
-            metricCheckedList: e.target.checked ? this.props.availableOptions.available_metrics : [],
-            indeterminate: false,
+            metricCheckedList: e.target.checked ? this.props.availableOptions.availableMetrics : [],
+            metricInderterminateCheck: false,
             checkAllMetric: e.target.checked,
         });
     };
 
     handleSave = () => {
-        const selectedMetricFilters = this.props.availableOptions.available_metrics.filter(val => this.state.metricCheckedList.indexOf(val) !== -1);
-        const selectedPlanFilters = this.props.availableOptions.available_plans.filter(val => this.state.planCheckedList.indexOf(val) !== -1);
+        const selectedMetricFilters = this.props.availableOptions.availableMetrics.filter(val => this.state.metricCheckedList.indexOf(val) !== -1);
+        const selectedPlanFilters = this.props.availableOptions.availablePlans.filter(val => this.state.planCheckedList.indexOf(val) !== -1);
 
         this.props.onSave({ selectedMetrics: selectedMetricFilters, selectedPlanTypes: selectedPlanFilters });
 
@@ -53,7 +52,7 @@ export default class FilterModal extends Component {
     closeModal = () => {
         this.setState({
             metricCheckedList: [],
-            indeterminate: false,
+            metricInderterminateCheck: false,
             checkAllMetric: false,
             isModalActive: false,
         });
@@ -63,18 +62,18 @@ export default class FilterModal extends Component {
         this.setState({
             metricCheckedList: this.props.filters.selectedMetrics,
             planCheckedList: this.props.filters.selectedPlanTypes,
-            indeterminate: !!this.props.filters.selectedMetrics.length && (this.props.filters.selectedMetrics.length < this.props.availableOptions.available_metrics.length),
-            checkAllMetric: this.props.filters.selectedMetrics.length === this.props.availableOptions.available_metrics.length,
+            metricInderterminateCheck: !!this.props.filters.selectedMetrics.length && (this.props.filters.selectedMetrics.length < this.props.availableOptions.availableMetrics.length),
+            checkAllMetric: this.props.filters.selectedMetrics.length === this.props.availableOptions.availableMetrics.length,
             isModalActive: true,
         });
     };
 
     render() {
-        const metricOptions = this.props.availableOptions.available_metrics.map(x => ({
+        const metricOptions = this.props.availableOptions.availableMetrics.map(x => ({
             label: i18n.t(`metric.${x}`),
             value: x,
         }));
-        const planOptions = this.props.availableOptions.available_plans.map(x => ({
+        const planOptions = this.props.availableOptions.availablePlans.map(x => ({
             label: i18n.t(`plan.${x}`),
             value: x,
         }));
@@ -98,8 +97,8 @@ export default class FilterModal extends Component {
                             <Col span={12}>
                                <hr />
                                <Checkbox
-                                   style={{ width: '100%', margin: '0px 0px 20px 0px' }}
-                                   indeterminate={this.state.indeterminate}
+                                   className='check-all-option'
+                                   metricInderterminateCheck={this.state.metricInderterminateCheck}
                                    onChange={this.onMetricCheckAllChange}
                                    checked={this.state.checkAllMetric}>
                                    {i18n.t('filterModal.selectAll')}
