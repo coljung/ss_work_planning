@@ -106,7 +106,7 @@ export default class FilterModal extends Component {
                                <Checkbox.Group options={metricOptions} value={this.state.metricCheckedList} onChange={this.onMetricCheckedListChange} />
                             </Col>
                             <Col className='filter-divider-line-post' span={12}>
-                               <hr />
+                               <hr className='filter-hr-post'/>
                                <Checkbox.Group options={planOptions} value={this.state.planCheckedList} onChange={this.onPlanCheckedListChange} />
                             </Col>
                         </Row>
