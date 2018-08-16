@@ -146,53 +146,22 @@ describe('Budget view operations', () => {
         const view = 'total';
         const metrics = [ 'SALES' ];
         const plans = [ 'wp' ];
+        const filters = {
+            metrics,
+            plans: plans.map(x => ({
+                plan: x,
+                numberOfHistoricalYears: 5,
+            })),
+        };
 
         it('Should handle fetching budget data ', async () => {
             nock(UI_PLANNING_HOST)
-                .get('/api/planning/budgets/1/total/metrics?metrics=SALES&plans=wp')
-                .reply(200, viewResponse);
+                .post('/api/planning/budgets/1/total/metrics', filters)
+                 .reply(200, viewResponse);
 
             const expectedActions = [
                 { type: types.REQUEST_BUDGETS_DATA },
                 { type: types.RECEIVE_BUDGETS_DATA, viewData: viewResponse, view },
-            ];
-
-            const store = mockStore({});
-
-            await store.dispatch(budgetViewOperations.fetchBudgetMetricData(budget, view, metrics, plans));
-
-            expect(store.getActions()).toEqual(expectedActions);
-        });
-
-        it('Should handle fetching budget data for multiple metrics', async () => {
-            const metrics = [ 'SALES', 'COGS' ];
-
-            nock(UI_PLANNING_HOST)
-                .get('/api/planning/budgets/1/total/metrics?metrics=SALES%2CCOGS&plans=wp')
-                .reply(200, viewResponse);
-
-            const expectedActions = [
-                { type: types.REQUEST_BUDGETS_DATA },
-                { type: types.RECEIVE_BUDGETS_DATA, viewData: viewResponse, view },
-            ];
-
-            const store = mockStore({});
-
-            await store.dispatch(budgetViewOperations.fetchBudgetMetricData(budget, view, metrics, plans));
-
-            expect(store.getActions()).toEqual(expectedActions);
-        });
-
-        it('Should handle fetching budget data for multiple plan types for multiple metrics', async () => {
-            const plans = [ 'wp','tdop'];
-            const metrics = [ 'SALES','COGS' ];
-            nock(UI_PLANNING_HOST)
-                .get('/api/planning/budgets/1/total/metrics?metrics=SALES%2CCOGS&plans=wp%2Ctdop')
-                .reply(200, viewResponse);
-
-            const expectedActions = [
-                { type: types.REQUEST_BUDGETS_DATA },
-                { type: types.RECEIVE_BUDGETS_DATA, viewData: viewResponse, view},
             ];
 
             const store = mockStore({});
