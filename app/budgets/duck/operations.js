@@ -32,16 +32,18 @@ function fetchBudgetConfigData() {
 
 function fetchBudgetMetricData(budget, view, metrics, plans) {
     return (dispatch) => {
-        const metricList = metrics.length > 1 ? metrics.join(',') : metrics;
-        const planList = plans.length > 1 ? plans.join(',') : plans;
-        const queryToSend = {
-            metrics: metricList,
-            plans: planList,
+        const filters = {
+            metrics,
+            plans: plans.map(x => ({
+                plan: x,
+                numberOfHistoricalYears: 5,
+            })),
         };
+
         dispatch(actions.requestBudgetViewData());
         return request
-            .get(`${getApiUrl()}planning/budgets/${budget}/${view}/metrics`)
-            .query(queryToSend)
+            .post(`${getApiUrl()}planning/budgets/${budget}/${view}/metrics`)
+            .send(filters)
             .then(
             res => dispatch(actions.receiveBudgetViewData(res.body, view)),
             err => dispatch(messages({ content: err, response: err.response, isError: true })),
