@@ -23,7 +23,7 @@ export default class CheckedRadioGroup extends Component {
 
     handleCheckBoxSelect = (e) => {
         this.setState({ selectedOption: this.state.selectedOption, checked: e.target.checked });
-        this.props.onChange(this.props.name, e.target.checked, this.state.selectedOption );
+        this.props.onChange(this.props.name, e.target.checked, this.state.selectedOption);
     };
 
     render() {

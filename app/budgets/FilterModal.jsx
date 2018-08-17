@@ -11,13 +11,18 @@ export default class FilterModal extends Component {
         onSave: PropTypes.func.isRequired,
     };
     years =[1, 2, 3, 5];
-    planTypeOprions =[];
-   // {
-   //      metrics: [Metric.Sales],
-   //      plans: [{
-   //          plan: wp,
-   //          numberOfHistoricalYears: 5,
-   //      }]
+    planTypeOprions =[
+        {
+            plan: 'wp',
+            numberOfHistoricalYears: 5,
+        }, {
+            plan: 'dsrp',
+            numberOfHistoricalYears: 5,
+        }, {
+            plan: 'achd',
+            numberOfHistoricalYears: 5,
+        }];
+
     state = {
         isModalActive: false,
         metricCheckedList: [],
@@ -41,7 +46,10 @@ export default class FilterModal extends Component {
         };
 
         if (chackedPlan === true) { this.planTypeOprions.push(changedPlanType); } else {
-            const indexFound = this.planTypeOprions.indexOf(changedPlanType);
+            // Remove From selection
+            const findPlanType = JSON.stringify(changedPlanType);
+            const currentSeletedPlanType = this.planTypeOprions.map(JSON.stringify);
+            const indexFound = currentSeletedPlanType.indexOf(findPlanType);
             if (indexFound > -1) {
                 this.planTypeOprions.splice(indexFound, 1);
             }
@@ -62,8 +70,8 @@ export default class FilterModal extends Component {
 
     handleSave = () => {
         const selectedMetricFilters = this.props.availableOptions.availableMetrics.filter(val => this.state.metricCheckedList.indexOf(val) !== -1);
-        const selectedPlanFilters = this.state.planCheckedList;
-        console.log('selectedPlanFilters ---', selectedPlanFilters);
+        const selectedPlanFilters = this.planTypeOprions;
+        // console.log('selectedPlanFilters ---', selectedPlanFilters);
 
         this.props.onSave({ selectedMetrics: selectedMetricFilters, selectedPlanTypes: selectedPlanFilters });
 
