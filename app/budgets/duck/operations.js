@@ -34,10 +34,11 @@ function fetchBudgetMetricData(budget, view, metrics, plans) {
     return (dispatch) => {
         const filters = {
             metrics,
-            plans: plans.map(x => ({
-                plan: x,
-                numberOfHistoricalYears: 5,
-            })),
+            plans,
+            //     : plans.map(x => ({
+            //     plan: x,
+            //     numberOfHistoricalYears: 5,
+            // })),
         };
 
         dispatch(actions.requestBudgetViewData());

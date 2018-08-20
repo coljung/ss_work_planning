@@ -11,18 +11,6 @@ export default class FilterModal extends Component {
         onSave: PropTypes.func.isRequired,
     };
     years =[1, 2, 3, 5];
-    planTypeOptions =[
-        {
-            plan: 'wp',
-            numberOfHistoricalYears: 5,
-        }, {
-            plan: 'dsrp',
-            numberOfHistoricalYears: 5,
-        }, {
-            plan: 'achd',
-            numberOfHistoricalYears: 5,
-        }];
-
     state = {
         isModalActive: false,
         metricCheckedList: [],
@@ -45,18 +33,16 @@ export default class FilterModal extends Component {
             numberOfHistoricalYears: selectedOption,
         };
 
-        if (chackedPlan === true) { this.planTypeOptions.push(changedPlanType); } else {
-            // Remove From selection
-            const findPlanType = JSON.stringify(changedPlanType);
-            const currentSeletedPlanType = this.planTypeOptions.map(JSON.stringify);
-            const indexFound = currentSeletedPlanType.indexOf(findPlanType);
-            if (indexFound > -1) {
-                this.planTypeOptions.splice(indexFound, 1);
-            }
+        const planTypeOptions = [...this.state.planCheckedList];
+        const indexFound = planTypeOptions.map(x => x.plan === name).indexOf(true);
+
+        if (indexFound > -1) { planTypeOptions.splice(indexFound, 1); }
+        // Add selected checked plan
+        if (chackedPlan === true) {
+            planTypeOptions.push(changedPlanType);
         }
         this.setState({
-            planCheckedList: this.planTypeOptions,
-            planChecked: false,
+            planCheckedList: planTypeOptions,
         });
     };
 
@@ -70,9 +56,7 @@ export default class FilterModal extends Component {
 
     handleSave = () => {
         const selectedMetricFilters = this.props.availableOptions.availableMetrics.filter(val => this.state.metricCheckedList.indexOf(val) !== -1);
-        const selectedPlanFilters = this.planTypeOptions;
-        // console.log('selectedPlanFilters ---', selectedPlanFilters);
-
+        const selectedPlanFilters = this.state.planCheckedList;
         this.props.onSave({ selectedMetrics: selectedMetricFilters, selectedPlanTypes: selectedPlanFilters });
 
         this.closeModal();
@@ -121,7 +105,7 @@ export default class FilterModal extends Component {
                     className='filterModal'
                     onOk={this.handleSave}
                     okText={i18n.t('filterModal.saveButton')}
-                    okButtonProps={{ disabled: !this.state.metricCheckedList.length || !this.planTypeOptions.length }}
+                    okButtonProps={{ disabled: !this.state.metricCheckedList.length || !this.state.planCheckedList.length }}
                     onCancel={this.closeModal}
                     cancelText={i18n.t('filterModal.cancelButton')}>
                         <Row>
