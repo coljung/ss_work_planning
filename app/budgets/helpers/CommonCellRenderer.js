@@ -9,7 +9,7 @@ import {
 
 export default function cellValueRenderer(instance, td, row, col, prop, value, cellProperties) {
     // styling border for each metric
-    const rowSpan = this.props.viewData.info.row_span;
+    const rowSpan = (+this.props.viewData.info.total / +this.props.viewData.info.metrics);
     borderBottom(row, rowSpan, td);
 
     const colName = prop.split('.');
