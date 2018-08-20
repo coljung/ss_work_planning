@@ -8,10 +8,12 @@ const request = wrap(agent, Promise);
 
 function getViewExportFile(budgetId, view, metrics, plans) {
     return (dispatch) => {
-        const metricList = metrics.length > 1 ? metrics.join(',') : metrics;
-        const planList = plans.length > 1 ? plans.join(',') : plans;
-        const queryToSend = `metrics=${metricList}&plans=${planList}`;
-        const url = `${getApiUrl()}planning/budgets/${budgetId}/${view}/metrics/export?${queryToSend}`;
+        const filters = {
+            metrics,
+            plans,
+        };
+        const queryToSend = JSON.stringify(filters);
+        const url = `${getApiUrl()}planning/budgets/${budgetId}/${view}/metrics/export?query=${queryToSend}`;
         window.open(url);
 
         return dispatch(actions.requestViewDownload(budgetId, view, metrics, plans));
@@ -35,10 +37,6 @@ function fetchBudgetMetricData(budget, view, metrics, plans) {
         const filters = {
             metrics,
             plans,
-            //     : plans.map(x => ({
-            //     plan: x,
-            //     numberOfHistoricalYears: 5,
-            // })),
         };
 
         dispatch(actions.requestBudgetViewData());
