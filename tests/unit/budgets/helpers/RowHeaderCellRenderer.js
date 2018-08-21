@@ -62,7 +62,7 @@ describe('Row header cell rendering', () => {
     it('Should set a bottom border after row span', () => {
         const instance = new Handsontable(document.createElement('div'));
 
-        const viewInfo = { row_span: 3 };
+        const viewInfo = { row_span: 3, metrics: 1, total: 3 };
 
         createCell(instance, 0, 0, viewInfo);
         createCell(instance, 1, 0, viewInfo);

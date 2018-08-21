@@ -194,8 +194,10 @@ describe('Budget view operations', () => {
         const budget = 1;
         const view = 'total';
         const metrics = [ 'SALES' ];
-        const plans = [ 'wp','achd' ];
-
+        const plans = [ 'wp' ].map(x => ({
+            plan: x,
+            numberOfHistoricalYears: 5,
+        }));
         it('Should handle exporting', async () => {
             window.open = jest.fn();
 
@@ -218,12 +220,15 @@ describe('Budget view operations', () => {
             await store.dispatch(budgetViewOperations.getViewExportFile(budget, view, metrics, plans));
 
             expect(openSpy).toHaveBeenCalledTimes(1);
-            expect(openSpy).toBeCalledWith('http://127.0.0.1/api/planning/budgets/1/total/metrics/export?metrics=SALES&plans=wp,achd');
+            expect(openSpy).toBeCalledWith(`http://127.0.0.1/api/planning/budgets/1/total/metrics/export?query={\"metrics\":[\"SALES\"],\"plans\":[{\"plan\":\"wp\",\"numberOfHistoricalYears\":5}]}`);
         });
 
         it('Should call window.open while exporting for multiple metrics, multiple plan type', async () => {
             const metrics = [ 'SALES', 'COGS' ];
-            const plans = [ 'wp', 'achd' ];
+            const plans = [ 'wp', 'achd' ].map(x => ({
+                plan: x,
+                numberOfHistoricalYears: 5,
+            }));
             const openSpy = window.open = jest.fn();
 
             const store = mockStore({});
@@ -231,7 +236,7 @@ describe('Budget view operations', () => {
             await store.dispatch(budgetViewOperations.getViewExportFile(budget, view, metrics, plans));
 
             expect(openSpy).toHaveBeenCalledTimes(1);
-            expect(openSpy).toBeCalledWith('http://127.0.0.1/api/planning/budgets/1/total/metrics/export?metrics=SALES,COGS&plans=wp,achd');
+            expect(openSpy).toBeCalledWith(`http://127.0.0.1/api/planning/budgets/1/total/metrics/export?query={\"metrics\":[\"SALES\",\"COGS\"],\"plans\":[{\"plan\":\"wp\",\"numberOfHistoricalYears\":5},{\"plan\":\"achd\",\"numberOfHistoricalYears\":5}]}`);
         });
     });
 
