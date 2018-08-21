@@ -4,6 +4,7 @@ import * as sinon from 'sinon';
 import { shallow } from 'enzyme';
 import { Modal, Checkbox, Button } from 'antd';
 import FilterModal from '../../../app/budgets/FilterModal';
+import CheckedRadioGroup from "../../../app/components/common/CheckedRadioGroup";
 
 describe('FilterModal', () => {
     let i18nStub;
@@ -250,34 +251,40 @@ describe('FilterModal', () => {
     });
 
     it('Should disable save button when no checked plans', () => {
-        const metricFilters = ['Sales', 'Cogs'];
-        const planFilters = ['dsrp'];
+        const metricFilters = ['Sales'];
+        const planFilters = ['dsrp'].map(x => ({
+            plan: x,
+            numberOfHistoricalYears: 5,
+        }));
 
         const output = mount(
             <FilterModal
                 onSave={jest.fn()}
                 filters={{selectedMetrics:metricFilters, selectedPlanTypes:planFilters}}
-                availableOptions={{availableMetrics:metricFilters, availablePlans:planFilters}} />
+                availableOptions={{availableMetrics:metricFilters, availablePlans:['dsrp']}} />
         );
 
         // Click the open button
         output.find(Button).first().simulate('click');
 
         // Unselect nodes
-        output.find(Modal).find(Checkbox.Group).at(1).find('.ant-checkbox-input').at(0).simulate('change', { target: { checked: false } });
+        output.find(Modal).find(Checkbox).at(1).find('.ant-checkbox-input').at(0).simulate('change', { target: { checked: false } });
 
         expect(output.find(Modal).find(Button).at(1).prop('disabled')).toBeTruthy();
     });
 
     it('Should contain a list of available metrics', () => {
         const metricFilters = ['Sales', 'Cogs'];
-        const planFilters = ['dsrp'];
+        const planFilters = ['dsrp'].map(x => ({
+            plan: x,
+            numberOfHistoricalYears: 5,
+        }));
 
         const output = mount(
             <FilterModal
                 onSave={jest.fn()}
                 filters={{selectedMetrics:metricFilters, selectedPlanTypes:planFilters}}
-                availableOptions={{availableMetrics:metricFilters, availablePlans:planFilters}} />
+                availableOptions={{availableMetrics:metricFilters, availablePlans:['dsrp']}} />
         );
 
         output.find(Button).first().simulate('click');
@@ -294,32 +301,40 @@ describe('FilterModal', () => {
     });
 
     it('Should contain a list of available plans', () => {
+        setResource('plan.dsrp');
+        setResource('plan.wp');
+        setResource('year.1');
+        setResource('year.2');
+        setResource('year.3');
+        setResource('year.5');
         const metricFilters = ['Sales', 'Cogs'];
-        const planFilters = ['dsrp','wp'];
+        const planFilters = ['dsrp','wp'].map(x => ({
+            plan: x,
+            numberOfHistoricalYears: 5,
+        }));;
 
         const output = mount(
             <FilterModal
                 onSave={jest.fn()}
                 filters={{selectedMetrics:metricFilters, selectedPlanTypes:planFilters}}
-                availableOptions={{availableMetrics:metricFilters, availablePlans:planFilters}} />
+                availableOptions={{availableMetrics:metricFilters, availablePlans:['dsrp','wp']}} />
         );
 
         output.find(Button).first().simulate('click');
 
-        const tree = output.find(Modal).find(Checkbox.Group).at(1);
-        expect(tree.prop('value')).toContain('dsrp');
-        expect(tree.prop('value')).toContain('wp');
-
-        const nodes = tree.find(Checkbox);
+        const nodes = output.find(Modal).find(CheckedRadioGroup);
         expect(nodes).toHaveLength(2);
 
-        expect(nodes.at(0).prop('value')).toEqual('dsrp');
-        expect(nodes.at(1).prop('value')).toEqual('wp');
+        expect(nodes.at(0).prop('text')).toEqual('plan.dsrp');
+        expect(nodes.at(1).prop('text')).toEqual('plan.wp');
     });
 
     it('Should contain a list of same available metrics', () => {
         const metricFilters = ['Sales', 'Cogs'];
-        const planFilters = ['dsrp'];
+        const planFilters = ['dsrp'].map(x => ({
+            plan: x,
+            numberOfHistoricalYears: 5,
+        }));;
 
         const output = mount(
             <FilterModal
@@ -327,7 +342,7 @@ describe('FilterModal', () => {
                 filters={{selectedMetrics:metricFilters, selectedPlanTypes:planFilters}}
                 availableOptions={{availableMetrics:metricFilters, availablePlans:planFilters}} />
         );
-        output.setProps({ availableOptions: { availableMetrics: metricFilters , availablePlans:planFilters} });
+        output.setProps({ availableOptions: { availableMetrics: metricFilters , availablePlans:['dsrp']} });
 
         output.find(Button).first().simulate('click');
 
@@ -339,8 +354,16 @@ describe('FilterModal', () => {
     });
 
     it('Should contain a list of same available plans', () => {
+        setResource('plan.dsrp');
+        setResource('year.1');
+        setResource('year.2');
+        setResource('year.3');
+        setResource('year.5');
         const metricFilters = ['Sales', 'Cogs'];
-        const planFilters = ['dsrp'];
+        const planFilters = ['dsrp'].map(x => ({
+            plan: x,
+            numberOfHistoricalYears: 5,
+        }));;
 
         const output = mount(
             <FilterModal
@@ -348,29 +371,38 @@ describe('FilterModal', () => {
                 filters={{selectedMetrics:metricFilters, selectedPlanTypes:planFilters}}
                 availableOptions={{availableMetrics:metricFilters, availablePlans:planFilters}} />
         );
-        output.setProps({ availableOptions: { availableMetrics: metricFilters , availablePlans:planFilters} });
+        output.setProps({ availableOptions: { availableMetrics: metricFilters , availablePlans:['dsrp']} });
 
         output.find(Button).first().simulate('click');
 
-        const nodes = output.find(Modal).find(Checkbox.Group).at(1).find(Checkbox);
+        const nodes = output.find(Modal).find(CheckedRadioGroup);
         expect(nodes).toHaveLength(1);
 
-        expect(nodes.at(0).prop('value')).toEqual('dsrp');
+        expect(nodes.at(0).prop('text')).toEqual('plan.dsrp');
     });
 
     it('Should contain a list of changed available metrics', () => {
+
+        setResource('plan.dsrp');
+        setResource('year.1');
+        setResource('year.2');
+        setResource('year.3');
+        setResource('year.5');
         const metricFilters = ['Sales', 'Cogs'];
-        const planFilters = ['dsrp'];
+        const planFilters = ['dsrp'].map(x => ({
+            plan: x,
+            numberOfHistoricalYears: 5,
+        }));;
 
         const output = mount(
             <FilterModal
                 onSave={jest.fn()}
                 filters={{selectedMetrics:metricFilters, selectedPlanTypes:planFilters}}
-                availableOptions={{availableMetrics:metricFilters, availablePlans:planFilters}} />
+                availableOptions={{availableMetrics:metricFilters, availablePlans:['dsrp']}} />
         );
 
         const filters = ['test3', 'test4'];
-        output.setProps({ availableOptions: { availableMetrics: filters , availablePlans:planFilters} });
+        output.setProps({ availableOptions: { availableMetrics: filters , availablePlans:['dsrp']} });
         output.find(Button).first().simulate('click');
 
         const nodes = output.find(Modal).find(Checkbox.Group).at(0).find(Checkbox);
@@ -381,25 +413,36 @@ describe('FilterModal', () => {
     });
 
     it('Should contain a list of changed available plans', () => {
+
+        setResource('plan.dsrp');
+        setResource('plan.test3');
+        setResource('plan.test4');
+        setResource('year.1');
+        setResource('year.2');
+        setResource('year.3');
+        setResource('year.5');
         const metricFilters = ['Sales', 'Cogs'];
-        const planFilters = ['dsrp'];
+        const planFilters = ['dsrp'].map(x => ({
+            plan: x,
+            numberOfHistoricalYears: 5,
+        }));;
 
         const output = mount(
             <FilterModal
                 onSave={jest.fn()}
                 filters={{selectedMetrics:metricFilters, selectedPlanTypes:planFilters}}
-                availableOptions={{availableMetrics:metricFilters, availablePlans:planFilters}} />
+                availableOptions={{availableMetrics:metricFilters, availablePlans:['dsrp']}} />
         );
 
         const changesPlanFilters = ['test3', 'test4'];
         output.setProps({ availableOptions: { availableMetrics: metricFilters , availablePlans:changesPlanFilters} });
         output.find(Button).first().simulate('click');
 
-        const nodes = output.find(Modal).find(Checkbox.Group).at(1).find(Checkbox);
+        const nodes = output.find(Modal).find(CheckedRadioGroup);
         expect(nodes).toHaveLength(2);
 
-        expect(nodes.at(0).prop('value')).toEqual('test3');
-        expect(nodes.at(1).prop('value')).toEqual('test4');
+        expect(nodes.at(0).prop('text')).toEqual('plan.test3');
+        expect(nodes.at(1).prop('text')).toEqual('plan.test4');
     });
 
     const setResource = (key) => {

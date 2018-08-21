@@ -8,10 +8,12 @@ const request = wrap(agent, Promise);
 
 function getViewExportFile(budgetId, view, metrics, plans) {
     return (dispatch) => {
-        const metricList = metrics.length > 1 ? metrics.join(',') : metrics;
-        const planList = plans.length > 1 ? plans.join(',') : plans;
-        const queryToSend = `metrics=${metricList}&plans=${planList}`;
-        const url = `${getApiUrl()}planning/budgets/${budgetId}/${view}/metrics/export?${queryToSend}`;
+        const filters = {
+            metrics,
+            plans,
+        };
+        const queryToSend = JSON.stringify(filters);
+        const url = `${getApiUrl()}planning/budgets/${budgetId}/${view}/metrics/export?query=${queryToSend}`;
         window.open(url);
 
         return dispatch(actions.requestViewDownload(budgetId, view, metrics, plans));
@@ -32,16 +34,15 @@ function fetchBudgetConfigData() {
 
 function fetchBudgetMetricData(budget, view, metrics, plans) {
     return (dispatch) => {
-        const metricList = metrics.length > 1 ? metrics.join(',') : metrics;
-        const planList = plans.length > 1 ? plans.join(',') : plans;
-        const queryToSend = {
-            metrics: metricList,
-            plans: planList,
+        const filters = {
+            metrics,
+            plans,
         };
+
         dispatch(actions.requestBudgetViewData());
         return request
-            .get(`${getApiUrl()}planning/budgets/${budget}/${view}/metrics`)
-            .query(queryToSend)
+            .post(`${getApiUrl()}planning/budgets/${budget}/${view}/metrics`)
+            .send(filters)
             .then(
             res => dispatch(actions.receiveBudgetViewData(res.body, view)),
             err => dispatch(messages({ content: err, response: err.response, isError: true })),

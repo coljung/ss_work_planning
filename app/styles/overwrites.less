@@ -103,24 +103,28 @@
         border-radius: 0;
     }
 
-    .ant-checkbox-group-item {
+  .filterModal .ant-checkbox-group-item, .filterModal .ant-checkbox-wrapper {
         display: block;
         padding: 2px 0;
+        margin-left: 0px;
     }
+  .ant-radio-group {
+    padding: 0px 0px 20px 25px;
+  }
 
-    .ant-checkbox-inner {
-        border-radius: 0;
-    }
-    .ant-checkbox-checked:after {
-        border-color: @ssense_black;
-        border-radius: 0;
-    }
+  .ant-checkbox-inner {
+      border-radius: 0;
+  }
+  .ant-checkbox-checked:after {
+      border-color: @ssense_black;
+      border-radius: 0;
+  }
 
-    .ant-checkbox-checked .ant-checkbox-inner,
-    .ant-checkbox-indeterminate .ant-checkbox-inner {
-        background-color: @ssense_black;
-        border-color: @ssense_black;
-    }
+  .ant-checkbox-checked .ant-checkbox-inner,
+  .ant-checkbox-indeterminate .ant-checkbox-inner {
+      background-color: @ssense_black;
+      border-color: @ssense_black;
+  }
 
     .ant-select-focused .ant-select-selection,
     .ant-select-selection:active, .ant-select-selection:focus,
