@@ -58,7 +58,7 @@ describe('<CheckedRadioGroup />', () => {
 
         wrapper.find(Checkbox).find('.ant-checkbox-input').simulate('change', { target: { checked: true } });
 
-        expect(wrapper.props('checked')).toBeTruthy();
+        expect(wrapper.state('checked')).toBeTruthy();
     });
 
     it('should call check callback when checking', () => {

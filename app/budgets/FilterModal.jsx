@@ -127,7 +127,7 @@ export default class FilterModal extends Component {
                             <Col className='filter-divider-line-post' span={14}>
                                <hr className='filter-hr-post'/>
                                 {planOptions.map((x) => {
-                                    const indexFound = this.state.planCheckedList.map(y => x.plan === y).indexOf(true);
+                                    const indexFound = this.state.planCheckedList.map(y => x.value === y.plan).indexOf(true);
                                     return (
                                         <CheckedRadioGroup
                                             key={x.value}
@@ -136,7 +136,7 @@ export default class FilterModal extends Component {
                                             onChange={this.onPlanCheckedListChange}
                                             options={yearOptions}
                                             selectedOption={5}
-                                            checked={indexFound}>
+                                            checked={indexFound > -1}>
                                         </CheckedRadioGroup>
                                     );
                                 })
