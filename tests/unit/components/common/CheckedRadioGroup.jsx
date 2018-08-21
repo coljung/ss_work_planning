@@ -1,53 +1,280 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import CheckedRadioGroup from '../../../../app/components/common/CheckedRadioGroup';
-import i18n from 'i18next';
-import sinon from 'sinon';
+import { Checkbox, Radio } from 'antd';
 
-describe.skip('<CheckedRadioGroup />', () => {
-    it('should render base layout with default text', () => {
-        const i18nStub = sinon.stub(i18n, 't');
-        i18nStub.withArgs('year.1').returns('year.1');
-
+describe('<CheckedRadioGroup />', () => {
+    it('should render with default checked value', () => {
         const wrapper = shallow(
-            <CheckedRadioGroup />
+            <CheckedRadioGroup
+                text=''
+                onChange={jest.fn()}
+                name=''
+                options={[]} />
         );
 
-        const span1y = wrapper.find('span').at(0);
-        expect(span1y.prop('value').at(0)).toEqual('1');
-        expect(span1y.prop('tip').at(1).innerHTML).toEqual('1Y');
+        const checkbox = wrapper.find(Checkbox);
+        expect(checkbox.prop('checked')).toBeFalsy();
+    });
 
-        const span2y = wrapper.find('span').at(1);
-        expect(span2y.prop('value').at(0)).toEqual('1');
-        expect(span2y.prop('tip').at(1).innerHTML).toEqual('1Y');
+    it('should render with passed checked value', () => {
+        const wrapper = shallow(
+            <CheckedRadioGroup
+                text=''
+                onChange={jest.fn()}
+                name=''
+                options={[]}
+                checked={true} />
+        );
 
-        const span3y = wrapper.find('span').at(2);
-        expect(span3y.prop('value').at(0)).toEqual('1');
-        expect(span3y.prop('tip').at(1).innerHTML).toEqual('1Y');
-
-        const span5y = wrapper.find('span').at(3);
-        expect(span5y.prop('value').at(0)).toEqual('1');
-        expect(span5y.prop('tip').at(1).innerHTML).toEqual('1Y');
-
-
-        i18nStub.restore();
+        const checkbox = wrapper.find(Checkbox);
+        expect(checkbox.prop('checked')).toBeTruthy();
     });
 
     it('should render base layout with custom text', () => {
         const wrapper = shallow(
-            <CheckedRadioGroup text='Test' />
+            <CheckedRadioGroup
+                text='Test'
+                onChange={jest.fn()}
+                name=''
+                options={[]} />
         );
 
-        const spin = wrapper.find(Spin);
-        expect(spin.prop('tip')).toEqual('Test');
+        const checkbox = wrapper.find(Checkbox);
+        expect(checkbox.childAt(0).text()).toEqual('Test');
     });
 
-    it('should render base layout with custom class', () => {
-        const wrapper = shallow(
-            <CheckedRadioGroup text='Test' classUsed='test-class' />
+    it('should change the checked value when checking', () => {
+        const onChange = jest.fn();
+
+        const wrapper = mount(
+            <CheckedRadioGroup
+                text=''
+                onChange={onChange}
+                name=''
+                options={[]}
+                checked={false} />
         );
 
-        const div = wrapper.find('div');
-        expect(div.prop('className')).toEqual('ant-radio-group');
+        wrapper.find(Checkbox).find('.ant-checkbox-input').simulate('change', { target: { checked: true } });
+
+        expect(wrapper.props('checked')).toBeTruthy();
+    });
+
+    it('should call check callback when checking', () => {
+        const onChange = jest.fn();
+
+        const wrapper = mount(
+            <CheckedRadioGroup
+                text=''
+                onChange={onChange}
+                name=''
+                options={[]} />
+        );
+
+        wrapper.find(Checkbox).find('.ant-checkbox-input').simulate('change', { target: { checked: true } });
+
+        expect(onChange).toHaveBeenCalledTimes(1);
+    });
+
+    it('should pass checked value in check callback', () => {
+        const onChange = jest.fn();
+
+        const wrapper = mount(
+            <CheckedRadioGroup
+                text=''
+                onChange={onChange}
+                name=''
+                options={[]} />
+        );
+
+        wrapper.find(Checkbox).find('.ant-checkbox-input').simulate('change', { target: { checked: true } });
+
+        const args = onChange.mock.calls[0];
+        expect(args[1]).toBeTruthy();
+    });
+
+    it('should pass selected option in check callback', () => {
+        const onChange = jest.fn();
+
+        const wrapper = mount(
+            <CheckedRadioGroup
+                text=''
+                onChange={onChange}
+                name=''
+                options={[1, 2]}
+                selectedOption={1} />
+        );
+
+        wrapper.find(Checkbox).find('.ant-checkbox-input').simulate('change', { target: { checked: true } });
+
+        const args = onChange.mock.calls[0];
+        expect(args[2]).toEqual(1);
+    });
+
+    it('should pass no selection option in check callback', () => {
+        const onChange = jest.fn();
+
+        const wrapper = mount(
+            <CheckedRadioGroup
+                text=''
+                onChange={onChange}
+                name=''
+                options={[1, 2]} />
+        );
+
+        wrapper.find(Checkbox).find('.ant-checkbox-input').simulate('change', { target: { checked: true } });
+
+        const args = onChange.mock.calls[0];
+        expect(args[2]).toBeUndefined();
+    });
+
+    it('should render base layout with options', () => {
+        const options = [1, 2].map(x => ({
+            label: x,
+            value: x,
+        }));
+
+        const wrapper = mount(
+            <CheckedRadioGroup
+                text=''
+                onChange={jest.fn()}
+                name=''
+                options={options} />
+        );
+
+        const option1 = wrapper.find(Radio).at(0);
+        expect(option1.prop('value')).toEqual(1);
+        expect(option1.text()).toEqual('1');
+
+        const option2 = wrapper.find(Radio).at(1);
+        expect(option2.prop('value')).toEqual(2);
+        expect(option2.text()).toEqual('2');
+    });
+
+    it('should have disabled options when unchecked', () => {
+        const wrapper = mount(
+            <CheckedRadioGroup
+                text=''
+                onChange={jest.fn()}
+                name=''
+                options={[1, 2]}
+                checked={false} />
+        );
+
+        const radioGroup = wrapper.find(Radio.Group);
+        expect(radioGroup.prop('disabled')).toBeTruthy();
+    });
+
+    it('should have enabled options when checked', () => {
+        const wrapper = mount(
+            <CheckedRadioGroup
+                text=''
+                onChange={jest.fn()}
+                name=''
+                options={[1, 2]}
+                checked={true} />
+        );
+
+        const radioGroup = wrapper.find(Radio.Group);
+        expect(radioGroup.prop('disabled')).toBeFalsy();
+    });
+
+    it('should have no option selected by default', () => {
+        const wrapper = mount(
+            <CheckedRadioGroup
+                text=''
+                onChange={jest.fn()}
+                name=''
+                options={[1, 2]} />
+        );
+
+        const radioGroup = wrapper.find(Radio.Group);
+        expect(radioGroup.prop('value')).toBeUndefined();
+    });
+
+    it('should select passed option', () => {
+        const options = [1, 2].map(x => ({
+            label: x,
+            value: x,
+        }));
+
+        const wrapper = mount(
+            <CheckedRadioGroup
+                text=''
+                onChange={jest.fn()}
+                name=''
+                options={options}
+                selectedOption={2} />
+        );
+
+        const radioGroup = wrapper.find(Radio.Group);
+        expect(radioGroup.prop('value')).toEqual(2);
+    });
+
+    it.skip('should call callback when selection option', () => {
+        const options = [1, 2].map(x => ({
+            label: x,
+            value: x,
+        }));
+        const onChange = jest.fn();
+
+        const wrapper = mount(
+            <CheckedRadioGroup
+                text=''
+                onChange={onChange}
+                name=''
+                options={options} />
+        );
+
+        wrapper.find(Radio.Group).find('.ant-radio-input').at(0).simulate('change', { target: { checked: true } });
+
+        expect(onChange).toHaveBeenCalledTimes(1);
+    });
+
+    it.skip('should pass checked value in option callback', () => {
+        const options = [1, 2].map(x => ({
+            label: x,
+            value: x,
+        }));
+        const onChange = jest.fn();
+
+        const wrapper = mount(
+            <CheckedRadioGroup
+                text=''
+                onChange={onChange}
+                name=''
+                options={options}
+                checked={true}
+                selectedOption={1} />
+        );
+
+        wrapper.find(Radio.Group).find('.ant-radio-input').at(0).simulate('change', { target: { checked: true } });
+
+        const args = onChange.mock.calls[0];
+        expect(args[1]).toBeTruthy();
+    });
+
+    it.skip('should pass selected option in option callback', () => {
+        const options = [1, 2].map(x => ({
+            label: x,
+            value: x,
+        }));
+        const onChange = jest.fn();
+
+        const wrapper = mount(
+            <CheckedRadioGroup
+                text=''
+                onChange={onChange}
+                name=''
+                options={options}
+                checked={true}
+                selectedOption={1} />
+        );
+
+        wrapper.find(Radio.Group).find('.ant-radio-input').at(0).simulate('change', { target: { checked: true } });
+
+        const args = onChange.mock.calls[0];
+        expect(args[2]).toEqual(1);
     });
 });
