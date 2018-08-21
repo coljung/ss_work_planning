@@ -83,14 +83,19 @@ export default class FilterModal extends Component {
     };
 
     render() {
-        const createOptionObject = x => ({
+        const metricOptions = this.props.availableOptions.availableMetrics.map(x => ({
             label: i18n.t(`metric.${x}`),
             value: x,
-        });
+        }));
+        const planOptions = this.props.availableOptions.availablePlans.map(x => ({
+            label: i18n.t(`plan.${x}`),
+            value: x,
+        }));
 
-        const metricOptions = this.props.availableOptions.availableMetrics.map(createOptionObject;
-        const planOptions = this.props.availableOptions.availablePlans.map(createOptionObject;
-        const yearOptions = this.years.map(createOptionObject);
+        const yearOptions = this.years.map(x => ({
+            label: i18n.t(`year.${x}`),
+            value: x,
+        }));
 
         return (
             <span>
@@ -121,17 +126,19 @@ export default class FilterModal extends Component {
                             </Col>
                             <Col className='filter-divider-line-post' span={14}>
                                <hr className='filter-hr-post'/>
-                                {planOptions.map(x => (
-                                    <CheckedRadioGroup
-                                        key={x.value}
-                                        name={x.value}
-                                        text={x.label}
-                                        onChange={this.onPlanCheckedListChange}
-                                        options={yearOptions}
-                                        selectedOption={5}
-                                        checked={this.state.planCheckedList.indexOf(x.value) > -1 }>
-                                    </CheckedRadioGroup>
-                                ))
+                                {planOptions.map(x => {
+                                    const indexFound = this.state.planCheckedList.map(x => x.plan === x).indexOf(true);
+                                    return (
+                                        <CheckedRadioGroup
+                                            key={x.value}
+                                            name={x.value}
+                                            text={x.label}
+                                            onChange={this.onPlanCheckedListChange}
+                                            options={yearOptions}
+                                            selectedOption={5}
+                                            checked={indexFound}>
+                                        </CheckedRadioGroup>
+                                    )})
                                 }
                             </Col>
                         </Row>
