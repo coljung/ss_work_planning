@@ -27,7 +27,7 @@ export default class FilterModal extends Component {
         });
     };
 
-    onPlanCheckedListChange = (name, chackedPlan, selectedOption) => {
+    onPlanCheckedListChange = (name, checkedPlan, selectedOption) => {
         const changedPlanType = {
             plan: name,
             numberOfHistoricalYears: selectedOption,
@@ -38,7 +38,7 @@ export default class FilterModal extends Component {
 
         if (indexFound > -1) { planTypeOptions.splice(indexFound, 1); }
         // Add selected checked plan
-        if (chackedPlan === true) {
+        if (checkedPlan === true) {
             planTypeOptions.push(changedPlanType);
         }
         this.setState({
