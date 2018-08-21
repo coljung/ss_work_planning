@@ -83,19 +83,14 @@ export default class FilterModal extends Component {
     };
 
     render() {
-        const metricOptions = this.props.availableOptions.availableMetrics.map(x => ({
+        const createOptionObject = x => ({
             label: i18n.t(`metric.${x}`),
             value: x,
-        }));
-        const planOptions = this.props.availableOptions.availablePlans.map(x => ({
-            label: i18n.t(`plan.${x}`),
-            value: x,
-        }));
+        });
 
-        const yearOptions = this.years.map(x => ({
-            label: i18n.t(`year.${x}`),
-            value: x,
-        }));
+        const metricOptions = this.props.availableOptions.availableMetrics.map(createOptionObject;
+        const planOptions = this.props.availableOptions.availablePlans.map(createOptionObject;
+        const yearOptions = this.years.map(createOptionObject);
 
         return (
             <span>
@@ -138,7 +133,6 @@ export default class FilterModal extends Component {
                                     </CheckedRadioGroup>
                                 ))
                                 }
-
                             </Col>
                         </Row>
                 </Modal>

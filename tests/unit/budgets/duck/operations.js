@@ -145,13 +145,14 @@ describe('Budget view operations', () => {
         const budget = 1;
         const view = 'total';
         const metrics = [ 'SALES' ];
-        const plans = [ 'wp' ];
+        const plans = [ 'wp' ].map(x => ({
+            plan: x,
+            numberOfHistoricalYears: 5,
+        }));
+
         const filters = {
             metrics,
-            plans: plans.map(x => ({
-                plan: x,
-                numberOfHistoricalYears: 5,
-            })),
+            plans,
         };
 
         it('Should handle fetching budget data ', async () => {
