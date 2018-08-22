@@ -187,7 +187,7 @@ class TableContainer extends Component {
 
     createColumnInfos(columns) {
         const titleColumn = {
-            data: columns[0],
+            data: `${columns[0]}.metric`,
             readOnly: true,
             type: 'text',
             width: 205,
