@@ -10,7 +10,7 @@ export default class FilterModal extends Component {
         availableOptions: PropTypes.object.isRequired,
         onSave: PropTypes.func.isRequired,
     };
-    years =[1, 2, 3, 5];
+    years = [1, 2, 3, 5];
     state = {
         isModalActive: false,
         metricCheckedList: [],
