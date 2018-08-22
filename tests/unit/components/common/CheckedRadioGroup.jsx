@@ -58,7 +58,7 @@ describe('<CheckedRadioGroup />', () => {
 
         wrapper.find(Checkbox).find('.ant-checkbox-input').simulate('change', { target: { checked: true } });
 
-        expect(wrapper.props('checked')).toBeTruthy();
+        expect(wrapper.state('checked')).toBeTruthy();
     });
 
     it('should call check callback when checking', () => {
@@ -126,7 +126,7 @@ describe('<CheckedRadioGroup />', () => {
         wrapper.find(Checkbox).find('.ant-checkbox-input').simulate('change', { target: { checked: true } });
 
         const args = onChange.mock.calls[0];
-        expect(args[2]).toBeUndefined();
+        expect(args[2]).toBeNull();
     });
 
     it('should render base layout with options', () => {
@@ -190,7 +190,7 @@ describe('<CheckedRadioGroup />', () => {
         );
 
         const radioGroup = wrapper.find(Radio.Group);
-        expect(radioGroup.prop('value')).toBeUndefined();
+        expect(radioGroup.prop('value')).toBeNull();
     });
 
     it('should select passed option', () => {

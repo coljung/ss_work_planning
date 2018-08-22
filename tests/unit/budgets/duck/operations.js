@@ -72,7 +72,7 @@ describe('Budget view operations', () => {
             };
 
             nock(UI_PLANNING_HOST)
-                .put('/api/planning/budgets/2/men/metrics', adjustedPayload)
+                .put('/api/planning/budgets/2/men', adjustedPayload)
                 .reply(200);
 
             const expectedActions = [
@@ -98,7 +98,7 @@ describe('Budget view operations', () => {
             };
 
             nock(UI_PLANNING_HOST)
-                .put('/api/planning/budgets/2/men/metrics', payload)
+                .put('/api/planning/budgets/2/men', payload)
                 .reply(200);
 
             const expectedActions = [
@@ -124,7 +124,7 @@ describe('Budget view operations', () => {
             };
 
             nock(UI_PLANNING_HOST)
-                .put('/api/planning/budgets/2/men/metrics', payload)
+                .put('/api/planning/budgets/2/men', payload)
                 .reply(500);
 
             const expectedActions = [
@@ -157,7 +157,7 @@ describe('Budget view operations', () => {
 
         it('Should handle fetching budget data ', async () => {
             nock(UI_PLANNING_HOST)
-                .post('/api/planning/budgets/1/total/metrics', filters)
+                .post('/api/planning/budgets/1/total', filters)
                  .reply(200, viewResponse);
 
             const expectedActions = [
@@ -174,7 +174,7 @@ describe('Budget view operations', () => {
 
         it('Should fail to fetchBudgetMetricData', async () => {
             nock(UI_PLANNING_HOST)
-                .get('/api/planning/budgets/1/total/metrics?metrics=SALES')
+                .get('/api/planning/budgets/1/total?metrics=SALES')
                 .reply(500);
 
             const expectedActions = [
@@ -220,7 +220,7 @@ describe('Budget view operations', () => {
             await store.dispatch(budgetViewOperations.getViewExportFile(budget, view, metrics, plans));
 
             expect(openSpy).toHaveBeenCalledTimes(1);
-            expect(openSpy).toBeCalledWith(`http://127.0.0.1/api/planning/budgets/1/total/metrics/export?query={\"metrics\":[\"SALES\"],\"plans\":[{\"plan\":\"wp\",\"numberOfHistoricalYears\":5}]}`);
+            expect(openSpy).toBeCalledWith(`http://127.0.0.1/api/planning/budgets/1/total/export?query={\"metrics\":[\"SALES\"],\"plans\":[{\"plan\":\"wp\",\"numberOfHistoricalYears\":5}]}`);
         });
 
         it('Should call window.open while exporting for multiple metrics, multiple plan type', async () => {
@@ -236,7 +236,7 @@ describe('Budget view operations', () => {
             await store.dispatch(budgetViewOperations.getViewExportFile(budget, view, metrics, plans));
 
             expect(openSpy).toHaveBeenCalledTimes(1);
-            expect(openSpy).toBeCalledWith(`http://127.0.0.1/api/planning/budgets/1/total/metrics/export?query={\"metrics\":[\"SALES\",\"COGS\"],\"plans\":[{\"plan\":\"wp\",\"numberOfHistoricalYears\":5},{\"plan\":\"achd\",\"numberOfHistoricalYears\":5}]}`);
+            expect(openSpy).toBeCalledWith(`http://127.0.0.1/api/planning/budgets/1/total/export?query={\"metrics\":[\"SALES\",\"COGS\"],\"plans\":[{\"plan\":\"wp\",\"numberOfHistoricalYears\":5},{\"plan\":\"achd\",\"numberOfHistoricalYears\":5}]}`);
         });
     });
 

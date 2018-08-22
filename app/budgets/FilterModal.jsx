@@ -10,37 +10,41 @@ export default class FilterModal extends Component {
         availableOptions: PropTypes.object.isRequired,
         onSave: PropTypes.func.isRequired,
     };
-    years =[1, 2, 3, 5];
+
     state = {
         isModalActive: false,
         metricCheckedList: [],
         planCheckedList: [],
-        metricInderterminateCheck: true,
+        metricIndeterminateCheck: true,
         checkAllMetric: false,
     };
 
     onMetricCheckedListChange = (metricCheckedList) => {
         this.setState({
             metricCheckedList,
-            metricInderterminateCheck: !!metricCheckedList.length && (metricCheckedList.length < this.props.availableOptions.availableMetrics.length),
+            metricIndeterminateCheck: !!metricCheckedList.length && (metricCheckedList.length < this.props.availableOptions.availableMetrics.length),
             checkAllMetric: metricCheckedList.length === this.props.availableOptions.availableMetrics.length,
         });
     };
 
-    onPlanCheckedListChange = (name, checkedPlan, selectedOption) => {
+    onPlanCheckedListChange = (name, isPlanChecked, selectedOption) => {
         const changedPlanType = {
             plan: name,
             numberOfHistoricalYears: selectedOption,
         };
 
         const planTypeOptions = [...this.state.planCheckedList];
-        const indexFound = planTypeOptions.map(x => x.plan === name).indexOf(true);
 
-        if (indexFound > -1) { planTypeOptions.splice(indexFound, 1); }
+        const indexFound = planTypeOptions.map(x => x.plan === name).indexOf(true);
+        if (indexFound > -1) {
+            planTypeOptions.splice(indexFound, 1);
+        }
+
         // Add selected checked plan
-        if (checkedPlan === true) {
+        if (isPlanChecked === true) {
             planTypeOptions.push(changedPlanType);
         }
+
         this.setState({
             planCheckedList: planTypeOptions,
         });
@@ -49,7 +53,7 @@ export default class FilterModal extends Component {
     onMetricCheckAllChange = (e) => {
         this.setState({
             metricCheckedList: e.target.checked ? this.props.availableOptions.availableMetrics : [],
-            metricInderterminateCheck: false,
+            metricIndeterminateCheck: false,
             checkAllMetric: e.target.checked,
         });
     };
@@ -66,7 +70,7 @@ export default class FilterModal extends Component {
         this.setState({
             metricCheckedList: [],
             planCheckedList: [],
-            metricInderterminateCheck: false,
+            metricIndeterminateCheck: false,
             checkAllMetric: false,
             isModalActive: false,
         });
@@ -76,7 +80,7 @@ export default class FilterModal extends Component {
         this.setState({
             metricCheckedList: this.props.filters.selectedMetrics,
             planCheckedList: this.props.filters.selectedPlanTypes,
-            metricInderterminateCheck: !!this.props.filters.selectedMetrics.length && (this.props.filters.selectedMetrics.length < this.props.availableOptions.availableMetrics.length),
+            metricIndeterminateCheck: !!this.props.filters.selectedMetrics.length && (this.props.filters.selectedMetrics.length < this.props.availableOptions.availableMetrics.length),
             checkAllMetric: this.props.filters.selectedMetrics.length === this.props.availableOptions.availableMetrics.length,
             isModalActive: true,
         });
@@ -92,7 +96,7 @@ export default class FilterModal extends Component {
             value: x,
         }));
 
-        const yearOptions = this.years.map(x => ({
+        const yearOptions = [1, 2, 3, 5].map(x => ({
             label: i18n.t(`year.${x}`),
             value: x,
         }));
@@ -110,11 +114,12 @@ export default class FilterModal extends Component {
                     cancelText={i18n.t('filterModal.cancelButton')}>
                         <Row>
                           <Col span={5}>{i18n.t('filterModal.metric')}</Col>
-                             <Col className='filter-divider-line-pre' span={5}> <Checkbox
-                                  metricInderterminateCheck={this.state.metricInderterminateCheck}
-                                  onChange={this.onMetricCheckAllChange}
-                                  checked={this.state.checkAllMetric}>
-                                   {i18n.t('filterModal.selectAll')}
+                             <Col className='filter-divider-line-pre' span={5}>
+                                 <Checkbox
+                                     onChange={this.onMetricCheckAllChange}
+                                     indeterminate={this.state.metricIndeterminateCheck}
+                                     checked={this.state.checkAllMetric}>
+                                     {i18n.t('filterModal.selectAll')}
                                </Checkbox>
                           </Col>
                           <Col className='filter-divider-line-post' span={14}>{i18n.t('filterModal.planType')}</Col>
@@ -124,10 +129,10 @@ export default class FilterModal extends Component {
                                <hr />
                                <Checkbox.Group options={metricOptions} value={this.state.metricCheckedList} onChange={this.onMetricCheckedListChange} />
                             </Col>
-                            <Col className='filter-divider-line-post' span={14}>
+                            <Col className='filter-divider-line-post' id='PlanTypeFilter' span={14}>
                                <hr className='filter-hr-post'/>
                                 {planOptions.map((x) => {
-                                    const indexFound = this.state.planCheckedList.map(y => x.plan === y).indexOf(true);
+                                    const planFound = this.state.planCheckedList.find(y => y.plan === x.value);
                                     return (
                                         <CheckedRadioGroup
                                             key={x.value}
@@ -135,8 +140,8 @@ export default class FilterModal extends Component {
                                             text={x.label}
                                             onChange={this.onPlanCheckedListChange}
                                             options={yearOptions}
-                                            selectedOption={5}
-                                            checked={indexFound}>
+                                            selectedOption={planFound ? planFound.numberOfHistoricalYears : 5}
+                                            checked={!!planFound}>
                                         </CheckedRadioGroup>
                                     );
                                 })
