@@ -19,32 +19,51 @@ export default class CheckedRadioGroup extends Component {
 
     static defaultProps = {
         checked: false,
+        selectedOption: null,
     };
 
+    componentWillReceiveProps(nextProps) {
+        if ('checked' in nextProps && this.state.checked !== nextProps.checked) {
+            this.setState({
+                checked: nextProps.checked,
+            });
+        }
+
+        if ('selectedOption' in nextProps && this.state.selectedOption !== nextProps.selectedOption) {
+            this.setState({
+                selectedOption: nextProps.selectedOption,
+            });
+        }
+    }
+
     handleRadioSelect = (e) => {
-        this.setState({ selectedOption: e.target.value });
+        this.setState({
+            selectedOption: e.target.value,
+        });
+
         this.props.onChange(this.props.name, this.state.checked, e.target.value);
     };
 
     handleCheckBoxSelect = (e) => {
-        this.setState({ checked: e.target.checked });
+        this.setState({
+            checked: e.target.checked,
+        });
+
         this.props.onChange(this.props.name, e.target.checked, this.state.selectedOption);
     };
 
     render() {
         return (
-            <Checkbox
-                onChange={this.handleCheckBoxSelect}
-                checked={this.state.checked}
-            >
-                {this.props.text}
+            <div>
+                <Checkbox onChange={this.handleCheckBoxSelect}
+                          checked={this.state.checked}>
+                    {this.props.text}
+                </Checkbox>
                 <Radio.Group options={this.props.options}
                              value={this.state.selectedOption}
                              onChange={this.handleRadioSelect}
-                             disabled={!this.state.checked}
-                >
-                </Radio.Group>
-            </Checkbox>
+                             disabled={!this.state.checked} />
+            </div>
         );
     }
 }

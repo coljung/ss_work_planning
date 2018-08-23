@@ -13,7 +13,7 @@ function getViewExportFile(budgetId, view, metrics, plans) {
             plans,
         };
         const queryToSend = JSON.stringify(filters);
-        const url = `${getApiUrl()}planning/budgets/${budgetId}/${view}/metrics/export?query=${queryToSend}`;
+        const url = `${getApiUrl()}planning/budgets/${budgetId}/${view}/export?query=${queryToSend}`;
         window.open(url);
 
         return dispatch(actions.requestViewDownload(budgetId, view, metrics, plans));
@@ -41,7 +41,7 @@ function fetchBudgetMetricData(budget, view, metrics, plans) {
 
         dispatch(actions.requestBudgetViewData());
         return request
-            .post(`${getApiUrl()}planning/budgets/${budget}/${view}/metrics`)
+            .post(`${getApiUrl()}planning/budgets/${budget}/${view}`)
             .send(filters)
             .then(
             res => dispatch(actions.receiveBudgetViewData(res.body, view)),
@@ -53,7 +53,7 @@ function fetchBudgetMetricData(budget, view, metrics, plans) {
 function sendDataForSpreading(budget, view, updatedObj) {
     return (dispatch) => {
         dispatch(actions.requestSendDataForSpreading());
-        const req = request.put(`${getApiUrl()}planning/budgets/${budget}/${view}/metrics`);
+        const req = request.put(`${getApiUrl()}planning/budgets/${budget}/${view}`);
         return req.send({
             ...updatedObj,
             value: updatedObj.value === 0 ? 0.0001 : updatedObj.value,
