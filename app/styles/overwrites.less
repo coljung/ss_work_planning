@@ -108,10 +108,24 @@
         padding: 2px 0;
         margin-left: 0px;
     }
-  .ant-radio-group {
-    padding: 0px 0px 20px 25px;
+  #metricFilter{
+    width: 29.3%;
+    vertical-align: top;
   }
+  #planTypeFilter{
+    width: 41.6%;
+    vertical-align: top;
+  }
+  #periodFilter{
 
+    vertical-align: top;
+  }
+  #planTypeFilter .ant-checkbox-wrapper {
+    margin: 0px 0px 20px 0px;
+  }
+  #planTypeFilter .ant-radio-group {
+    margin-left: 25px;
+  }
   .ant-checkbox-inner {
       border-radius: 0;
   }
@@ -119,6 +133,33 @@
       border-color: @ssense_black;
       border-radius: 0;
   }
+
+  .filterModal .col-container {
+    display: table;
+    width: 100%;
+  }
+  .filterModal .col {
+    display: table-cell;
+    padding: 16px;
+  }
+
+  .filter-divider-line-pre{
+    border-right-color: #bbbbbb;
+    border-right-width: thin;
+    border-right-style: solid;
+    line-height: 19px;
+  }
+  .filter-divider-line-post{
+    padding-left: 10px;
+    line-height: 24px;
+  }
+  .filter-hr-post{
+    margin-left: -11px;
+  }
+  .filterModal  hr{
+    border-top: 1px solid #bbbbbb;
+  }
+
 
   .ant-checkbox-checked .ant-checkbox-inner,
   .ant-checkbox-indeterminate .ant-checkbox-inner {
