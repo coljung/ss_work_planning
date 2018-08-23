@@ -118,12 +118,13 @@ describe('FilterModal', () => {
     it('Should pass the checked items in save handle', () => {
         const metricFilters = ['Sales'];
         const planFilters = ['dsrp'];
+        const showMonthly = true;
         const onSave = jest.fn();
 
         const output = mount(
             <FilterModal
                 onSave={onSave}
-                filters={{selectedMetrics:metricFilters, selectedPlanTypes:planFilters}}
+                filters={{selectedMetrics:metricFilters, selectedPlanTypes:planFilters, showMonthly}}
                 availableOptions={{availableMetrics:metricFilters, availablePlans:planFilters}} />
         );
 
@@ -134,18 +135,19 @@ describe('FilterModal', () => {
         output.find(Modal).find(Button).at(1).simulate('click');
 
         expect(onSave).toHaveBeenCalledTimes(1);
-        expect(onSave).toBeCalledWith( {selectedMetrics:['Sales'], selectedPlanTypes:['dsrp']});
+        expect(onSave).toBeCalledWith( {selectedMetrics:['Sales'], selectedPlanTypes:['dsrp'], showMonthly: true});
     });
 
     it('Should pass the changed checked items in save handle', () => {
         const metricFilters = ['Sales', 'Cogs'];
         const planFilters = ['dsrp'];
+        const showMonthly = true;
         const onSave = jest.fn();
 
         const output = mount(
             <FilterModal
                 onSave={onSave}
-                filters={{selectedMetrics:metricFilters, selectedPlanTypes:planFilters}}
+                filters={{selectedMetrics:metricFilters, selectedPlanTypes:planFilters, showMonthly}}
                 availableOptions={{availableMetrics:metricFilters, availablePlans:planFilters}} />
         );
         // Click the open button
@@ -158,18 +160,19 @@ describe('FilterModal', () => {
         output.find(Modal).find(Button).at(1).simulate('click');
 
         expect(onSave).toHaveBeenCalledTimes(1);
-        expect(onSave).toBeCalledWith({"selectedMetrics": ["Cogs"], "selectedPlanTypes": ["dsrp"]});
+        expect(onSave).toBeCalledWith({"selectedMetrics": ["Cogs"], "selectedPlanTypes": ["dsrp"], showMonthly: true});
     });
 
     it('Should pass all items after checking all', () => {
         const metricFilters = ['Sales', 'Cogs'];
         const planFilters = ['dsrp'];
+        const showMonthly= true;
         const onSave = jest.fn();
 
         const output = mount(
             <FilterModal
                 onSave={onSave}
-                filters={{selectedMetrics:metricFilters, selectedPlanTypes:planFilters}}
+                filters={{selectedMetrics:metricFilters, selectedPlanTypes:planFilters, showMonthly}}
                 availableOptions={{availableMetrics:metricFilters, availablePlans:planFilters}} />
         );
 
@@ -184,7 +187,7 @@ describe('FilterModal', () => {
         output.find(Modal).find(Button).at(1).simulate('click');
 
         expect(onSave).toHaveBeenCalledTimes(1);
-        expect(onSave).toBeCalledWith({"selectedMetrics": ["Sales", "Cogs"], "selectedPlanTypes": ["dsrp"]});
+        expect(onSave).toBeCalledWith({"selectedMetrics": ["Sales", "Cogs"], "selectedPlanTypes": ["dsrp"], showMonthly: true});
     });
 
     it('Should disable apply button after checking none', () => {
