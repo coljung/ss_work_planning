@@ -61,13 +61,13 @@ class BudgetViewsContainer extends Component {
             || nextProps.filters !== this.props.filters
             || nextProps.params.tab !== this.props.params.tab
             || nextProps.params.budgetId !== this.props.params.budgetId) {
-            this.getMetricData(nextProps.params.budgetId, nextProps.params.tab, nextProps.filters.selectedMetrics, nextProps.filters.selectedPlanTypes);
+            this.getMetricData(nextProps.params.budgetId, nextProps.params.tab, nextProps.filters.selectedMetrics, nextProps.filters.selectedPlanTypes, nextProps.filters.showMonthly);
         }
     }
 
-    getMetricData(budgetId, tab, metricFilter = null, planFilter = null) {
+    getMetricData(budgetId, tab, metricFilter = null, planFilter = null, showMonthly = true) {
         const { config, router: { location } } = this.props;
-        this.props.fetchBudgetMetricData(budgetId, tab, metricFilter, planFilter);
+        this.props.fetchBudgetMetricData(budgetId, tab, metricFilter, planFilter, showMonthly);
     }
 
     pushRoute(newTab = null) {

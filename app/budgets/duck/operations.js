@@ -32,11 +32,12 @@ function fetchBudgetConfigData() {
     };
 }
 
-function fetchBudgetMetricData(budget, view, metrics, plans) {
+function fetchBudgetMetricData(budget, view, metrics, plans, showMonthly) {
     return (dispatch) => {
         const filters = {
             metrics,
             plans,
+            showMonthly,
         };
 
         dispatch(actions.requestBudgetViewData());
