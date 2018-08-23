@@ -96,16 +96,16 @@ export default class FilterModal extends Component {
 
     render() {
         const metricOptions = this.props.availableOptions.availableMetrics.map(x => ({
-            label: i18n.t(`metric.${x}`),
+            label: i18n.t(`filterModal.filters.metrics.${x}`),
             value: x,
         }));
         const planOptions = this.props.availableOptions.availablePlans.map(x => ({
-            label: i18n.t(`plan.${x}`),
+            label: i18n.t(`filterModal.filters.plans.${x}`),
             value: x,
         }));
 
         const yearOptions = [1, 2, 3, 5].map(x => ({
-            label: i18n.t(`year.${x}`),
+            label: i18n.t(`filterModal.filters.years.${x}`),
             value: x,
         }));
 
