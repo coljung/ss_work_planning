@@ -122,7 +122,7 @@ export default class FilterModal extends Component {
                     onCancel={this.closeModal}
                     cancelText={i18n.t('filterModal.cancelButton')}>
                         <Row>
-                            <Col span={4}>{i18n.t('filterModal.metric')}</Col>
+                            <Col className='column-header' span={4}>{i18n.t('filterModal.metric')}</Col>
                             <Col className='filter-divider-line-pre' span={3}>
                             <Checkbox
                                 onChange={this.onMetricCheckAllChange}
@@ -131,8 +131,8 @@ export default class FilterModal extends Component {
                                 {i18n.t('filterModal.selectAll')}
                             </Checkbox>
                             </Col>
-                            <Col className='filter-divider-line-post filter-divider-line-pre' span={10}>{i18n.t('filterModal.planType')}</Col>
-                            <Col className='filter-divider-line-post ' span={7}>{i18n.t('filterModal.period')}</Col>
+                            <Col className='column-header filter-divider-line-post filter-divider-line-pre' span={10}>{i18n.t('filterModal.planType')}</Col>
+                            <Col className='column-header filter-divider-line-post ' span={7}>{i18n.t('filterModal.period')}</Col>
                         </Row>
                         <hr />
                         <Row>
