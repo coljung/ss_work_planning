@@ -47,6 +47,7 @@ class BudgetViewsContainer extends Component {
             const filter = {
                 selectedMetrics: config.config.availableMetrics,
                 selectedPlanTypes: config.config.availablePlans.map(x => ({ plan: x, numberOfHistoricalYears: 5 })),
+                showMonthly: config.config.showMonthly,
             };
             this.applyFilters(filter);
         });

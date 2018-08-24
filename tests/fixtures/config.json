@@ -1,3 +1,4 @@
 {
-    "available_metrics" : ["SALES"]
+    "available_metrics" : ["SALES"],
+    "availablePlans": ["wp"]
 }

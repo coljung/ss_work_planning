@@ -163,6 +163,31 @@ describe('FilterModal', () => {
         expect(onSave).toBeCalledWith({"selectedMetrics": ["Cogs"], "selectedPlanTypes": ["dsrp"], showMonthly: true});
     });
 
+    it('Should pass the changed checked items for show monthly in save handle', () => {
+        const metricFilters = ['Sales', 'Cogs'];
+        const planFilters = ['dsrp'];
+        const showMonthly = false;
+        const onSave = jest.fn();
+
+        const output = mount(
+            <FilterModal
+                onSave={onSave}
+                filters={{selectedMetrics:metricFilters, selectedPlanTypes:planFilters, showMonthly}}
+                availableOptions={{availableMetrics:metricFilters, availablePlans:planFilters}} />
+        );
+        // Click the open button
+        output.find(Button).first().simulate('click');
+
+        // Unselect the first node
+        output.find(Modal).find(Checkbox).find('.ant-checkbox-input').at(4).simulate('change', { target: { checked: true } });
+
+        // Click the save button
+        output.find(Modal).find(Button).at(1).simulate('click');
+
+        expect(onSave).toHaveBeenCalledTimes(1);
+        expect(onSave).toBeCalledWith({"selectedMetrics": ["Sales", "Cogs"], "selectedPlanTypes": ["dsrp"], showMonthly: true});
+    });
+
     it('Should pass all items after checking all', () => {
         const metricFilters = ['Sales', 'Cogs'];
         const planFilters = ['dsrp'];
@@ -332,12 +357,68 @@ describe('FilterModal', () => {
         expect(nodes.at(1).prop('text')).toEqual('plan.wp');
     });
 
+    it('Should contain show month checked option', () => {
+        setResource('plan.dsrp');
+        setResource('plan.wp');
+        setResource('year.1');
+        setResource('year.2');
+        setResource('year.3');
+        setResource('year.5');
+        setResource('filterModal.showMonthly');
+        const metricFilters = ['Sales', 'Cogs'];
+        const planFilters = ['dsrp','wp'].map(x => ({
+            plan: x,
+            numberOfHistoricalYears: 5,
+        }));
+        const showMonthly=true;
+
+        const output = mount(
+            <FilterModal
+                onSave={jest.fn()}
+                filters={{selectedMetrics:metricFilters, selectedPlanTypes:planFilters, showMonthly}}
+                availableOptions={{availableMetrics:metricFilters, availablePlans:['dsrp','wp']}} />
+        );
+
+        output.find(Button).first().simulate('click');
+        const nodes = output.find(Modal).find(Checkbox).at(5);
+        expect(nodes.text()).toEqual('filterModal.showMonthly');
+        expect(nodes.prop('checked') ).toBeTruthy();
+    });
+
+    it('Should contain show month checked option with unchecked ', () => {
+        setResource('plan.dsrp');
+        setResource('plan.wp');
+        setResource('year.1');
+        setResource('year.2');
+        setResource('year.3');
+        setResource('year.5');
+        setResource('filterModal.showMonthly');
+        const metricFilters = ['Sales', 'Cogs'];
+        const planFilters = ['dsrp','wp'].map(x => ({
+            plan: x,
+            numberOfHistoricalYears: 5,
+        }));
+        const showMonthly = false;
+
+        const output = mount(
+            <FilterModal
+                onSave={jest.fn()}
+                filters={{selectedMetrics:metricFilters, selectedPlanTypes:planFilters, showMonthly}}
+                availableOptions={{availableMetrics:metricFilters, availablePlans:['dsrp','wp'], showMonthly:showMonthly }} />
+        );
+
+        output.find(Button).first().simulate('click');
+        const nodes = output.find(Modal).find(Checkbox).at(5);
+        expect(nodes.text()).toEqual('filterModal.showMonthly');
+        expect(nodes.prop('checked')).toEqual(false);
+    });
+
     it('Should contain a list of same available metrics', () => {
         const metricFilters = ['Sales', 'Cogs'];
         const planFilters = ['dsrp'].map(x => ({
             plan: x,
             numberOfHistoricalYears: 5,
-        }));;
+        }));
 
         const output = mount(
             <FilterModal

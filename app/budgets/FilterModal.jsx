@@ -7,7 +7,6 @@ import CheckedRadioGroup from '../components/common/CheckedRadioGroup';
 export default class FilterModal extends Component {
     static propTypes = {
         filters: PropTypes.object.isRequired,
-        availableOptions: PropTypes.object.isRequired,
         onSave: PropTypes.func.isRequired,
     };
 
@@ -98,7 +97,7 @@ export default class FilterModal extends Component {
             planCheckedList: this.props.filters.selectedPlanTypes,
             metricIndeterminateCheck: !!this.props.filters.selectedMetrics.length && (this.props.filters.selectedMetrics.length < this.props.availableOptions.availableMetrics.length),
             checkAllMetric: this.props.filters.selectedMetrics.length === this.props.availableOptions.availableMetrics.length,
-            checkShowMonthly: this.props.filters.ShowMonthly ? this.props.filters.showMonthly : true,
+            checkShowMonthly: this.props.filters.showMonthly === false ? false : this.props.filters.showMonthly,
             isModalActive: true,
         });
     };

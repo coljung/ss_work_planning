@@ -15,7 +15,8 @@ describe('Budget View Reducer', () => {
             config: {},
             filters: {
                 availableMetrics: [],
-                availablePlans: []
+                availablePlans: [],
+                showMonthly:false
             },
             isBudgetLoading: false,
             isDataSpreading: false,
