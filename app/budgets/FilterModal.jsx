@@ -7,6 +7,7 @@ import CheckedRadioGroup from '../components/common/CheckedRadioGroup';
 export default class FilterModal extends Component {
     static propTypes = {
         filters: PropTypes.object.isRequired,
+        availableOptions: PropTypes.object.isRequired,
         onSave: PropTypes.func.isRequired,
     };
 

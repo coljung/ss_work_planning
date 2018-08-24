@@ -85,7 +85,7 @@ class BudgetViewsContainer extends Component {
     }
 
     getExportedFile = () => {
-        this.props.getViewExportFile(this.props.params.budgetId, this.props.params.tab, this.props.filters.selectedMetrics, this.props.filters.selectedPlanTypes);
+        this.props.getViewExportFile(this.props.params.budgetId, this.props.params.tab, this.props.filters.selectedMetrics, this.props.filters.selectedPlanTypes, this.props.filters.showMonthly);
     };
 
     pushToHistory = (dataObject, focusPosition) => {
