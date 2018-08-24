@@ -6,17 +6,18 @@ import { messages } from '../../notifications/NotificationActions';
 
 const request = wrap(agent, Promise);
 
-function getViewExportFile(budgetId, view, metrics, plans) {
+function getViewExportFile(budgetId, view, metrics, plans, showMonthly) {
     return (dispatch) => {
         const filters = {
             metrics,
             plans,
+            showMonthly,
         };
         const queryToSend = JSON.stringify(filters);
         const url = `${getApiUrl()}planning/budgets/${budgetId}/${view}/export?query=${queryToSend}`;
         window.open(url);
 
-        return dispatch(actions.requestViewDownload(budgetId, view, metrics, plans));
+        return dispatch(actions.requestViewDownload(budgetId, view, metrics, plans, showMonthly));
     };
 }
 

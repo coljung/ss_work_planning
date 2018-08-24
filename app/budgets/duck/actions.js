@@ -1,12 +1,13 @@
 import types from './types';
 
-function requestViewDownload(budgetId, view, metrics, plans) {
+function requestViewDownload(budgetId, view, metrics, plans, showMonthly) {
     return {
         type: types.REQUEST_VIEW_DOWNLOAD,
         budgetId,
         view,
         metrics,
         plans,
+        showMonthly,
     };
 }
 
