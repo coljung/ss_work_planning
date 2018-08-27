@@ -1,7 +1,7 @@
 import i18n from 'i18next';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Modal, Button, Checkbox, Row, Col, Divider, div } from 'antd';
+import { Modal, Button, Checkbox, Row, Col } from 'antd';
 import CheckedRadioGroup from '../components/common/CheckedRadioGroup';
 
 export default class FilterModal extends Component {
@@ -98,7 +98,7 @@ export default class FilterModal extends Component {
             planCheckedList: this.props.filters.selectedPlanTypes,
             metricIndeterminateCheck: !!this.props.filters.selectedMetrics.length && (this.props.filters.selectedMetrics.length < this.props.availableOptions.availableMetrics.length),
             checkAllMetric: this.props.filters.selectedMetrics.length === this.props.availableOptions.availableMetrics.length,
-            checkShowMonthly: this.props.filters.showMonthly === false ? false : this.props.filters.showMonthly,
+            checkShowMonthly: this.props.filters.showMonthly,
             isModalActive: true,
         });
     };
