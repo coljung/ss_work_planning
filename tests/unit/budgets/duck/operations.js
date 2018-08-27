@@ -167,7 +167,7 @@ describe('Budget view operations', () => {
 
             const store = mockStore({});
 
-            await store.dispatch(budgetViewOperations.fetchBudgetMetricData(budget, view, metrics, plans));
+            await store.dispatch(budgetViewOperations.fetchBudgetMetricData(budget, view, {metrics, plans}));
 
             expect(store.getActions()).toEqual(expectedActions);
         });
@@ -184,7 +184,7 @@ describe('Budget view operations', () => {
 
             const store = mockStore({});
 
-            await store.dispatch(budgetViewOperations.fetchBudgetMetricData(budget, view, metrics, plans));
+            await store.dispatch(budgetViewOperations.fetchBudgetMetricData(budget, view, {metrics, plans}));
 
             expect(store.getActions()).toMatchObject(expectedActions);
         });
