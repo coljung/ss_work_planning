@@ -82,6 +82,6 @@ describe('Budget view action creators', () => {
             plans
         };
 
-        expect(actions.requestViewDownload(budget, view, metrics, plans)).toEqual(expectedAction);
+        expect(actions.requestViewDownload(budget, view, {metrics, plans})).toEqual(expectedAction);
     });
 });

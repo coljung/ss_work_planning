@@ -191,23 +191,22 @@ describe('Budget view operations', () => {
     });
 
     describe('getViewExportFile', () => {
-        const budget = 1;
+        const budgetId = 1;
         const view = 'total';
-        const metrics = [ 'SALES' ];
         const plans = [ 'wp' ].map(x => ({
             plan: x,
             numberOfHistoricalYears: 5,
         }));
-        const showMonthly=true;
+        let filter = {metrics: ['SALES'], plans, showMonthly: true};
         it('Should handle exporting', async () => {
             window.open = jest.fn();
 
             const expectedActions = [
-                { type: types.REQUEST_VIEW_DOWNLOAD, budgetId: budget, view, metrics, plans, showMonthly },
+                { type: types.REQUEST_VIEW_DOWNLOAD, budgetId, view, metrics: filter.metrics, plans: filter.plans, showMonthly: filter.showMonthly },
             ];
             const store = mockStore({});
 
-            await store.dispatch(budgetViewOperations.getViewExportFile(budget, view, metrics, plans, showMonthly));
+            await store.dispatch(budgetViewOperations.getViewExportFile(budgetId, view, filter));
 
             expect(store.getActions()).toEqual(expectedActions);
         });
@@ -217,15 +216,15 @@ describe('Budget view operations', () => {
 
             const store = mockStore({});
 
-            await store.dispatch(budgetViewOperations.getViewExportFile(budget, view, metrics, plans, showMonthly));
+            await store.dispatch(budgetViewOperations.getViewExportFile(budgetId, view, filter));
 
             expect(openSpy).toHaveBeenCalledTimes(1);
             expect(openSpy).toBeCalledWith(`http://127.0.0.1/api/planning/budgets/1/total/export?query={\"metrics\":[\"SALES\"],\"plans\":[{\"plan\":\"wp\",\"numberOfHistoricalYears\":5}],\"showMonthly\":true}`);
         });
 
         it('Should call window.open while exporting for multiple metrics, multiple plan type', async () => {
-            const metrics = [ 'SALES', 'COGS' ];
-            const plans = [ 'wp', 'achd' ].map(x => ({
+            filter.metrics = [ 'SALES', 'COGS' ];
+            filter.plans = [ 'wp', 'achd' ].map(x => ({
                 plan: x,
                 numberOfHistoricalYears: 5,
             }));
@@ -233,7 +232,7 @@ describe('Budget view operations', () => {
 
             const store = mockStore({});
 
-            await store.dispatch(budgetViewOperations.getViewExportFile(budget, view, metrics, plans, showMonthly));
+            await store.dispatch(budgetViewOperations.getViewExportFile(budgetId, view, filter));
 
             expect(openSpy).toHaveBeenCalledTimes(1);
             expect(openSpy).toBeCalledWith(`http://127.0.0.1/api/planning/budgets/1/total/export?query={\"metrics\":[\"SALES\",\"COGS\"],\"plans\":[{\"plan\":\"wp\",\"numberOfHistoricalYears\":5},{\"plan\":\"achd\",\"numberOfHistoricalYears\":5}],\"showMonthly\":true}`);
