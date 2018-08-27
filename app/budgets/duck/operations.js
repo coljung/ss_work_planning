@@ -28,14 +28,8 @@ function fetchBudgetConfigData() {
     };
 }
 
-function fetchBudgetMetricData(budget, view, metrics, plans, showMonthly) {
+function fetchBudgetMetricData(budget, view, filters) {
     return (dispatch) => {
-        const filters = {
-            metrics,
-            plans,
-            showMonthly,
-        };
-
         dispatch(actions.requestBudgetViewData());
         return request
             .post(`${getApiUrl()}planning/budgets/${budget}/${view}`)
