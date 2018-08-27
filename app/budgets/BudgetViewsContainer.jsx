@@ -86,13 +86,11 @@ class BudgetViewsContainer extends Component {
 
     getExportedFile = () => {
         const filterView = {
-            budgetId: this.props.params.budgetId,
-            view: this.props.params.tab,
             metrics: this.props.filters.selectedMetrics,
-            planTypes: this.props.filters.selectedPlanTypes,
+            plans: this.props.filters.selectedPlanTypes,
             showMonthly: this.props.filters.showMonthly,
         };
-        this.props.getViewExportFile(filterView);
+        this.props.getViewExportFile(this.props.params.budgetId, this.props.params.tab, filterView);
     };
 
     pushToHistory = (dataObject, focusPosition) => {

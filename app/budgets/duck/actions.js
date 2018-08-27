@@ -1,10 +1,10 @@
 import types from './types';
 
-function requestViewDownload(filter) {
+function requestViewDownload(budgetId, view, filter) {
     return {
         type: types.REQUEST_VIEW_DOWNLOAD,
-        budgetId: filter.budgetId,
-        view: filter.view,
+        budgetId,
+        view,
         metrics: filter.metrics,
         plans: filter.plans,
         showMonthly: filter.showMonthly,
