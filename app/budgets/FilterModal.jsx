@@ -68,14 +68,14 @@ export default class FilterModal extends Component {
     handleSave = () => {
         const selectedMetricFilters = this.props.availableOptions.availableMetrics.filter(val => this.state.metricCheckedList.indexOf(val) !== -1);
 
-        // order planCheckedList as receibed from API
-        const orderedPlanTypeOptions = [];
-        this.props.availableOptions.availablePlans.map(y => (this.state.planCheckedList.map(x => (x.plan === y ? orderedPlanTypeOptions.push(x) : false))));
-        // Reset planCheckedList
-        this.setState({
-            planCheckedList: orderedPlanTypeOptions,
-        });
-        const selectedPlanFilters = this.state.planCheckedList;
+        const selectedPlanFilters = [];
+        for (let i = 0; i < this.props.availableOptions.availablePlans.length; i++) {
+            const foundPlan = this.state.planCheckedList.find(x => x.plan === this.props.availableOptions.availablePlans[i]);
+            if (foundPlan) {
+                selectedPlanFilters.push(foundPlan);
+            }
+        }
+
         this.props.onSave({ selectedMetrics: selectedMetricFilters, selectedPlanTypes: selectedPlanFilters, showMonthly: this.state.checkShowMonthly });
 
         this.closeModal();
@@ -105,16 +105,16 @@ export default class FilterModal extends Component {
 
     render() {
         const metricOptions = this.props.availableOptions.availableMetrics.map(x => ({
-            label: i18n.t(`metric.${x}`),
+            label: i18n.t(`filterModal.filters.metrics.${x}`),
             value: x,
         }));
         const planOptions = this.props.availableOptions.availablePlans.map(x => ({
-            label: i18n.t(`plan.${x}`),
+            label: i18n.t(`filterModal.filters.plans.${x}`),
             value: x,
         }));
 
         const yearOptions = [1, 2, 3, 5].map(x => ({
-            label: i18n.t(`year.${x}`),
+            label: i18n.t(`filterModal.filters.years.${x}`),
             value: x,
         }));
 

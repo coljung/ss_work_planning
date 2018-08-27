@@ -33,11 +33,28 @@ filterModal:
   selectAll: Select all
   saveButton: Apply Filter
   cancelButton: Cancel
-year:
-  1: 1Y
-  2: 2Y
-  3: 3Y
-  5: 5Y
+  filters:
+    metrics:
+      BOM COST: BOP
+      RECEIVED COST: RECEIPT $
+      ReceiptPercentage: RECEIPT %
+      COGS: COGS
+      SALES: SALES
+      GmDollar: GM$
+      GmPercentage: GM%
+      TURNOVER: TO
+      SellThrough: ST%
+      iRETAIL: iSALES
+      iGmPercentage: iGM%
+    plans:
+      wp: WORKING PLAN
+      dsrp: FORECAST
+      achd: ACTUAL
+    years:
+      1: 1Y
+      2: 2Y
+      3: 3Y
+      5: 5Y
 budgetView:
   backButton: Back
   filter: Filter

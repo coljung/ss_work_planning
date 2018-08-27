@@ -23,13 +23,13 @@ export default class CheckedRadioGroup extends Component {
     };
 
     componentWillReceiveProps(nextProps) {
-        if ('checked' in nextProps) {
+        if ('checked' in nextProps && this.state.checked !== nextProps.checked) {
             this.setState({
                 checked: nextProps.checked,
             });
         }
 
-        if ('selectedOption' in nextProps) {
+        if ('selectedOption' in nextProps && this.state.selectedOption !== nextProps.selectedOption) {
             this.setState({
                 selectedOption: nextProps.selectedOption,
             });
@@ -54,14 +54,16 @@ export default class CheckedRadioGroup extends Component {
 
     render() {
         return (
-            <Checkbox onChange={this.handleCheckBoxSelect}
-                      checked={this.state.checked}>
-                {this.props.text}
+            <div>
+                <Checkbox onChange={this.handleCheckBoxSelect}
+                          checked={this.state.checked}>
+                    {this.props.text}
+                </Checkbox>
                 <Radio.Group options={this.props.options}
                              value={this.state.selectedOption}
                              onChange={this.handleRadioSelect}
                              disabled={!this.state.checked} />
-            </Checkbox>
+            </div>
         );
     }
 }
