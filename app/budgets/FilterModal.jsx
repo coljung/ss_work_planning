@@ -18,6 +18,7 @@ export default class FilterModal extends Component {
         metricIndeterminateCheck: true,
         checkAllMetric: false,
         checkShowMonthly: true,
+        planUncheckedList: [],
     };
 
     onMetricCheckedListChange = (metricCheckedList) => {
@@ -35,19 +36,30 @@ export default class FilterModal extends Component {
         };
 
         const planTypeOptions = [...this.state.planCheckedList];
+        const uncheckedPlanTypeOptions = [...this.state.planUncheckedList];
 
+        // remove checked planTypesOption from an array by found Index
         const indexFound = planTypeOptions.map(x => x.plan === name).indexOf(true);
         if (indexFound > -1) {
             planTypeOptions.splice(indexFound, 1);
         }
 
-        // Add selected checked plan
+        // remove unchecked planTypesOption from an array by found Index
+        const indexUncheckedFound = uncheckedPlanTypeOptions.map(x => x.plan === name).indexOf(true);
+        if (indexUncheckedFound > -1) {
+            uncheckedPlanTypeOptions.splice(indexUncheckedFound, 1);
+        }
+
+        // Push to the appropriate array selected/unselected planType
         if (isPlanChecked === true) {
             planTypeOptions.push(changedPlanType);
+        } else {
+            uncheckedPlanTypeOptions.push(changedPlanType);
         }
 
         this.setState({
             planCheckedList: planTypeOptions,
+            planUncheckedList: uncheckedPlanTypeOptions,
         });
     };
 
@@ -62,6 +74,7 @@ export default class FilterModal extends Component {
     onCheckShowMonthlyChange = (e) => {
         this.setState({
             checkShowMonthly: e.target.checked,
+
         });
     };
 
@@ -153,6 +166,8 @@ export default class FilterModal extends Component {
                                     <div id='planTypeFilter' className="col filter-divider-line-pre filter-divider-line-post" >
                                         {planOptions.map((x) => {
                                             const planFound = this.state.planCheckedList.find(y => y.plan === x.value);
+                                            const uncheckedPlan = this.state.planUncheckedList.find(y => y.plan === x.value);
+                                            const planUncheckedFound = uncheckedPlan || {};
                                             return (
                                             <CheckedRadioGroup
                                             key={x.value}
@@ -160,7 +175,7 @@ export default class FilterModal extends Component {
                                             text={x.label}
                                             onChange={this.onPlanCheckedListChange}
                                             options={yearOptions}
-                                            selectedOption={planFound ? planFound.numberOfHistoricalYears : 5}
+                                            selectedOption={planFound ? planFound.numberOfHistoricalYears : planUncheckedFound.numberOfHistoricalYears ? planUncheckedFound.numberOfHistoricalYears : 5 }
                                             checked={!!planFound}>
                                             </CheckedRadioGroup>
                                             );

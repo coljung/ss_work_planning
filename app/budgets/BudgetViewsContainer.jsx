@@ -45,8 +45,8 @@ class BudgetViewsContainer extends Component {
         // get config data, then fetch metrics based on config
         this.props.fetchBudgetConfigData().then((config) => {
             const filter = {
-                selectedMetrics: config.config.availableMetrics,
-                selectedPlanTypes: config.config.availablePlans.map(x => ({ plan: x, numberOfHistoricalYears: 5 })),
+                selectedMetrics: config.config.defaultFilters.metrics,
+                selectedPlanTypes: config.config.defaultFilters.plans,
                 showMonthly: config.config.showMonthly,
             };
             this.applyFilters(filter);
