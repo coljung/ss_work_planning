@@ -17,6 +17,7 @@ export default class FilterModal extends Component {
         planCheckedList: [],
         metricIndeterminateCheck: true,
         checkAllMetric: false,
+        checkShowMonthly: true,
     };
 
     onMetricCheckedListChange = (metricCheckedList) => {
@@ -58,6 +59,12 @@ export default class FilterModal extends Component {
         });
     };
 
+    onCheckShowMonthlyChange = (e) => {
+        this.setState({
+            checkShowMonthly: e.target.checked,
+        });
+    };
+
     handleSave = () => {
         const selectedMetricFilters = this.props.availableOptions.availableMetrics.filter(val => this.state.metricCheckedList.indexOf(val) !== -1);
 
@@ -69,7 +76,7 @@ export default class FilterModal extends Component {
             }
         }
 
-        this.props.onSave({ selectedMetrics: selectedMetricFilters, selectedPlanTypes: selectedPlanFilters });
+        this.props.onSave({ selectedMetrics: selectedMetricFilters, selectedPlanTypes: selectedPlanFilters, showMonthly: this.state.checkShowMonthly });
 
         this.closeModal();
     };
@@ -80,6 +87,7 @@ export default class FilterModal extends Component {
             planCheckedList: [],
             metricIndeterminateCheck: false,
             checkAllMetric: false,
+            checkShowMonthly: true,
             isModalActive: false,
         });
     };
@@ -90,6 +98,7 @@ export default class FilterModal extends Component {
             planCheckedList: this.props.filters.selectedPlanTypes,
             metricIndeterminateCheck: !!this.props.filters.selectedMetrics.length && (this.props.filters.selectedMetrics.length < this.props.availableOptions.availableMetrics.length),
             checkAllMetric: this.props.filters.selectedMetrics.length === this.props.availableOptions.availableMetrics.length,
+            checkShowMonthly: this.props.filters.showMonthly,
             isModalActive: true,
         });
     };
@@ -115,34 +124,37 @@ export default class FilterModal extends Component {
                     title={i18n.t('filterModal.title')}
                     visible={this.state.isModalActive}
                     className='filterModal'
+                    width={800}
                     onOk={this.handleSave}
                     okText={i18n.t('filterModal.saveButton')}
                     okButtonProps={{ disabled: !this.state.metricCheckedList.length || !this.state.planCheckedList.length }}
                     onCancel={this.closeModal}
                     cancelText={i18n.t('filterModal.cancelButton')}>
                         <Row>
-                          <Col span={5}>{i18n.t('filterModal.metric')}</Col>
-                             <Col className='filter-divider-line-pre' span={5}>
-                                 <Checkbox
-                                     onChange={this.onMetricCheckAllChange}
-                                     indeterminate={this.state.metricIndeterminateCheck}
-                                     checked={this.state.checkAllMetric}>
-                                     {i18n.t('filterModal.selectAll')}
-                               </Checkbox>
-                          </Col>
-                          <Col className='filter-divider-line-post' span={14}>{i18n.t('filterModal.planType')}</Col>
-                        </Row>
-                        <Row>
-                            <Col className='filter-divider-line-pre' span={10}>
-                               <hr />
-                               <Checkbox.Group options={metricOptions} value={this.state.metricCheckedList} onChange={this.onMetricCheckedListChange} />
+                            <Col className='column-header' span={4}>{i18n.t('filterModal.metric')}</Col>
+                            <Col className='filter-divider-line-pre' span={3}>
+                            <Checkbox
+                                onChange={this.onMetricCheckAllChange}
+                                indeterminate={this.state.metricIndeterminateCheck}
+                                checked={this.state.checkAllMetric}>
+                                {i18n.t('filterModal.selectAll')}
+                            </Checkbox>
                             </Col>
-                            <Col className='filter-divider-line-post' id='PlanTypeFilter' span={14}>
-                               <hr className='filter-hr-post'/>
-                                {planOptions.map((x) => {
-                                    const planFound = this.state.planCheckedList.find(y => y.plan === x.value);
-                                    return (
-                                        <CheckedRadioGroup
+                            <Col className='column-header filter-divider-line-post filter-divider-line-pre' span={10}>{i18n.t('filterModal.planType')}</Col>
+                            <Col className='column-header filter-divider-line-post ' span={7}>{i18n.t('filterModal.period')}</Col>
+                        </Row>
+                        <hr />
+                        <Row>
+                            <Col span={24}>
+                                <div className="col-container">
+                                    <div id='metricFilter' className="col filter-divider-line-pre " >
+                                       <Checkbox.Group options={metricOptions} value={this.state.metricCheckedList} onChange={this.onMetricCheckedListChange} />
+                                    </div>
+                                    <div id='planTypeFilter' className="col filter-divider-line-pre filter-divider-line-post" >
+                                        {planOptions.map((x) => {
+                                            const planFound = this.state.planCheckedList.find(y => y.plan === x.value);
+                                            return (
+                                            <CheckedRadioGroup
                                             key={x.value}
                                             name={x.value}
                                             text={x.label}
@@ -150,10 +162,19 @@ export default class FilterModal extends Component {
                                             options={yearOptions}
                                             selectedOption={planFound ? planFound.numberOfHistoricalYears : 5}
                                             checked={!!planFound}>
-                                        </CheckedRadioGroup>
-                                    );
-                                })
-                                }
+                                            </CheckedRadioGroup>
+                                            );
+                                        })
+                                        }
+                                    </div>
+                                    <div id='periodFilter' className="col filter-divider-line-post" >
+                                        <Checkbox
+                                            onChange={this.onCheckShowMonthlyChange}
+                                            checked={this.state.checkShowMonthly}>
+                                            {i18n.t('filterModal.showMonthly')}
+                                        </Checkbox>
+                                    </div>
+                                </div>
                             </Col>
                         </Row>
                 </Modal>

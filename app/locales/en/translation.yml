@@ -25,9 +25,11 @@ createBudgetModal:
   useLastYearData: Use the last year's data
   spinner: Creating Budget...
 filterModal:
-  title: Filters
+  title: Filter
   metric: Metric
   planType: Plan Type
+  period: Period
+  showMonthly: Show monthly plan
   selectAll: Select all
   saveButton: Apply Filter
   cancelButton: Cancel

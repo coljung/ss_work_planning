@@ -47,6 +47,7 @@ class BudgetViewsContainer extends Component {
             const filter = {
                 selectedMetrics: config.config.availableMetrics,
                 selectedPlanTypes: config.config.availablePlans.map(x => ({ plan: x, numberOfHistoricalYears: 5 })),
+                showMonthly: config.config.showMonthly,
             };
             this.applyFilters(filter);
         });
@@ -61,13 +62,18 @@ class BudgetViewsContainer extends Component {
             || nextProps.filters !== this.props.filters
             || nextProps.params.tab !== this.props.params.tab
             || nextProps.params.budgetId !== this.props.params.budgetId) {
-            this.getMetricData(nextProps.params.budgetId, nextProps.params.tab, nextProps.filters.selectedMetrics, nextProps.filters.selectedPlanTypes);
+            const filters = {
+                metrics: nextProps.filters.selectedMetrics,
+                plans: nextProps.filters.selectedPlanTypes,
+                showMonthly: nextProps.filters.showMonthly,
+            };
+            this.getMetricData(nextProps.params.budgetId, nextProps.params.tab, filters);
         }
     }
 
-    getMetricData(budgetId, tab, metricFilter = null, planFilter = null) {
+    getMetricData(budgetId, tab, filters = { metrics: null, plans: null, showMonthly: true }) {
         const { config, router: { location } } = this.props;
-        this.props.fetchBudgetMetricData(budgetId, tab, metricFilter, planFilter);
+        this.props.fetchBudgetMetricData(budgetId, tab, filters);
     }
 
     pushRoute(newTab = null) {
@@ -84,7 +90,12 @@ class BudgetViewsContainer extends Component {
     }
 
     getExportedFile = () => {
-        this.props.getViewExportFile(this.props.params.budgetId, this.props.params.tab, this.props.filters.selectedMetrics, this.props.filters.selectedPlanTypes);
+        const filterView = {
+            metrics: this.props.filters.selectedMetrics,
+            plans: this.props.filters.selectedPlanTypes,
+            showMonthly: this.props.filters.showMonthly,
+        };
+        this.props.getViewExportFile(this.props.params.budgetId, this.props.params.tab, filterView);
     };
 
     pushToHistory = (dataObject, focusPosition) => {

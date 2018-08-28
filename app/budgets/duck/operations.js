@@ -6,17 +6,13 @@ import { messages } from '../../notifications/NotificationActions';
 
 const request = wrap(agent, Promise);
 
-function getViewExportFile(budgetId, view, metrics, plans) {
+function getViewExportFile(budgetId, view, filter) {
     return (dispatch) => {
-        const filters = {
-            metrics,
-            plans,
-        };
-        const queryToSend = JSON.stringify(filters);
+        const queryToSend = JSON.stringify(filter);
         const url = `${getApiUrl()}planning/budgets/${budgetId}/${view}/export?query=${queryToSend}`;
         window.open(url);
 
-        return dispatch(actions.requestViewDownload(budgetId, view, metrics, plans));
+        return dispatch(actions.requestViewDownload(budgetId, view, filter));
     };
 }
 
@@ -32,13 +28,8 @@ function fetchBudgetConfigData() {
     };
 }
 
-function fetchBudgetMetricData(budget, view, metrics, plans) {
+function fetchBudgetMetricData(budget, view, filters) {
     return (dispatch) => {
-        const filters = {
-            metrics,
-            plans,
-        };
-
         dispatch(actions.requestBudgetViewData());
         return request
             .post(`${getApiUrl()}planning/budgets/${budget}/${view}`)
