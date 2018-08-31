@@ -12,7 +12,7 @@ export const currencyFormat = (decimals = false) => ({
 export const percentageFormat = {
     pattern: {
         output: 'percent',
-        mantissa: 0,
+        mantissa: 2,
         spaceSeparated: true,
     },
 };
