@@ -28,8 +28,6 @@ filterModal:
   title: Filter
   metric: Metric
   planType: Plan Type
-  period: Period
-  showMonthly: Show monthly plan
   selectAll: Select all
   saveButton: Apply Filter
   cancelButton: Cancel

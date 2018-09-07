@@ -47,7 +47,6 @@ class BudgetViewsContainer extends Component {
             const filter = {
                 selectedMetrics: config.config.defaultFilters.metrics,
                 selectedPlanTypes: config.config.defaultFilters.plans,
-                showMonthly: config.config.defaultFilters.showMonthly,
             };
             this.applyFilters(filter);
         });
@@ -65,14 +64,12 @@ class BudgetViewsContainer extends Component {
             const filters = {
                 metrics: nextProps.filters.selectedMetrics,
                 plans: nextProps.filters.selectedPlanTypes,
-                showMonthly: nextProps.filters.showMonthly,
             };
             this.getMetricData(nextProps.params.budgetId, nextProps.params.tab, filters);
         }
     }
 
-    getMetricData(budgetId, tab, filters = { metrics: null, plans: null, showMonthly: true }) {
-        const { config, router: { location } } = this.props;
+    getMetricData(budgetId, tab, filters = { metrics: null, plans: null }) {
         this.props.fetchBudgetMetricData(budgetId, tab, filters);
     }
 
@@ -93,7 +90,6 @@ class BudgetViewsContainer extends Component {
         const filterView = {
             metrics: this.props.filters.selectedMetrics,
             plans: this.props.filters.selectedPlanTypes,
-            showMonthly: this.props.filters.showMonthly,
         };
         this.props.getViewExportFile(this.props.params.budgetId, this.props.params.tab, filterView);
     };
