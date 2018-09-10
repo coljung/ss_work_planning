@@ -197,12 +197,12 @@ describe('Budget view operations', () => {
             plan: x,
             numberOfHistoricalYears: 5,
         }));
-        let filter = {metrics: ['SALES'], plans, showMonthly: true};
+        let filter = {metrics: ['SALES'], plans};
         it('Should handle exporting', async () => {
             window.open = jest.fn();
 
             const expectedActions = [
-                { type: types.REQUEST_VIEW_DOWNLOAD, budgetId, view, metrics: filter.metrics, plans: filter.plans, showMonthly: filter.showMonthly },
+                { type: types.REQUEST_VIEW_DOWNLOAD, budgetId, view, metrics: filter.metrics, plans: filter.plans },
             ];
             const store = mockStore({});
 
@@ -219,7 +219,7 @@ describe('Budget view operations', () => {
             await store.dispatch(budgetViewOperations.getViewExportFile(budgetId, view, filter));
 
             expect(openSpy).toHaveBeenCalledTimes(1);
-            expect(openSpy).toBeCalledWith(`http://127.0.0.1/api/planning/budgets/1/total/export?query={\"metrics\":[\"SALES\"],\"plans\":[{\"plan\":\"wp\",\"numberOfHistoricalYears\":5}],\"showMonthly\":true}`);
+            expect(openSpy).toBeCalledWith(`http://127.0.0.1/api/planning/budgets/1/total/export?query={\"metrics\":[\"SALES\"],\"plans\":[{\"plan\":\"wp\",\"numberOfHistoricalYears\":5}]}`);
         });
 
         it('Should call window.open while exporting for multiple metrics, multiple plan type', async () => {
@@ -235,7 +235,7 @@ describe('Budget view operations', () => {
             await store.dispatch(budgetViewOperations.getViewExportFile(budgetId, view, filter));
 
             expect(openSpy).toHaveBeenCalledTimes(1);
-            expect(openSpy).toBeCalledWith(`http://127.0.0.1/api/planning/budgets/1/total/export?query={\"metrics\":[\"SALES\",\"COGS\"],\"plans\":[{\"plan\":\"wp\",\"numberOfHistoricalYears\":5},{\"plan\":\"achd\",\"numberOfHistoricalYears\":5}],\"showMonthly\":true}`);
+            expect(openSpy).toBeCalledWith(`http://127.0.0.1/api/planning/budgets/1/total/export?query={\"metrics\":[\"SALES\",\"COGS\"],\"plans\":[{\"plan\":\"wp\",\"numberOfHistoricalYears\":5},{\"plan\":\"achd\",\"numberOfHistoricalYears\":5}]}`);
         });
     });
 
