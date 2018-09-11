@@ -33,14 +33,12 @@ filterModal:
   cancelButton: Cancel
   filters:
     metrics:
-      BOM COST: BOP
       RECEIVED COST: RECEIPT $
       ReceiptPercentage: RECEIPT %
       COGS: COGS
       SALES: SALES
       GmDollar: GM$
       GmPercentage: GM%
-      TURNOVER: TO
       SellThrough: ST%
       iRETAIL: iSALES
       iGmPercentage: iGM%
@@ -68,14 +66,12 @@ budgetView:
   title: 404!
   description: Page not found
 metric:
-  BOM COST: BOP
   RECEIVED COST: RECEIPT $
   ReceiptPercentage: RECEIPT %
   COGS: COGS
   SALES: SALES
   GmDollar: GM$
   GmPercentage: GM%
-  TURNOVER: TO
   SellThrough: ST%
   iRETAIL: iSALES
   iGmPercentage: iGM%
