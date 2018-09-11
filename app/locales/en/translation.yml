@@ -34,14 +34,11 @@ filterModal:
   filters:
     metrics:
       RECEIVED COST: RECEIPT $
-      ReceiptPercentage: RECEIPT %
       COGS: COGS
       SALES: SALES
       GmDollar: GM$
       GmPercentage: GM%
       SellThrough: ST%
-      iRETAIL: iSALES
-      iGmPercentage: iGM%
     plans:
       wp: WORKING PLAN
       dsrp: FORECAST
@@ -67,14 +64,11 @@ budgetView:
   description: Page not found
 metric:
   RECEIVED COST: RECEIPT $
-  ReceiptPercentage: RECEIPT %
   COGS: COGS
   SALES: SALES
   GmDollar: GM$
   GmPercentage: GM%
   SellThrough: ST%
-  iRETAIL: iSALES
-  iGmPercentage: iGM%
 plan:
   wp: WORKING PLAN
   dsrp: FORECAST
