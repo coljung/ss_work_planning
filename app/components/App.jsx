@@ -58,7 +58,7 @@ export default class App extends Component {
                             triggerMenuCollapse={this.toggleFromOutside} />
                     </Layout.Sider>
                     <Layout.Content>
-                        <main style={{ flex: 1, overflowY: 'auto', padding: '0 25px 25px' }}>
+                        <main>
                             {this.props.children}
                             <NotificationManager />
                         </main>
