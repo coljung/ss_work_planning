@@ -1,6 +1,12 @@
 .budgetList{
-    list-style: disc;
+    padding-left: 0;
+    list-style: disc inside;
     margin: 0 0 20px 20px;
+    margin-left: 0!important;
+
+    h4 {
+        display: inline-block;
+    }
     > li {
         margin-bottom: 5px;
     }
@@ -15,5 +21,12 @@
     .ant-modal-body & {
         max-height: 300px;
         overflow-y: auto;
+    }
+    .budgetListLink{
+        color: #1074d0;
+        span{
+            display: inline-block;
+            cursor: pointer;
+        }
     }
 }

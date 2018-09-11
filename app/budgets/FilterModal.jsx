@@ -1,7 +1,7 @@
 import i18n from 'i18next';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Modal, Button, Checkbox, Row, Col } from 'antd';
+import { Modal, Button, Checkbox, Row, Col, Divider } from 'antd';
 import CheckedRadioGroup from '../components/common/CheckedRadioGroup';
 
 export default class FilterModal extends Component {
@@ -134,46 +134,44 @@ export default class FilterModal extends Component {
                     onCancel={this.closeModal}
                     cancelText={i18n.t('filterModal.cancelButton')}>
                         <Row>
-                            <Col className='column-header' span={5}>{i18n.t('filterModal.metric')}</Col>
-                            <Col className='filter-divider-line-pre' span={5}>
-                                <Checkbox
-                                    onChange={this.onMetricCheckAllChange}
-                                    indeterminate={this.state.metricIndeterminateCheck}
-                                    checked={this.state.checkAllMetric}>
-                                    {i18n.t('filterModal.selectAll')}
-                                </Checkbox>
+                            <Col className='col-header' span={10}>
+                                <Row>
+                                    <Col span={8}>{i18n.t('filterModal.metric')}</Col>
+                                    <Col span={12} offset={4}>
+                                        <Checkbox
+                                            onChange={this.onMetricCheckAllChange}
+                                            indeterminate={this.state.metricIndeterminateCheck}
+                                            checked={this.state.checkAllMetric}>
+                                            {i18n.t('filterModal.selectAll')}
+                                        </Checkbox>
+                                    </Col>
+                                </Row>
                             </Col>
-                            <Col className='column-header filter-divider-line-post' span={14}>{i18n.t('filterModal.planType')}</Col>
+                            <Col className='col-header' span={14}>{i18n.t('filterModal.planType')}</Col>
                         </Row>
-                        <hr />
+                        <Divider />
                         <Row>
-                            <Col span={10} className="col filter-divider-line-pre" >
-                                <div className="col-container">
-                                    <div id='metricFilter'>
-                                       <Checkbox.Group options={metricOptions} value={this.state.metricCheckedList} onChange={this.onMetricCheckedListChange} />
-                                    </div>
-                                </div>
+                            <Col span={10} className="col" >
+                                <Checkbox.Group options={metricOptions} value={this.state.metricCheckedList} onChange={this.onMetricCheckedListChange} />
                             </Col>
-                            <Col span={14} className="col filter-divider-line-post">
-                                <div id='planTypeFilter'>
-                                    {planOptions.map((x) => {
-                                        const planFound = this.state.planCheckedList.find(y => y.plan === x.value);
-                                        const uncheckedPlan = this.state.planUncheckedList.find(y => y.plan === x.value);
-                                        const planUncheckedFound = uncheckedPlan || {};
-                                        return (
-                                        <CheckedRadioGroup
-                                        key={x.value}
-                                        name={x.value}
-                                        text={x.label}
-                                        onChange={this.onPlanCheckedListChange}
-                                        options={yearOptions}
-                                        selectedOption={planFound ? planFound.numberOfHistoricalYears : planUncheckedFound.numberOfHistoricalYears ? planUncheckedFound.numberOfHistoricalYears : 5 }
-                                        checked={!!planFound}>
-                                        </CheckedRadioGroup>
-                                        );
-                                    })
-                                    }
-                                </div>
+                            <Col span={14} className="col">
+                                {planOptions.map((x) => {
+                                    const planFound = this.state.planCheckedList.find(y => y.plan === x.value);
+                                    const uncheckedPlan = this.state.planUncheckedList.find(y => y.plan === x.value);
+                                    const planUncheckedFound = uncheckedPlan || {};
+                                    return (
+                                    <CheckedRadioGroup
+                                    key={x.value}
+                                    name={x.value}
+                                    text={x.label}
+                                    onChange={this.onPlanCheckedListChange}
+                                    options={yearOptions}
+                                    selectedOption={planFound ? planFound.numberOfHistoricalYears : planUncheckedFound.numberOfHistoricalYears ? planUncheckedFound.numberOfHistoricalYears : 5 }
+                                    checked={!!planFound}>
+                                    </CheckedRadioGroup>
+                                    );
+                                })
+                                }
                             </Col>
                         </Row>
                 </Modal>
