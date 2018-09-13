@@ -19,8 +19,6 @@ describe('FilterModal', () => {
 
     it('Should have modal', () => {
         setResource('filterModal.title');
-        setResource('filterModal.saveButton');
-        setResource('filterModal.cancelButton');
 
         const output = shallow(
             <FilterModal
@@ -31,8 +29,6 @@ describe('FilterModal', () => {
 
         const modal = output.find(Modal).first();
         expect(modal.prop('title')).toEqual('filterModal.title');
-        expect(modal.prop('okText')).toEqual('filterModal.saveButton');
-        expect(modal.prop('cancelText')).toEqual('filterModal.cancelButton');
 
         i18nStub.restore();
     });
