@@ -31,6 +31,7 @@ filterModal:
   selectAll: Select all
   saveButton: Apply Filter
   cancelButton: Cancel
+  note: Select at least 1 Metric and 1 Plan Type
   filters:
     metrics:
       RECEIVED COST: RECEIPT $
