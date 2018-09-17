@@ -19,8 +19,6 @@ describe('FilterModal', () => {
 
     it('Should have modal', () => {
         setResource('filterModal.title');
-        setResource('filterModal.saveButton');
-        setResource('filterModal.cancelButton');
 
         const output = shallow(
             <FilterModal
@@ -31,8 +29,6 @@ describe('FilterModal', () => {
 
         const modal = output.find(Modal).first();
         expect(modal.prop('title')).toEqual('filterModal.title');
-        expect(modal.prop('okText')).toEqual('filterModal.saveButton');
-        expect(modal.prop('cancelText')).toEqual('filterModal.cancelButton');
 
         i18nStub.restore();
     });
@@ -124,13 +120,12 @@ describe('FilterModal', () => {
 
         const metricFilters = ['metric1'];
         const planFilters = ['plan1'];
-        const showMonthly = true;
         const onSave = jest.fn();
 
         const output = mount(
             <FilterModal
                 onSave={onSave}
-                filters={{ selectedMetrics: metricFilters, selectedPlanTypes: createOptions(...planFilters), showMonthly }}
+                filters={{ selectedMetrics: metricFilters, selectedPlanTypes: createOptions(...planFilters) }}
                 availableOptions={{ availableMetrics: metricFilters, availablePlans: planFilters }} />
         );
 
@@ -141,7 +136,7 @@ describe('FilterModal', () => {
         output.find(Modal).find(Button).at(1).simulate('click');
 
         expect(onSave).toHaveBeenCalledTimes(1);
-        expect(onSave).toBeCalledWith({ selectedMetrics: ['metric1'], selectedPlanTypes: [{ plan: 'plan1', numberOfHistoricalYears: 5 }], showMonthly: true });
+        expect(onSave).toBeCalledWith({ selectedMetrics: ['metric1'], selectedPlanTypes: [{ plan: 'plan1', numberOfHistoricalYears: 5 }] });
     });
 
     it('Should pass the changed checked metrics in save handle', () => {
@@ -151,14 +146,13 @@ describe('FilterModal', () => {
 
         const metricFilters = ['metric1', 'metric2'];
         const planFilters = ['plan1'];
-        const showMonthly = true;
 
         const onSave = jest.fn();
 
         const output = mount(
             <FilterModal
                 onSave={onSave}
-                filters={{ selectedMetrics: metricFilters, selectedPlanTypes: createOptions(...planFilters), showMonthly }}
+                filters={{ selectedMetrics: metricFilters, selectedPlanTypes: createOptions(...planFilters) }}
                 availableOptions={{ availableMetrics: metricFilters, availablePlans: planFilters }} />
         );
         // Click the open button
@@ -171,7 +165,7 @@ describe('FilterModal', () => {
         output.find(Modal).find(Button).at(1).simulate('click');
 
         expect(onSave).toHaveBeenCalledTimes(1);
-        expect(onSave).toBeCalledWith({ selectedMetrics: ['metric2'], selectedPlanTypes: [{ plan: 'plan1', numberOfHistoricalYears: 5 }], showMonthly: true });
+        expect(onSave).toBeCalledWith({ selectedMetrics: ['metric2'], selectedPlanTypes: [{ plan: 'plan1', numberOfHistoricalYears: 5 }] });
     });
 
     it('Should pass the changed checked plans in save handle', () => {
@@ -210,13 +204,12 @@ describe('FilterModal', () => {
 
         const metricFilters = ['metric1'];
         const planFilters = ['plan1', 'plan2'];
-        const showMonthly = true;
         const onSave = jest.fn();
 
         const output = mount(
             <FilterModal
                 onSave={onSave}
-                filters={{ selectedMetrics: metricFilters, selectedPlanTypes: createOptions('plan1'), showMonthly }}
+                filters={{ selectedMetrics: metricFilters, selectedPlanTypes: createOptions('plan1') }}
                 availableOptions={{ availableMetrics: metricFilters, availablePlans: planFilters }} />
         );
 
@@ -230,7 +223,7 @@ describe('FilterModal', () => {
         output.find(Modal).find(Button).at(1).simulate('click');
 
         expect(onSave).toHaveBeenCalledTimes(1);
-        expect(onSave).toBeCalledWith({ selectedMetrics: ['metric1'], selectedPlanTypes: [{ plan: 'plan1', numberOfHistoricalYears: 5 }, { plan: 'plan2', numberOfHistoricalYears: 5 }], showMonthly: true });
+        expect(onSave).toBeCalledWith({ selectedMetrics: ['metric1'], selectedPlanTypes: [{ plan: 'plan1', numberOfHistoricalYears: 5 }, { plan: 'plan2', numberOfHistoricalYears: 5 }] });
     });
 
     it('Should pass all items after checking all', () => {
@@ -240,13 +233,12 @@ describe('FilterModal', () => {
 
         const metricFilters = ['metric1', 'metric2'];
         const planFilters = ['plan1'];
-        const showMonthly = true;
         const onSave = jest.fn();
 
         const output = mount(
             <FilterModal
                 onSave={onSave}
-                filters={{ selectedMetrics: metricFilters, selectedPlanTypes: createOptions(...planFilters), showMonthly }}
+                filters={{ selectedMetrics: metricFilters, selectedPlanTypes: createOptions(...planFilters) }}
                 availableOptions={{ availableMetrics: metricFilters, availablePlans: planFilters }} />
         );
 
@@ -261,7 +253,7 @@ describe('FilterModal', () => {
         output.find(Modal).find(Button).at(1).simulate('click');
 
         expect(onSave).toHaveBeenCalledTimes(1);
-        expect(onSave).toBeCalledWith({ selectedMetrics: ['metric1', 'metric2'], selectedPlanTypes: [{ plan: 'plan1', numberOfHistoricalYears: 5 }], showMonthly: true });
+        expect(onSave).toBeCalledWith({ selectedMetrics: ['metric1', 'metric2'], selectedPlanTypes: [{ plan: 'plan1', numberOfHistoricalYears: 5 }] });
     });
 
     it('Should disable apply button after checking none', () => {
@@ -404,50 +396,6 @@ describe('FilterModal', () => {
 
         expect(nodes.at(0).prop('text')).toEqual('filterModal.filters.plans.plan1');
         expect(nodes.at(1).prop('text')).toEqual('filterModal.filters.plans.plan2');
-    });
-
-    it('Should contain show month checked option', () => {
-        setResource('filterModal.filters.plans.plan1');
-        setResource('filterModal.filters.metrics.metric1');
-        setResource('filterModal.showMonthly');
-
-        const metricFilters = ['metric1'];
-        const planFilters = ['plan1'];
-        const showMonthly = true;
-
-        const output = mount(
-            <FilterModal
-                onSave={jest.fn()}
-                filters={{selectedMetrics:metricFilters, selectedPlanTypes: createOptions(...planFilters), showMonthly}}
-                availableOptions={{availableMetrics:metricFilters, availablePlans: planFilters }} />
-        );
-
-        output.find(Button).first().simulate('click');
-        const nodes = output.find(Modal).find(Checkbox).at(3);
-        expect(nodes.text()).toEqual('filterModal.showMonthly');
-        expect(nodes.prop('checked') ).toBeTruthy();
-    });
-
-    it('Should contain show month checked option with unchecked ', () => {
-        setResource('filterModal.filters.plans.plan1');
-        setResource('filterModal.filters.metrics.metric1');
-        setResource('filterModal.showMonthly');
-
-        const metricFilters = ['metric1'];
-        const planFilters = ['plan1'];
-        const showMonthly = false;
-
-        const output = mount(
-            <FilterModal
-                onSave={jest.fn()}
-                filters={{selectedMetrics:metricFilters, selectedPlanTypes: createOptions(...planFilters), showMonthly}}
-                availableOptions={{availableMetrics:metricFilters, availablePlans: planFilters }} />
-        );
-
-        output.find(Button).first().simulate('click');
-        const nodes = output.find(Modal).find(Checkbox).at(3);
-        expect(nodes.text()).toEqual('filterModal.showMonthly');
-        expect(nodes.prop('checked')).toEqual(false);
     });
 
     it('Should contain a list of same available metrics', () => {

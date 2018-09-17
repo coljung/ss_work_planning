@@ -50,7 +50,6 @@ class BudgetViewsContainer extends Component {
                 const filter = {
                     selectedMetrics: res.config.defaultFilters.metrics,
                     selectedPlanTypes: res.config.defaultFilters.plans,
-                    showMonthly: res.config.defaultFilters.showMonthly,
                 };
                 this.applyFilters(filter);
             }
@@ -69,14 +68,12 @@ class BudgetViewsContainer extends Component {
             const filters = {
                 metrics: nextProps.filters.selectedMetrics,
                 plans: nextProps.filters.selectedPlanTypes,
-                showMonthly: nextProps.filters.showMonthly,
             };
             this.getMetricData(nextProps.params.budgetId, nextProps.params.tab, filters);
         }
     }
 
-    getMetricData(budgetId, tab, filters = { metrics: null, plans: null, showMonthly: true }) {
-        const { config, router: { location } } = this.props;
+    getMetricData(budgetId, tab, filters = { metrics: null, plans: null }) {
         this.props.fetchBudgetMetricData(budgetId, tab, filters);
     }
 
@@ -97,7 +94,6 @@ class BudgetViewsContainer extends Component {
         const filterView = {
             metrics: this.props.filters.selectedMetrics,
             plans: this.props.filters.selectedPlanTypes,
-            showMonthly: this.props.filters.showMonthly,
         };
         this.props.getViewExportFile(this.props.params.budgetId, this.props.params.tab, filterView);
     };
@@ -142,25 +138,23 @@ class BudgetViewsContainer extends Component {
 
         return (
             <div>
-                <div className="budgetHeader">
-                    <Row type="flex" justify="start" className="innerHeader">
-                        <Col span={8} className="col">
-                            <h3> {this.props.params.seasonName} </h3>
-                        </Col>
-                        <Col span={16} className="col">
-                            <BudgetViewActionsBar
-                                viewHistory={viewHistory}
-                                isLoading={this.props.isBudgetLoading || this.props.isDataSpreading}
-                                onBack={ROUTE_DASHBOARD}
-                                onUndo={this.undo}
-                                onRedo={this.redo}
-                                onExport={this.getExportedFile}>
-                                <FilterModal onSave={this.applyFilters} availableOptions={this.props.config} filters={this.props.filters} />
-                            </BudgetViewActionsBar>
-                        </Col>
-                    </Row>
-                </div>
-                <div className="budgetBody">
+                <Row type="flex" justify="start" className="innerHeader">
+                    <Col span={8} className="col">
+                        <h3> {this.props.params.seasonName} </h3>
+                    </Col>
+                    <Col span={16} className="col">
+                        <BudgetViewActionsBar
+                            viewHistory={viewHistory}
+                            isLoading={this.props.isBudgetLoading || this.props.isDataSpreading}
+                            onBack={ROUTE_DASHBOARD}
+                            onUndo={this.undo}
+                            onRedo={this.redo}
+                            onExport={this.getExportedFile}>
+                            <FilterModal onSave={this.applyFilters} availableOptions={this.props.config} filters={this.props.filters} />
+                        </BudgetViewActionsBar>
+                    </Col>
+                </Row>
+                <div>
                     <ViewPicker tab={this.props.params.tab} onTabChange={this.changeTab} />
                     <SectionContainer
                         view={this.props.params.tab}

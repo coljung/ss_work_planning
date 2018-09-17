@@ -6,7 +6,6 @@ const initialState = {
     filters: {
         availableMetrics: [],
         availablePlans: [],
-        showMonthly: false,
     },
     isBudgetLoading: false,
     isDataSpreading: false,

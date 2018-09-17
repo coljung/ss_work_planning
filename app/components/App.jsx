@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Layout, Icon } from 'antd';
+import { Layout, Icon, Spin } from 'antd';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import HeaderContent from './common/HeaderContent';
@@ -89,7 +89,7 @@ class App extends Component {
         const { user } = this.props;
 
         if (!this.state.appReady) { // And have a user in store
-            return (<div>LOADING</div>);
+            return (<div className="loading"><Spin size="large" /></div>);
         }
 
         if (!user) { // And have a user in store
@@ -116,7 +116,7 @@ class App extends Component {
                             triggerMenuCollapse={this.toggleFromOutside} />
                     </Layout.Sider>
                     <Layout.Content>
-                        <main style={{ flex: 1, overflowY: 'auto', padding: '0 25px 25px' }}>
+                        <main>
                             {this.props.children}
                             <NotificationManager />
                         </main>

@@ -29,24 +29,18 @@ filterModal:
   title: Filter
   metric: Metric
   planType: Plan Type
-  period: Period
-  showMonthly: Show monthly plan
   selectAll: Select all
   saveButton: Apply Filter
   cancelButton: Cancel
+  note: Select at least 1 Metric and 1 Plan Type
   filters:
     metrics:
-      BOM COST: BOP
       RECEIVED COST: RECEIPT $
-      ReceiptPercentage: RECEIPT %
       COGS: COGS
       SALES: SALES
       GmDollar: GM$
       GmPercentage: GM%
-      TURNOVER: TO
       SellThrough: ST%
-      iRETAIL: iSALES
-      iGmPercentage: iGM%
     plans:
       wp: WORKING PLAN
       dsrp: FORECAST
@@ -71,17 +65,12 @@ budgetView:
   title: 404!
   description: Page not found
 metric:
-  BOM COST: BOP
   RECEIVED COST: RECEIPT $
-  ReceiptPercentage: RECEIPT %
   COGS: COGS
   SALES: SALES
   GmDollar: GM$
   GmPercentage: GM%
-  TURNOVER: TO
   SellThrough: ST%
-  iRETAIL: iSALES
-  iGmPercentage: iGM%
 plan:
   wp: WORKING PLAN
   dsrp: FORECAST

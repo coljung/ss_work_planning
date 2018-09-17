@@ -53,15 +53,7 @@ exports[`App should render correctly 1`] = `
     <div
       className="ant-layout-content"
     >
-      <main
-        style={
-          Object {
-            "flex": 1,
-            "overflowY": "auto",
-            "padding": "0 25px 25px",
-          }
-        }
-      >
+      <main>
         <NotificationManager12345643 />
       </main>
     </div>

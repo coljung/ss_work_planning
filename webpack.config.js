@@ -4,7 +4,6 @@ const fs = require('fs');
 const webpack = require('webpack');
 const autoprefixer = require('autoprefixer');
 const chalk = require('chalk');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const Visualizer = require('webpack-visualizer-plugin');
 const ProgressBarPlugin = require('progress-bar-webpack-plugin');
@@ -90,10 +89,6 @@ module.exports = {
                 test: /\.(gif|jpg|png|woff|svg|eot|ttf)\??.*$/,
                 loader: 'url-loader?limit=50000&name=[path][name].[ext]',
             },
-            {
-                test: /\.html$/,
-                loader: 'html-loader',
-            },
         ],
     },
     plugins: [
@@ -116,9 +111,6 @@ module.exports = {
                 context: __dirname,
                 postcss: [autoprefixer],
             },
-        }),
-        new HtmlWebpackPlugin({
-            template: './public/index.html',
         }),
         new Visualizer({
             filename: './webpackBundleStats.html',

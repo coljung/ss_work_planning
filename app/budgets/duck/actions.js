@@ -7,7 +7,6 @@ function requestViewDownload(budgetId, view, filter) {
         view,
         metrics: filter.metrics,
         plans: filter.plans,
-        showMonthly: filter.showMonthly,
     };
 }
 
