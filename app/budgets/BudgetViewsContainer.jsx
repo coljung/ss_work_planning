@@ -10,6 +10,7 @@ import BudgetViewActionsBar from './BudgetViewActionsBar';
 import FilterModal from './FilterModal';
 import ViewPicker from './ViewPicker';
 import SectionContainer from './TableContainer';
+import { RECEIVE_BUDGETS_CONFIG_DATA } from './duck/types';
 import { ROUTE_BUDGET, ROUTE_DASHBOARD } from '../constants/routes';
 
 class BudgetViewsContainer extends Component {
@@ -43,13 +44,16 @@ class BudgetViewsContainer extends Component {
 
     componentDidMount() {
         // get config data, then fetch metrics based on config
-        this.props.fetchBudgetConfigData().then((config) => {
-            const filter = {
-                selectedMetrics: config.config.defaultFilters.metrics,
-                selectedPlanTypes: config.config.defaultFilters.plans,
-                showMonthly: config.config.defaultFilters.showMonthly,
-            };
-            this.applyFilters(filter);
+        this.props.fetchBudgetConfigData().then((res) => {
+            // Validate if it's really a config than came with `res` var
+            if (res.type === RECEIVE_BUDGETS_CONFIG_DATA) {
+                const filter = {
+                    selectedMetrics: res.config.defaultFilters.metrics,
+                    selectedPlanTypes: res.config.defaultFilters.plans,
+                    showMonthly: res.config.defaultFilters.showMonthly,
+                };
+                this.applyFilters(filter);
+            }
         });
     }
 

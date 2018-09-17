@@ -1,17 +1,22 @@
+/* eslint-disable import/no-commonjs, import/no-extraneous-dependencies */
 const path = require('path');
 const fs = require('fs');
 const webpack = require('webpack');
 const autoprefixer = require('autoprefixer');
 const chalk = require('chalk');
-// eslint-disable-next-line import/no-extraneous-dependencies
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const Visualizer = require('webpack-visualizer-plugin');
 const ProgressBarPlugin = require('progress-bar-webpack-plugin');
-
 const config = require('config');
-
 const lessToJs = require('less-vars-to-js');
-const themeVariables = lessToJs(fs.readFileSync(path.join(__dirname, './app/styles/default-vars.less'), 'utf8'));
+
+const themeVariables = lessToJs(
+    fs.readFileSync(
+        path.join(__dirname, './app/styles/default-vars.less'),
+        'utf8',
+    )
+);
 
 module.exports = {
     context: __dirname,
@@ -85,6 +90,10 @@ module.exports = {
                 test: /\.(gif|jpg|png|woff|svg|eot|ttf)\??.*$/,
                 loader: 'url-loader?limit=50000&name=[path][name].[ext]',
             },
+            {
+                test: /\.html$/,
+                loader: 'html-loader',
+            },
         ],
     },
     plugins: [
@@ -107,6 +116,9 @@ module.exports = {
                 context: __dirname,
                 postcss: [autoprefixer],
             },
+        }),
+        new HtmlWebpackPlugin({
+            template: './public/index.html',
         }),
         new Visualizer({
             filename: './webpackBundleStats.html',

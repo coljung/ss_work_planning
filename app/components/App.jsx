@@ -1,21 +1,69 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Layout, Icon } from 'antd';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import HeaderContent from './common/HeaderContent';
 import CustomNavigation from './customNavigation/CustomNavigation';
 import NotificationManager from '../notifications/NotificationManager';
+import { me } from '../user/duck/actions';
+import { messages } from '../notifications/NotificationActions';
 
-export default class App extends Component {
+class App extends Component {
+    static propTypes = {
+        location: PropTypes.object,
+        children: PropTypes.oneOfType([
+            PropTypes.arrayOf(PropTypes.element),
+            PropTypes.element,
+        ]),
+        me: PropTypes.func.isRequired,
+        user: PropTypes.object,
+    };
+
     constructor(props) {
         super(props);
 
         this.state = {
+            appReady: false,
             collapsed: true,
             showStoreModal: true,
         };
 
         this.toggleFromOutside = this.toggleFromOutside.bind(this);
         this.toggle = this.toggle.bind(this);
+
+        // Have to put like this because this component is mount twice?
+        // We have to remove the timeout and interval if the class is unmounted
+        this.loadTimeout = null;
+        this.interval = null;
+    }
+
+    componentWillUnmount() {
+        clearTimeout(this.loadTimeout);
+        clearInterval(this.interval);
+        this.setState({ appReady: false });
+    }
+
+    componentDidMount(): void {
+        // Wait for ssense client api to be loaded
+        this.loadTimeout = setTimeout(() => {
+            messages('API NOT LOADED');
+        }, 5000);
+        this.interval = setInterval(() => {
+            if (window.ssense) {
+                clearTimeout(this.loadTimeout);
+                clearInterval(this.interval);
+
+                ssense.onLoad((err) => { // eslint-disable-line no-undef
+                    if (err) {
+                        this.props.me();
+                    } else {
+                        this.setState({ appReady: true });
+                        this.props.me();
+                    }
+                });
+            }
+        }, 250);
     }
 
     toggleFromOutside() {
@@ -38,6 +86,16 @@ export default class App extends Component {
     }
 
     render() {
+        const { user } = this.props;
+
+        if (!this.state.appReady) { // And have a user in store
+            return (<div>LOADING</div>);
+        }
+
+        if (!user) { // And have a user in store
+            return (<div></div>); // Fast & Compromised: white page that will show the login popup
+        }
+
         const getClassname = this.props.location.pathname === '/' ? 'app_layout_home' : 'app_layout';
         return (
             <div className={getClassname}>
@@ -69,10 +127,19 @@ export default class App extends Component {
     }
 }
 
-App.propTypes = {
-    location: PropTypes.object,
-    children: PropTypes.oneOfType([
-        PropTypes.arrayOf(PropTypes.element),
-        PropTypes.element,
-    ]),
-};
+function mapStateToProps(state) {
+    const { userReducer: { user } } = state;
+
+    return {
+        user,
+    };
+}
+
+function mapDispatchToProps(dispatch) {
+    return bindActionCreators({
+        me,
+        messages,
+    }, dispatch);
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);

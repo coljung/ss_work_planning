@@ -22,12 +22,19 @@ base.devServer = {
     proxy: {
         '/api': {
             target: `http://${config.get('api.planning.host')}:${config.get(
-                'api.planning.port'
+                'api.planning.port',
             )}`,
             pathRewrite: { '^/api': '' },
-            secure: false
-        }
-    }
+            secure: false,
+        },
+        '/auth': {
+            target: `http://${config.get('api.auth.host')}:${config.get(
+                'api.auth.port',
+            )}`,
+            pathRewrite: { '^/auth': '' },
+            secure: false,
+        },
+    },
 };
 
 base.plugins.push(

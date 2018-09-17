@@ -19,6 +19,7 @@
   },
   "dependencies": {
     "@handsontable/react": "^1.0.0",
+    "@ssense/framework": "^0.8.0",
     "antd": "^3.7.0",
     "body-parser": "^1.18.3",
     "config": "^1.29.4",
@@ -84,6 +85,7 @@
     "extract-text-webpack-plugin": "^3.0.2",
     "fetch-mock": "^6.5.0",
     "file-loader": "^0.11.1",
+    "html-loader": "^0.5.5",
     "html-webpack-plugin": "^2.24.1",
     "husky": "^0.14.3",
     "identity-obj-proxy": "^3.0.0",

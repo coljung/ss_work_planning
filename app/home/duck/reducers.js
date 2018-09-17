@@ -1,4 +1,5 @@
 import types from './types';
+import { LOGOUT_SUCCESS } from '../../user/duck/types';
 
 const initialState = {
     budgets: [],
@@ -10,6 +11,8 @@ const initialState = {
 
 const homeReducer = (state = initialState, action) => {
     switch (action.type) {
+        case LOGOUT_SUCCESS:
+            return initialState;
         case types.REQUEST_BUDGETS:
             return {
                 ...state,
