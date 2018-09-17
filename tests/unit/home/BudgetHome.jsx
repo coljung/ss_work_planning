@@ -10,6 +10,8 @@ import i18n from 'i18next';
 import LoadingSpinner from '../../../app/components/common/LoadingSpinner';
 import BudgetList from '../../../app/home/BudgetList';
 import CreateBudgetModal from '../../../app/home/CreateBudgetModal';
+import ApiClient from '../../../app/ApiClient';
+import clientMiddleware from '../../../app/middleware/clientMiddleware';
 
 Enzyme.configure({ adapter: new Adapter() });
 
@@ -20,7 +22,8 @@ function setup(state = {}) {
         createBudget: jest.fn(),
     };
 
-    const middlewares = [thunk];
+    const client = new ApiClient();
+    const middlewares = [thunk, clientMiddleware(client)];
     const mockStore = configureMockStore(middlewares);
 
     const initialState = {

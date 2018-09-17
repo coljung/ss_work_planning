@@ -5,11 +5,15 @@ import sinon from 'sinon';
 import i18n from 'i18next';
 import { homeOperations } from '../../../../app/home/duck';
 import types from '../../../../app/home/duck/types';
+import ApiClient from '../../../../app/ApiClient';
+import clientMiddleware from '../../../../app/middleware/clientMiddleware';
 import budgetResponse from '../../../fixtures/budgets.json';
 import seasonAvailableResponse from '../../../fixtures/season_available.json';
 import createBudgetResponse from '../../../fixtures/create_budget.json';
 
-const middlewares = [thunk];
+const client = new ApiClient();
+
+const middlewares = [thunk, clientMiddleware(client)];
 const mockStore = configureMockStore(middlewares);
 
 describe('Home operations', () => {
@@ -66,7 +70,7 @@ describe('Home operations', () => {
 
         const expectedActions = [
             { type: types.REQUEST_SEASONS },
-            { type: types.RECEIVE_SEASONS, seasons: seasonAvailableResponse }
+            { type: types.RECEIVE_SEASONS, result: seasonAvailableResponse }
         ];
 
         const store = mockStore({});
@@ -87,8 +91,8 @@ describe('Home operations', () => {
         });
 
         const expectedActions = [
-            { type: types.REQUEST_SEASONS },
-            { type: 'MESSAGES' }
+            { type: 'REQUEST_SEASONS' },
+            { error: { code: 'Foo Bar', message: 'Foo Bar' }, type: 'ERROR' }
         ];
 
         const store = mockStore({});

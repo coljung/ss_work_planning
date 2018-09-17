@@ -4,10 +4,13 @@ import thunk from 'redux-thunk';
 import * as notifications from 'notifications/NotificationActions';
 import { budgetViewOperations } from '../../../../app/budgets/duck';
 import types from '../../../../app/budgets/duck/types';
+import ApiClient from '../../../app/ApiClient';
+import clientMiddleware from '../../../app/middleware/clientMiddleware';
 import configResponse from '../../../fixtures/config.json';
 import viewResponse from '../../../fixtures/budgetView.json';
 
-const middlewares = [thunk];
+const client = new ApiClient();
+const middlewares = [thunk, clientMiddleware(client)];
 const mockStore = configureMockStore(middlewares);
 
 describe('Budget view operations', () => {

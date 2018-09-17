@@ -1,6 +1,8 @@
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import * as actions from '../../../../app/budgets/history/HistoryActions';
+import ApiClient from '../../../../app/ApiClient';
+import clientMiddleware from '../../../../app/middleware/clientMiddleware';
 
 describe('History Actions', () => {
     let middlewares;
@@ -9,7 +11,8 @@ describe('History Actions', () => {
     let item;
 
     beforeAll(() => {
-        middlewares = [thunk];
+        const client = new ApiClient();
+        middlewares = [thunk, clientMiddleware(client)];
         mockStore = configureMockStore(middlewares);
         view = 'men';
         item = {
