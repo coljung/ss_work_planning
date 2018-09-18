@@ -22,7 +22,7 @@ const homeReducer = (state = initialState, action) => {
         case types.RECEIVE_BUDGETS:
             return {
                 ...state,
-                budgets: action.budgets,
+                budgets: action.result,
                 budgetsFetched: true,
             };
 
@@ -37,7 +37,7 @@ const homeReducer = (state = initialState, action) => {
                 ...state,
                 budgets: [
                     ...state.budgets,
-                    action.budget,
+                    action.result,
                 ],
                 budgetCreateFetched: true,
             };
@@ -51,7 +51,7 @@ const homeReducer = (state = initialState, action) => {
         case types.RECEIVE_SEASONS:
             return {
                 ...state,
-                seasons: action.seasons,
+                seasons: action.result,
                 seasonsFetched: true,
             };
 

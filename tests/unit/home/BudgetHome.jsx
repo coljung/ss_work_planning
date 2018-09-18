@@ -20,6 +20,7 @@ function setup(state = {}) {
         fetchBudgets: jest.fn(),
         fetchAvailableSeasons: jest.fn(),
         createBudget: jest.fn(),
+        messages: jest.fn(),
     };
 
     const client = new ApiClient();
@@ -65,9 +66,10 @@ function setupPureComponent() {
         ],
         seasonsFetched: true,
         budgetCreateFetched: true,
-        fetchBudgets: jest.fn(),
-        fetchAvailableSeasons: jest.fn(),
-        createBudget: jest.fn(),
+        fetchBudgets: jest.fn(() => Promise.resolve({})),
+        fetchAvailableSeasons: jest.fn(() => Promise.resolve({})),
+        createBudget: jest.fn(() => Promise.resolve({})),
+        messages: jest.fn(),
     };
 
     const enzymeWrapper = mount(<PureBudgetHome {...props} />);

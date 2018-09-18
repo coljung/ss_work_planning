@@ -1,50 +1,28 @@
 import types from './types';
 
-function requestBudgets() {
+function fetchAvailableSeasons() {
     return {
-        type: types.REQUEST_BUDGETS,
+        types: [types.REQUEST_SEASONS, types.RECEIVE_SEASONS, types.FAILED_SEASONS],
+        promise: client => client.get('/planning/budgets/show/available'),
     };
 }
 
-function receiveBudgets(budgets) {
+function fetchBudgets() {
     return {
-        type: types.RECEIVE_BUDGETS,
-        budgets,
+        types: [types.REQUEST_BUDGETS, types.RECEIVE_BUDGETS, types.FAILED_BUDGETS],
+        promise: client => client.get('/planning/budgets'),
     };
 }
 
-function requestSeasons() {
+function createBudget(budget) {
     return {
-        type: types.REQUEST_SEASONS,
-    };
-}
-
-function receiveSeasons(seasons) {
-    return {
-        type: types.RECEIVE_SEASONS,
-        seasons,
-    };
-}
-
-function requestBudgetCreate(budget) {
-    return {
-        type: types.REQUEST_CREATE_BUDGET,
-        budget,
-    };
-}
-
-function receiveBudgetCreate(budget) {
-    return {
-        type: types.RECEIVE_CREATE_BUDGET,
-        budget,
+        types: [types.REQUEST_CREATE_BUDGET, types.RECEIVE_CREATE_BUDGET, types.FAILED_CREATE_BUDGET],
+        promise: client => client.post('/planning/budgets', { body: budget }),
     };
 }
 
 export default {
-    requestBudgets,
-    receiveBudgets,
-    requestSeasons,
-    receiveSeasons,
-    requestBudgetCreate,
-    receiveBudgetCreate,
+    fetchAvailableSeasons,
+    fetchBudgets,
+    createBudget,
 };

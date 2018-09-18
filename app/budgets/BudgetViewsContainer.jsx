@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import { Row, Col } from 'antd';
-import { budgetViewOperations } from './duck';
+import { budgetViewActions, budgetViewOperations } from './duck';
 import { historyUndo, historyRedo, historyPush } from './history/HistoryActions';
 import BudgetViewActionsBar from './BudgetViewActionsBar';
 import FilterModal from './FilterModal';
@@ -44,12 +44,12 @@ class BudgetViewsContainer extends Component {
 
     componentDidMount() {
         // get config data, then fetch metrics based on config
-        this.props.fetchBudgetConfigData().then((res) => {
+        this.props.fetchBudgetConfigData().then(({ type, result }) => {
             // Validate if it's really a config than came with `res` var
-            if (res.type === RECEIVE_BUDGETS_CONFIG_DATA) {
+            if (type === RECEIVE_BUDGETS_CONFIG_DATA) {
                 const filter = {
-                    selectedMetrics: res.config.defaultFilters.metrics,
-                    selectedPlanTypes: res.config.defaultFilters.plans,
+                    selectedMetrics: result.defaultFilters.metrics,
+                    selectedPlanTypes: result.defaultFilters.plans,
                 };
                 this.applyFilters(filter);
             }
@@ -187,15 +187,15 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return bindActionCreators({
-        fetchBudgetConfigData: budgetViewOperations.fetchBudgetConfigData,
-        fetchBudgetMetricData: budgetViewOperations.fetchBudgetMetricData,
+        fetchBudgetConfigData: budgetViewActions.fetchBudgetConfigData,
+        fetchBudgetMetricData: budgetViewActions.fetchBudgetMetricData,
         getViewExportFile: budgetViewOperations.getViewExportFile,
         historyRedo,
         historyUndo,
         historyPush,
-        resetState: budgetViewOperations.resetState,
-        sendDataForSpreading: budgetViewOperations.sendDataForSpreading,
-        filterSetup: budgetViewOperations.filterSetup,
+        resetState: budgetViewActions.resetState,
+        sendDataForSpreading: budgetViewActions.sendDataForSpreading,
+        filterSetup: budgetViewActions.filterSetup,
     }, dispatch);
 }
 

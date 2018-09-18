@@ -1,5 +1,6 @@
 /* global ssense */
 import { BACKEND_APP_CODE } from '../constants/common';
+import { messages } from '../notifications/NotificationActions';
 import { authenticate as authenticateAction } from '../user/duck/actions';
 
 export default function clientMiddleware(client) {
@@ -24,11 +25,16 @@ export default function clientMiddleware(client) {
                     // if request return 401 show ssense authetication
                     if (error.status === 401) {
                         dispatch(authenticateAction()); // eslint-disable-line no-use-before-define
+                    } else {
+                        dispatch(messages({ isError: true, error }));
                     }
 
                     return next({ ...rest, error, type: FAILURE });
                 },
                 )
-                .catch(error => next({ ...rest, error, type: FAILURE }));
+                .catch((error) => {
+                    dispatch(messages({ isError: true, error }));
+                    return next({ ...rest, error, type: FAILURE });
+                });
         };
 }

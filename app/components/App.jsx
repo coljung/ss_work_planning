@@ -17,6 +17,7 @@ class App extends Component {
             PropTypes.element,
         ]),
         me: PropTypes.func.isRequired,
+        messages: PropTypes.func.isRequired,
         user: PropTypes.object,
     };
 
@@ -47,7 +48,7 @@ class App extends Component {
     componentDidMount(): void {
         // Wait for ssense client api to be loaded
         this.loadTimeout = setTimeout(() => {
-            messages({ content: 'API NOT LOADED', isError: true });
+            this.props.messages({ content: 'API NOT LOADED', isError: true });
         }, 5000);
         this.interval = setInterval(() => {
             if (window.ssense) {
