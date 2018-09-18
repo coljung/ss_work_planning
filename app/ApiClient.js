@@ -1,5 +1,4 @@
 import superagent from 'superagent';
-// import wrap from 'superagent-promise';
 import getApiUrl from './helpers';
 
 const methods = ['get', 'post', 'put', 'patch', 'del'];
