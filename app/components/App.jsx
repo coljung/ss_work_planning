@@ -47,7 +47,7 @@ class App extends Component {
     componentDidMount(): void {
         // Wait for ssense client api to be loaded
         this.loadTimeout = setTimeout(() => {
-            messages('API NOT LOADED');
+            messages({ content: 'API NOT LOADED', isError: true });
         }, 5000);
         this.interval = setInterval(() => {
             if (window.ssense) {

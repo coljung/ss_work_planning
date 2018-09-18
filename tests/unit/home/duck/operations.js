@@ -12,7 +12,6 @@ import seasonAvailableResponse from '../../../fixtures/season_available.json';
 import createBudgetResponse from '../../../fixtures/create_budget.json';
 
 const client = new ApiClient();
-
 const middlewares = [thunk, clientMiddleware(client)];
 const mockStore = configureMockStore(middlewares);
 
