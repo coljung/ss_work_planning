@@ -21,15 +21,21 @@ export default function clientMiddleware(client) {
             return promise(client)
                 .then(
                 result => next({ ...rest, result, type: SUCCESS }),
-                (error) => {
+                async (error) => {
                     // if request return 401 show ssense authetication
                     if (error.status === 401) {
-                        dispatch(authenticateAction()); // eslint-disable-line no-use-before-define
+                        await dispatch(authenticateAction()); // eslint-disable-line no-use-before-define
+                        // Retry re-dispatch same request and promise again after login
+                        dispatch({
+                            types: [REQUEST, SUCCESS, FAILURE],
+                            promise,
+                            ...rest,
+                        });
                     } else {
                         dispatch(messages({ isError: true, error }));
                     }
 
-                    return next({ ...rest, error, type: FAILURE });
+                    // return next({ ...rest, error, type: FAILURE });
                 },
                 )
                 .catch((error) => {
