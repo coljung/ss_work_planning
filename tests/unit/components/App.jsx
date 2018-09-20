@@ -74,8 +74,6 @@ describe('App', () => {
             {...props}
         />);
 
-
-
         const appComponent = wrapper.dive();
 
         appComponent.setState({

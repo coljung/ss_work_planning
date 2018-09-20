@@ -17,10 +17,10 @@ function fetchBudgetConfigData() {
     };
 }
 
-function fetchBudgetMetricData(budget, view, body) {
+function fetchBudgetMetricData(budget, view, filters) {
     return {
         types: [types.REQUEST_BUDGETS_DATA, types.RECEIVE_BUDGETS_DATA, types.FAILED_BUDGETS_DATA],
-        promise: client => client.post(`/planning/budgets/${budget}/${view}`, { body }),
+        promise: client => client.post(`/planning/budgets/${budget}/${view}`, { body: filters }),
         view,
     };
 }

@@ -8,6 +8,7 @@ import CustomNavigation from './customNavigation/CustomNavigation';
 import NotificationManager from '../notifications/NotificationManager';
 import { me } from '../user/duck/actions';
 import { messages } from '../notifications/NotificationActions';
+import LoadingSpinner from './common/LoadingSpinner';
 
 class App extends Component {
     static propTypes = {
@@ -33,7 +34,6 @@ class App extends Component {
         this.toggleFromOutside = this.toggleFromOutside.bind(this);
         this.toggle = this.toggle.bind(this);
 
-        // Have to put like this because this component is mount twice?
         // We have to remove the timeout and interval if the class is unmounted
         this.loadTimeout = null;
         this.interval = null;
@@ -90,7 +90,7 @@ class App extends Component {
         const { user } = this.props;
 
         if (!this.state.appReady) { // And have a user in store
-            return (<div className="loading"><Spin size="large" /></div>);
+            return (<LoadingSpinner classUsed="loading" />);
         }
 
         if (!user) { // And have a user in store
