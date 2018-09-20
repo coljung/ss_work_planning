@@ -6,6 +6,12 @@ exports[`App should render correctly 1`] = `
 >
   <div
     className="ant-spin ant-spin-lg ant-spin-spinning"
+    style={
+      Object {
+        "color": "#777",
+        "fontSize": 20,
+      }
+    }
   >
     <span
       className="ant-spin-dot ant-spin-dot-spin"
