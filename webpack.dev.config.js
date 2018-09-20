@@ -28,9 +28,7 @@ base.devServer = {
             secure: false,
         },
         '/auth': {
-            target: `http://${config.get('api.auth.host')}:${config.get(
-                'api.auth.port',
-            )}`,
+            target: `http://${config.get('api.auth.host')}`,
             pathRewrite: { '^/auth': '' },
             secure: false,
         },

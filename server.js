@@ -21,7 +21,7 @@ const proxy = httpProxy({
     pathRewrite: { '^/api': '' }, // <-- this will remove the /api prefix
 });
 
-const targetAuth = process.env.API_AUTH_HOST || `http://${config.get('api.auth.host')}:${config.get('api.auth.port')}`;
+const targetAuth = process.env.API_AUTH_HOST || `http://${config.get('api.auth.host')}`;
 const proxyAuth = httpProxy({
     target: targetAuth,
     changeOrigin: true,
@@ -32,17 +32,19 @@ const app = express();
 
 // Include authentication middleware
 const authModule = new ssense.AuthModule({
-    authServerHost: config.get('api.auth.baseUrl'),
+    authServerHost: config.get('api.auth.host'),
     authServerSecure: config.get('api.auth.secure'),
     publicRoutes: [ // Set home page and main resources as public
         /^\/+$/,
         /^\/favicon.ico$/,
         /^\/bundle.js$/,
         /^\/styles.css$/,
-        /^\/auth\/.*$/
-    ]
+        /^\/auth\/.*$/,
+    ],
 });
-app.use(authModule.authenticate());
+if (config.get('api.auth.enabled')) {
+    app.use(authModule.authenticate());
+}
 
 app.use(cors());
 app.use(express.static(path.resolve(__dirname, 'build')));

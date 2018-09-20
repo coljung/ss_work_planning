@@ -17,8 +17,9 @@ module.exports = {
             port: process.env.MS_PLANNING_PORT || '3000',
         },
         auth: {
-            host: process.env.DM_AUTH_HOST || 'localhost',
-            port: process.env.DM_AUTH_PORT || '8501',
+            enabled: process.env.AUTH_ENABLED === 'false' ? false : true, // make default to true
+            host: process.env.AUTH_HOST || 'dm-auth:8080',
+            secure: process.env.AUTH_SERVER_SECURE === 'true' || false,
         },
     },
     node_env: {
