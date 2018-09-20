@@ -1,8 +1,6 @@
 import superagent from 'superagent';
 import getApiUrl from './helpers';
 
-const methods = ['get', 'post', 'put', 'patch', 'del'];
-
 const formatUrl = (path) => {
     const adjustedPath = path[0] !== '/' ? `/${path}` : path;
     let targetApi = true;
