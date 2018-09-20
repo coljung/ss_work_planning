@@ -51,7 +51,7 @@ describe('Budget View Reducer', () => {
         expect(
             reducer(state, {
                 type: types.RECEIVE_BUDGETS_CONFIG_DATA,
-                config: { availableMetrics: 'SALES' }
+                result: { availableMetrics: 'SALES' }
             })
         ).toEqual({
             config: { availableMetrics: 'SALES' },
@@ -73,7 +73,7 @@ describe('Budget View Reducer', () => {
             reducer(undefined, {
                 type: types.RECEIVE_BUDGETS_DATA,
                 view: 'men',
-                viewData: 'test',
+                result: 'test',
             })
         ).toEqual(Object.assign({}, initialState, {
             isBudgetLoading: false,

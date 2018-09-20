@@ -1,10 +1,14 @@
+/* eslint-disable import/no-commonjs */
 require('newrelic');
 const path = require('path');
+const fs = require('fs');
+const https = require('https');
 const express = require('express');
 const cors = require('cors');
 const config = require('config');
 const basicAuth = require('node-basicauth');
 const httpProxy = require('http-proxy-middleware');
+const ssense = require('@ssense/framework');
 
 const host = config.get('server.host');
 const port = config.get('server.port');
@@ -17,16 +21,29 @@ const proxy = httpProxy({
     pathRewrite: { '^/api': '' }, // <-- this will remove the /api prefix
 });
 
-const app = express();
-
-console.log('Basic Auth', config.get('auth.enabled'), {
-    [config.get('auth.user')]: config.get('auth.password'),
+const targetAuth = process.env.API_AUTH_HOST || `http://${config.get('api.auth.host')}`;
+const proxyAuth = httpProxy({
+    target: targetAuth,
+    changeOrigin: true,
+    pathRewrite: { '^/auth': '' }, // <-- this will remove the /api prefix
 });
 
-if (config.get('auth.enabled')) {
-    app.use(basicAuth({
-        [config.get('auth.user')]: config.get('auth.password'),
-    }));
+const app = express();
+
+// Include authentication middleware
+const authModule = new ssense.AuthModule({
+    authServerHost: config.get('api.auth.host'),
+    authServerSecure: config.get('api.auth.secure'),
+    publicRoutes: [ // Set home page and main resources as public
+        /^\/+$/,
+        /^\/favicon.ico$/,
+        /^\/bundle.js$/,
+        /^\/styles.css$/,
+        /^\/auth\/.*$/,
+    ],
+});
+if (config.get('api.auth.enabled')) {
+    app.use(authModule.authenticate());
 }
 
 app.use(cors());
@@ -34,6 +51,7 @@ app.use(express.static(path.resolve(__dirname, 'build')));
 app.use(express.static(path.resolve(__dirname, 'public')));
 
 app.use('/api', proxy);
+app.use('/auth', proxyAuth);
 
 app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, './public/index.html'));

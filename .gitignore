@@ -8,3 +8,8 @@ tests/coverage
 .DS_Store
 app/.DS_Store
 .env
+
+# Logs
+logs
+*.log
+npm-debug.log*

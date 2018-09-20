@@ -42,7 +42,7 @@ describe('Home Reducer', () => {
         expect(
             reducer(undefined, {
                 type: types.RECEIVE_BUDGETS,
-                budgets: [
+                result: [
                     { foo: 'bar' }
                 ]
             })
@@ -78,7 +78,7 @@ describe('Home Reducer', () => {
         expect(
             reducer(state, {
                 type: types.RECEIVE_CREATE_BUDGET,
-                budget: { foo: 'bar' }
+                result: { foo: 'bar' }
             })
         ).toEqual(Object.assign({}, state, {
             budgets: [
@@ -103,7 +103,7 @@ describe('Home Reducer', () => {
         expect(
             reducer(undefined, {
                 type: types.RECEIVE_SEASONS,
-                seasons: [{ name: 'season 1' }]
+                result: [{ name: 'season 1' }]
             })
         ).toEqual(Object.assign({}, initialState, {
             seasons: [{ name: 'season 1' }],

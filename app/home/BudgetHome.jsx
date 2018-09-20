@@ -4,11 +4,12 @@ import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Row, Col } from 'antd';
-import { homeOperations } from './duck';
+import { homeActions } from './duck';
 import Board from '../components/Board';
 import BudgetList from './BudgetList';
 import CreateBudgetModal from './CreateBudgetModal';
 import LoadingSpinner from '../components/common/LoadingSpinner';
+import { messages } from '../notifications/NotificationActions';
 
 export class BudgetHome extends Component {
     static propTypes = {
@@ -23,6 +24,7 @@ export class BudgetHome extends Component {
         fetchBudgets: PropTypes.func.isRequired,
         fetchAvailableSeasons: PropTypes.func.isRequired,
         budgetCreateFetched: PropTypes.bool.isRequired,
+        messages: PropTypes.func.isRequired,
     };
 
     constructor(props) {
@@ -50,7 +52,9 @@ export class BudgetHome extends Component {
             season,
         };
 
-        this.props.createBudget(budget);
+        this.props.createBudget(budget).then(() =>
+            this.props.messages({ content: i18n.t('home.notification.budgetCreated'), response: '', isError: false }),
+        );
     };
 
     renderBudgetList = () => (
@@ -90,9 +94,10 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return bindActionCreators({
-        fetchAvailableSeasons: homeOperations.fetchAvailableSeasons,
-        fetchBudgets: homeOperations.fetchBudgets,
-        createBudget: homeOperations.createBudget,
+        fetchAvailableSeasons: homeActions.fetchAvailableSeasons,
+        fetchBudgets: homeActions.fetchBudgets,
+        createBudget: homeActions.createBudget,
+        messages,
     }, dispatch);
 }
 

@@ -10,42 +10,31 @@ function requestViewDownload(budgetId, view, filter) {
     };
 }
 
-function requestBudgetConfigData() {
+function fetchBudgetConfigData() {
     return {
-        type: types.REQUEST_BUDGETS_CONFIG_DATA,
+        types: [types.REQUEST_BUDGETS_CONFIG_DATA, types.RECEIVE_BUDGETS_CONFIG_DATA, types.FAILED_BUDGETS_CONFIG_DATA],
+        promise: client => client.get('/planning/config'),
     };
 }
 
-function receiveBudgetConfigData(config) {
+function fetchBudgetMetricData(budget, view, filters) {
     return {
-        type: types.RECEIVE_BUDGETS_CONFIG_DATA,
-        config,
-    };
-}
-
-function requestBudgetViewData() {
-    return {
-        type: types.REQUEST_BUDGETS_DATA,
-    };
-}
-
-function receiveBudgetViewData(viewData, view) {
-    return {
-        type: types.RECEIVE_BUDGETS_DATA,
-        viewData,
+        types: [types.REQUEST_BUDGETS_DATA, types.RECEIVE_BUDGETS_DATA, types.FAILED_BUDGETS_DATA],
+        promise: client => client.post(`/planning/budgets/${budget}/${view}`, { body: filters }),
         view,
     };
 }
 
-function requestSendDataForSpreading() {
-    return {
-        type: types.REQUEST_SPREAD_DATA,
+function sendDataForSpreading(budget, view, updatedObj) {
+    const body = {
+        ...updatedObj,
+        value: updatedObj.value === 0 ? 0.0001 : updatedObj.value,
     };
-}
 
-function receiveSendDataForSpreading() {
     return {
-        type: types.RECEIVE_SPREAD_DATA,
+        types: [types.REQUEST_SPREAD_DATA, types.RECEIVE_SPREAD_DATA, types.FAILED_SPREAD_DATA],
+        promise: client => client.put(`/planning/budgets/${budget}/${view}`, { body }),
+        view,
     };
 }
 
@@ -64,12 +53,9 @@ function resetState() {
 
 export default {
     requestViewDownload,
-    requestBudgetConfigData,
-    receiveBudgetConfigData,
-    requestBudgetViewData,
-    receiveBudgetViewData,
-    requestSendDataForSpreading,
-    receiveSendDataForSpreading,
+    fetchBudgetConfigData,
+    fetchBudgetMetricData,
+    sendDataForSpreading,
     filterSetup,
     resetState,
 };

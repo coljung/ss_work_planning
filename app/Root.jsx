@@ -1,18 +1,20 @@
 import i18n from 'i18next';
-import React, { Component } from 'react';
+import React from 'react';
 import { Router, browserHistory } from 'react-router';
 import { Provider } from 'react-redux';
 import 'handsontable-pro/dist/handsontable.full.css';
 import Routes from './Routes';
 import resources from './locales';
+import ApiClient from './ApiClient';
 
 // Global Styles
 import './styles/styles.less';
 
 // Store
-import configureStore from './ConfigureStore';
+import configureStore from './configureStore';
 
-const store = configureStore();
+const client = new ApiClient();
+const store = configureStore(client);
 
 i18n.init({
     lng: 'en',
@@ -20,12 +22,8 @@ i18n.init({
     resources,
 });
 
-export default class Root extends Component {
-    render() {
-        return (
-            <Provider store={store}>
-                <Router routes={Routes} history={browserHistory} />
-            </Provider>
-        );
-    }
-}
+export default () => (
+    <Provider store={store}>
+        <Router routes={Routes} history={browserHistory} />
+    </Provider>
+);

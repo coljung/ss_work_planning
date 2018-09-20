@@ -1,4 +1,5 @@
 import types from './types';
+import { LOGOUT_SUCCESS } from '../../user/duck/types';
 
 const initialState = {
     config: {},
@@ -19,10 +20,12 @@ const initialState = {
 
 const budgetViewReducer = (state = initialState, action) => {
     switch (action.type) {
+        case LOGOUT_SUCCESS:
+            return initialState;
         case types.RECEIVE_BUDGETS_CONFIG_DATA:
             return {
                 ...state,
-                config: action.config,
+                config: action.result,
             };
 
         case types.REQUEST_BUDGETS_DATA:
@@ -37,7 +40,7 @@ const budgetViewReducer = (state = initialState, action) => {
                 ...state,
                 isBudgetLoading: false,
                 view: action.view,
-                viewData: action.viewData,
+                viewData: action.result,
             };
 
         case types.REQUEST_SPREAD_DATA:

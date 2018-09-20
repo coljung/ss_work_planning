@@ -1,55 +1,90 @@
+import nock from 'nock';
+import configureMockStore from 'redux-mock-store';
+import thunk from 'redux-thunk';
+import ApiClient from '../../../../app/ApiClient';
+import clientMiddleware from '../../../../app/middleware/clientMiddleware';
 import actions from '../../../../app/budgets/duck/actions';
 import types from '../../../../app/budgets/duck/types';
 
+const client = new ApiClient();
+const middlewares = [thunk, clientMiddleware(client)];
+const mockStore = configureMockStore(middlewares);
+
 describe('Budget view action creators', () => {
-    it('Should handle requestBudgetConfigData', () => {
-        const expectedAction = {
-            type: types.REQUEST_BUDGETS_CONFIG_DATA
-        };
-        expect(actions.requestBudgetConfigData()).toEqual(expectedAction);
+    afterEach(() => {
+        nock.cleanAll();
     });
 
-    it('Should handle receiveBudgetConfigData', () => {
-        const config = 'test';
-        const expectedAction = {
-            type: types.RECEIVE_BUDGETS_CONFIG_DATA,
-            config
-        };
-        expect(actions.receiveBudgetConfigData(config)).toEqual(expectedAction);
+    it('Should handle fetchBudgetConfigData', async () => {
+        nock(UI_PLANNING_HOST)
+            .get('/api/planning/config')
+            .reply(200, []);
+
+        const expectedActions = [
+            {type: 'REQUEST_BUDGETS_CONFIG_DATA'},
+            {result: [], type: 'RECEIVE_BUDGETS_CONFIG_DATA'}
+        ];
+
+        const store = mockStore({});
+
+        await store.dispatch(actions.fetchBudgetConfigData());
+
+        expect(store.getActions()).toEqual(expectedActions);
     });
 
-    it('Should handle requestBudgetViewData', () => {
-        const expectedAction = {
-            type: types.REQUEST_BUDGETS_DATA
+    it('Should handle fetchBudgetMetricData', async () => {
+        const budget = 1;
+        const view = 'total';
+        const body = {
+            metric: ["SALES"],
+            plans: [{plan: "wp", numberOfHistoricalYears: 3}]
         };
-        expect(actions.requestBudgetViewData()).toEqual(expectedAction);
+        const response = {
+            data: [],
+            headers: [],
+            info: {}
+        };
+
+        nock(UI_PLANNING_HOST)
+            .post(`/api/planning/budgets/${budget}/${view}`, body)
+            .reply(200, response);
+
+        const expectedActions = [
+            {type: 'REQUEST_BUDGETS_DATA', view},
+            {result: response, type: 'RECEIVE_BUDGETS_DATA', view}
+        ];
+
+        const store = mockStore({});
+
+        await store.dispatch(actions.fetchBudgetMetricData(budget, view, body));
+
+        expect(store.getActions()).toEqual(expectedActions);
     });
 
-    it('Should handle receiveBudgetViewData', () => {
-        const viewData = {
-            foo: 'Bar'
-        };
-        const view = 'test';
-        const expectedAction = {
-            type: types.RECEIVE_BUDGETS_DATA,
-            viewData,
-            view
-        };
-        expect(actions.receiveBudgetViewData(viewData, view)).toEqual(expectedAction);
-    });
+    it('Should handle sendDataForSpreading', async () => {
+        const budget = 1;
+        const view = 'total';
+        const updatedObj = { value: 10 };
 
-    it('Should handle requestSendDataForSpreading', () => {
-        const expectedAction = {
-            type: types.REQUEST_SPREAD_DATA
+        const body = {
+            ...updatedObj,
+            value: updatedObj.value === 0 ? 0.0001 : updatedObj.value,
         };
-        expect(actions.requestSendDataForSpreading()).toEqual(expectedAction);
-    });
 
-    it('Should handle receiveSendDataForSpreading', () => {
-        const expectedAction = {
-            type: types.RECEIVE_SPREAD_DATA,
-        };
-        expect(actions.receiveSendDataForSpreading()).toEqual(expectedAction);
+        nock(UI_PLANNING_HOST)
+            .put(`/api/planning/budgets/${budget}/${view}`, body)
+            .reply(200, []);
+
+        const expectedActions = [
+            {type: 'REQUEST_SPREAD_DATA', view},
+            {result: [], type: 'RECEIVE_SPREAD_DATA', view}
+        ];
+
+        const store = mockStore({});
+
+        await store.dispatch(actions.sendDataForSpreading(budget, view, updatedObj));
+
+        expect(store.getActions()).toEqual(expectedActions);
     });
 
     it('Should handle resetState', () => {

@@ -1,14 +1,21 @@
-import i18n from 'i18next';
 import React, { Component } from 'react';
+import { Menu, Icon, Tooltip } from 'antd';
+import i18n from 'i18next';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
-import { Menu, Icon, Tooltip } from 'antd';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import { ROUTE_DASHBOARD } from '../../constants/routes';
+import { logout, me } from '../../user/duck/actions';
+import { LOGOUT_REQUEST } from '../../user/duck/types';
 
-export default class CustomNavigation extends Component {
+class CustomNavigation extends Component {
     static propTypes = {
         pathname: PropTypes.string.isRequired,
         triggerMenuCollapse: PropTypes.func,
+        logout: PropTypes.func.isRequired,
+        user: PropTypes.object,
+        me: PropTypes.func.isRequired,
     };
 
     state = {
@@ -16,8 +23,15 @@ export default class CustomNavigation extends Component {
     };
 
     handleClick = (e) => {
-        this.setState({ current: e.key });
-        this.props.triggerMenuCollapse();
+        switch (e.key) {
+            case LOGOUT_REQUEST:
+                this.props.logout().then(() => this.props.me());
+                break;
+            default:
+                this.setState({ current: e.key });
+                this.props.triggerMenuCollapse();
+                break;
+        }
     };
 
     render() {
@@ -36,8 +50,31 @@ export default class CustomNavigation extends Component {
                         </Link>
                     </Tooltip>
                 </Menu.Item>
+                <Menu.Item key={LOGOUT_REQUEST}>
+                    <Tooltip placement="right">
+                        <Icon type="logout"/>
+                        <span className="nav-text">{i18n.t('sideMenu.logout')}</span>
+                    </Tooltip>
+                </Menu.Item>
                 <Menu.Divider />
             </Menu>
         );
     }
 }
+
+function mapStateToProps(state) {
+    const { userReducer: { user } } = state;
+
+    return {
+        user,
+    };
+}
+
+function mapDispatchToProps(dispatch) {
+    return bindActionCreators({
+        logout,
+        me,
+    }, dispatch);
+}
+
+export default connect(null, mapDispatchToProps)(CustomNavigation);

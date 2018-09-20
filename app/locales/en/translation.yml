@@ -10,6 +10,7 @@ home:
     budgetCreated: Budget created successfully!
 sideMenu:
   home: Home
+  logout: Logout
 spinner:
   loading: Loading...
 budgetListModal:

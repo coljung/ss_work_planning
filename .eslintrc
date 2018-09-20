@@ -21,5 +21,9 @@
     "import/no-extraneous-dependencies": 1,
     "import/no-named-as-default": 0,
     "max-len": 0
+  },
+  "globals": {
+      "ssense": true,
+      "UI_PLANNING_HOST": true
   }
 }

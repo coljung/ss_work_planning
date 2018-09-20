@@ -1,4 +1,4 @@
-import configureStore from '../../app/ConfigureStore';
+import configureStore from '../../app/configureStore';
 
 describe('Configure Store', () => {
   it('should get store config', () => {

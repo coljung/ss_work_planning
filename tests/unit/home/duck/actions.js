@@ -1,63 +1,84 @@
+import nock from 'nock';
+import configureMockStore from 'redux-mock-store';
+import thunk from 'redux-thunk';
+import ApiClient from '../../../../app/ApiClient';
+import clientMiddleware from '../../../../app/middleware/clientMiddleware';
 import actions from '../../../../app/home/duck/actions';
 import types from '../../../../app/home/duck/types';
+import viewResponse from '../../../fixtures/budgetView.json';
+
+const client = new ApiClient();
+const middlewares = [thunk, clientMiddleware(client)];
+const mockStore = configureMockStore(middlewares);
 
 describe('Home action creators', () => {
-    it('Should test requestBudgets', () => {
-        const expectedAction = {
-            type: types.REQUEST_BUDGETS
-        };
+    const budget = 1;
+    const view = 'total';
+    const metrics = [ 'SALES' ];
+    const plans = [ 'wp' ].map(x => ({
+        plan: x,
+        numberOfHistoricalYears: 5,
+    }));
 
-        expect(actions.requestBudgets()).toEqual(expectedAction);
+    const filters = {
+        metrics,
+        plans,
+    };
+
+    afterEach(() => {
+        nock.cleanAll();
     });
 
-    it('Should test receiveBudgets', () => {
-        const budgets = {
-            foo: 'Bar'
-        };
-        const expectedAction = {
-            type: types.RECEIVE_BUDGETS,
-            budgets
-        };
-        expect(actions.receiveBudgets(budgets)).toEqual(expectedAction);
-    });
+    it('should fetchAvailableSeasons', async () => {
+        nock(UI_PLANNING_HOST)
+            .get('/api/planning/budgets/show/available')
+            .reply(200, []);
 
-    it('Should test requestSeasons', () => {
-        const expectedAction = {
-            type: types.REQUEST_SEASONS
-        };
-        expect(actions.requestSeasons()).toEqual(expectedAction);
-    });
 
-    it('Should test receiveSeasons', () => {
-        const seasons = {
-            foo: 'Bar'
-        };
-        const expectedAction = {
-            type: types.RECEIVE_SEASONS,
-            seasons
-        };
-        expect(actions.receiveSeasons(seasons)).toEqual(expectedAction);
-    });
+        const expectedActions = [
+            {type: 'REQUEST_SEASONS'},
+            {result: [], type: 'RECEIVE_SEASONS'}
+        ];
 
-    it('Should test requestBudgetCreate', () => {
-        const budget = {
-            foo: 'Bar'
-        };
-        const expectedAction = {
-            type: types.REQUEST_CREATE_BUDGET,
-            budget
-        };
-        expect(actions.requestBudgetCreate(budget)).toEqual(expectedAction);
-    });
+        const store = mockStore({});
 
-    it('Should test receiveBudgetCreate', () => {
-        const budget = {
-            foo: 'Bar'
-        };
-        const expectedAction = {
-            type: types.RECEIVE_CREATE_BUDGET,
-            budget
-        };
-        expect(actions.receiveBudgetCreate(budget)).toEqual(expectedAction);
-    });
+        await store.dispatch(actions.fetchAvailableSeasons());
+
+        expect(store.getActions()).toEqual(expectedActions);
+    })
+
+    it('should fetchBudgets', async () => {
+        nock(UI_PLANNING_HOST)
+            .get('/api/planning/budgets')
+            .reply(200, []);
+
+
+        const expectedActions = [
+            {type: 'REQUEST_BUDGETS'},
+            {result: [], type: 'RECEIVE_BUDGETS'}
+        ];
+
+        const store = mockStore({});
+
+        await store.dispatch(actions.fetchBudgets());
+
+        expect(store.getActions()).toEqual(expectedActions);
+    })
+    it('should createBudget', async () => {
+        nock(UI_PLANNING_HOST)
+            .post('/api/planning/budgets', {})
+            .reply(200, []);
+
+
+        const expectedActions = [
+            {type: 'REQUEST_CREATE_BUDGET'},
+            {result: [], type: 'RECEIVE_CREATE_BUDGET'}
+        ];
+
+        const store = mockStore({});
+
+        await store.dispatch(actions.createBudget({}));
+
+        expect(store.getActions()).toEqual(expectedActions);
+    })
 });

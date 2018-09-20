@@ -1,4 +1,5 @@
 import types from './types';
+import { LOGOUT_SUCCESS } from '../../user/duck/types';
 
 const initialState = {
     budgets: [],
@@ -10,6 +11,8 @@ const initialState = {
 
 const homeReducer = (state = initialState, action) => {
     switch (action.type) {
+        case LOGOUT_SUCCESS:
+            return initialState;
         case types.REQUEST_BUDGETS:
             return {
                 ...state,
@@ -19,7 +22,7 @@ const homeReducer = (state = initialState, action) => {
         case types.RECEIVE_BUDGETS:
             return {
                 ...state,
-                budgets: action.budgets,
+                budgets: action.result,
                 budgetsFetched: true,
             };
 
@@ -34,7 +37,7 @@ const homeReducer = (state = initialState, action) => {
                 ...state,
                 budgets: [
                     ...state.budgets,
-                    action.budget,
+                    action.result,
                 ],
                 budgetCreateFetched: true,
             };
@@ -48,7 +51,7 @@ const homeReducer = (state = initialState, action) => {
         case types.RECEIVE_SEASONS:
             return {
                 ...state,
-                seasons: action.seasons,
+                seasons: action.result,
                 seasonsFetched: true,
             };
 

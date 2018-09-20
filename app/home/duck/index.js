@@ -1,4 +1,4 @@
 import homeReducer from './reducers';
 
-export { default as homeOperations } from './operations';
+export { default as homeActions } from './actions';
 export default homeReducer;
