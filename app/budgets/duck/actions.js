@@ -18,10 +18,12 @@ function fetchBudgetConfigData() {
 }
 
 function fetchBudgetMetricData(budget, view, filters) {
+    // console.log('View from action----', view);
     return {
         types: [types.REQUEST_BUDGETS_DATA, types.RECEIVE_BUDGETS_DATA, types.FAILED_BUDGETS_DATA],
-        promise: client => client.post(`/planning/budgets/${budget}/${view}`, { body: filters }),
+        promise: client => client.get(`/planning/budgets/${budget}/${view}`),
         view,
+        filters,
     };
 }
 
@@ -32,8 +34,9 @@ function sendDataForSpreading(budget, view, updatedObj) {
     };
 
     return {
-        types: [types.REQUEST_SPREAD_DATA, types.RECEIVE_SPREAD_DATA, types.FAILED_SPREAD_DATA],
-        promise: client => client.put(`/planning/budgets/${budget}/${view}`, { body }),
+        // types: [types.REQUEST_SPREAD_DATA, types.RECEIVE_SPREAD_DATA, types.FAILED_SPREAD_DATA],
+        // promise: client => client.put(`/planning/budgets/${budget}/${view}`, { body }),
+        type: types.REQUEST_SPREAD_DATA,
         view,
     };
 }
