@@ -19,8 +19,6 @@ const initialState = {
     },
 };
 
-const filters = [];
-
 const transformer = (newFilters, data) => {
     const years = Object.keys(data.years).sort().slice(1).reverse();
     const metrics = Object.keys(data.years[years[0]].metrics);
@@ -40,9 +38,8 @@ const transformer = (newFilters, data) => {
                 if (planYear.includes(year)) {
                     const preMkdwnIncr = ((data.years[year].metrics[metric].plans[plan].periods['PRE-MKD'].value - data.years[year - 1].metrics[metric].plans[plan].periods['PRE-MKD'].value) / data.years[year - 1].metrics[metric].plans[plan].periods['PRE-MKD'].value);
                     const fullIncr = ((data.years[year].metrics[metric].plans[plan].value - data.years[year - 1].metrics[metric].plans[plan].value) / data.years[year - 1].metrics[metric].plans[plan].value);
-                    const isFullIncrement = ((fullIncr >= 0 && !-Infinity) || (fullIncr <= 0 && !-Infinity));
-                    const isPreMrkdwnIncr = ((preMkdwnIncr >= 0 && !-Infinity) || (preMkdwnIncr <= 0 && !-Infinity));
-
+                    const isFullIncrement = (isNaN(+fullIncr) || +fullIncr === -Infinity || +fullIncr === Infinity);
+                    const isPreMrkdwnIncr = (isNaN(+preMkdwnIncr) || +preMkdwnIncr === -Infinity || +preMkdwnIncr === Infinity);
                     row.push({
                         info: {
                             metric,
@@ -58,7 +55,7 @@ const transformer = (newFilters, data) => {
                         pre_mkdwn_incr: {
                             dataType: incrDataType,
                             isReadOnly: !incrCanEdit,
-                            value: isPreMrkdwnIncr ? preMkdwnIncr : 0,
+                            value: isPreMrkdwnIncr ? 0 : preMkdwnIncr,
                         },
                         full: {
                             dataType: data.years[year].metrics[metric].plans[plan].dataType,
@@ -68,7 +65,7 @@ const transformer = (newFilters, data) => {
                         full_incr: {
                             dataType: incrDataType,
                             isReadOnly: !incrCanEdit,
-                            value: isFullIncrement ? fullIncr : 0,
+                            value: isFullIncrement ? 0 : fullIncr,
                         },
                     });
                 }
@@ -80,14 +77,22 @@ const transformer = (newFilters, data) => {
 
 
 function jsonTransformer(data, filter) {
+    const yearsArray = [];
+    for (let i = 0; i < filter.plans.length; i++) {
+        yearsArray.push(filter.plans[i].numberOfHistoricalYears);
+    }
+    const numberOfYears = yearsArray.reduce((accumulator, currentValue) => accumulator + currentValue);
+    const numberOfMetrics = filter.metrics.length;
+
     const info = {
         season: data.season,
         year: data.budgetYear,
-        metrics: 5,
+        metrics: numberOfMetrics,
         start_row: 0,
         has_gaps: false,
-        total: 15,
+        total: numberOfMetrics * numberOfYears,
     };
+
 
     const headers = [['Info', 'Pre-Mkdn', 'Incr%', 'Full Season', 'Incr%']];
 
