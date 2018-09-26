@@ -35,10 +35,7 @@ describe('Budget view action creators', () => {
     it('Should handle fetchBudgetMetricData', async () => {
         const budget = 1;
         const view = 'total';
-        const filters = {
-            metric: ["SALES"],
-            plans: [{plan: "wp", numberOfHistoricalYears: 3}]
-        };
+
         const response = {
             data: [],
             headers: [],
@@ -51,26 +48,18 @@ describe('Budget view action creators', () => {
 
         const expectedActions = [
             {
-                'filters': {
-                    'metric': ['SALES'],
-                    'plans': [{'numberOfHistoricalYears': 3, 'plan': 'wp'}],
-                },
-                'type': 'REQUEST_BUDGETS_DATA',
-                'view': 'total',
+                 type :  'REQUEST_BUDGETS_DATA',
+                 view : 'total',
             },
             {
-                'filters': {
-                    'metric': ['SALES'],
-                    'plans': [{'numberOfHistoricalYears': 3, 'plan': 'wp'}],
-                },
-                'result': {'data': [], 'headers': [], 'info': {}},
-                'type': 'RECEIVE_BUDGETS_DATA',
-                'view': 'total',
+                 result : response,
+                 type :  'RECEIVE_BUDGETS_DATA',
+                 view : 'total',
             }]
 
         const store = mockStore({});
 
-        await store.dispatch(actions.fetchBudgetMetricData(budget, view, filters));
+        await store.dispatch(actions.fetchBudgetMetricData(budget, view));
 
         expect(store.getActions()).toEqual(expectedActions);
     });
