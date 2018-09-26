@@ -35,7 +35,7 @@ describe('Budget view action creators', () => {
     it('Should handle fetchBudgetMetricData', async () => {
         const budget = 1;
         const view = 'total';
-        const body = {
+        const filters = {
             metric: ["SALES"],
             plans: [{plan: "wp", numberOfHistoricalYears: 3}]
         };
@@ -46,17 +46,31 @@ describe('Budget view action creators', () => {
         };
 
         nock(UI_PLANNING_HOST)
-            .post(`/api/planning/budgets/${budget}/${view}`, body)
+            .get(`/api/planning/budgets/${budget}/${view}`)
             .reply(200, response);
 
         const expectedActions = [
-            {type: 'REQUEST_BUDGETS_DATA', view},
-            {result: response, type: 'RECEIVE_BUDGETS_DATA', view}
-        ];
+            {
+                'filters': {
+                    'metric': ['SALES'],
+                    'plans': [{'numberOfHistoricalYears': 3, 'plan': 'wp'}],
+                },
+                'type': 'REQUEST_BUDGETS_DATA',
+                'view': 'total',
+            },
+            {
+                'filters': {
+                    'metric': ['SALES'],
+                    'plans': [{'numberOfHistoricalYears': 3, 'plan': 'wp'}],
+                },
+                'result': {'data': [], 'headers': [], 'info': {}},
+                'type': 'RECEIVE_BUDGETS_DATA',
+                'view': 'total',
+            }]
 
         const store = mockStore({});
 
-        await store.dispatch(actions.fetchBudgetMetricData(budget, view, body));
+        await store.dispatch(actions.fetchBudgetMetricData(budget, view, filters));
 
         expect(store.getActions()).toEqual(expectedActions);
     });
