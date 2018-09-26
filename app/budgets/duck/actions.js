@@ -34,9 +34,8 @@ function sendDataForSpreading(budget, view, updatedObj) {
     };
 
     return {
-        // types: [types.REQUEST_SPREAD_DATA, types.RECEIVE_SPREAD_DATA, types.FAILED_SPREAD_DATA],
-        // promise: client => client.put(`/planning/budgets/${budget}/${view}`, { body }),
-        type: types.REQUEST_SPREAD_DATA,
+        types: [types.REQUEST_SPREAD_DATA, types.RECEIVE_SPREAD_DATA, types.FAILED_SPREAD_DATA],
+        promise: client => client.put(`/planning/budgets/${budget}/${view}`, { body }),
         view,
     };
 }

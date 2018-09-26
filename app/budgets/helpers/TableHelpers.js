@@ -61,8 +61,6 @@ const transformer = (newFilters, data) => {
         return {};
     }
 
-    console.log('transformer');
-
     const years = Object.keys(data.years).sort().slice(1).reverse();
     const metrics = Object.keys(data.years[years[0]].metrics);
     const incrDataType = 'percentage';
@@ -120,19 +118,6 @@ const transformer = (newFilters, data) => {
 
 
 export function jsonTransformer({ data }, filter) {
-    console.log('jsonTransformer', { data, filter });
-
-    // return {
-    //     info: {},
-    //     headers: [['Info', 'Pre-Mkdn', 'Incr%', 'Full Season', 'Incr%']],
-    //     data: {
-    //         data: [],
-    //         headers: [],
-    //         info: {},
-    //     },
-    // };
-
-
     const yearsArray = [];
     for (let i = 0; i < filter.selectedPlanTypes.length; i++) {
         yearsArray.push(filter.selectedPlanTypes[i].numberOfHistoricalYears);

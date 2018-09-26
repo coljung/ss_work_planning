@@ -63,6 +63,18 @@ class BudgetViewsContainer extends Component {
         this.props.resetState();
     }
 
+    componentWillReceiveProps(nextProps) {
+        if ((nextProps.isRefreshRequired && nextProps.isRefreshRequired !== this.props.isRefreshRequired)
+            || nextProps.params.tab !== this.props.params.tab
+            || nextProps.params.budgetId !== this.props.params.budgetId) {
+            const filters = {
+                metrics: nextProps.filters.selectedMetrics,
+                plans: nextProps.filters.selectedPlanTypes,
+            };
+            this.getMetricData(nextProps.params.budgetId, nextProps.params.tab, filters);
+        }
+    }
+
     getMetricData(budgetId, tab, filters = { metrics: null, plans: null }) {
         this.props.fetchBudgetMetricData(budgetId, tab, filters);
     }
@@ -125,14 +137,6 @@ class BudgetViewsContainer extends Component {
 
         // undo disabled / enabled ?
         const viewHistory = this.props.history[this.props.params.tab];
-
-        // jsonTransformer(this.props.viewData, this.props.filters)
-        // console.log({
-        //     viewData: this.props.viewData,
-        //     filters: this.props.filters,
-        //     formatted: jsonTransformer(this.props.viewData, this.props.filters),
-        // });
-
         return (
             <div>
                 <Row type="flex" justify="start" className="innerHeader">
