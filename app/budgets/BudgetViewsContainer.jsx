@@ -12,6 +12,7 @@ import ViewPicker from './ViewPicker';
 import SectionContainer from './TableContainer';
 import { RECEIVE_BUDGETS_CONFIG_DATA } from './duck/types';
 import { ROUTE_BUDGET, ROUTE_DASHBOARD } from '../constants/routes';
+import { jsonTransformer } from './helpers/TableHelpers';
 
 class BudgetViewsContainer extends Component {
     static propTypes = {
@@ -50,24 +51,16 @@ class BudgetViewsContainer extends Component {
                 selectedPlanTypes: result.defaultFilters.plans,
             };
             this.applyFilters(filter);
+            this.getMetricData(
+                this.props.params.budgetId,
+                this.props.params.tab,
+                { metrics: filter.selectedMetrics, plans: filter.selectedPlanTypes },
+            );
         });
     }
 
     componentWillUnmount() {
         this.props.resetState();
-    }
-
-    componentWillReceiveProps(nextProps) {
-        if ((nextProps.isRefreshRequired && nextProps.isRefreshRequired !== this.props.isRefreshRequired)
-            || nextProps.filters !== this.props.filters
-            || nextProps.params.tab !== this.props.params.tab
-            || nextProps.params.budgetId !== this.props.params.budgetId) {
-            const filters = {
-                metrics: nextProps.filters.selectedMetrics,
-                plans: nextProps.filters.selectedPlanTypes,
-            };
-            this.getMetricData(nextProps.params.budgetId, nextProps.params.tab, filters);
-        }
     }
 
     getMetricData(budgetId, tab, filters = { metrics: null, plans: null }) {
@@ -133,6 +126,13 @@ class BudgetViewsContainer extends Component {
         // undo disabled / enabled ?
         const viewHistory = this.props.history[this.props.params.tab];
 
+        // jsonTransformer(this.props.viewData, this.props.filters)
+        // console.log({
+        //     viewData: this.props.viewData,
+        //     filters: this.props.filters,
+        //     formatted: jsonTransformer(this.props.viewData, this.props.filters),
+        // });
+
         return (
             <div>
                 <Row type="flex" justify="start" className="innerHeader">
@@ -155,7 +155,7 @@ class BudgetViewsContainer extends Component {
                     <ViewPicker tab={this.props.params.tab} onTabChange={this.changeTab} />
                     <SectionContainer
                         view={this.props.params.tab}
-                        viewData={this.props.viewData}
+                        viewData={jsonTransformer(this.props.viewData, this.props.filters)}
                         useDecimals={this.useDecimals}
                         onPushHistory={this.pushToHistory}
                         onCellChange={this.changeCellValue} />
