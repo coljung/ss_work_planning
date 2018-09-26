@@ -75,3 +75,8 @@ plan:
   wp: WORKING PLAN
   dsrp: FORECAST
   achd: ACTUAL
+headers:
+  info: Info
+  premkdwn: Pre-Mkdwn
+  increment: Incr%
+  fullseason: Full Season
