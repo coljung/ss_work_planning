@@ -1,3 +1,4 @@
+import _ from 'lodash/fp';
 import types from './types';
 import { LOGOUT_SUCCESS } from '../../user/duck/types';
 
@@ -6,13 +7,15 @@ const initialState = {
     filters: {
         availableMetrics: [],
         availablePlans: [],
+        selectedPlanTypes: [],
+        selectedMetrics: [],
     },
     isBudgetLoading: false,
     isDataSpreading: false,
     isRefreshRequired: false,
     view: null,
     viewData: {
-        data: [],
+        data: {},
         headers: [],
         info: {},
     },
@@ -40,7 +43,10 @@ const budgetViewReducer = (state = initialState, action) => {
                 ...state,
                 isBudgetLoading: false,
                 view: action.view,
-                viewData: action.result,
+                viewData: {
+                    ...state.viewData,
+                    data: action.result,
+                },
             };
 
         case types.REQUEST_SPREAD_DATA:

@@ -12,20 +12,22 @@ describe('Budget View Reducer', () => {
 
     beforeEach(() => {
         initialState = {
-            config: {},
-            filters: {
-                availableMetrics: [],
-                availablePlans: [],
+             config : {},
+             filters : {
+                 availableMetrics : [],
+                 availablePlans : [],
+                 selectedMetrics : [],
+                 selectedPlanTypes : [],
             },
-            isBudgetLoading: false,
-            isDataSpreading: false,
-            isRefreshRequired: false,
-            view: null,
-            viewData: {
-                data: [],
-                headers: [],
-                info: {},
-            },
+             isBudgetLoading : false,
+             isDataSpreading : false,
+             isRefreshRequired : false,
+             view : null,
+             viewData : {
+                 data : {},
+                 headers : [],
+                 info : {}
+             },
         };
     });
 
@@ -78,7 +80,11 @@ describe('Budget View Reducer', () => {
         ).toEqual(Object.assign({}, initialState, {
             isBudgetLoading: false,
             view: 'men',
-            viewData: 'test',
+            viewData: {
+                data :  'test' ,
+                headers : [],
+                info : {}
+            },
         }));
     });
 

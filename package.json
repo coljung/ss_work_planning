@@ -29,6 +29,7 @@
     "history": "^3.2.0",
     "http-proxy-middleware": "^0.17.4",
     "i18next": "^11.3.6",
+    "lodash": "^4.17.11",
     "moment": "^2.22.2",
     "newrelic": "^4.1.4",
     "node-basicauth": "0.0.9",
