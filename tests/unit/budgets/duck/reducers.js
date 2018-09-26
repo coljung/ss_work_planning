@@ -5,27 +5,29 @@ import types from '../../../../app/budgets/duck/types';
 let sandbox;
 let initialState;
 
-describe.skip('Budget View Reducer', () => {
+describe('Budget View Reducer', () => {
     beforeAll(() => {
         sandbox = sinon.sandbox.create();
     });
 
     beforeEach(() => {
         initialState = {
-            config: {},
-            filters: {
-                availableMetrics: [],
-                availablePlans: [],
+             config : {},
+             filters : {
+                 availableMetrics : [],
+                 availablePlans : [],
+                 selectedMetrics : [],
+                 selectedPlanTypes : [],
             },
-            isBudgetLoading: false,
-            isDataSpreading: false,
-            isRefreshRequired: false,
-            view: null,
-            viewData: {
-                data: [],
-                headers: [],
-                info: {},
-            },
+             isBudgetLoading : false,
+             isDataSpreading : false,
+             isRefreshRequired : false,
+             view : null,
+             viewData : {
+                 data : {},
+                 headers : [],
+                 info : {}
+             },
         };
     });
 
@@ -58,7 +60,7 @@ describe.skip('Budget View Reducer', () => {
         });
     });
 
-    it.skip('should handle REQUEST_BUDGETS_DATA', () => {
+    it('should handle REQUEST_BUDGETS_DATA', () => {
         expect(
             reducer(undefined, {
                 type: types.REQUEST_BUDGETS_DATA,
@@ -78,11 +80,15 @@ describe.skip('Budget View Reducer', () => {
         ).toEqual(Object.assign({}, initialState, {
             isBudgetLoading: false,
             view: 'men',
-            viewData: 'test',
+            viewData: {
+                data :  'test' ,
+                headers : [],
+                info : {}
+            },
         }));
     });
 
-    it.skip('should handle REQUEST_SPREAD_DATA', () => {
+    it('should handle REQUEST_SPREAD_DATA', () => {
         expect(
             reducer(undefined, {
                 type: types.REQUEST_SPREAD_DATA,
@@ -92,7 +98,7 @@ describe.skip('Budget View Reducer', () => {
         }));
     });
 
-    it.skip('should handle RECEIVE_SPREAD_DATA', () => {
+    it('should handle RECEIVE_SPREAD_DATA', () => {
         expect(
             reducer(undefined, {
                 type: types.RECEIVE_SPREAD_DATA,
@@ -103,7 +109,7 @@ describe.skip('Budget View Reducer', () => {
         }));
     });
 
-    it.skip('should handle SET_FILTER_SETUP', () => {
+    it('should handle SET_FILTER_SETUP', () => {
         expect(
             reducer(undefined, {
                 type: types.SET_FILTER_SETUP,
