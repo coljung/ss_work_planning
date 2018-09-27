@@ -6,7 +6,7 @@ import cellValueRenderer from '../../../../app/budgets/helpers/RowHeaderCellRend
 
 const createCell = (instance, row, col, viewInfo = { row_span: 5 }, info = { year: 2018, season: 'SS', metric: 'SALES', plan: 'wp' }) => {
     const stateContainer = {
-        props: {
+        state: {
             viewData: {
                 data: [],
                 info: viewInfo,
@@ -15,7 +15,7 @@ const createCell = (instance, row, col, viewInfo = { row_span: 5 }, info = { yea
     };
 
     for (let i = 0; i <= row; i++) {
-        stateContainer.props.viewData.data.push({
+        stateContainer.state.viewData.data.push({
             info,
         });
     }

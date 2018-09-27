@@ -43,11 +43,14 @@ function setup(state = {}, props = {}) {
 
     const initialProps = {
         view: 'total',
-        viewData: {
-            data: [],
-            headers: [],
-            info: {},
+        filters: {
+            availableMetrics: [],
+            availablePlans: [],
+            selectedPlanTypes: [],
+            selectedMetrics: [],
         },
+        data: {},
+        useDecimals: false,
         onPushHistory: jest.fn(),
         onCellChange: jest.fn(),
         ...props,
@@ -77,15 +80,7 @@ describe('Top Down TableContainer', () => {
             },
         };
 
-        const props = {
-            viewData: {
-                data: [{}],
-                headers: [],
-                info: {},
-            }
-        };
-
-        const wrapper = setup(state, props);
+        const wrapper = setup(state, {});
 
         expect(wrapper.find(LoadingSpinner)).toHaveLength(1);
     });
@@ -111,18 +106,7 @@ describe('Top Down TableContainer', () => {
             },
         };
 
-        const props = {
-            viewData: {
-                data: [{
-                    info: {},
-                    previous: { value: 1000 },
-                }],
-                headers: [['Name', 'Previous']],
-                info: {},
-            }
-        };
-
-        const wrapper = setup(state, props);
+        const wrapper = setup(state, {});
 
         expect(wrapper.find(LoadingSpinner)).toHaveLength(1);
     });

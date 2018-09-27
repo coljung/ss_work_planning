@@ -1,10 +1,5 @@
-import agent from 'superagent';
-import wrap from 'superagent-promise';
 import actions from './actions';
 import getApiUrl from '../../helpers';
-import { messages } from '../../notifications/NotificationActions';
-
-const request = wrap(agent, Promise);
 
 function getViewExportFile(budgetId, view, filter) {
     return (dispatch) => {
