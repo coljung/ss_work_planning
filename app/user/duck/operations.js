@@ -10,6 +10,7 @@ const authenticate = dispatch => new Promise((resolve, reject) => {
     ssense.authenticate(BACKEND_APP_CODE, (err, data) => {
         if (err) {
             // If authenticate returns a 403, the current user's account has been disabled, close the session
+            /* istanbul ignore next */
             if (err.statusCode === 403) {
                 return reject();
             }
