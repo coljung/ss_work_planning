@@ -5,17 +5,27 @@ import { connect } from 'react-redux';
 import LoadingSpinner from '../components/common/LoadingSpinner';
 import rowHeaderCellRenderer from './helpers/RowHeaderCellRenderer';
 import commonCellValueRenderer from './helpers/CommonCellRenderer';
+import { jsonTransformer } from './helpers/TableHelpers';
 
 class TableContainer extends Component {
     static propTypes = {
         view: PropTypes.string.isRequired,
-        viewData: PropTypes.object.isRequired,
+        data: PropTypes.object.isRequired,
+        filters: PropTypes.object.isRequired,
         isBudgetLoading: PropTypes.bool.isRequired,
         isDataSpreading: PropTypes.bool.isRequired,
         onCellChange: PropTypes.func.isRequired,
         onPushHistory: PropTypes.func.isRequired,
         useDecimals: PropTypes.bool.isRequired,
         historyData: PropTypes.object,
+    };
+
+    state = {
+        viewData: {
+            headers: [],
+            info: {},
+            data: [],
+        },
     };
 
     hotTableRef = null;
@@ -42,6 +52,12 @@ class TableContainer extends Component {
             this.row = nextProps.historyData.focusPosition.row;
             this.scrollPosTop = nextProps.historyData.focusPosition.scrollPosTop;
             this.scrollPosLeft = nextProps.historyData.focusPosition.scrollPosLeft;
+        }
+
+        if ((nextProps.data !== this.props.data) || nextProps.filters !== this.props.filters) {
+            this.setState({
+                viewData: jsonTransformer(nextProps.data, nextProps.filters),
+            });
         }
     }
 
@@ -101,15 +117,30 @@ class TableContainer extends Component {
 
             // handsontable converts to string
             if (parseFloat(prevValue, 10) !== parseFloat(newValue, 10)) {
-                const dataToSend = this.props.viewData.data[row][col[0]];
+                let dataToSend;
+
+                if (col[0] === 'pre_mkdwn_incr') {
+                    const keys = this.state.viewData.data[row].pre_mkdwn.key.split('.');
+                    const presentYearDataObject = this.props.data.data.years[keys[1]].metrics[keys[2]].plans.wp.periods[keys[3]];
+                    const pastYearDataObject = this.props.data.data.years[keys[1] - 1].metrics[keys[2]].plans.wp.periods[keys[3]];
+
+                    dataToSend = {
+                        key: presentYearDataObject.key,
+                        value: (newValue * pastYearDataObject.value) + pastYearDataObject.value,
+                        origin: 'yearOverYear',
+                    };
+                } else {
+                    dataToSend = {
+                        ...this.state.viewData.data[row][col[0]],
+                        origin: 'value',
+                    };
+                }
 
                 // set row/col for scrollpositioning
                 this.row = row;
-                this.column = Object.keys(this.props.viewData.data[row]).indexOf(col[0]);
+                this.column = Object.keys(this.state.viewData.data[row]).indexOf(col[0]);
 
                 const element = document.getElementsByClassName('wtHolder')[0];
-                const metric = this.props.viewData.data[row].info.metric;
-                const plan = this.props.viewData.data[row].info.plan;
                 const focusPosition = {
                     col: this.column,
                     row: this.row,
@@ -117,7 +148,7 @@ class TableContainer extends Component {
                     scrollPosLeft: element.scrollLeft,
                 };
 
-                this.props.onCellChange({ ...dataToSend, metric, plan })
+                this.props.onCellChange(dataToSend)
                     .then(() => {
                         // Send old value into history for future undo
                         // TODO: Fix this
@@ -126,10 +157,10 @@ class TableContainer extends Component {
                         // same a first push
                         // this would cause a double undo / redo click when changing cell
                         if (this.lastEditCell !== cellEditKey) {
-                            this.props.onPushHistory({ ...dataToSend, value: +prevValue, metric, plan }, focusPosition);
+                            this.props.onPushHistory({ ...dataToSend, value: +prevValue }, focusPosition);
                         }
 
-                        this.props.onPushHistory({ ...dataToSend, metric, plan }, focusPosition);
+                        this.props.onPushHistory(dataToSend, focusPosition);
 
                         this.lastEditCell = cellEditKey;
                     })
@@ -204,11 +235,11 @@ class TableContainer extends Component {
     }
 
     buildTable() {
-        if (!Object.keys(this.props.viewData).length) {
+        if (!Object.keys(this.state.viewData).length) {
             return null;
         }
 
-        const columnInfos = this.createColumnInfos(Object.getOwnPropertyNames(this.props.viewData.data.length ? this.props.viewData.data[0] : []));
+        const columnInfos = this.createColumnInfos(Object.getOwnPropertyNames(this.state.viewData.data.length ? this.state.viewData.data[0] : []));
         const refreshLoad = this.props.isDataSpreading ? (<div className="refreshLoad"><LoadingSpinner /></div>) : null;
         return (
             <div className='parentDiv'>
@@ -222,7 +253,7 @@ class TableContainer extends Component {
                     contextMenu={false}
                     currentColClassName={'currentCol'}
                     currentRowClassName={'currentRow'}
-                    data={this.props.viewData.data}
+                    data={this.state.viewData.data}
                     fixedColumnsLeft={1}
                     fixedRowsTop={0}
                     formulas={false}
@@ -230,7 +261,7 @@ class TableContainer extends Component {
                     nestedHeaders={[
                         [
                             '&nbsp;', // For the first header column; an empty header makes a smaller cell than having a nbsp, so that's why we're setting this
-                            ...this.props.viewData.headers[0].slice(1),
+                            ...this.state.viewData.headers[0].slice(1),
                         ],
                     ]}
                     observeChanges={true}
@@ -246,7 +277,7 @@ class TableContainer extends Component {
     }
 
     render() {
-        const budgetListData = this.props.isBudgetLoading || !this.props.viewData.data.length ? <LoadingSpinner /> : this.buildTable();
+        const budgetListData = this.props.isBudgetLoading || !this.state.viewData.data.length ? <LoadingSpinner /> : this.buildTable();
 
         return (
             <div>

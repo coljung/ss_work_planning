@@ -91,11 +91,12 @@ const transformer = (newFilters, data) => {
                         pre_mkdwn: {
                             dataType: data.years[year].metrics[metric].plans[plan].dataType,
                             isReadOnly: !data.years[year].metrics[metric].plans[plan].periods['PRE-MKD'].canEdit,
+                            key: data.years[year].metrics[metric].plans[plan].periods['PRE-MKD'].key,
                             value: data.years[year].metrics[metric].plans[plan].periods['PRE-MKD'].value || 0,
                         },
                         pre_mkdwn_incr: {
                             dataType: incrDataType,
-                            isReadOnly: !incrCanEdit,
+                            isReadOnly: !data.years[year].metrics[metric].plans[plan].periods['PRE-MKD'].canEdit,
                             value: isPreMrkdwnIncr ? 0 : preMkdwnIncr,
                         },
                         full: {

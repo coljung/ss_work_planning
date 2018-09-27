@@ -5,8 +5,8 @@ import {
 } from './TableHelpers';
 
 export default function cellRenderer(instance, td, row, col, prop, value, cellProperties) {
-    const rowInformation = this.props.viewData.data[row].info;
-    const rowSpan = (+this.props.viewData.info.total / +this.props.viewData.info.metrics);
+    const rowInformation = this.state.viewData.data[row].info;
+    const rowSpan = (+this.state.viewData.info.total / +this.state.viewData.info.metrics);
 
     const metric = i18n.t(`metric.${rowInformation.metric}`);
     const plan = i18n.t(`plan.${rowInformation.plan}`);

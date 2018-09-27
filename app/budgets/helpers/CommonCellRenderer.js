@@ -9,11 +9,11 @@ import {
 
 export default function cellValueRenderer(instance, td, row, col, prop, value, cellProperties) {
     // styling border for each metric
-    const rowSpan = (+this.props.viewData.info.total / +this.props.viewData.info.metrics);
+    const rowSpan = (+this.state.viewData.info.total / +this.state.viewData.info.metrics);
     borderBottom(row, rowSpan, td);
 
     const colName = prop.split('.');
-    const metricInformation = this.props.viewData.data[row][colName[0]];
+    const metricInformation = this.state.viewData.data[row][colName[0]];
 
     if (metricInformation) {
         if (metricInformation.isReadOnly !== undefined) {
