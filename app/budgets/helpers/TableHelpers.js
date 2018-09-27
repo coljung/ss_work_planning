@@ -66,8 +66,8 @@ const transformer = (newFilters, data) => {
     const incrDataType = 'percentage';
     const incrCanEdit = false;
 
-    // find year for each pans
-    newFilters.selectedPlanTypes = newFilters.selectedPlanTypes.map(plan => ({
+    // find number of years for each plan type
+    const selectedPlanTypes = newFilters.selectedPlanTypes.map(plan => ({
         ...plan,
         years: years.slice(0, plan.numberOfHistoricalYears),
     }));
@@ -75,10 +75,18 @@ const transformer = (newFilters, data) => {
     return _.flattenDeep(_.intersection(newFilters.selectedMetrics, metrics).map(metric =>
         years.map((year) => {
             const row = [];
-            newFilters.selectedPlanTypes.forEach(({ plan, years: planYear }) => {
+            selectedPlanTypes.forEach(({ plan, years: planYear }) => {
                 if (planYear.includes(year)) {
-                    const preMkdwnIncr = ((data.years[year].metrics[metric].plans[plan].periods['PRE-MKD'].value - data.years[year - 1].metrics[metric].plans[plan].periods['PRE-MKD'].value) / data.years[year - 1].metrics[metric].plans[plan].periods['PRE-MKD'].value);
-                    const fullIncr = ((data.years[year].metrics[metric].plans[plan].value - data.years[year - 1].metrics[metric].plans[plan].value) / data.years[year - 1].metrics[metric].plans[plan].value);
+                    // preMakdwn previous and current year path
+                    const preMkdwn = data.years[year].metrics[metric].plans[plan].periods['PRE-MKD'];
+                    const prevPreMkdwn = data.years[year - 1].metrics[metric].plans[plan].periods['PRE-MKD'];
+
+                    // fullSeason previous and current year path
+                    const fullSeason = data.years[year].metrics[metric].plans[plan];
+                    const prevFullSeason = data.years[year - 1].metrics[metric].plans[plan];
+
+                    const preMkdwnIncr = ((preMkdwn.value - prevPreMkdwn.value) / prevPreMkdwn.value);
+                    const fullIncr = ((fullSeason.value - prevFullSeason.value) / prevFullSeason.value);
                     const isFullIncrement = (isNaN(+fullIncr) || +fullIncr === -Infinity || +fullIncr === Infinity);
                     const isPreMrkdwnIncr = (isNaN(+preMkdwnIncr) || +preMkdwnIncr === -Infinity || +preMkdwnIncr === Infinity);
                     row.push({
@@ -90,9 +98,9 @@ const transformer = (newFilters, data) => {
                         },
                         pre_mkdwn: {
                             dataType: data.years[year].metrics[metric].plans[plan].dataType,
-                            isReadOnly: !data.years[year].metrics[metric].plans[plan].periods['PRE-MKD'].canEdit,
-                            key: data.years[year].metrics[metric].plans[plan].periods['PRE-MKD'].key,
-                            value: data.years[year].metrics[metric].plans[plan].periods['PRE-MKD'].value || 0,
+                            isReadOnly: !preMkdwn.canEdit,
+                            key: preMkdwn.key,
+                            value: preMkdwn.value || 0,
                         },
                         pre_mkdwn_incr: {
                             dataType: incrDataType,
@@ -100,9 +108,9 @@ const transformer = (newFilters, data) => {
                             value: isPreMrkdwnIncr ? 0 : preMkdwnIncr,
                         },
                         full: {
-                            dataType: data.years[year].metrics[metric].plans[plan].dataType,
-                            isReadOnly: !data.years[year].metrics[metric].plans[plan].canEdit,
-                            value: data.years[year].metrics[metric].plans[plan].value || 0,
+                            dataType: fullSeason.dataType,
+                            isReadOnly: !fullSeason.canEdit,
+                            value: fullSeason.value || 0,
                         },
                         full_incr: {
                             dataType: incrDataType,
@@ -136,8 +144,7 @@ export function jsonTransformer({ data }, filter) {
         total: numberOfMetrics * numberOfYears,
     };
 
-
-    const headers = [['Info', 'Pre-Mkdn', 'Incr%', 'Full Season', 'Incr%']];
+    const headers = [[i18n.t('headers.info'), i18n.t('headers.premkdwn'), i18n.t('headers.increment'), i18n.t('headers.fullseason'), i18n.t('headers.increment')]];
 
     const response = {
         info,

@@ -52,7 +52,6 @@ class BudgetViewsContainer extends Component {
             this.getMetricData(
                 this.props.params.budgetId,
                 this.props.params.tab,
-                { metrics: filter.selectedMetrics, plans: filter.selectedPlanTypes },
             );
         });
     }
