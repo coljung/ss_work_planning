@@ -121,8 +121,8 @@ class TableContainer extends Component {
 
                 if (col[0] === 'pre_mkdwn_incr') {
                     const keys = this.state.viewData.data[row].pre_mkdwn.key.split('.');
-                    const presentYearDataObject = this.props.data.data.years[keys[1]].metrics[keys[2]].plans.wp.periods[keys[3]];
-                    const pastYearDataObject = this.props.data.data.years[keys[1] - 1].metrics[keys[2]].plans.wp.periods[keys[3]];
+                    const presentYearDataObject = this.props.data.years[keys[1]].metrics[keys[2]].plans.wp.periods[keys[3]];
+                    const pastYearDataObject = this.props.data.years[keys[1] - 1].metrics[keys[2]].plans.wp.periods[keys[3]];
 
                     dataToSend = {
                         key: presentYearDataObject.key,
@@ -211,7 +211,7 @@ class TableContainer extends Component {
             data: `${column}.value`,
             readOnly: false,
             type: 'text',
-            width: column.includes('incr') ? 50 : 100, // Put less space for incr% columns
+            width: column.includes('incr') ? 70 : 120, // Put less space for incr% columns
             renderer,
         };
     }
