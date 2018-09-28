@@ -78,5 +78,6 @@ plan:
 headers:
   info: Info
   premkdwn: Pre-Mkdwn
+  premkdwncontribution: Pre-Mkdwn Contribution
   increment: Incr%
   fullseason: Full Season
