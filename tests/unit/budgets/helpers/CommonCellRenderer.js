@@ -5,10 +5,10 @@ import Handsontable from 'handsontable';
 import cellValueRenderer from '../../../../app/budgets/helpers/CommonCellRenderer';
 import { percentageFormat, numericFormat } from '../../../../app/budgets/helpers/TableHelpers';
 
-const createCell = (instance, row, col, data = {}, value = '', props = {}, info = { year: 2018, season: 'SS' }) => {
+const createCell = (instance, row, col, data = {}, value = '', state = {}, props = {}, info = { year: 2018, season: 'SS' }) => {
     const stateContainer = {
-        props: {
-            ...props,
+        state: {
+            ...state,
             viewData: {
                 data: [],
                 info: {
@@ -16,10 +16,13 @@ const createCell = (instance, row, col, data = {}, value = '', props = {}, info 
                 },
             },
         },
+        props: {
+            ...props,
+        },
     };
 
     for (let i = 0; i <= row; i++) {
-        stateContainer.props.viewData.data.push({
+        stateContainer.state.viewData.data.push({
             info,
             ...data
         });
@@ -138,7 +141,7 @@ describe('Common view cell rendering', () => {
 
         const spy = sinon.spy(instance, 'setCellMeta');
 
-        createCell(instance, 0, 0, { prop: { dataType: 'currency' }}, 99, { location: { query: { decimals: 'yes' }}});
+        createCell(instance, 0, 0, { prop: { dataType: 'currency' }}, 99, {}, { location: { query: { decimals: 'yes' }}});
 
         expect(spy.called).to.equal(true);
         expect(spy.getCall(0).args[2]).to.equal('numericFormat');

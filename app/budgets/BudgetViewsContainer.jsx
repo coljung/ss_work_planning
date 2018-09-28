@@ -9,10 +9,8 @@ import { historyUndo, historyRedo, historyPush } from './history/HistoryActions'
 import BudgetViewActionsBar from './BudgetViewActionsBar';
 import FilterModal from './FilterModal';
 import ViewPicker from './ViewPicker';
-import SectionContainer from './TableContainer';
-import { RECEIVE_BUDGETS_CONFIG_DATA } from './duck/types';
+import TableContainer from './TableContainer';
 import { ROUTE_BUDGET, ROUTE_DASHBOARD } from '../constants/routes';
-import { jsonTransformer } from './helpers/TableHelpers';
 
 class BudgetViewsContainer extends Component {
     static propTypes = {
@@ -156,9 +154,10 @@ class BudgetViewsContainer extends Component {
                 </Row>
                 <div>
                     <ViewPicker tab={this.props.params.tab} onTabChange={this.changeTab} />
-                    <SectionContainer
+                    <TableContainer
                         view={this.props.params.tab}
-                        viewData={jsonTransformer(this.props.viewData, this.props.filters)}
+                        data={this.props.viewData}
+                        filters={this.props.filters}
                         useDecimals={this.useDecimals}
                         onPushHistory={this.pushToHistory}
                         onCellChange={this.changeCellValue} />

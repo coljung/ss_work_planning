@@ -85,8 +85,8 @@ const transformer = (newFilters, data) => {
                     const fullSeason = data.years[year].metrics[metric].plans[plan];
                     const prevFullSeason = data.years[year - 1].metrics[metric].plans[plan];
 
-                    const preMkdwnIncr = ((preMkdwn.value - prevPreMkdwn.value) / prevPreMkdwn.value);
-                    const fullIncr = ((fullSeason.value - prevFullSeason.value) / prevFullSeason.value);
+                    const preMkdwnIncr = (preMkdwn.value - prevPreMkdwn.value) / prevPreMkdwn.value;
+                    const fullIncr = (fullSeason.value - prevFullSeason.value) / prevFullSeason.value;
                     const isFullIncrement = (isNaN(+fullIncr) || +fullIncr === -Infinity || +fullIncr === Infinity);
                     const isPreMrkdwnIncr = (isNaN(+preMkdwnIncr) || +preMkdwnIncr === -Infinity || +preMkdwnIncr === Infinity);
                     row.push({
@@ -99,11 +99,12 @@ const transformer = (newFilters, data) => {
                         pre_mkdwn: {
                             dataType: data.years[year].metrics[metric].plans[plan].dataType,
                             isReadOnly: !preMkdwn.canEdit,
+                            key: preMkdwn.key,
                             value: preMkdwn.value || 0,
                         },
                         pre_mkdwn_incr: {
                             dataType: incrDataType,
-                            isReadOnly: !incrCanEdit,
+                            isReadOnly: !preMkdwn.canEdit,
                             value: isPreMrkdwnIncr ? 0 : preMkdwnIncr,
                         },
                         full: {
@@ -125,7 +126,15 @@ const transformer = (newFilters, data) => {
 };
 
 
-export function jsonTransformer({ data }, filter) {
+export function jsonTransformer(data, filter) {
+    if (!data) {
+        return {
+            info: {},
+            headers: [],
+            data: [],
+        };
+    }
+
     const yearsArray = [];
     for (let i = 0; i < filter.selectedPlanTypes.length; i++) {
         yearsArray.push(filter.selectedPlanTypes[i].numberOfHistoricalYears);
@@ -138,17 +147,14 @@ export function jsonTransformer({ data }, filter) {
         season: data.season,
         year: data.budgetYear,
         metrics: numberOfMetrics,
-        start_row: 0,
-        has_gaps: false,
         total: numberOfMetrics * numberOfYears,
     };
 
     const headers = [[i18n.t('headers.info'), i18n.t('headers.premkdwn'), i18n.t('headers.increment'), i18n.t('headers.fullseason'), i18n.t('headers.increment')]];
 
-    const response = {
+    return {
         info,
         headers,
         data: transformer(filter, data),
     };
-    return response;
 }

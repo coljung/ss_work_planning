@@ -3,7 +3,7 @@ import Adapter from 'enzyme-adapter-react-16';
 import React from 'react';
 import thunk from 'redux-thunk';
 import configureMockStore from 'redux-mock-store';
-import SectionContainer from '../../../app/budgets/TableContainer';
+import TableContainer from '../../../app/budgets/TableContainer';
 import LoadingSpinner from '../../../app/components/common/LoadingSpinner';
 
 Enzyme.configure({ adapter: new Adapter() });
@@ -43,11 +43,14 @@ function setup(state = {}, props = {}) {
 
     const initialProps = {
         view: 'total',
-        viewData: {
-            data: [],
-            headers: [],
-            info: {},
+        filters: {
+            availableMetrics: [],
+            availablePlans: [],
+            selectedPlanTypes: [],
+            selectedMetrics: [],
         },
+        data: {},
+        useDecimals: false,
         onPushHistory: jest.fn(),
         onCellChange: jest.fn(),
         ...props,
@@ -60,7 +63,7 @@ function setup(state = {}, props = {}) {
     document.body.appendChild(container);
 
     return mount(
-        <SectionContainer
+        <TableContainer
             store={store}
             {...initialProps}
         />,
@@ -68,7 +71,7 @@ function setup(state = {}, props = {}) {
     );
 }
 
-describe('Top Down SectionContainer', () => {
+describe('Top Down TableContainer', () => {
     it('Should render loading spinner while loading', () => {
         const state = {
             budgetViewReducer: {
@@ -77,15 +80,7 @@ describe('Top Down SectionContainer', () => {
             },
         };
 
-        const props = {
-            viewData: {
-                data: [{}],
-                headers: [],
-                info: {},
-            }
-        };
-
-        const wrapper = setup(state, props);
+        const wrapper = setup(state, {});
 
         expect(wrapper.find(LoadingSpinner)).toHaveLength(1);
     });
@@ -111,18 +106,7 @@ describe('Top Down SectionContainer', () => {
             },
         };
 
-        const props = {
-            viewData: {
-                data: [{
-                    info: {},
-                    previous: { value: 1000 },
-                }],
-                headers: [['Name', 'Previous']],
-                info: {},
-            }
-        };
-
-        const wrapper = setup(state, props);
+        const wrapper = setup(state, {});
 
         expect(wrapper.find(LoadingSpinner)).toHaveLength(1);
     });

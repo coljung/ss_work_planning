@@ -25,15 +25,15 @@ function fetchBudgetMetricData(budget, view) {
     };
 }
 
-function sendDataForSpreading(budget, view, updatedObj) {
+function sendDataForSpreading(budgetId, view, updatedObj) {
     const body = {
-        ...updatedObj,
+        key: updatedObj.key,
         value: updatedObj.value === 0 ? 0.0001 : updatedObj.value,
     };
 
     return {
         types: [types.REQUEST_SPREAD_DATA, types.RECEIVE_SPREAD_DATA, types.FAILED_SPREAD_DATA],
-        promise: client => client.put(`/planning/budgets/${budget}/${view}`, { body }),
+        promise: client => client.put(`/planning/budgets/${budgetId}/${view}`, { body }),
         view,
     };
 }

@@ -18,8 +18,6 @@ const authenticate = dispatch => new Promise((resolve, reject) => {
             return resolve(authenticate(dispatch));
         }
 
-        console.log('data', data);
-
         return resolve(data);
     });
 });
