@@ -77,7 +77,7 @@ const transformer = (newFilters, data) => {
             const row = [];
             selectedPlanTypes.forEach(({ plan, years: planYear }) => {
                 if (planYear.includes(year)) {
-                    // preMakdwn previous and current year path
+                    // preMkdwn previous and current year path
                     const preMkdwn = data.years[year].metrics[metric].plans[plan].periods['PRE-MKD'];
                     const prevPreMkdwn = data.years[year - 1].metrics[metric].plans[plan].periods['PRE-MKD'];
 
@@ -90,7 +90,7 @@ const transformer = (newFilters, data) => {
                     const isFullIncrement = (isNaN(+fullIncr) || +fullIncr === -Infinity || +fullIncr === Infinity);
                     const isPreMrkdwnIncr = (isNaN(+preMkdwnIncr) || +preMkdwnIncr === -Infinity || +preMkdwnIncr === Infinity);
                     const preMkdwnContribution = (preMkdwn.value || 0) / (fullSeason.value || 0) || 0;
-
+                    const isEmptyCellMetric = (metric === 'GmPercentage' || metric === 'SellThrough');
                     row.push({
                         info: {
                             metric,
@@ -110,9 +110,9 @@ const transformer = (newFilters, data) => {
                             value: preMkdwnContribution,
                         },
                         pre_mkdwn_incr: {
-                            dataType: incrDataType,
+                            dataType: isEmptyCellMetric ? 'text' : incrDataType,
                             isReadOnly: !preMkdwn.canEdit,
-                            value: isPreMrkdwnIncr ? 0 : preMkdwnIncr,
+                            value: isEmptyCellMetric ? ' ' : isPreMrkdwnIncr ? 0 : preMkdwnIncr,
                         },
                         full: {
                             dataType: fullSeason.dataType,
@@ -120,9 +120,9 @@ const transformer = (newFilters, data) => {
                             value: fullSeason.value || 0,
                         },
                         full_incr: {
-                            dataType: incrDataType,
+                            dataType: isEmptyCellMetric ? 'text' : incrDataType,
                             isReadOnly: !incrCanEdit,
-                            value: isFullIncrement ? 0 : fullIncr,
+                            value: isEmptyCellMetric ? ' ' : isFullIncrement ? 0 : fullIncr,
                         },
                     });
                 }
