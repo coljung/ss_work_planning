@@ -89,6 +89,8 @@ const transformer = (newFilters, data) => {
                     const fullIncr = (fullSeason.value - prevFullSeason.value) / prevFullSeason.value;
                     const isFullIncrement = (isNaN(+fullIncr) || +fullIncr === -Infinity || +fullIncr === Infinity);
                     const isPreMrkdwnIncr = (isNaN(+preMkdwnIncr) || +preMkdwnIncr === -Infinity || +preMkdwnIncr === Infinity);
+                    const preMkdwnContribution = (preMkdwn.value || 0) / (fullSeason.value || 0) || 0;
+
                     row.push({
                         info: {
                             metric,
@@ -101,6 +103,11 @@ const transformer = (newFilters, data) => {
                             isReadOnly: !preMkdwn.canEdit,
                             key: preMkdwn.key,
                             value: preMkdwn.value || 0,
+                        },
+                        pre_mkdwn_contribution: {
+                            dataType: incrDataType,
+                            isReadOnly: true, // @TODO should be !preMkdwn.canEdit for the edit story
+                            value: preMkdwnContribution,
                         },
                         pre_mkdwn_incr: {
                             dataType: incrDataType,
@@ -150,7 +157,7 @@ export function jsonTransformer(data, filter) {
         total: numberOfMetrics * numberOfYears,
     };
 
-    const headers = [[i18n.t('headers.info'), i18n.t('headers.premkdwn'), i18n.t('headers.increment'), i18n.t('headers.fullseason'), i18n.t('headers.increment')]];
+    const headers = [[i18n.t('headers.info'), i18n.t('headers.premkdwn'), i18n.t('headers.premkdwncontribution'), i18n.t('headers.increment'), i18n.t('headers.fullseason'), i18n.t('headers.increment')]];
 
     return {
         info,
