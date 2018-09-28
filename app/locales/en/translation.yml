@@ -77,7 +77,7 @@ plan:
   achd: ACTUAL
 headers:
   info: Info
-  premkdwn: Pre-Mkdwn
-  premkdwncontribution: Pre-Mkdwn Contribution
+  premkdwn: Pre-Mkd
+  premkdwncontribution: "Pre-Mkd <br> Contribution"
   increment: Incr%
   fullseason: Full Season
