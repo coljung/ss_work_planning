@@ -107,12 +107,12 @@ const transformer = (newFilters, data) => {
                         pre_mkdwn_contribution: {
                             dataType: incrDataType,
                             isReadOnly: true, // @TODO should be !preMkdwn.canEdit for the edit story
-                            value: preMkdwnContribution,
+                            value: preMkdwnContribution.toFixed(4),
                         },
                         pre_mkdwn_incr: {
                             dataType: isEmptyCellMetric ? 'text' : incrDataType,
                             isReadOnly: !preMkdwn.canEdit,
-                            value: isEmptyCellMetric ? ' ' : isPreMrkdwnIncr ? 0 : preMkdwnIncr,
+                            value: isEmptyCellMetric ? ' ' : isPreMrkdwnIncr ? 0 : preMkdwnIncr.toFixed(4),
                         },
                         full: {
                             dataType: fullSeason.dataType,
@@ -122,7 +122,7 @@ const transformer = (newFilters, data) => {
                         full_incr: {
                             dataType: isEmptyCellMetric ? 'text' : incrDataType,
                             isReadOnly: !incrCanEdit,
-                            value: isEmptyCellMetric ? ' ' : isFullIncrement ? 0 : fullIncr,
+                            value: isEmptyCellMetric ? ' ' : isFullIncrement ? 0 : fullIncr.toFixed(4),
                         },
                     });
                 }
