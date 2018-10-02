@@ -55,6 +55,10 @@ app.use(express.static(path.resolve(__dirname, 'public')));
 app.use('/api', proxy);
 app.use('/auth', proxyAuth);
 
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, './build/index.html'));
+});
+
 app.listen(port, host, (err) => {
     if (err) {
         // eslint-disable-next-line no-console
