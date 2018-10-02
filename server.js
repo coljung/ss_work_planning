@@ -47,15 +47,13 @@ if (config.get('api.auth.enabled')) {
 }
 
 app.use(cors());
+// Serve index.html, js and css files
 app.use(express.static(path.resolve(__dirname, 'build')));
+// Serve favicon and logo
 app.use(express.static(path.resolve(__dirname, 'public')));
 
 app.use('/api', proxy);
 app.use('/auth', proxyAuth);
-
-app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, './public/index.html'));
-});
 
 app.listen(port, host, (err) => {
     if (err) {
