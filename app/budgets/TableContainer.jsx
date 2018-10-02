@@ -128,11 +128,15 @@ class TableContainer extends Component {
                         key: presentYearDataObject.key,
                         value: (newValue * pastYearDataObject.value) + pastYearDataObject.value,
                         origin: 'yearOverYear',
+                        metric: this.props.data.years[keys[1]].metrics[keys[2]].metric,
                     };
                 } else {
+                    const keys = this.state.viewData.data[row][col[0]].key.split('.');
+
                     dataToSend = {
                         ...this.state.viewData.data[row][col[0]],
                         origin: 'value',
+                        metric: this.props.data.years[keys[1]].metrics[keys[2]].metric,
                     };
                 }
 
