@@ -9,6 +9,7 @@ const Visualizer = require('webpack-visualizer-plugin');
 const ProgressBarPlugin = require('progress-bar-webpack-plugin');
 const config = require('config');
 const lessToJs = require('less-vars-to-js');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 const themeVariables = lessToJs(
     fs.readFileSync(
@@ -119,6 +120,11 @@ module.exports = {
             format: `${chalk.blue.bold(' build [:bar] ')}${chalk.magenta.bold(':percent')} (:elapsed seconds)`,
             clear: false,
             width: 50,
+        }),
+        new HtmlWebpackPlugin({
+            hash: true,
+            template: path.join(__dirname, 'public', 'index.html'),
+            inject: true,
         }),
     ],
 };
