@@ -119,10 +119,22 @@ class TableContainer extends Component {
             if (parseFloat(prevValue, 10) !== parseFloat(newValue, 10)) {
                 let dataToSend;
 
-                if (col[0] === 'pre_mkdwn_incr') {
-                    const keys = this.state.viewData.data[row].pre_mkdwn.key.split('.');
-                    const presentYearDataObject = this.props.data.years[keys[1]].metrics[keys[2]].plans.wp.periods[keys[3]];
-                    const pastYearDataObject = this.props.data.years[keys[1] - 1].metrics[keys[2]].plans.wp.periods[keys[3]];
+                if (col[0].includes('_incr')) {
+                    const propertyKey = col[0].replace('_incr', '');
+                    const keys = this.state.viewData.data[row][propertyKey].key.split('.');
+                    let presentYearDataObject;
+                    if (keys.length === 3) {
+                        presentYearDataObject = this.props.data.years[keys[1]].metrics[keys[2]].plans.wp;
+                    } else {
+                        presentYearDataObject = this.props.data.years[keys[1]].metrics[keys[2]].plans.wp.periods[keys[3]];
+                    }
+
+                    let pastYearDataObject;
+                    if (keys.length === 3) {
+                        pastYearDataObject = this.props.data.years[keys[1] - 1].metrics[keys[2]].plans.wp;
+                    } else {
+                        pastYearDataObject = this.props.data.years[keys[1] - 1].metrics[keys[2]].plans.wp.periods[keys[3]];
+                    }
 
                     dataToSend = {
                         key: presentYearDataObject.key,
