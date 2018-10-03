@@ -3,7 +3,7 @@ notAvailable: N/A
 notification:
   errorFound: Error found
 home:
-  budgetsDashboard: Budgets Dashboard
+  budgetsDashboard: Pre-season plans
   createButton: Create New Budget
   noAvailableBudget: No budgets were created previously
   notification:
@@ -35,16 +35,16 @@ filterModal:
   note: Select at least 1 Metric and 1 Plan Type
   filters:
     metrics:
-      RECEIVED COST: RECEIPT $
+      RECEIVED COST: Receipt $
       COGS: COGS
-      SALES: SALES
+      SALES: Sales
       GmDollar: GM$
       GmPercentage: GM%
       SellThrough: ST%
     plans:
-      wp: WORKING PLAN
-      dsrp: FORECAST
-      achd: ACTUAL
+      wp: Working Plan
+      dsrp: Forecast
+      achd: Actuals
     years:
       1: 1Y
       2: 2Y
@@ -65,19 +65,19 @@ budgetView:
   title: 404!
   description: Page not found
 metric:
-  RECEIVED COST: RECEIPT $
+  RECEIVED COST: Receipt $
   COGS: COGS
-  SALES: SALES
+  SALES: Sales
   GmDollar: GM$
   GmPercentage: GM%
   SellThrough: ST%
 plan:
-  wp: WORKING PLAN
-  dsrp: FORECAST
-  achd: ACTUAL
+  wp: Working Plan
+  dsrp: Forecast
+  achd: Actuals
 headers:
   info: Info
   premkdwn: Pre-Mkd
   premkdwncontribution: "Pre-Mkd <br> Contribution"
-  increment: Incr%
+  increment: YoY%
   fullseason: Full Season
