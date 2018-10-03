@@ -29,6 +29,7 @@ function sendDataForSpreading(budgetId, view, updatedObj) {
     const body = {
         key: updatedObj.key,
         value: updatedObj.value === 0 ? 0.0001 : updatedObj.value,
+        metric: updatedObj.metric,
     };
 
     return {
