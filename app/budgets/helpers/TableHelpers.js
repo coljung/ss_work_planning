@@ -120,7 +120,7 @@ const transformer = (newFilters, data) => {
                         },
                         full_incr: {
                             dataType: isEmptyCellMetric ? 'text' : incrDataType,
-                            isReadOnly: true,
+                            isReadOnly: !fullSeason.canEdit,
                             value: isEmptyCellMetric ? ' ' : isFullIncrement ? 0 : fullIncr.toFixed(4),
                         },
                     });
