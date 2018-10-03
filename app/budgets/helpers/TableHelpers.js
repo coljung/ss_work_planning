@@ -90,6 +90,7 @@ const transformer = (newFilters, data) => {
                     const isFullIncrement = (isNaN(+fullIncr) || +fullIncr === -Infinity || +fullIncr === Infinity);
                     const isPreMrkdwnIncr = (isNaN(+preMkdwnIncr) || +preMkdwnIncr === -Infinity || +preMkdwnIncr === Infinity);
                     const preMkdwnContribution = (preMkdwn.value || 0) / (fullSeason.value || 0) || 0;
+                    const isPreMkdwnContribution = (isNaN(+preMkdwnContribution) || +preMkdwnContribution === -Infinity || +preMkdwnContribution === Infinity);
                     const isEmptyCellMetric = (metric === 'GmPercentage' || metric === 'SellThrough');
                     row.push({
                         info: {
@@ -105,9 +106,9 @@ const transformer = (newFilters, data) => {
                             value: preMkdwn.value || 0,
                         },
                         pre_mkdwn_contribution: {
-                            dataType: incrDataType,
+                            dataType: isEmptyCellMetric ? 'text' : incrDataType,
                             isReadOnly: true, // @TODO should be !preMkdwn.canEdit for the edit story
-                            value: preMkdwnContribution.toFixed(4),
+                            value: isEmptyCellMetric ? ' ' : isPreMkdwnContribution ? 0 : preMkdwnContribution.toFixed(4),
                         },
                         pre_mkdwn_incr: {
                             dataType: isEmptyCellMetric ? 'text' : incrDataType,
