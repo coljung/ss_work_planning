@@ -121,7 +121,7 @@ const transformer = (newFilters, data) => {
                             value: isEmptyCellPlan ? ' ' : fullSeason.value || 0,
                         },
                         full_incr: {
-                            dataType: isEmptyCellMetric ? 'text' : incrDataType,
+                            dataType: isEmptyCellPlan || isEmptyCellMetric ? 'text' : incrDataType,
                             isReadOnly: !fullSeason.canEdit,
                             value: isEmptyCellPlan || isEmptyCellMetric ? ' ' : isFullIncrement ? 0 : fullIncr.toFixed(4),
                         },
