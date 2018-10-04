@@ -22,7 +22,7 @@ base.plugins.push(
         output: { comments: false },
     }),
     new OfflinePlugin({
-        prefetchRequest: { credentials: 'include' },
+        // prefetchRequest: { credentials: 'include' },
         caches: 'all',
         publicPath: '/',
         relativePaths: false,
