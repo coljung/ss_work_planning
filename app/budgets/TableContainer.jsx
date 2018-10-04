@@ -12,6 +12,7 @@ class TableContainer extends Component {
         view: PropTypes.string.isRequired,
         data: PropTypes.object.isRequired,
         filters: PropTypes.object.isRequired,
+        config: PropTypes.object.isRequired,
         isBudgetLoading: PropTypes.bool.isRequired,
         isDataSpreading: PropTypes.bool.isRequired,
         onCellChange: PropTypes.func.isRequired,
@@ -56,7 +57,7 @@ class TableContainer extends Component {
 
         if ((nextProps.data !== this.props.data) || nextProps.filters !== this.props.filters) {
             this.setState({
-                viewData: jsonTransformer(nextProps.data, nextProps.filters),
+                viewData: jsonTransformer(nextProps.data, nextProps.filters, nextProps.config),
             });
         }
     }
@@ -298,6 +299,7 @@ function mapStateToProps(state, ownProps) {
         historyData = HistoryReducer[ownProps.view].present;
     }
     return {
+        config: budgetViewReducer.config,
         isBudgetLoading: budgetViewReducer.isBudgetLoading,
         isDataSpreading: budgetViewReducer.isDataSpreading,
         historyData,
