@@ -90,10 +90,16 @@
     margin: 10px 0;
   }
 
-  .ant-checkbox-checked .ant-checkbox-inner,
+  .ant-checkbox-checked .ant-checkbox-inner {
+      background-color: @ssense_black;
+      border-color: @ssense_black;
+  }
   .ant-checkbox-indeterminate .ant-checkbox-inner {
       background-color: @ssense_black;
       border-color: @ssense_black;
+      &:after{
+          background-color: #FFF;
+      }
   }
 
     .ant-select-focused .ant-select-selection,
