@@ -64,7 +64,6 @@ const transformer = (newFilters, data) => {
     const years = Object.keys(data.years).sort().slice(1).reverse();
     const metrics = Object.keys(data.years[years[0]].metrics);
     const incrDataType = 'percentage';
-    const incrCanEdit = false;
 
     // find number of years for each plan type
     const selectedPlanTypes = newFilters.selectedPlanTypes.map(plan => ({
@@ -77,13 +76,12 @@ const transformer = (newFilters, data) => {
             const row = [];
             selectedPlanTypes.forEach(({ plan, years: planYear }) => {
                 if (planYear.includes(year)) {
-                    // preMkdwn previous and current year path
-                    const preMkdwn = data.years[year].metrics[metric].plans[plan].periods['PRE-MKD'];
-                    const prevPreMkdwn = data.years[year - 1].metrics[metric].plans[plan].periods['PRE-MKD'];
-
-                    // fullSeason previous and current year path
                     const fullSeason = data.years[year].metrics[metric].plans[plan];
                     const prevFullSeason = data.years[year - 1].metrics[metric].plans[plan];
+
+                    // preMkdwn previous and current year path
+                    const preMkdwn = fullSeason.periods['PRE-MKD'];
+                    const prevPreMkdwn = prevFullSeason.periods['PRE-MKD'];
 
                     const preMkdwnIncr = (preMkdwn.value - prevPreMkdwn.value) / prevPreMkdwn.value;
                     const fullIncr = (fullSeason.value - prevFullSeason.value) / prevFullSeason.value;
@@ -119,11 +117,12 @@ const transformer = (newFilters, data) => {
                         full: {
                             dataType: isEmptyCellPlan ? 'text' : fullSeason.dataType,
                             isReadOnly: !fullSeason.canEdit,
+                            key: fullSeason.key,
                             value: isEmptyCellPlan ? ' ' : fullSeason.value || 0,
                         },
                         full_incr: {
                             dataType: isEmptyCellPlan || isEmptyCellMetric ? 'text' : incrDataType,
-                            isReadOnly: !incrCanEdit,
+                            isReadOnly: !fullSeason.canEdit,
                             value: isEmptyCellPlan || isEmptyCellMetric ? ' ' : isFullIncrement ? 0 : fullIncr.toFixed(4),
                         },
                     });
@@ -159,7 +158,13 @@ export function jsonTransformer(data, filter) {
         total: numberOfMetrics * numberOfYears,
     };
 
-    const headers = [[i18n.t('headers.info'), i18n.t('headers.premkdwn'), i18n.t('headers.premkdwncontribution'), i18n.t('headers.increment'), i18n.t('headers.fullseason'), i18n.t('headers.increment')]];
+    const headers = [[
+        i18n.t('headers.info'),
+        i18n.t('headers.premkdwn'),
+        i18n.t('headers.premkdwncontribution'),
+        i18n.t('headers.increment'),
+        i18n.t('headers.fullseason'),
+        i18n.t('headers.increment')]];
 
     return {
         info,
