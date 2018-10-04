@@ -37,8 +37,8 @@ const authModule = new ssense.AuthModule({
     publicRoutes: [ // Set home page and main resources as public
         /^\/+$/,
         /^\/favicon.ico$/,
-        /^\/bundle.js$/,
-        /^\/styles.css$/,
+        /^\/bundle.*\.js$/,
+        /^\/styles.*\.css$/,
         /^\/auth\/.*$/,
     ],
 });

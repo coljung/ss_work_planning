@@ -85,10 +85,12 @@ const transformer = (newFilters, data) => {
 
                     const preMkdwnIncr = (preMkdwn.value - prevPreMkdwn.value) / prevPreMkdwn.value;
                     const fullIncr = (fullSeason.value - prevFullSeason.value) / prevFullSeason.value;
+                    const preMkdwnContribution = (preMkdwn.value || 0) / (fullSeason.value || 0) || 0;
                     const isFullIncrement = (isNaN(+fullIncr) || +fullIncr === -Infinity || +fullIncr === Infinity);
                     const isPreMrkdwnIncr = (isNaN(+preMkdwnIncr) || +preMkdwnIncr === -Infinity || +preMkdwnIncr === Infinity);
-                    const preMkdwnContribution = (preMkdwn.value || 0) / (fullSeason.value || 0) || 0;
+                    const isPreMkdwnContribution = (isNaN(+preMkdwnContribution) || +preMkdwnContribution === -Infinity || +preMkdwnContribution === Infinity);
                     const isEmptyCellMetric = (metric === 'GmPercentage' || metric === 'SellThrough');
+                    const isEmptyCellPlan = ((plan === 'dsrp' && metric !== 'COGS' && metric !== 'SALES' && metric !== 'GmDollar'));
                     row.push({
                         info: {
                             metric,
@@ -97,31 +99,31 @@ const transformer = (newFilters, data) => {
                             season: data.season,
                         },
                         pre_mkdwn: {
-                            dataType: fullSeason.dataType,
+                            dataType: isEmptyCellPlan ? 'text' : data.years[year].metrics[metric].plans[plan].dataType,
                             isReadOnly: !preMkdwn.canEdit,
                             key: preMkdwn.key,
-                            value: preMkdwn.value || 0,
+                            value: isEmptyCellPlan ? ' ' : preMkdwn.value || 0,
                         },
                         pre_mkdwn_contribution: {
-                            dataType: incrDataType,
+                            dataType: isEmptyCellPlan || isEmptyCellMetric ? 'text' : incrDataType,
                             isReadOnly: true, // @TODO should be !preMkdwn.canEdit for the edit story
-                            value: preMkdwnContribution.toFixed(4),
+                            value: isEmptyCellPlan || isEmptyCellMetric ? ' ' : isPreMkdwnContribution ? 0 : preMkdwnContribution.toFixed(4),
                         },
                         pre_mkdwn_incr: {
-                            dataType: isEmptyCellMetric ? 'text' : incrDataType,
+                            dataType: isEmptyCellPlan || isEmptyCellMetric ? 'text' : incrDataType,
                             isReadOnly: !preMkdwn.canEdit,
-                            value: isEmptyCellMetric ? ' ' : isPreMrkdwnIncr ? 0 : preMkdwnIncr.toFixed(4),
+                            value: isEmptyCellPlan || isEmptyCellMetric ? ' ' : isPreMrkdwnIncr ? 0 : preMkdwnIncr.toFixed(4),
                         },
                         full: {
-                            dataType: fullSeason.dataType,
+                            dataType: isEmptyCellPlan ? 'text' : fullSeason.dataType,
                             isReadOnly: !fullSeason.canEdit,
                             key: fullSeason.key,
-                            value: fullSeason.value || 0,
+                            value: isEmptyCellPlan ? ' ' : fullSeason.value || 0,
                         },
                         full_incr: {
                             dataType: isEmptyCellMetric ? 'text' : incrDataType,
                             isReadOnly: !fullSeason.canEdit,
-                            value: isEmptyCellMetric ? ' ' : isFullIncrement ? 0 : fullIncr.toFixed(4),
+                            value: isEmptyCellPlan || isEmptyCellMetric ? ' ' : isFullIncrement ? 0 : fullIncr.toFixed(4),
                         },
                     });
                 }
