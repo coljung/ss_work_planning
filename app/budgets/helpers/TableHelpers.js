@@ -56,13 +56,12 @@ export const emptyCell = (instance, td, row, col) => {
     return td;
 };
 
-const transformer = (newFilters, data) => {
+const transformer = (newFilters, data, config) => {
     if (!data.years) {
         return {};
     }
 
     const years = Object.keys(data.years).sort().slice(1).reverse();
-    const metrics = Object.keys(data.years[years[0]].metrics);
     const incrDataType = 'percentage';
 
     // find number of years for each plan type
@@ -70,8 +69,7 @@ const transformer = (newFilters, data) => {
         ...plan,
         years: years.slice(0, plan.numberOfHistoricalYears),
     }));
-
-    return _.flattenDeep(_.intersection(newFilters.selectedMetrics, metrics).map(metric =>
+    return _.flattenDeep(_.intersection(newFilters.selectedMetrics, config.availableMetrics).map(metric =>
         years.map((year) => {
             const row = [];
             selectedPlanTypes.forEach(({ plan, years: planYear }) => {
@@ -134,7 +132,7 @@ const transformer = (newFilters, data) => {
 };
 
 
-export function jsonTransformer(data, filter) {
+export function jsonTransformer(data, filter, config) {
     if (!data) {
         return {
             info: {},
@@ -169,6 +167,6 @@ export function jsonTransformer(data, filter) {
     return {
         info,
         headers,
-        data: transformer(filter, data),
+        data: transformer(filter, data, config),
     };
 }
