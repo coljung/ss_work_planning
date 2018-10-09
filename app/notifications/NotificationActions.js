@@ -16,7 +16,11 @@ export function messages(message) {
         } else if (respTxt && respTxt.error.message) {
             messageTxt = `${messageTxt.message}: ${respTxt.error.message}`;
             message.content = messageTxt;
-        } else {
+        } else if (message.error && message.error.status) {
+            message.content = i18n.t([`error.${message.error.status}`, 'error.unspecific']);
+        } else if (message.error) {
+            message.content = message.error.message;
+        } else if (!message.content) {
             message.content = i18n.t('notification.errorFound');
         }
         message.messageType = 'error';
