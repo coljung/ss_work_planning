@@ -25,6 +25,11 @@ export class BudgetHome extends Component {
         fetchAvailableSeasons: PropTypes.func.isRequired,
         budgetCreateFetched: PropTypes.bool.isRequired,
         messages: PropTypes.func.isRequired,
+        location: PropTypes.object.isRequired,
+    };
+
+    state = {
+        showCreate: false,
     };
 
     constructor(props) {
@@ -37,6 +42,10 @@ export class BudgetHome extends Component {
         // Not sure we should load available seasons on load for probably nothing
         this.props.fetchAvailableSeasons();
         this.props.fetchBudgets();
+
+        this.setState({
+            showCreate: this.props.location.query && this.props.location.query.create === 'yes',
+        });
     }
 
     componentWillReceiveProps = (nextProps) => {
@@ -73,7 +82,7 @@ export class BudgetHome extends Component {
                 <Col xs={12}>
                     <Board title={i18n.t('home.budgetsDashboard')} style={{ paddingTop: '25px' }}>
                         { this.renderBudgetList() }
-                        { this.renderCreateButton() }
+                        { this.state.showCreate && this.renderCreateButton() }
                     </Board>
                 </Col>
             </Row>
