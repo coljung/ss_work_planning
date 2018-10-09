@@ -21,6 +21,11 @@ function setup(state = {}) {
         fetchAvailableSeasons: jest.fn(),
         createBudget: jest.fn(),
         messages: jest.fn(),
+        location: {
+            query: {
+                create: 'yes'
+            }
+        },
     };
 
     const client = new ApiClient();
@@ -70,6 +75,11 @@ function setupPureComponent() {
         fetchAvailableSeasons: jest.fn(() => Promise.resolve({})),
         createBudget: jest.fn(() => Promise.resolve({})),
         messages: jest.fn(),
+        location: {
+            query: {
+                create: 'yes'
+            }
+        },
     };
 
     const enzymeWrapper = mount(<PureBudgetHome {...props} />);
@@ -214,6 +224,8 @@ describe('BudgetHome', () => {
 
     it('Should create budget when create button invoked', () => {
         const { enzymeWrapper } = setupPureComponent();
+
+        enzymeWrapper.setState({ showCreate: true });
 
         const spy = jest.spyOn(enzymeWrapper.props(), 'createBudget');
 
