@@ -31,11 +31,14 @@ export default function clientMiddleware(client) {
                             promise,
                             ...rest,
                         });
-                    } else {
-                        dispatch(messages({ isError: true, error }));
+                        return;
                     }
 
-                    // return next({ ...rest, error, type: FAILURE });
+                    // Show error message in UI
+                    dispatch(messages({ isError: true, error }));
+
+                    return next({ ...rest, error, type: FAILURE }); // eslint-disable-line consistent-return
+
                 },
                 )
                 .catch((error) => {

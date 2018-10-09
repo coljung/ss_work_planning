@@ -81,3 +81,8 @@ headers:
   premkdwncontribution: "Pre-Mkd <br> Contribution"
   increment: YoY%
   fullseason: Full Season
+error:
+  401: Unauthorized
+  404: Page not found
+  numericOnly: The cell must be numeric only
+  unspecific: Something went wrong.

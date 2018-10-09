@@ -1,11 +1,14 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import i18n from 'i18next';
 import { HotTable } from '@handsontable/react';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import LoadingSpinner from '../components/common/LoadingSpinner';
 import rowHeaderCellRenderer from './helpers/RowHeaderCellRenderer';
 import commonCellValueRenderer from './helpers/CommonCellRenderer';
 import { jsonTransformer } from './helpers/TableHelpers';
+import { messages } from '../notifications/NotificationActions';
 
 class TableContainer extends Component {
     static propTypes = {
@@ -19,6 +22,7 @@ class TableContainer extends Component {
         onPushHistory: PropTypes.func.isRequired,
         useDecimals: PropTypes.bool.isRequired,
         historyData: PropTypes.object,
+        messages: PropTypes.func.isRequired,
     };
 
     state = {
@@ -69,6 +73,11 @@ class TableContainer extends Component {
         this.scrollPosTop = 0;
     }
 
+    resetCell(row, prop, value) {
+        this.emptyChange = true;
+        this.hotTableRef.hotInstance.setDataAtRowProp(row, prop, value);
+    }
+
     /**
      *  Handsontable Change cell row index
      * @typedef {Number} Handsontable~RowIndex
@@ -111,8 +120,11 @@ class TableContainer extends Component {
 
             // if user doesnt enter any text
             if (newValue === '') {
-                this.emptyChange = true;
-                this.hotTableRef.hotInstance.setDataAtRowProp(row, cellEdits[0][1], prevValue);
+                this.resetCell(row, cellEdits[0][1], prevValue);
+                return;
+            } else if (isNaN(newValue)) {
+                this.resetCell(row, cellEdits[0][1], prevValue);
+                this.props.messages({ content: i18n.t('error.numericOnly'), isError: true });
                 return;
             }
 
@@ -137,9 +149,13 @@ class TableContainer extends Component {
                         pastYearDataObject = this.props.data.years[keys[1] - 1].metrics[keys[2]].plans.wp.periods[keys[3]];
                     }
 
+
+                    // Handle multiply by 0 on `pastYearDataObject.value`
+                    const value = pastYearDataObject.value === 0 ? newValue : (newValue * pastYearDataObject.value) + pastYearDataObject.value;
+
                     dataToSend = {
                         key: presentYearDataObject.key,
-                        value: (newValue * pastYearDataObject.value) + pastYearDataObject.value,
+                        value,
                         origin: 'yearOverYear',
                         metric: this.props.data.years[keys[1]].metrics[keys[2]].metric,
                     };
@@ -318,4 +334,9 @@ function mapStateToProps(state, ownProps) {
     };
 }
 
-export default connect(mapStateToProps, null)(TableContainer);
+const mapDispatchToProps = dispatch =>
+    bindActionCreators({
+        messages,
+    }, dispatch);
+
+export default connect(mapStateToProps, mapDispatchToProps)(TableContainer);
