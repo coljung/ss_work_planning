@@ -153,11 +153,6 @@ class TableContainer extends Component {
                     // Handle multiply by 0 on `pastYearDataObject.value`
                     const value = pastYearDataObject.value === 0 ? newValue : (newValue * pastYearDataObject.value) + pastYearDataObject.value;
 
-                    console.log('wazaaaa', {
-                        newValue,
-                        pastYearDataObject,
-                    });
-
                     dataToSend = {
                         key: presentYearDataObject.key,
                         value,
@@ -173,9 +168,6 @@ class TableContainer extends Component {
                         metric: this.props.data.years[keys[1]].metrics[keys[2]].metric,
                     };
                 }
-
-                // console.log({ dataToSend });
-                // return;
 
                 // set row/col for scrollpositioning
                 this.row = row;
