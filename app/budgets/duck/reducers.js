@@ -48,6 +48,7 @@ const budgetViewReducer = (state = initialState, action) => {
             };
 
         case types.RECEIVE_SPREAD_DATA:
+        case types.FAILED_SPREAD_DATA:
             return {
                 ...state,
                 isDataSpreading: false,
