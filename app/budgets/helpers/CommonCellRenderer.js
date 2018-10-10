@@ -27,7 +27,6 @@ export default function cellValueRenderer(instance, td, row, col, prop, value, c
                 td.style.background = '#eec38e';
             }
         }
-
     }
 
     if (metricInformation && metricInformation.dataType !== undefined) {
