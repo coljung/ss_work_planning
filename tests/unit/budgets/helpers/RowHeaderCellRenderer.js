@@ -44,7 +44,7 @@ describe('Row header cell rendering', () => {
         const info = { year: 2018, season: 'SS', metric: 'SALES', plan: 'wp' };
         const cell = createCell(instance, 0, 0, { row_span: 1 }, info);
 
-        expect(cell.innerHTML).to.equal('SALES SS18 (WP)');
+        expect(cell.innerHTML).to.equal('SALES SS18 WP');
     });
 
     it('Should not set a bottom border before row span', () => {
