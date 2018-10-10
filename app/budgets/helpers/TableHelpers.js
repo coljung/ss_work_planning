@@ -104,7 +104,7 @@ const transformer = (newFilters, data, config) => {
                         },
                         pre_mkdwn_contribution: {
                             dataType: isEmptyCellPlan || isEmptyCellMetric ? 'text' : incrDataType,
-                            isReadOnly: true, // @TODO should be !preMkdwn.canEdit for the edit story
+                            isReadOnly: !preMkdwn.canEdit,
                             value: isEmptyCellPlan || isEmptyCellMetric ? ' ' : isPreMkdwnContribution ? 0 : preMkdwnContribution.toFixed(4),
                         },
                         pre_mkdwn_incr: {

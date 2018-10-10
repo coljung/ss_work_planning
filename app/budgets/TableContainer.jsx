@@ -149,7 +149,6 @@ class TableContainer extends Component {
                         pastYearDataObject = this.props.data.years[keys[1] - 1].metrics[keys[2]].plans.wp.periods[keys[3]];
                     }
 
-
                     // Handle multiply by 0 on `pastYearDataObject.value`
                     const value = pastYearDataObject.value === 0 ? newValue : (newValue * pastYearDataObject.value) + pastYearDataObject.value;
 
@@ -157,6 +156,20 @@ class TableContainer extends Component {
                         key: presentYearDataObject.key,
                         value,
                         origin: 'yearOverYear',
+                        metric: this.props.data.years[keys[1]].metrics[keys[2]].metric,
+                    };
+                } else if (col[0].includes('_contribution')) {
+                    const propertyKey = col[0].replace('_contribution', '');
+                    const keys = this.state.viewData.data[row][propertyKey].key.split('.');
+                    const presentYearDataObject = this.props.data.years[keys[1]].metrics[keys[2]].plans.wp;
+
+                    const value = !presentYearDataObject.value ? 0 : this.state.viewData.data[row][propertyKey].value / newValue;
+
+                    dataToSend = {
+                        key: presentYearDataObject.key,
+                        value,
+                        origin: 'contribution',
+                        associatedKey: this.state.viewData.data[row][propertyKey].key,
                         metric: this.props.data.years[keys[1]].metrics[keys[2]].metric,
                     };
                 } else {
