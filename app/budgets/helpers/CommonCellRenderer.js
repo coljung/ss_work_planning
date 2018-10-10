@@ -16,14 +16,13 @@ export default function cellValueRenderer(instance, td, row, col, prop, value, c
     const metricInformation = this.state.viewData.data[row][colName[0]];
 
     if (metricInformation) {
-        if ((row % rowSpan === 0)){
-            td.style.color = '#2f2f2f';
-            td.style.background = '#efefef';
+        if ((this.state.viewData.info.year === this.state.viewData.data[row].info.year )){
+            td.className += ' firstYearRow';
         }
         if (metricInformation.isReadOnly !== undefined) {
             instance.setCellMeta(row, col, 'readOnly', metricInformation.isReadOnly);
             if(!metricInformation.isReadOnly){
-                td.style.fontWeight = 'bold';
+                td.className += ' editableRow';
             }
         }
     }
