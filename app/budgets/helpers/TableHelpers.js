@@ -88,7 +88,7 @@ const transformer = (newFilters, data, config) => {
                     const isPreMrkdwnIncr = (isNaN(+preMkdwnIncr) || +preMkdwnIncr === -Infinity || +preMkdwnIncr === Infinity);
                     const isPreMkdwnContribution = (isNaN(+preMkdwnContribution) || +preMkdwnContribution === -Infinity || +preMkdwnContribution === Infinity);
                     const isEmptyCellMetric = (metric === 'GmPercentage' || metric === 'SellThrough');
-                    const isEmptyCellPlan = ((plan === 'dsrp' && metric !== 'COGS' && metric !== 'SALES' && metric !== 'GmDollar'));
+                    const isEmptyCellPlan = (plan === 'dsrp' && metric !== 'COGS');
                     row.push({
                         info: {
                             metric,
