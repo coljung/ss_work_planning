@@ -17,14 +17,13 @@ export default function cellValueRenderer(instance, td, row, col, prop, value, c
 
     if (metricInformation) {
         if ((row % rowSpan === 0)){
-            td.style.fontWeight = 'bold';
             td.style.color = '#2f2f2f';
             td.style.background = '#efefef';
         }
         if (metricInformation.isReadOnly !== undefined) {
             instance.setCellMeta(row, col, 'readOnly', metricInformation.isReadOnly);
             if(!metricInformation.isReadOnly){
-                td.style.background = '#eec38e';
+                td.style.fontWeight = 'bold';
             }
         }
     }
