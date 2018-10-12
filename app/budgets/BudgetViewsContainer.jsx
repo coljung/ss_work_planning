@@ -139,7 +139,7 @@ class BudgetViewsContainer extends Component {
         const viewHistory = this.props.history[this.props.params.tab];
         return (
             <div>
-                <Row type="flex" style={{ marginTop: 10 }}>
+                <Row type="flex" className="mt-10">
                     <Col span={24}>
                         <ViewPicker
                         tab={this.props.params.tab}
@@ -147,9 +147,6 @@ class BudgetViewsContainer extends Component {
                         seasonLabel={seasonLabel}
                         />
                         <BudgetViewActionsBar
-                            style={{ position: 'absolute',
-                                right: 10,
-                                top: 5 }}
                             viewHistory={viewHistory}
                             isLoading={this.props.isBudgetLoading || this.props.isDataSpreading}
                             onBack={ROUTE_DASHBOARD}
@@ -160,7 +157,7 @@ class BudgetViewsContainer extends Component {
                         </BudgetViewActionsBar>
                     </Col>
                 </Row>
-                <Row type="flex" style={{ marginTop: 10 }}>
+                <Row type="flex" className="mt-10">
                     <Col span={24}>
                         <TableContainer
                         view={this.props.params.tab}

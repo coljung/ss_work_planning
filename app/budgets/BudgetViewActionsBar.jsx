@@ -7,9 +7,8 @@ import { Link } from 'react-router';
 const BudgetViewActionsBar = (props) => {
     const undoDisabled = props.viewHistory && !props.isLoading ? props.viewHistory.past.length <= 0 : true;
     const redoDisabled = props.viewHistory && !props.isLoading ? props.viewHistory.future.length <= 0 : true;
-    const style = props.style || {};
     return (
-        <div className="budgetBtns" style={style}>
+        <div className="budgetBtns">
             <Link to={props.onBack}>
                 <Button title={i18n.t('budgetView.backButton')} icon="arrow-left" />
             </Link>
@@ -34,7 +33,6 @@ BudgetViewActionsBar.propTypes = {
     onExport: PropTypes.func.isRequired,
     isLoading: PropTypes.bool,
     viewHistory: PropTypes.object,
-    style: PropTypes.object,
 };
 
 export default BudgetViewActionsBar;

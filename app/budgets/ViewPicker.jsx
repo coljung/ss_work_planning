@@ -11,11 +11,7 @@ const ViewPicker = props => (
         mode="horizontal"
     >
         <Menu.Item key="avatar" disabled style={{ cursor: 'initial' }}>
-            <Avatar style={{
-                backgroundColor: '#000',
-                marginLeft: 10,
-                marginRight: 10,
-            }} size={45}>{ props.seasonLabel }</Avatar>
+            <Avatar className="seasonAvatar" size={45}>{ props.seasonLabel }</Avatar>
         </Menu.Item>
         <Menu.Item key={TAB_TOTAL}>{i18n.t('budgetView.totalTab')}</Menu.Item>
         <Menu.Item key={TAB_WOMEN}>{i18n.t('budgetView.womenTab')}</Menu.Item>
