@@ -30,6 +30,8 @@ function sendDataForSpreading(budgetId, view, updatedObj) {
         key: updatedObj.key,
         value: updatedObj.value === 0 ? 0.0001 : updatedObj.value,
         metric: updatedObj.metric,
+        origin: updatedObj.origin,
+        associatedKey: updatedObj.associatedKey,
     };
 
     return {
