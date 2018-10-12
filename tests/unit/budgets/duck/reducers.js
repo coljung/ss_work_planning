@@ -1,30 +1,13 @@
 import * as sinon from 'sinon';
 import reducer from '../../../../app/budgets/duck';
+import { initialState } from '../../../../app/budgets/duck/reducers';
 import types from '../../../../app/budgets/duck/types';
 
 let sandbox;
-let initialState;
 
 describe('Budget View Reducer', () => {
     beforeAll(() => {
         sandbox = sinon.sandbox.create();
-    });
-
-    beforeEach(() => {
-        initialState = {
-            config : {},
-            filters : {
-                availableMetrics : [],
-                availablePlans : [],
-                selectedMetrics : [],
-                selectedPlanTypes : [],
-            },
-            isBudgetLoading : false,
-            isDataSpreading : false,
-            isRefreshRequired : false,
-            view : null,
-            viewData : {},
-        };
     });
 
     afterEach(() => {
