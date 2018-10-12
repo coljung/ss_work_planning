@@ -11,6 +11,7 @@ home:
 sideMenu:
   home: Home
   logout: Logout
+  contactUs: Contact Us
 spinner:
   loading: Loading...
 budgetListModal:
