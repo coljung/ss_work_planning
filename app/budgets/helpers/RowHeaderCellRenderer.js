@@ -12,7 +12,7 @@ export default function cellRenderer(instance, td, row, col, prop, value, cellPr
     const plan = i18n.t(`plan.${rowInformation.plan}`);
     const rowYear = rowInformation.year.toString().slice(2, 4);
 
-    td.innerHTML = `${metric} - ${rowInformation.season}${rowYear} - ${plan}`;
+    td.innerHTML = `${metric} ${rowInformation.season}${rowYear} ${plan}`;
 
     borderBottom(row, rowSpan, td);
     disableEdit(instance, row, col);
