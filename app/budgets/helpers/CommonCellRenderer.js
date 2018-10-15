@@ -1,4 +1,4 @@
-import Handsontable from 'handsontable';
+import Handsontable from 'handsontable'; // eslint-disable-line import/no-extraneous-dependencies
 import {
     borderBottom,
     currencyFormat,

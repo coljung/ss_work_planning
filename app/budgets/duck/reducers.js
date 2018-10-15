@@ -1,7 +1,7 @@
 import types from './types';
 import { LOGOUT_SUCCESS } from '../../user/duck/types';
 
-const initialState = {
+export const initialState = {
     config: {},
     filters: {
         availableMetrics: [],
@@ -13,7 +13,10 @@ const initialState = {
     isDataSpreading: false,
     isRefreshRequired: false,
     view: null,
-    viewData: {},
+    viewData: {
+        season: '',
+        budgetYear: '',
+    },
 };
 
 const budgetViewReducer = (state = initialState, action) => {

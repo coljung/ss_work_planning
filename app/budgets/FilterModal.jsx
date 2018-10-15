@@ -187,7 +187,7 @@ export default class FilterModal extends Component {
                             </Col>
                         </Row>
                 </Modal>
-                <Button icon="switcher" onClick={this.showModal}>{i18n.t('budgetView.filter')}</Button>
+                <Button title={i18n.t('budgetView.filter')} icon="switcher" onClick={this.showModal} />
             </span>
         );
     }
