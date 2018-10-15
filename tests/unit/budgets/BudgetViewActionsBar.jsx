@@ -53,7 +53,7 @@ describe('BudgetViewActionsBar', () => {
             );
 
             const button = output.find(Button);
-            expect(button.at(1).prop('icon')).toEqual('left');
+            expect(button.at(1).prop('icon')).toEqual('undo');
             expect(button.at(1).prop('onClick')).toEqual(onUndo);
         });
 
@@ -145,7 +145,7 @@ describe('BudgetViewActionsBar', () => {
             );
 
             const button = output.find(Button);
-            expect(button.at(2).prop('icon')).toEqual('right');
+            expect(button.at(2).prop('icon')).toEqual('redo');
             expect(button.at(2).prop('onClick')).toEqual(onRedo);
         });
 
