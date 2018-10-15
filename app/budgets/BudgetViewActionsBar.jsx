@@ -14,9 +14,8 @@ const BudgetViewActionsBar = (props) => {
             </Link>
 
             {props.children}
-
-            <Button title={i18n.t('budgetView.undoButton')} onClick={props.onUndo} icon="left" disabled={undoDisabled} />
-            <Button title={i18n.t('budgetView.redoButton')} onClick={props.onRedo} icon="right" disabled={redoDisabled} />
+            <Button title={i18n.t('budgetView.undoButton')} onClick={props.onUndo} icon="undo" disabled={undoDisabled} />
+            <Button title={i18n.t('budgetView.redoButton')} onClick={props.onRedo} icon="redo" disabled={redoDisabled} />
             <Button title={i18n.t('budgetView.exportButton')} onClick={props.onExport} icon="export" disabled={props.isLoading} />
         </div>
     );
@@ -36,3 +35,4 @@ BudgetViewActionsBar.propTypes = {
 };
 
 export default BudgetViewActionsBar;
+
