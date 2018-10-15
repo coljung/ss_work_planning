@@ -42,9 +42,9 @@ filterModal:
       GmPercentage: GM%
       SellThrough: ST%
     plans:
-      wp: Working Plan
-      dsrp: Forecast
-      achd: Actuals
+      wp: Working Plan (WP)
+      dsrp: Forecast (Fct)
+      achd: Actuals (Act)
     years:
       1: 1Y
       2: 2Y
@@ -72,9 +72,9 @@ metric:
   GmPercentage: GM%
   SellThrough: ST%
 plan:
-  wp: Working Plan
-  dsrp: Forecast
-  achd: Actuals
+  wp: (WP)
+  dsrp: (Fct)
+  achd: (Act)
 headers:
   info: Info
   premkdwn: Pre-Mkd
