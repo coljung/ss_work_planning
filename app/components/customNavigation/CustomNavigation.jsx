@@ -50,13 +50,13 @@ class CustomNavigation extends Component {
                         </Link>
                     </Tooltip>
                 </Menu.Item>
+                <Menu.Divider />
                 <Menu.Item key={LOGOUT_REQUEST}>
                     <Tooltip placement="right">
                         <Icon type="logout"/>
                         <span className="nav-text">{i18n.t('sideMenu.logout')}</span>
                     </Tooltip>
                 </Menu.Item>
-                <Menu.Divider />
             </Menu>
         );
     }
