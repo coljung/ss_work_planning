@@ -124,9 +124,7 @@ class BudgetViewsContainer extends Component {
 
     changeTab = newActiveTab => this.pushRoute(newActiveTab.key);
 
-    applyFilters = (filters) => {
-        this.props.filterSetup(filters);
-    };
+    applyFilters = filters => this.props.filterSetup(filters);
 
     render() {
         // make sure config is loaded before moving forward
