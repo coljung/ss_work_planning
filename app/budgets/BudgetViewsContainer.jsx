@@ -95,14 +95,6 @@ class BudgetViewsContainer extends Component {
         });
     }
 
-    // getExportedFile = () => {
-    //     const filterView = {
-    //         metrics: this.props.filters.selectedMetrics,
-    //         plans: this.props.filters.selectedPlanTypes,
-    //     };
-    //     this.props.getViewExportFile(this.props.params.budgetId, this.props.params.tab, filterView);
-    // };
-
     pushToHistory = (dataObject, focusPosition) => {
         this.props.historyPush(this.props.params.tab, { dataObject, focusPosition });
     };
