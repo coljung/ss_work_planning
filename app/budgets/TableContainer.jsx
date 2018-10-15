@@ -5,7 +5,6 @@ import { HotTable } from '@handsontable/react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import LoadingSpinner from '../components/common/LoadingSpinner';
-import rowHeaderCellRenderer from './helpers/RowHeaderCellRenderer';
 import commonCellValueRenderer from './helpers/CommonCellRenderer';
 import { jsonTransformer } from './helpers/TableHelpers';
 import { messages } from '../notifications/NotificationActions';
@@ -263,19 +262,10 @@ class TableContainer extends Component {
     }
 
     createColumnInfos(columns) {
-        const titleColumn = {
-            data: `${columns[0]}.metric`,
-            readOnly: true,
-            type: 'text',
-            width: 205,
-            renderer: rowHeaderCellRenderer.bind(this),
-        };
-
         const renderer = commonCellValueRenderer.bind(this);
         const valueColumns = columns.slice(1).map(column => this.createColumn(column, renderer));
 
         return [
-            titleColumn,
             ...valueColumns,
         ];
     }
@@ -285,31 +275,33 @@ class TableContainer extends Component {
             return null;
         }
 
+        const rowHeaders = this.state.viewData.data.map((row) => {
+            const metric = i18n.t(`metric.${row.info.metric}`);
+            const season = row.info.season;
+            const plan = i18n.t(`plan.${row.info.plan}`);
+            const year = row.info.year.toString().slice(2, 4);
+            return `${metric} ${season}${year} ${plan}`;
+        });
         const columnInfos = this.createColumnInfos(Object.getOwnPropertyNames(this.state.viewData.data.length ? this.state.viewData.data[0] : []));
         const refreshLoad = this.props.isDataSpreading ? (<div className="refreshLoad"><LoadingSpinner /></div>) : null;
         return (
             <div className='parentDiv'>
                 {refreshLoad}
                 <HotTable
+                    rowHeaderWidth={120}
                     afterChange={this.changeCell}
                     afterRender={this.detectCollapse}
-                    colHeaders={true}
-                    rowHeaders={false}
+                    colHeaders={this.state.viewData.headers}
+                    rowHeaders={rowHeaders}
                     columns={columnInfos}
                     contextMenu={false}
                     currentColClassName={'currentCol'}
                     currentRowClassName={'currentRow'}
                     data={this.state.viewData.data}
-                    fixedColumnsLeft={1}
+                    fixedColumnsLeft={0}
                     fixedRowsTop={0}
                     formulas={false}
                     licenseKey='a389a-f2591-70b41-a480d-1911a'
-                    nestedHeaders={[
-                        [
-                            '&nbsp;', // For the first header column; an empty header makes a smaller cell than having a nbsp, so that's why we're setting this
-                            ...this.state.viewData.headers[0].slice(1),
-                        ],
-                    ]}
                     observeChanges={true}
                     persistentState={true}
                     ref={this.setHotTableRef}
@@ -352,4 +344,4 @@ const mapDispatchToProps = dispatch =>
         messages,
     }, dispatch);
 
-export default connect(mapStateToProps, mapDispatchToProps)(TableContainer);
+export default connect(mapStateToProps, mapDispatchToProps, null, { withRef: true })(TableContainer);
