@@ -274,14 +274,14 @@ class TableContainer extends Component {
         if (!Object.keys(this.state.viewData).length) {
             return null;
         }
-        const rowHeadersArray = [];
-        for (let i = 0; i < this.state.viewData.data.length; i++) {
-            const metric = i18n.t(`metric.${this.state.viewData.data[i].info.metric}`);
-            const season = this.state.viewData.data[i].info.season;
-            const plan = i18n.t(`plan.${this.state.viewData.data[i].info.plan}`);
-            const year = this.state.viewData.data[i].info.year.toString().slice(2, 4);
-            rowHeadersArray.push(`${metric} ${season}${year} ${plan}`);
-        }
+
+        const rowHeaders = this.state.viewData.data.map((row) => {
+            const metric = i18n.t(`metric.${row.info.metric}`);
+            const season = row.info.season;
+            const plan = i18n.t(`plan.${row.info.plan}`);
+            const year = row.info.year.toString().slice(2, 4);
+            return `${metric} ${season}${year} ${plan}`;
+        });
         const columnInfos = this.createColumnInfos(Object.getOwnPropertyNames(this.state.viewData.data.length ? this.state.viewData.data[0] : []));
         const refreshLoad = this.props.isDataSpreading ? (<div className="refreshLoad"><LoadingSpinner /></div>) : null;
         return (
@@ -292,7 +292,7 @@ class TableContainer extends Component {
                     afterChange={this.changeCell}
                     afterRender={this.detectCollapse}
                     colHeaders={this.state.viewData.headers}
-                    rowHeaders={rowHeadersArray}
+                    rowHeaders={rowHeaders}
                     columns={columnInfos}
                     contextMenu={false}
                     currentColClassName={'currentCol'}
