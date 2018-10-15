@@ -37,6 +37,12 @@ class BudgetViewsContainer extends Component {
 
     useDecimals = false;
 
+    constructor(props) {
+        super(props);
+
+        this.tableContainerRef = React.createRef();
+    }
+
     componentWillMount() {
         this.useDecimals = this.props.location.query && this.props.location.query.decimals === 'yes';
     }
@@ -89,13 +95,13 @@ class BudgetViewsContainer extends Component {
         });
     }
 
-    getExportedFile = () => {
-        const filterView = {
-            metrics: this.props.filters.selectedMetrics,
-            plans: this.props.filters.selectedPlanTypes,
-        };
-        this.props.getViewExportFile(this.props.params.budgetId, this.props.params.tab, filterView);
-    };
+    // getExportedFile = () => {
+    //     const filterView = {
+    //         metrics: this.props.filters.selectedMetrics,
+    //         plans: this.props.filters.selectedPlanTypes,
+    //     };
+    //     this.props.getViewExportFile(this.props.params.budgetId, this.props.params.tab, filterView);
+    // };
 
     pushToHistory = (dataObject, focusPosition) => {
         this.props.historyPush(this.props.params.tab, { dataObject, focusPosition });
@@ -126,6 +132,24 @@ class BudgetViewsContainer extends Component {
         this.props.filterSetup(filters);
     };
 
+    handleExportFile = () => {
+        const view = `${this.props.params.seasonName}_${(this.props.params.tab).toUpperCase()}`;
+        const hotInstance = this.tableContainerRef.current.wrappedInstance.hotTableRef;
+        const exportPlugin = hotInstance.hotInstance.getPlugin('exportFile');
+        exportPlugin.downloadFile('csv', {
+            bom: true,
+            columnDelimiter: ',',
+            columnHeaders: true,
+            rowHeaders: true,
+            exportHiddenColumns: true,
+            exportHiddenRows: true,
+            fileExtension: 'csv',
+            filename: `${view}_[YYYY]-[MM]-[DD]`,
+            mimeType: 'text/csv',
+            rowDelimiter: '\r\n',
+        });
+    }
+
     render() {
         // make sure config is loaded before moving forward
         if (!Object.keys(this.props.config).length) {
@@ -147,7 +171,7 @@ class BudgetViewsContainer extends Component {
                             onBack={ROUTE_DASHBOARD}
                             onUndo={this.undo}
                             onRedo={this.redo}
-                            onExport={this.getExportedFile}>
+                            onExport={this.handleExportFile}>
                             <FilterModal onSave={this.applyFilters} availableOptions={this.props.config} filters={this.props.filters} />
                         </BudgetViewActionsBar>
                     </Col>
@@ -155,6 +179,7 @@ class BudgetViewsContainer extends Component {
                 <div>
                     <ViewPicker tab={this.props.params.tab} onTabChange={this.changeTab} />
                     <TableContainer
+                        ref={this.tableContainerRef}
                         view={this.props.params.tab}
                         data={this.props.viewData}
                         filters={this.props.filters}
