@@ -38,7 +38,6 @@ export default function clientMiddleware(client) {
                     dispatch(messages({ isError: true, error }));
 
                     return next({ ...rest, error, type: FAILURE }); // eslint-disable-line consistent-return
-
                 },
                 )
                 .catch((error) => {
