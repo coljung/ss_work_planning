@@ -8,7 +8,6 @@ import LoadingSpinner from '../components/common/LoadingSpinner';
 import commonCellValueRenderer from './helpers/CommonCellRenderer';
 import { jsonTransformer } from './helpers/TableHelpers';
 import { messages } from '../notifications/NotificationActions';
-import BudgetViewActionsBar from './BudgetViewActionsBar';
 
 class TableContainer extends Component {
     static propTypes = {
