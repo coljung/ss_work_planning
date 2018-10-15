@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
+import i18n from 'i18next';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
-import { Row, Col } from 'antd';
+import { Avatar, Row, Col, Menu } from 'antd';
 import { budgetViewActions, budgetViewOperations } from './duck';
 import { historyUndo, historyRedo, historyPush } from './history/HistoryActions';
 import BudgetViewActionsBar from './BudgetViewActionsBar';
@@ -11,6 +12,7 @@ import FilterModal from './FilterModal';
 import ViewPicker from './ViewPicker';
 import TableContainer from './TableContainer';
 import { ROUTE_BUDGET, ROUTE_DASHBOARD } from '../constants/routes';
+import { TAB_MEN, TAB_TOTAL, TAB_WOMEN } from '../constants/views';
 
 class BudgetViewsContainer extends Component {
     static propTypes = {
@@ -36,6 +38,8 @@ class BudgetViewsContainer extends Component {
     };
 
     useDecimals = false;
+
+    state = { tabIndex: 0 };
 
     componentWillMount() {
         this.useDecimals = this.props.location.query && this.props.location.query.decimals === 'yes';
@@ -118,13 +122,9 @@ class BudgetViewsContainer extends Component {
     changeCellValue = dataObject =>
         this.props.sendDataForSpreading(this.props.params.budgetId, this.props.params.tab, dataObject);
 
-    changeTab = (newActiveTab) => {
-        this.pushRoute(newActiveTab);
-    };
+    changeTab = newActiveTab => this.pushRoute(newActiveTab.key);
 
-    applyFilters = (filters) => {
-        this.props.filterSetup(filters);
-    };
+    applyFilters = filters => this.props.filterSetup(filters);
 
     render() {
         // make sure config is loaded before moving forward
@@ -133,14 +133,17 @@ class BudgetViewsContainer extends Component {
         }
 
         // undo disabled / enabled ?
+        const seasonLabel = `${this.props.viewData.season}${this.props.viewData.budgetYear.slice(2)}`;
         const viewHistory = this.props.history[this.props.params.tab];
         return (
             <div>
-                <Row type="flex" justify="start" className="innerHeader">
-                    <Col span={8} className="col">
-                        <h3> {this.props.params.seasonName} </h3>
-                    </Col>
-                    <Col span={16} className="col">
+                <Row type="flex" className="mt-10">
+                    <Col span={24}>
+                        <ViewPicker
+                        tab={this.props.params.tab}
+                        onTabChange={this.changeTab}
+                        seasonLabel={seasonLabel}
+                        />
                         <BudgetViewActionsBar
                             viewHistory={viewHistory}
                             isLoading={this.props.isBudgetLoading || this.props.isDataSpreading}
@@ -152,16 +155,17 @@ class BudgetViewsContainer extends Component {
                         </BudgetViewActionsBar>
                     </Col>
                 </Row>
-                <div>
-                    <ViewPicker tab={this.props.params.tab} onTabChange={this.changeTab} />
-                    <TableContainer
+                <Row type="flex" className="mt-10">
+                    <Col span={24}>
+                        <TableContainer
                         view={this.props.params.tab}
                         data={this.props.viewData}
                         filters={this.props.filters}
                         useDecimals={this.useDecimals}
                         onPushHistory={this.pushToHistory}
                         onCellChange={this.changeCellValue} />
-                </div>
+                    </Col>
+                </Row>
             </div>
         );
     }

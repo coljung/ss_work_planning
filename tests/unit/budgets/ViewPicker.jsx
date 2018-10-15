@@ -1,24 +1,26 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import { Tabs } from 'antd';
+import { Menu } from 'antd';
 import * as sinon from 'sinon';
 import i18n from 'i18next';
 import ViewPicker from '../../../app/budgets/ViewPicker';
 
 describe('ViewPicker', () => {
     it('Should pass children in props', () => {
+        const selectedTab = 'total'
         const output = shallow(
             <ViewPicker
-                tab='total'
-                onTabChange={jest.fn()}>
+                tab={ selectedTab }
+                onTabChange={jest.fn()}
+                seasonLabel="SS19">
             </ViewPicker>
         );
 
-        const tabs = output.find(Tabs);
-        expect(tabs.prop('activeKey')).toEqual('total');
+        const menu = output.find(Menu);
+        expect(menu.prop('selectedKeys')).toEqual([selectedTab]);
     });
 
-    it('Should contain 3 tab panels', () => {
+    it('Should contain 4 menu items', () => {
         const i18nStub = sinon.stub(i18n, 't');
         i18nStub.withArgs('budgetView.totalTab').returns('budgetView.totalTab');
         i18nStub.withArgs('budgetView.womenTab').returns('budgetView.womenTab');
@@ -27,16 +29,17 @@ describe('ViewPicker', () => {
         const output = shallow(
             <ViewPicker
                 tab='total'
-                onTabChange={jest.fn()}>
+                onTabChange={jest.fn()}
+                seasonLabel="SS19">
             </ViewPicker>
         );
 
-        const tabs = output.find(Tabs.TabPane);
-        expect(tabs).toHaveLength(3);
+        const menu = output.find(Menu.Item);
+        expect(menu).toHaveLength(4);
 
-        expect(tabs.at(0).prop('tab')).toEqual('budgetView.totalTab');
-        expect(tabs.at(1).prop('tab')).toEqual('budgetView.womenTab');
-        expect(tabs.at(2).prop('tab')).toEqual('budgetView.menTab');
+        expect(menu.at(1).prop('children')).toEqual('budgetView.totalTab');
+        expect(menu.at(2).prop('children')).toEqual('budgetView.womenTab');
+        expect(menu.at(3).prop('children')).toEqual('budgetView.menTab');
 
         i18nStub.restore();
     });
@@ -47,11 +50,12 @@ describe('ViewPicker', () => {
         const output = shallow(
             <ViewPicker
                 tab='total'
-                onTabChange={changeTab}>
+                onTabChange={changeTab}
+                seasonLabel="SS19">
             </ViewPicker>
         );
 
-        output.find(Tabs).prop('onChange')('women');
+        output.find(Menu).prop('onClick')('women');
 
         expect(changeTab).toHaveBeenCalledTimes(1);
     });
@@ -62,11 +66,12 @@ describe('ViewPicker', () => {
         const output = shallow(
             <ViewPicker
                 tab='total'
-                onTabChange={changeTab}>
+                onTabChange={changeTab}
+                seasonLabel="SS19">
             </ViewPicker>
         );
 
-        output.find(Tabs).prop('onChange')('women');
+        output.find(Menu).prop('onClick')('women');
 
         expect(changeTab).toBeCalledWith('women');
     });
