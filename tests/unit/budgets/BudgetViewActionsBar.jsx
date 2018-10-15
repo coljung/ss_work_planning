@@ -237,7 +237,7 @@ describe('BudgetViewActionsBar', () => {
             );
 
             const button = output.find(Button);
-            expect(button.at(3).prop('icon')).toEqual('export');
+            expect(button.at(3).prop('icon')).toEqual('download');
             expect(button.at(3).prop('onClick')).toEqual(onExport);
         });
 

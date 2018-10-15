@@ -274,13 +274,13 @@ class TableContainer extends Component {
         if (!Object.keys(this.state.viewData).length) {
             return null;
         }
-        const rowHeaderArray = [];
+        const rowHeadersArray = [];
         for (let i = 0; i < this.state.viewData.data.length; i++) {
             const metric = i18n.t(`metric.${this.state.viewData.data[i].info.metric}`);
             const season = this.state.viewData.data[i].info.season;
             const plan = i18n.t(`plan.${this.state.viewData.data[i].info.plan}`);
             const year = this.state.viewData.data[i].info.year.toString().slice(2, 4);
-            rowHeaderArray.push(`${metric} ${season}${year} ${plan}`);
+            rowHeadersArray.push(`${metric} ${season}${year} ${plan}`);
         }
         const columnInfos = this.createColumnInfos(Object.getOwnPropertyNames(this.state.viewData.data.length ? this.state.viewData.data[0] : []));
         const refreshLoad = this.props.isDataSpreading ? (<div className="refreshLoad"><LoadingSpinner /></div>) : null;
@@ -292,7 +292,7 @@ class TableContainer extends Component {
                     afterChange={this.changeCell}
                     afterRender={this.detectCollapse}
                     colHeaders={this.state.viewData.headers}
-                    rowHeaders={rowHeaderArray}
+                    rowHeaders={rowHeadersArray}
                     columns={columnInfos}
                     contextMenu={false}
                     currentColClassName={'currentCol'}
