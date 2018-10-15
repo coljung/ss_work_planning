@@ -156,13 +156,12 @@ export function jsonTransformer(data, filter, config) {
         total: numberOfMetrics * numberOfYears,
     };
 
-    const headers = [[
-        i18n.t('headers.info'),
+    const headers = [
         i18n.t('headers.premkdwn'),
         i18n.t('headers.premkdwncontribution'),
         i18n.t('headers.increment'),
         i18n.t('headers.fullseason'),
-        i18n.t('headers.increment')]];
+        i18n.t('headers.increment')];
 
     return {
         info,
