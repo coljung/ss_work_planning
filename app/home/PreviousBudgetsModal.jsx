@@ -48,14 +48,14 @@ export default class PreviousBudgetsModal extends Component {
         return (
             <span>
                 <Modal
-                    title={i18n.t('previousBudgetsModal.title')}
+                    title={i18n.t('budgetListModal.title')}
                     visible={this.state.isModalActive}
                     footer={null}
                     onCancel={this.closeModal}>
                     {this.createModalContent()}
                 </Modal>
                 <h4 className="budgetListLink">
-                    <Link onClick={this.showModal}>{i18n.t('previousBudgetsModal.title')}</Link>
+                    <Link onClick={this.showModal}>{i18n.t('budgetListModal.link')}</Link>
                 </h4>
             </span>
         );

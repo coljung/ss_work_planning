@@ -14,9 +14,8 @@ sideMenu:
 spinner:
   loading: Loading...
 budgetListModal:
-  title: All Previous Budgets
-previousBudgetsModal:
-  title: Previous budgets
+  title: Pre-season plans
+  link: View more
 createBudgetModal:
   title: Create Budget
   saveButton: Create Budget
