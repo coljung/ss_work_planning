@@ -102,10 +102,7 @@ class App extends Component {
             <div className={getClassname}>
                 <Layout>
                     <Layout.Header>
-                        <Icon
-                            className="trigger"
-                            type={this.state.collapsed ? 'menu-unfold' : 'menu-fold'}
-                            onClick={this.toggle} />
+                        <Icon className="trigger" />
                         <HeaderContent />
                     </Layout.Header>
                     <Layout.Sider
