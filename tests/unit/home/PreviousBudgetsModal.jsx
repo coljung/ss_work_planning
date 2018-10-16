@@ -10,27 +10,27 @@ import PreviousBudgetsModal from '../../../app/home/PreviousBudgetsModal';
 describe('PreviousBudgetsModal', () => {
     it('Should have modal', () => {
         const i18nStub = sinon.stub(i18n, 't');
-        i18nStub.withArgs('previousBudgetsModal.title').returns('previousBudgetsModal.title');
+        i18nStub.withArgs('budgetListModal.title').returns('budgetListModal.title');
 
         const output = shallow(
             <PreviousBudgetsModal budgets={[]} />
         );
 
         const modal = output.find(Modal).first();
-        expect(modal.prop('title')).toEqual('previousBudgetsModal.title');
+        expect(modal.prop('title')).toEqual('budgetListModal.title');
 
         i18nStub.restore();
     });
 
     it('Should have activator button', () => {
         const i18nStub = sinon.stub(i18n, 't');
-        i18nStub.withArgs('previousBudgetsModal.title').returns('previousBudgetsModal.title');
+        i18nStub.withArgs('budgetListModal.link').returns('budgetListModal.link');
 
         const output = mount(
             <PreviousBudgetsModal budgets={[]} />
         );
 
-        expect(output.find(Link).text()).toEqual('previousBudgetsModal.title');
+        expect(output.find(Link).text()).toEqual('budgetListModal.link');
 
         i18nStub.restore();
     });
