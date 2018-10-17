@@ -27,12 +27,8 @@ class App extends Component {
 
         this.state = {
             appReady: false,
-            collapsed: true,
             showStoreModal: true,
         };
-
-        this.toggleFromOutside = this.toggleFromOutside.bind(this);
-        this.toggle = this.toggle.bind(this);
 
         // We have to remove the timeout and interval if the class is unmounted
         this.loadTimeout = null;
@@ -67,25 +63,6 @@ class App extends Component {
         }, 250);
     }
 
-    toggleFromOutside() {
-        if (!this.state.collapsed) {
-            this.toggle();
-        }
-    }
-
-    toggle() {
-        const collapsed = !this.state.collapsed;
-        this.setState({ collapsed });
-        clearTimeout(this.timer);
-
-        // collapse after 7 seconds
-        if (!collapsed) {
-            this.timer = setTimeout(() => {
-                this.setState({ collapsed: !collapsed });
-            }, 7000);
-        }
-    }
-
     render() {
         const { user } = this.props;
 
@@ -108,10 +85,10 @@ class App extends Component {
                     <Layout.Sider
                         trigger={null}
                         collapsible
-                        collapsed={this.state.collapsed}>
+                        collapsed={true}>
                         <CustomNavigation
                             pathname={this.props.location.pathname}
-                            triggerMenuCollapse={this.toggleFromOutside} />
+                            />
                     </Layout.Sider>
                     <Layout.Content>
                         <main>

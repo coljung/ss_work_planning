@@ -239,18 +239,6 @@ class TableContainer extends Component {
         }, 500);
     };
 
-    detectCollapse = () => {
-        const elem = document.getElementsByClassName('ant-layout-sider-collapsed');
-        if (!elem.length) {
-            const resizeTimeout = setInterval(() => {
-                if (elem.length) {
-                    this.resize();
-                    clearInterval(resizeTimeout);
-                }
-            }, 500);
-        }
-    };
-
     createColumn(column, renderer) {
         return {
             data: `${column}.value`,
@@ -290,7 +278,6 @@ class TableContainer extends Component {
                 <HotTable
                     rowHeaderWidth={120}
                     afterChange={this.changeCell}
-                    afterRender={this.detectCollapse}
                     colHeaders={this.state.viewData.headers}
                     rowHeaders={rowHeaders}
                     columns={columnInfos}
