@@ -1,14 +1,9 @@
 #ms-planning{
     .app_layout {
-        .ant-layout-sider .ant-menu {
-            position: relative;
-        }
-
         .ant-menu-dark {
             .ant-menu-item {
                 a{
                     color: rgba(255, 255, 255, 0.67);
-                    font-size: 13px;
                 }
             }
             &.ant-menu>.ant-menu-item-divider {
@@ -28,6 +23,12 @@
             background: @ssense_black;
             box-shadow: none;
         }
+    }
+
+    .ant-menu-dark.ant-menu-inline .ant-menu-item, .ant-menu-dark.ant-menu-vertical-left .ant-menu-item,
+    .ant-menu-dark.ant-menu-vertical-right .ant-menu-item, .ant-menu-dark.ant-menu-vertical .ant-menu-item {
+        padding: 10px 32px !important;
+        padding-bottom: 0px;
     }
 
     .ant-menu-horizontal {
