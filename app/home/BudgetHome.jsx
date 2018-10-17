@@ -81,8 +81,10 @@ export class BudgetHome extends Component {
             <Row>
                 <Col xs={12}>
                     <Board title={i18n.t('home.budgetsDashboard')} style={{ paddingTop: '25px' }}>
-                        { this.renderBudgetList() }
-                        { this.state.showCreate && this.renderCreateButton() }
+                        <div>
+                            { this.renderBudgetList() }
+                            { this.state.showCreate && this.renderCreateButton() }
+                        </div>
                     </Board>
                 </Col>
             </Row>

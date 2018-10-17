@@ -12,7 +12,6 @@ import { LOGOUT_REQUEST } from '../../user/duck/types';
 class CustomNavigation extends Component {
     static propTypes = {
         pathname: PropTypes.string.isRequired,
-        triggerMenuCollapse: PropTypes.func,
         logout: PropTypes.func.isRequired,
         user: PropTypes.object,
         me: PropTypes.func.isRequired,
@@ -29,7 +28,6 @@ class CustomNavigation extends Component {
                 break;
             default:
                 this.setState({ current: e.key });
-                this.props.triggerMenuCollapse();
                 break;
         }
     };
