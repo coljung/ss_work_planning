@@ -6,10 +6,20 @@ import PreviousBudgetsModal from './PreviousBudgetsModal';
 import { ROUTE_BUDGET } from '../constants/routes';
 
 const BudgetList = (props) => {
+    const orderBudgets = (a, b) => {
+        if (a.year <= b.year) {
+            const isChrome = !!window.chrome && !!window.chrome.webstore;
+            if (isChrome) {
+                return -1;
+            }
+            return 1;
+        }
+        return -1;
+    };
 
     const recentBudgetList = (budgets) => {
         const sortedBudgets = budgets
-          .sort(); // sort by most recent
+          .sort(orderBudgets); // sort by most recent
 
         // take latest 4 budgets
         const recentBudgets = sortedBudgets.slice(0, 4).map(budget =>
