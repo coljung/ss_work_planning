@@ -7,10 +7,9 @@ import { ROUTE_BUDGET } from '../constants/routes';
 
 const BudgetList = (props) => {
     const orderBudgets = (a, b) => {
-        if (a.year >= b.year) {
+        if (new Date(a.created_at) >= new Date(b.created_at)) {
             return -1;
         }
-
         return 1;
     };
 
