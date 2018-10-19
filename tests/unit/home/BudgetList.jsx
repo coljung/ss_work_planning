@@ -40,8 +40,8 @@ describe('BudgetList', () => {
     it('Should have ordered budget list', () => {
         const budgets = [
             { id: 1, season: 'FW', year: 2019},
-            { id: 2, season: 'FW', year: 2021},
-            { id: 3, season: 'FW', year: 2020},
+            { id: 2, season: 'FW', year: 2020},
+            { id: 3, season: 'FW', year: 2021},
         ];
 
         const output = mount(
