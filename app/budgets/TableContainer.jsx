@@ -164,7 +164,7 @@ class TableContainer extends Component {
                     const keys = this.state.viewData.data[row][propertyKey].key.split('.');
                     const presentYearDataObject = this.props.data.years[keys[1]].metrics[keys[2]].plans.wp;
 
-                    prevValue = this.props.data.years[keys[1]].metrics[keys[2]].plans.wp.value;
+                    prevValue = presentYearDataObject.value;
                     const value = !presentYearDataObject.value ? 0 : this.state.viewData.data[row][propertyKey].value / newValue;
 
                     dataToSend = {
