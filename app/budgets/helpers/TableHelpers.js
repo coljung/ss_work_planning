@@ -104,12 +104,12 @@ const transformer = (newFilters, data, config) => {
                         },
                         pre_mkdwn_contribution: {
                             dataType: isEmptyCellPlan || isEmptyCellMetric ? 'text' : incrDataType,
-                            isReadOnly: !preMkdwn.canEdit,
+                            isReadOnly: isEmptyCellPlan || isEmptyCellMetric ? true : !preMkdwn.canEdit,
                             value: isEmptyCellPlan || isEmptyCellMetric ? ' ' : isPreMkdwnContribution ? 0 : preMkdwnContribution.toFixed(4),
                         },
                         pre_mkdwn_incr: {
                             dataType: isEmptyCellPlan || isEmptyCellMetric ? 'text' : incrDataType,
-                            isReadOnly: !preMkdwn.canEdit,
+                            isReadOnly: isEmptyCellPlan || isEmptyCellMetric ? true : !preMkdwn.canEdit,
                             value: isEmptyCellPlan || isEmptyCellMetric ? ' ' : isPreMrkdwnIncr ? 0 : preMkdwnIncr.toFixed(4),
                         },
                         full: {
@@ -120,7 +120,7 @@ const transformer = (newFilters, data, config) => {
                         },
                         full_incr: {
                             dataType: isEmptyCellPlan || isEmptyCellMetric ? 'text' : incrDataType,
-                            isReadOnly: !fullSeason.canEdit,
+                            isReadOnly: isEmptyCellPlan || isEmptyCellMetric ? true : !fullSeason.canEdit,
                             value: isEmptyCellPlan || isEmptyCellMetric ? ' ' : isFullIncrement ? 0 : fullIncr.toFixed(4),
                         },
                     });

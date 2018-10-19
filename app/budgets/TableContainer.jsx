@@ -77,6 +77,15 @@ class TableContainer extends Component {
         this.hotTableRef.hotInstance.setDataAtRowProp(row, prop, value);
     }
 
+    static handleBeforeChange(cellEdits) {
+        if (cellEdits) {
+            const newValue = cellEdits[0][3];
+            if (newValue[0] === '.') {
+                cellEdits[0][3] = `0${newValue}`;
+            }
+        }
+    }
+
     /**
      *  Handsontable Change cell row index
      * @typedef {Number} Handsontable~RowIndex
@@ -117,7 +126,7 @@ class TableContainer extends Component {
             const prevValue = cellEdits[0][2];
             const newValue = cellEdits[0][3];
 
-            // if user doesnt enter any text
+            // if user does not enter any text
             if (newValue === '') {
                 this.resetCell(row, cellEdits[0][1], prevValue);
                 return;
@@ -277,6 +286,7 @@ class TableContainer extends Component {
                 {refreshLoad}
                 <HotTable
                     rowHeaderWidth={120}
+                    beforeChange={TableContainer.handleBeforeChange}
                     afterChange={this.changeCell}
                     colHeaders={this.state.viewData.headers}
                     rowHeaders={rowHeaders}
