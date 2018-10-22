@@ -123,7 +123,7 @@ class TableContainer extends Component {
             const row = cellEdits[0][0];
             const col = cellEdits[0][1].split('.');
             const cellEditKey = [cellEdits[0][0], cellEdits[0][1]].join('.');
-            const prevValue = cellEdits[0][2];
+            let prevValue = cellEdits[0][2];
             const newValue = cellEdits[0][3];
 
             // if user does not enter any text
@@ -157,6 +157,8 @@ class TableContainer extends Component {
                         pastYearDataObject = this.props.data.years[keys[1] - 1].metrics[keys[2]].plans.wp.periods[keys[3]];
                     }
 
+                    prevValue = presentYearDataObject.value;
+
                     // Handle multiply by 0 on `pastYearDataObject.value`
                     const value = pastYearDataObject.value === 0 ? newValue : (newValue * pastYearDataObject.value) + pastYearDataObject.value;
 
@@ -171,6 +173,7 @@ class TableContainer extends Component {
                     const keys = this.state.viewData.data[row][propertyKey].key.split('.');
                     const presentYearDataObject = this.props.data.years[keys[1]].metrics[keys[2]].plans.wp;
 
+                    prevValue = presentYearDataObject.value;
                     const value = !presentYearDataObject.value ? 0 : this.state.viewData.data[row][propertyKey].value / newValue;
 
                     dataToSend = {
@@ -190,7 +193,7 @@ class TableContainer extends Component {
                     };
                 }
 
-                // set row/col for scrollpositioning
+                // set row/col for scroll positioning
                 this.row = row;
                 this.column = Object.keys(this.state.viewData.data[row]).indexOf(col[0]);
 
