@@ -251,8 +251,6 @@ class TableContainer extends Component {
     };
 
     createColumn(column, renderer) {
-        console.log(column);
-
         return {
             data: `${column}.value`,
             readOnly: false,
