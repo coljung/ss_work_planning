@@ -87,9 +87,9 @@ const transformer = (newFilters, data, config) => {
                     const preMkdwn = fullSeason.periods['PRE-MKD'];
                     const prevPreMkdwn = prevFullSeason.periods['PRE-MKD'];
 
-                    const preMkdwnIncr = (preMkdwn.value - prevPreMkdwn.value) / prevPreMkdwn.value;
-                    const fullIncr = (fullSeason.value - prevFullSeason.value) / prevFullSeason.value;
-                    const preMkdwnContribution = (preMkdwn.value || 0) / (fullSeason.value || 0) || 0;
+                    const preMkdwnIncr = ((preMkdwn.value - prevPreMkdwn.value) / prevPreMkdwn.value) * 100;
+                    const fullIncr = ((fullSeason.value - prevFullSeason.value) / prevFullSeason.value) * 100;
+                    const preMkdwnContribution = ((preMkdwn.value || 0) / (fullSeason.value || 0) || 0) * 100;
                     const isFullIncrement = (isNaN(+fullIncr) || +fullIncr === -Infinity || +fullIncr === Infinity);
                     const isPreMrkdwnIncr = (isNaN(+preMkdwnIncr) || +preMkdwnIncr === -Infinity || +preMkdwnIncr === Infinity);
                     const isPreMkdwnContribution = (isNaN(+preMkdwnContribution) || +preMkdwnContribution === -Infinity || +preMkdwnContribution === Infinity);

@@ -43,9 +43,11 @@ export default function cellValueRenderer(instance, td, row, col, prop, value, c
                 break;
             }
             case 'percentage':
-                instance.setCellMeta(row, col, 'numericFormat', percentageFormat);
-                // eslint-disable-next-line prefer-rest-params
-                Handsontable.renderers.NumericRenderer.apply(this, arguments);
+                if (!td.className.includes(' editableRow')) {
+                    td.innerHTML = `${Math.round(value * 100) / 100} %`;
+                } else {
+                    td.innerHTML = `<b>${Math.round(value * 100) / 100} %</b>`;
+                }
                 break;
 
             case 'number':

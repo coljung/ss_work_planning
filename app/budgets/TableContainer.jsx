@@ -140,6 +140,7 @@ class TableContainer extends Component {
                 let dataToSend;
 
                 if (col[0].includes('_incr')) {
+                    this.resetCell(row, cellEdits[0][1], newValue * 100);
                     const propertyKey = col[0].replace('_incr', '');
                     const keys = this.state.viewData.data[row][propertyKey].key.split('.');
                     let presentYearDataObject;
@@ -159,7 +160,7 @@ class TableContainer extends Component {
                     prevValue = presentYearDataObject.value;
 
                     // Handle multiply by 0 on `pastYearDataObject.value`
-                    const value = pastYearDataObject.value === 0 || pastYearDataObject.value === undefined ? newValue : (newValue * pastYearDataObject.value) + pastYearDataObject.value;
+                    const value = pastYearDataObject.value === 0 || pastYearDataObject.value === undefined ? newValue : ((newValue * pastYearDataObject.value) / 100) + pastYearDataObject.value;
 
                     dataToSend = {
                         key: presentYearDataObject.key,
@@ -168,12 +169,13 @@ class TableContainer extends Component {
                         metric: this.props.data.years[keys[1]].metrics[keys[2]].metric,
                     };
                 } else if (col[0].includes('_contribution')) {
+                    this.resetCell(row, cellEdits[0][1], newValue * 100);
                     const propertyKey = col[0].replace('_contribution', '');
                     const keys = this.state.viewData.data[row][propertyKey].key.split('.');
                     const presentYearDataObject = this.props.data.years[keys[1]].metrics[keys[2]].plans.wp;
 
                     prevValue = presentYearDataObject.value;
-                    const value = !presentYearDataObject.value ? 0 : this.state.viewData.data[row][propertyKey].value / newValue;
+                    const value = !presentYearDataObject.value ? 0 : this.state.viewData.data[row][propertyKey].value / (newValue / 100);
 
                     dataToSend = {
                         key: presentYearDataObject.key,
