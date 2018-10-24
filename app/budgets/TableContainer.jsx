@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import LoadingSpinner from '../components/common/LoadingSpinner';
 import commonCellValueRenderer from './helpers/CommonCellRenderer';
-import { jsonTransformer } from './helpers/TableHelpers';
+import { jsonTransformer, cleanNumericInput } from './helpers/TableHelpers';
 import { messages } from '../notifications/NotificationActions';
 
 class TableContainer extends Component {
@@ -40,14 +40,6 @@ class TableContainer extends Component {
     scrollPosLeft = 0;
     scrollPosTop = 0;
 
-    cleanNumericInputData(newValue) {
-        const inputValue = newValue;
-        let numericValue = '';
-        for (let i = 0; i < inputValue.length; i++) {
-            if (!isNaN(inputValue[i]) || inputValue[i] === '.') { numericValue += inputValue[i]; }
-        }
-        return parseFloat(numericValue, 10);
-    }
     componentWillMount() {
         // refresh grid on window resize
         this.resizeTimeout = '';
@@ -139,7 +131,7 @@ class TableContainer extends Component {
                 this.resetCell(row, cellEdits[0][1], prevValue);
                 return;
             } else if (isNaN(newValue)) {
-                newValue = this.cleanNumericInputData(newValue);
+                newValue = cleanNumericInput(newValue);
                 this.resetCell(row, cellEdits[0][1], newValue);
             }
 

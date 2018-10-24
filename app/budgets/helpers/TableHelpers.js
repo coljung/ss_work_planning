@@ -55,7 +55,14 @@ export const emptyCell = (instance, td, row, col) => {
 
     return td;
 };
-
+export const cleanNumericInput = (newValue) => {
+    const inputValue = newValue;
+    let numericValue = '';
+    for (let i = 0; i < inputValue.length; i++) {
+        if (!isNaN(inputValue[i]) || inputValue[i] === '.') { numericValue += inputValue[i]; }
+    }
+    return parseFloat(numericValue, 10);
+};
 const transformer = (newFilters, data, config) => {
     if (!data.years) {
         return {};
