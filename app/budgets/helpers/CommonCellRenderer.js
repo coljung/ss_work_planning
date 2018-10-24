@@ -43,10 +43,11 @@ export default function cellValueRenderer(instance, td, row, col, prop, value, c
                 break;
             }
             case 'percentage':
+                instance.setCellMeta(row, col, 'numericFormat', percentageFormat);
                 if (!td.className.includes(' editableRow')) {
                     td.innerHTML = `${Math.round(value * 100) / 100} %`;
                 } else {
-                    td.innerHTML = `<b>${Math.round(value * 100) / 100} %</b>`;
+                    td.innerHTML = `<b> ${Math.round(value * 100) / 100} % </b>`;
                 }
                 break;
 
