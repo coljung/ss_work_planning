@@ -55,11 +55,10 @@ export const emptyCell = (instance, td, row, col) => {
 
     return td;
 };
-export const cleanNumericInput = (newValue) => {
-    const inputValue = newValue;
+export const cleanNumericInput = (value) => {
     let numericValue = '';
-    for (let i = 0; i < inputValue.length; i++) {
-        if (!isNaN(inputValue[i]) || inputValue[i] === '.') { numericValue += inputValue[i]; }
+    for (let i = 0; i < value.length; i++) {
+        if (!isNaN(value[i]) || value[i] === '.') { numericValue += value[i]; }
     }
     return parseFloat(numericValue, 10);
 };
