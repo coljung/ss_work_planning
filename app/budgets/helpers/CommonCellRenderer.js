@@ -47,7 +47,7 @@ export default function cellValueRenderer(instance, td, row, col, prop, value, c
                 if (!td.className.includes(' editableRow')) {
                     td.innerHTML = `${Math.round(value * 100) / 100} %`;
                 } else {
-                    td.innerHTML = `<b> ${Math.round(value * 100) / 100} % </b>`;
+                    td.innerHTML = `<b>${Math.round(value * 100) / 100} %</b>`;
                 }
                 td.classList.add('htRight');
                 break;
