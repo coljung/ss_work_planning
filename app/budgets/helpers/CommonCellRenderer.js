@@ -49,6 +49,7 @@ export default function cellValueRenderer(instance, td, row, col, prop, value, c
                 } else {
                     td.innerHTML = `<b> ${Math.round(value * 100) / 100} % </b>`;
                 }
+                td.classList.add('htRight');
                 break;
 
             case 'number':
