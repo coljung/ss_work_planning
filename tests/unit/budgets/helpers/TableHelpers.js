@@ -9,6 +9,7 @@ import {
     enableEdit,
     disableEdit,
     numericFormat,
+    cleanNumericInput,
     emptyCell } from '../../../../app/budgets/helpers/TableHelpers';
 import i18n from 'i18next';
 
@@ -136,4 +137,19 @@ describe('Helper functions', () => {
         });
     });
 
+    describe('cleanNumericInput', () => {
+
+        it('Should return clean number when alpha numeric input', () => {
+            const result = cleanNumericInput('$2,99');
+
+            expect(result).to.be.equal(299.00);
+        });
+
+        it('Should parse Float number when alpha numeric input', () => {
+            const result = cleanNumericInput('$2,99k300.40');
+
+            expect(result).to.be.equal(299300.40);
+        });
+
+    });
 });
