@@ -45,9 +45,9 @@ export default function cellValueRenderer(instance, td, row, col, prop, value, c
             case 'percentage':
                 instance.setCellMeta(row, col, 'numericFormat', percentageFormat);
                 if (!td.className.includes(' editableRow')) {
-                    td.innerHTML = `${Math.round(value * 100) / 100} %`;
+                    td.innerHTML = `${(+value).toFixed(2)} %`;
                 } else {
-                    td.innerHTML = `<b>${Math.round(value * 100) / 100} %</b>`;
+                    td.innerHTML = `<b>${(+value).toFixed(2)} %</b>`;
                 }
                 td.classList.add('htRight');
                 break;

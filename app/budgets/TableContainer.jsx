@@ -140,7 +140,7 @@ class TableContainer extends Component {
                 let dataToSend;
 
                 if (col[0].includes('_incr')) {
-                    this.resetCell(row, cellEdits[0][1], newValue * 100);
+                    this.resetCell(row, cellEdits[0][1], newValue);
                     const propertyKey = col[0].replace('_incr', '');
                     const keys = this.state.viewData.data[row][propertyKey].key.split('.');
                     let presentYearDataObject;
@@ -169,7 +169,7 @@ class TableContainer extends Component {
                         metric: this.props.data.years[keys[1]].metrics[keys[2]].metric,
                     };
                 } else if (col[0].includes('_contribution')) {
-                    this.resetCell(row, cellEdits[0][1], newValue * 100);
+                    this.resetCell(row, cellEdits[0][1], newValue);
                     const propertyKey = col[0].replace('_contribution', '');
                     const keys = this.state.viewData.data[row][propertyKey].key.split('.');
                     const presentYearDataObject = this.props.data.years[keys[1]].metrics[keys[2]].plans.wp;
