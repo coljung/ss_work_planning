@@ -231,16 +231,14 @@ class TableContainer extends Component {
     setHotTableRef = (element) => {
         if (element) {
             this.hotTableRef = element;
-            if (this.scrollPosTop !== 0 || this.scrollPosLeft !== 0) {
-                // selects cell
-                this.hotTableRef.hotInstance.selectCell(this.row, this.column, this.row, this.column, false, false);
-                // scrolls to exact position
-                const elem = document.getElementsByClassName('wtHolder')[0];
-                elem.scrollTop = this.scrollPosTop;
-                elem.scrollLeft = this.scrollPosLeft;
-                // reset numbers
-                this.resetScroll();
-            }
+            // selects cell
+            this.hotTableRef.hotInstance.selectCell(this.row + 1, this.column - 1, this.row + 1, this.column - 1, false, true);
+            // scrolls to exact position
+            const elem = document.getElementsByClassName('wtHolder')[0];
+            elem.scrollTop = this.scrollPosTop;
+            elem.scrollLeft = this.scrollPosLeft;
+            // reset numbers
+            this.resetScroll();
         }
     };
 
