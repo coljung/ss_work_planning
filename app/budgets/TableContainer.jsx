@@ -259,7 +259,7 @@ class TableContainer extends Component {
             data: `${column}.value`,
             readOnly: false,
             type: 'text',
-            width: column.includes('incr') ? 70 : 120, // Put less space for incr% columns
+            width: column.includes('incr') || column.includes('contribution') ? 70 : 120, // Put less space for % columns
             renderer,
         };
     }
