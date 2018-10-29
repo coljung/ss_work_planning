@@ -1,5 +1,6 @@
 import i18n from 'i18next';
 import _ from 'lodash/fp';
+import Transformer from '../transformer/Transformer';
 
 export const currencyFormat = (decimals = false) => ({
     pattern: {
@@ -70,61 +71,16 @@ const transformer = (newFilters, data, config) => {
         ...plan,
         years: years.slice(0, plan.numberOfHistoricalYears),
     }));
+
+    const viewType = 'topDown';
+    const factory = new Transformer(viewType, data);
+
     return _.flattenDeep(_.intersection(newFilters.selectedMetrics, config.availableMetrics).map(metric =>
         years.map((year) => {
             const row = [];
             selectedPlanTypes.forEach(({ plan, years: planYear }) => {
                 if (planYear.includes(year)) {
-                    const fullSeason = data.years[year].metrics[metric].plans[plan];
-                    const prevFullSeason = data.years[year - 1].metrics[metric].plans[plan];
-
-                    // preMkdwn previous and current year path
-                    const preMkdwn = fullSeason.periods['PRE-MKD'];
-                    const prevPreMkdwn = prevFullSeason.periods['PRE-MKD'];
-
-                    const preMkdwnIncr = ((preMkdwn.value - prevPreMkdwn.value) / prevPreMkdwn.value) * 100;
-                    const fullIncr = ((fullSeason.value - prevFullSeason.value) / prevFullSeason.value) * 100;
-                    const preMkdwnContribution = ((preMkdwn.value || 0) / (fullSeason.value || 0) || 0) * 100;
-                    const isFullIncrement = (isNaN(+fullIncr) || +fullIncr === -Infinity || +fullIncr === Infinity);
-                    const isPreMrkdwnIncr = (isNaN(+preMkdwnIncr) || +preMkdwnIncr === -Infinity || +preMkdwnIncr === Infinity);
-                    const isPreMkdwnContribution = (isNaN(+preMkdwnContribution) || +preMkdwnContribution === -Infinity || +preMkdwnContribution === Infinity);
-                    const isEmptyCellMetric = (metric === 'GmPercentage' || metric === 'SellThrough');
-                    const isEmptyCellPlan = (plan === 'dsrp' && metric !== 'COGS');
-                    row.push({
-                        info: {
-                            metric,
-                            plan,
-                            year,
-                            season: data.season,
-                        },
-                        pre_mkdwn: {
-                            dataType: isEmptyCellPlan ? 'text' : data.years[year].metrics[metric].plans[plan].dataType,
-                            isReadOnly: !preMkdwn.canEdit,
-                            key: preMkdwn.key,
-                            value: isEmptyCellPlan ? ' ' : preMkdwn.value || 0,
-                        },
-                        pre_mkdwn_contribution: {
-                            dataType: isEmptyCellPlan || isEmptyCellMetric ? 'text' : incrDataType,
-                            isReadOnly: isEmptyCellPlan || isEmptyCellMetric ? true : !preMkdwn.canEdit,
-                            value: isEmptyCellPlan || isEmptyCellMetric ? ' ' : isPreMkdwnContribution ? 0 : preMkdwnContribution.toFixed(4),
-                        },
-                        pre_mkdwn_incr: {
-                            dataType: isEmptyCellPlan || isEmptyCellMetric ? 'text' : incrDataType,
-                            isReadOnly: isEmptyCellPlan || isEmptyCellMetric ? true : !preMkdwn.canEdit,
-                            value: isEmptyCellPlan || isEmptyCellMetric ? ' ' : isPreMrkdwnIncr ? 0 : preMkdwnIncr.toFixed(4),
-                        },
-                        full: {
-                            dataType: isEmptyCellPlan ? 'text' : fullSeason.dataType,
-                            isReadOnly: !fullSeason.canEdit,
-                            key: fullSeason.key,
-                            value: isEmptyCellPlan ? ' ' : fullSeason.value || 0,
-                        },
-                        full_incr: {
-                            dataType: isEmptyCellPlan || isEmptyCellMetric ? 'text' : incrDataType,
-                            isReadOnly: isEmptyCellPlan || isEmptyCellMetric ? true : !fullSeason.canEdit,
-                            value: isEmptyCellPlan || isEmptyCellMetric ? ' ' : isFullIncrement ? 0 : fullIncr.toFixed(4),
-                        },
-                    });
+                    row.push(factory.transform(year, metric, plan));
                 }
             });
 
@@ -132,13 +88,23 @@ const transformer = (newFilters, data, config) => {
         })));
 };
 
-
+/**
+ *
+ * @param {object} data Data object viewData from budget/duck/reducers.js
+ * @param {object} filter
+ * @param {object} config
+ */
 export function jsonTransformer(data, filter, config) {
     if (!data) {
         return {
-            info: {},
-            headers: [],
             data: [],
+            headers: [],
+            info: {
+                season: '',
+                year: '',
+                metrics: 0,
+                total: 0,
+            },
         };
     }
 
