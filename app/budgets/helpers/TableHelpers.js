@@ -57,6 +57,8 @@ export const emptyCell = (instance, td, row, col) => {
     return td;
 };
 
+export const cleanNumericInput = value => +String(value).replace(/[^\d.-]/g, '');
+
 const transformer = (newFilters, data, config) => {
     if (!data.years) {
         return {};

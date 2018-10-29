@@ -4,9 +4,8 @@ import i18n from 'i18next';
 import { HotTable } from '@handsontable/react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import LoadingSpinner from '../components/common/LoadingSpinner';
 import commonCellValueRenderer from './helpers/CommonCellRenderer';
-import { jsonTransformer } from './helpers/TableHelpers';
+import { jsonTransformer, cleanNumericInput } from './helpers/TableHelpers';
 import { messages } from '../notifications/NotificationActions';
 
 class TableContainer extends Component {
@@ -129,16 +128,15 @@ class TableContainer extends Component {
             const col = cellEdits[0][1].split('.');
             const cellEditKey = [cellEdits[0][0], cellEdits[0][1]].join('.');
             let prevValue = cellEdits[0][2];
-            const newValue = cellEdits[0][3];
+            let newValue = cellEdits[0][3];
 
             // if user does not enter any text
             if (newValue === '') {
                 this.resetCell(row, cellEdits[0][1], prevValue);
                 return;
             } else if (isNaN(newValue)) {
-                this.resetCell(row, cellEdits[0][1], prevValue);
-                this.props.messages({ content: i18n.t('error.numericOnly'), isError: true });
-                return;
+                newValue = cleanNumericInput(newValue);
+                this.resetCell(row, cellEdits[0][1], newValue);
             }
 
             // handsontable converts to string
@@ -165,7 +163,7 @@ class TableContainer extends Component {
                     prevValue = presentYearDataObject.value;
 
                     // Handle multiply by 0 on `pastYearDataObject.value`
-                    const value = pastYearDataObject.value === 0 ? newValue : (newValue * pastYearDataObject.value) + pastYearDataObject.value;
+                    const value = pastYearDataObject.value === 0 || pastYearDataObject.value === undefined ? newValue : (newValue * pastYearDataObject.value) + pastYearDataObject.value;
 
                     dataToSend = {
                         key: presentYearDataObject.key,
