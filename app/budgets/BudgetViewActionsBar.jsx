@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import i18n from 'i18next';
-import { Button } from 'antd';
+import { Button, Icon } from 'antd';
 import { Link } from 'react-router';
 
 const BudgetViewActionsBar = (props) => {
@@ -9,6 +9,7 @@ const BudgetViewActionsBar = (props) => {
     const redoDisabled = props.viewHistory && !props.isLoading ? props.viewHistory.future.length <= 0 : true;
     return (
         <div className="budgetBtns">
+            {props.isLoading && <Icon type="loading" theme="outlined" style={{ marginRight: 10 }} />}
             <Link to={props.onBack}>
                 <Button title={i18n.t('budgetView.backButton')} icon="arrow-left" />
             </Link>

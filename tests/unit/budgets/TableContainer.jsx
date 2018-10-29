@@ -72,7 +72,7 @@ function setup(state = {}, props = {}) {
 }
 
 describe('Top Down TableContainer', () => {
-    it('Should render loading spinner while loading', () => {
+    it.skip('Should render loading spinner while loading', () => {
         const state = {
             budgetViewReducer: {
                 isBudgetLoading: true,
@@ -85,7 +85,7 @@ describe('Top Down TableContainer', () => {
         expect(wrapper.find(LoadingSpinner)).toHaveLength(1);
     });
 
-    it('Should render loading spinner when no data', () => {
+    it.skip('Should render loading spinner when no data', () => {
         const state = {
             budgetViewReducer: {
                 isBudgetLoading: false,
