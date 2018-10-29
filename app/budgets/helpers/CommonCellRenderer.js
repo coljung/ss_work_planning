@@ -44,12 +44,8 @@ export default function cellValueRenderer(instance, td, row, col, prop, value, c
             }
             case 'percentage':
                 instance.setCellMeta(row, col, 'numericFormat', percentageFormat);
-                if (!td.className.includes(' editableRow')) {
-                    td.innerHTML = `${(+value).toFixed(2)} %`;
-                } else {
-                    td.innerHTML = `<b>${(+value).toFixed(2)} %</b>`;
-                }
-                td.classList.add('htRight');
+                // eslint-disable-next-line prefer-rest-params
+                Handsontable.renderers.NumericRenderer.apply(this, arguments);
                 break;
 
             case 'number':

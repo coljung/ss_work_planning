@@ -77,7 +77,7 @@ plan:
 headers:
   info: Info
   premkdwn: Pre-Mkd
-  premkdwncontribution: Cont%
+  premkdwncontribution: Pre-Mkd Contrib%
   increment: YoY%
   fullseason: Full Season
 error:
