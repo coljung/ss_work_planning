@@ -26,9 +26,14 @@ class TableContainer extends Component {
 
     state = {
         viewData: {
-            headers: [],
-            info: {},
             data: [],
+            headers: [],
+            info: {
+                season: '',
+                year: '',
+                metrics: 0,
+                total: 0,
+            },
         },
     };
 
@@ -273,6 +278,12 @@ class TableContainer extends Component {
             return null;
         }
 
+        // @TODO: This is a quick fix because `this.state.viewData.data` is
+        // sometime an object sometime an array
+        if (!Array.isArray(this.state.viewData.data)) {
+            return null;
+        }
+
         const rowHeaders = this.state.viewData.data.map((row) => {
             const metric = i18n.t(`metric.${row.info.metric}`);
             const season = row.info.season;
@@ -281,10 +292,8 @@ class TableContainer extends Component {
             return `${metric} ${season}${year} ${plan}`;
         });
         const columnInfos = this.createColumnInfos(Object.getOwnPropertyNames(this.state.viewData.data.length ? this.state.viewData.data[0] : []));
-        const refreshLoad = this.props.isDataSpreading ? (<div className="refreshLoad"><LoadingSpinner /></div>) : null;
         return (
             <div className='parentDiv'>
-                {refreshLoad}
                 <HotTable
                     rowHeaderWidth={120}
                     beforeChange={TableContainer.handleBeforeChange}
@@ -313,7 +322,7 @@ class TableContainer extends Component {
     }
 
     render() {
-        const budgetListData = this.props.isBudgetLoading || !this.state.viewData.data.length ? <LoadingSpinner /> : this.buildTable();
+        const budgetListData = this.state.viewData && this.state.viewData.data ? this.buildTable() : null;
 
         return (
             <div>

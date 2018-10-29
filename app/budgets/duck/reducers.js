@@ -16,6 +16,7 @@ export const initialState = {
     viewData: {
         season: '',
         budgetYear: '',
+        years: [],
     },
 };
 
