@@ -283,7 +283,8 @@ class TableContainer extends Component {
 
         // @TODO: This is a quick fix because `this.state.viewData.data` is
         // sometime an object sometime an array
-        if (!Array.isArray(this.state.viewData.data)) {
+        // validata data length otherwise handsontable will create an table with 1 cell
+        if (!Array.isArray(this.state.viewData.data) || !this.state.viewData.data.length) {
             return null;
         }
 
