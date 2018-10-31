@@ -37,7 +37,7 @@ describe('Helper functions', () => {
         it('should return a percentage format', () => {
             expect(percentageFormat).to.be.an('object');
             expect(percentageFormat.pattern.output).to.equal('percent');
-            expect(percentageFormat.pattern.mantissa).to.equal(2);
+            expect(percentageFormat.pattern.mantissa).to.equal(1);
         });
     });
 
