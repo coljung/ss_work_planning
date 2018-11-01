@@ -33,9 +33,7 @@ export default class TopDownTransformer {
                 season: this.data.season,
             },
             pre_mkdwn: {
-                dataType: isEmptyCellPlan
-                    ? 'text'
-                    : this.data.years[year].metrics[metric].plans[plan].dataType,
+                dataType: isEmptyCellPlan ? 'text' : this.data.years[year].metrics[metric].plans[plan].dataType, /* eslint-disable max-len */
                 isReadOnly: !preMkdwn.canEdit,
                 key: preMkdwn.key,
                 value: isEmptyCellPlan ? ' ' : preMkdwn.value || 0,
@@ -43,22 +41,12 @@ export default class TopDownTransformer {
             pre_mkdwn_contribution: {
                 dataType: isEmptyCellPlan || isEmptyCellMetric ? 'text' : 'percentage',
                 isReadOnly: isEmptyCellPlan || isEmptyCellMetric ? true : !preMkdwn.canEdit,
-                value:
-                    isEmptyCellPlan || isEmptyCellMetric
-                        ? ' '
-                        : isPreMkdwnContribution
-                            ? 0
-                            : preMkdwnContribution.toFixed(config.percentageDecimals.edit),
+                value: isEmptyCellPlan || isEmptyCellMetric ? ' ' : isPreMkdwnContribution ? 0 : preMkdwnContribution.toFixed(config.percentageDecimals.edit), /* eslint-disable max-len */
             },
             pre_mkdwn_incr: {
                 dataType: isEmptyCellPlan || isEmptyCellMetric ? 'text' : 'percentage',
                 isReadOnly: isEmptyCellPlan || isEmptyCellMetric ? true : !preMkdwn.canEdit,
-                value:
-                    isEmptyCellPlan || isEmptyCellMetric
-                        ? ' '
-                        : isPreMrkdwnIncr
-                            ? 0
-                            : preMkdwnIncr.toFixed(config.percentageDecimals.edit),
+                value: isEmptyCellPlan || isEmptyCellMetric ? ' ' : isPreMrkdwnIncr ? 0 : preMkdwnIncr.toFixed(config.percentageDecimals.edit), /* eslint-disable max-len */
             },
             full: {
                 dataType: isEmptyCellPlan ? 'text' : fullSeason.dataType,
@@ -69,12 +57,7 @@ export default class TopDownTransformer {
             full_incr: {
                 dataType: isEmptyCellPlan || isEmptyCellMetric ? 'text' : 'percentage',
                 isReadOnly: isEmptyCellPlan || isEmptyCellMetric ? true : !fullSeason.canEdit,
-                value:
-                    isEmptyCellPlan || isEmptyCellMetric
-                        ? ' '
-                        : isFullIncrement
-                            ? 0
-                            : fullIncr.toFixed(config.percentageDecimals.edit),
+                value: isEmptyCellPlan || isEmptyCellMetric ? ' ' : isFullIncrement ? 0 : fullIncr.toFixed(config.percentageDecimals.edit), /* eslint-disable max-len */
             },
         };
     }
