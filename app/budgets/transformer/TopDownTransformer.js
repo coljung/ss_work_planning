@@ -3,7 +3,7 @@ export default class TopDownTransformer {
         this.data = data;
     }
 
-    transform(year, metric, plan) {
+    transform(year, metric, plan, config) {
         const fullSeason = this.data.years[year].metrics[metric].plans[plan];
         const prevFullSeason = this.data.years[year - 1].metrics[metric].plans[plan];
 
@@ -41,12 +41,12 @@ export default class TopDownTransformer {
             pre_mkdwn_contribution: {
                 dataType: isEmptyCellPlan || isEmptyCellMetric ? 'text' : 'percentage',
                 isReadOnly: isEmptyCellPlan || isEmptyCellMetric ? true : !preMkdwn.canEdit,
-                value: isEmptyCellPlan || isEmptyCellMetric ? ' ' : isPreMkdwnContribution ? 0 : preMkdwnContribution.toFixed(6), /* eslint-disable max-len */
+                value: isEmptyCellPlan || isEmptyCellMetric ? ' ' : isPreMkdwnContribution ? 0 : preMkdwnContribution.toFixed(config.percentageDecimals.edit), /* eslint-disable max-len */
             },
             pre_mkdwn_incr: {
                 dataType: isEmptyCellPlan || isEmptyCellMetric ? 'text' : 'percentage',
                 isReadOnly: isEmptyCellPlan || isEmptyCellMetric ? true : !preMkdwn.canEdit,
-                value: isEmptyCellPlan || isEmptyCellMetric ? ' ' : isPreMrkdwnIncr ? 0 : preMkdwnIncr.toFixed(6), /* eslint-disable max-len */
+                value: isEmptyCellPlan || isEmptyCellMetric ? ' ' : isPreMrkdwnIncr ? 0 : preMkdwnIncr.toFixed(config.percentageDecimals.edit), /* eslint-disable max-len */
             },
             full: {
                 dataType: isEmptyCellPlan ? 'text' : fullSeason.dataType,
@@ -57,7 +57,7 @@ export default class TopDownTransformer {
             full_incr: {
                 dataType: isEmptyCellPlan || isEmptyCellMetric ? 'text' : 'percentage',
                 isReadOnly: isEmptyCellPlan || isEmptyCellMetric ? true : !fullSeason.canEdit,
-                value: isEmptyCellPlan || isEmptyCellMetric ? ' ' : isFullIncrement ? 0 : fullIncr.toFixed(6), /* eslint-disable max-len */
+                value: isEmptyCellPlan || isEmptyCellMetric ? ' ' : isFullIncrement ? 0 : fullIncr.toFixed(config.percentageDecimals.edit), /* eslint-disable max-len */
             },
         };
     }
