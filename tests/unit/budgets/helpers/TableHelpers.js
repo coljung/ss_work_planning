@@ -16,28 +16,40 @@ import i18n from 'i18next';
 describe('Helper functions', () => {
     describe('Currency Format', () => {
         it('should return a currency format', () => {
-            const tt = currencyFormat();
-            expect(tt.pattern.output).to.equal('currency');
+            const format = currencyFormat();
+            expect(format.pattern.output).to.equal('currency');
         });
 
         it('should return a currency format with no decimals', () => {
-            const tt = currencyFormat(false);
-            expect(tt.pattern.output).to.equal('currency');
-            expect(tt.pattern.mantissa).to.equal(0);
+            const format = currencyFormat(false);
+            expect(format.pattern.output).to.equal('currency');
+            expect(format.pattern.mantissa).to.equal(0);
         });
 
         it('should return a currency format with two decimal places', () => {
-            const tt = currencyFormat(true);
-            expect(tt.pattern.output).to.equal('currency');
-            expect(tt.pattern.mantissa).to.equal(2);
+            const format = currencyFormat(true);
+            expect(format.pattern.output).to.equal('currency');
+            expect(format.pattern.mantissa).to.equal(2);
+        });
+
+        it('should return a currency format with set decimal places', () => {
+            const format = currencyFormat(false, 3);
+            expect(format.pattern.output).to.equal('currency');
+            expect(format.pattern.mantissa).to.equal(3);
         });
     });
 
     describe('Percentage Format', () => {
         it('should return a percentage format', () => {
-            expect(percentageFormat).to.be.an('object');
-            expect(percentageFormat.pattern.output).to.equal('percent');
-            expect(percentageFormat.pattern.mantissa).to.equal(2);
+            const format = percentageFormat();
+            expect(format.pattern.output).to.equal('percent');
+            expect(format.pattern.mantissa).to.equal(1);
+        });
+
+        it('should return a percentage format with set mantissa', () => {
+            const format = percentageFormat(3);
+            expect(format.pattern.output).to.equal('percent');
+            expect(format.pattern.mantissa).to.equal(3);
         });
     });
 

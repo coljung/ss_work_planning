@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
-import i18n from 'i18next';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
-import { Avatar, Row, Col, Menu } from 'antd';
+import { Row, Col } from 'antd';
 import { budgetViewActions, budgetViewOperations } from './duck';
 import { historyUndo, historyRedo, historyPush } from './history/HistoryActions';
 import BudgetViewActionsBar from './BudgetViewActionsBar';
@@ -12,7 +11,6 @@ import FilterModal from './FilterModal';
 import ViewPicker from './ViewPicker';
 import TableContainer from './TableContainer';
 import { ROUTE_BUDGET, ROUTE_DASHBOARD } from '../constants/routes';
-import { TAB_MEN, TAB_TOTAL, TAB_WOMEN } from '../constants/views';
 
 class BudgetViewsContainer extends Component {
     static propTypes = {
@@ -139,7 +137,7 @@ class BudgetViewsContainer extends Component {
             mimeType: 'text/csv',
             rowDelimiter: '\r\n',
         });
-    }
+    };
 
     render() {
         // make sure config is loaded before moving forward

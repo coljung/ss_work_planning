@@ -3,7 +3,7 @@ export default class TopDownTransformer {
         this.data = data;
     }
 
-    transform(year, metric, plan) {
+    transform(year, metric, plan, config) {
         const fullSeason = this.data.years[year].metrics[metric].plans[plan];
         const prevFullSeason = this.data.years[year - 1].metrics[metric].plans[plan];
 
@@ -48,7 +48,7 @@ export default class TopDownTransformer {
                         ? ' '
                         : isPreMkdwnContribution
                             ? 0
-                            : preMkdwnContribution.toFixed(4),
+                            : preMkdwnContribution.toFixed(config.percentageDecimals.edit),
             },
             pre_mkdwn_incr: {
                 dataType: isEmptyCellPlan || isEmptyCellMetric ? 'text' : 'percentage',
@@ -58,7 +58,7 @@ export default class TopDownTransformer {
                         ? ' '
                         : isPreMrkdwnIncr
                             ? 0
-                            : preMkdwnIncr.toFixed(4),
+                            : preMkdwnIncr.toFixed(config.percentageDecimals.edit),
             },
             full: {
                 dataType: isEmptyCellPlan ? 'text' : fullSeason.dataType,
@@ -74,7 +74,7 @@ export default class TopDownTransformer {
                         ? ' '
                         : isFullIncrement
                             ? 0
-                            : fullIncr.toFixed(4),
+                            : fullIncr.toFixed(config.percentageDecimals.edit),
             },
         };
     }
