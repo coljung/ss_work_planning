@@ -54,12 +54,17 @@ budgetView:
   filter: Filter
   undoButton: Undo
   redoButton: Redo
+  saveButton: Save
   exportButton: Export
   totalTab: Total
   womenTab: Women
   menTab: Men
   notification:
     spreadingFailed: Spreading failed
+  savePlanModal:
+    title: Save Plan
+    saveButton: Save
+    cancelButton: Cancel
 404:
   title: 404!
   description: Page not found

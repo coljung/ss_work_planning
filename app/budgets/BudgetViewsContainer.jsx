@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
-import i18n from 'i18next';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
-import { Avatar, Row, Col, Menu } from 'antd';
+import { Row, Col } from 'antd';
 import { budgetViewActions, budgetViewOperations } from './duck';
 import { historyUndo, historyRedo, historyPush } from './history/HistoryActions';
 import BudgetViewActionsBar from './BudgetViewActionsBar';
@@ -12,7 +11,7 @@ import FilterModal from './FilterModal';
 import ViewPicker from './ViewPicker';
 import TableContainer from './TableContainer';
 import { ROUTE_BUDGET, ROUTE_DASHBOARD } from '../constants/routes';
-import { TAB_MEN, TAB_TOTAL, TAB_WOMEN } from '../constants/views';
+import SavePlanModal from './SavePlanModal';
 
 class BudgetViewsContainer extends Component {
     static propTypes = {
@@ -126,6 +125,8 @@ class BudgetViewsContainer extends Component {
 
     applyFilters = filters => this.props.filterSetup(filters);
 
+    savePlan = () => {};
+
     handleExportFile = () => {
         const view = `${this.props.params.seasonName}_${(this.props.params.tab).toUpperCase()}`;
         const hotInstance = this.tableContainerRef.current.wrappedInstance.hotTableRef;
@@ -171,6 +172,7 @@ class BudgetViewsContainer extends Component {
                             onSave={this.save}
                             onExport={this.handleExportFile}>
                             <FilterModal onSave={this.applyFilters} availableOptions={this.props.config} filters={this.props.filters} />
+                            <SavePlanModal onSave={this.savePlan} disabled={this.props.isBudgetLoading || this.props.isDataSpreading} />
                         </BudgetViewActionsBar>
                     </Col>
                 </Row>
