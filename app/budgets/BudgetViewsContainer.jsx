@@ -115,7 +115,8 @@ class BudgetViewsContainer extends Component {
         return this.changeCellValue(data.dataObject);
     };
 
-    save = () => {
+    save = (revisionPlanType) => {
+        console.log('Saving revision', revisionPlanType);
     };
 
     changeCellValue = dataObject =>
@@ -124,8 +125,6 @@ class BudgetViewsContainer extends Component {
     changeTab = newActiveTab => this.pushRoute(newActiveTab.key);
 
     applyFilters = filters => this.props.filterSetup(filters);
-
-    savePlan = () => {};
 
     handleExportFile = () => {
         const view = `${this.props.params.seasonName}_${(this.props.params.tab).toUpperCase()}`;
@@ -169,10 +168,9 @@ class BudgetViewsContainer extends Component {
                             onBack={ROUTE_DASHBOARD}
                             onUndo={this.undo}
                             onRedo={this.redo}
-                            onSave={this.save}
                             onExport={this.handleExportFile}>
                             <FilterModal onSave={this.applyFilters} availableOptions={this.props.config} filters={this.props.filters} />
-                            <SavePlanModal onSave={this.savePlan} disabled={this.props.isBudgetLoading || this.props.isDataSpreading} />
+                            <SavePlanModal onSave={this.save} disabled={this.props.isBudgetLoading || this.props.isDataSpreading} />
                         </BudgetViewActionsBar>
                     </Col>
                 </Row>

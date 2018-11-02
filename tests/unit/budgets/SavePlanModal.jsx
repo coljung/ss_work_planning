@@ -2,7 +2,7 @@ import i18n from 'i18next';
 import React from 'react';
 import * as sinon from 'sinon';
 import { shallow } from 'enzyme';
-import { Modal, Button } from 'antd';
+import { Modal, Button, Radio } from 'antd';
 import SavePlanModal from '../../../app/budgets/SavePlanModal';
 
 describe('SavePlanModal', () => {
@@ -84,6 +84,9 @@ describe('SavePlanModal', () => {
         // Click the open button
         output.find(Button).first().simulate('click');
 
+        // Select the first radio
+        output.find(Radio.Group).find('.ant-radio-button-input').at(0).simulate('change', { target: { checked: true } });
+
         // Click the save button
         output.find(Modal).find(Button).at(1).simulate('click');
 
@@ -100,11 +103,62 @@ describe('SavePlanModal', () => {
 
         // Click the open button
         output.find(Button).first().simulate('click');
+
+        // Select the first radio
+        output.find(Radio.Group).find('.ant-radio-button-input').at(0).simulate('change', { target: { checked: true } });
+
         expect(output.find(Modal).prop('visible')).toBeTruthy();
 
         // Click the save button
         output.find(Modal).find(Button).at(1).simulate('click');
         expect(output.find(Modal).prop('visible')).toBeFalsy();
+    });
+
+    it('Should pass the selection in save handle', () => {
+        const onSave = jest.fn();
+
+        const output = mount(
+            <SavePlanModal onSave={onSave} />
+        );
+
+        // Click the open button
+        output.find(Button).first().simulate('click');
+
+        // Select the first radio
+        output.find(Radio.Group).find('.ant-radio-button-input').at(0).simulate('change', { target: { checked: true } });
+
+        // Click the save button
+        output.find(Modal).find(Button).at(1).simulate('click');
+
+        expect(onSave).toHaveBeenCalledTimes(1);
+        expect(onSave).toBeCalledWith('op');
+    });
+
+    it('Should disable save button when no selection', () => {
+        const output = mount(
+            <SavePlanModal onSave={jest.fn()} />
+        );
+
+        // Click the open button
+        output.find(Button).first().simulate('click');
+
+        expect(output.find(Modal).find(Button).at(1).prop('disabled')).toBeTruthy();
+    });
+
+    it('Should contain a list of available selections', () => {
+        const output = mount(
+            <SavePlanModal onSave={jest.fn()} />
+        );
+
+        output.find(Button).first().simulate('click');
+
+        const nodes = output.find(Modal).find(Radio.Group).find(Radio.Button);
+        expect(nodes).toHaveLength(4);
+
+        expect(nodes.at(0).prop('value')).toEqual('op');
+        expect(nodes.at(1).prop('value')).toEqual('rp1');
+        expect(nodes.at(2).prop('value')).toEqual('rp2');
+        expect(nodes.at(3).prop('value')).toEqual('rp3');
     });
 
     const setResource = (key) => {

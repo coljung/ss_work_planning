@@ -65,6 +65,11 @@ budgetView:
     title: Save Plan
     saveButton: Save
     cancelButton: Cancel
+    planTypes:
+        op: Original Plan (OP)
+        rp1: Revised Plan (RP1)
+        rp2: Revised Plan (RP2)
+        rp3: Revised Plan (RP3)
 404:
   title: 404!
   description: Page not found
