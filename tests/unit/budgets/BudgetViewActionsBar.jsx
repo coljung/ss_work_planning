@@ -11,6 +11,7 @@ describe('BudgetViewActionsBar', () => {
                 onBack='home'
                 onUndo={jest.fn()}
                 onRedo={jest.fn()}
+                onSave={jest.fn()}
                 onExport={jest.fn()}>
                 <Button icon='up' />
             </BudgetViewsButtonActions>
@@ -29,6 +30,7 @@ describe('BudgetViewActionsBar', () => {
                     onBack={onBack}
                     onUndo={jest.fn()}
                     onRedo={jest.fn()}
+                    onSave={jest.fn()}
                     onExport={jest.fn()} />
             );
 
@@ -49,6 +51,7 @@ describe('BudgetViewActionsBar', () => {
                     onBack='home'
                     onUndo={onUndo}
                     onRedo={jest.fn()}
+                    onSave={jest.fn()}
                     onExport={jest.fn()} />
             );
 
@@ -63,6 +66,7 @@ describe('BudgetViewActionsBar', () => {
                     onBack='home'
                     onUndo={jest.fn()}
                     onRedo={jest.fn()}
+                    onSave={jest.fn()}
                     onExport={jest.fn()}
                     viewHistory={{ past: [{}], future: [] }}
                     isLoading={true} />
@@ -78,6 +82,7 @@ describe('BudgetViewActionsBar', () => {
                     onBack='home'
                     onUndo={jest.fn()}
                     onRedo={jest.fn()}
+                    onSave={jest.fn()}
                     onExport={jest.fn()}
                     viewHistory={null} />
             );
@@ -92,6 +97,7 @@ describe('BudgetViewActionsBar', () => {
                     onBack='home'
                     onUndo={jest.fn()}
                     onRedo={jest.fn()}
+                    onSave={jest.fn()}
                     onExport={jest.fn()}
                     viewHistory={{ past: [], future: [] }} />
             );
@@ -106,6 +112,7 @@ describe('BudgetViewActionsBar', () => {
                     onBack='home'
                     onUndo={jest.fn()}
                     onRedo={jest.fn()}
+                    onSave={jest.fn()}
                     onExport={jest.fn()}
                     viewHistory={{ past: [{}], future: [] }}
                     isLoading={false} />
@@ -123,6 +130,7 @@ describe('BudgetViewActionsBar', () => {
                     onBack='home'
                     onUndo={onUndo}
                     onRedo={jest.fn()}
+                    onSave={jest.fn()}
                     onExport={jest.fn()} />
             );
 
@@ -141,6 +149,7 @@ describe('BudgetViewActionsBar', () => {
                     onBack='home'
                     onUndo={jest.fn()}
                     onRedo={onRedo}
+                    onSave={jest.fn()}
                     onExport={jest.fn()} />
             );
 
@@ -155,6 +164,7 @@ describe('BudgetViewActionsBar', () => {
                     onBack='home'
                     onUndo={jest.fn()}
                     onRedo={jest.fn()}
+                    onSave={jest.fn()}
                     onExport={jest.fn()}
                     viewHistory={{ past: [], future: [{}] }}
                     isLoading={true} />
@@ -170,6 +180,7 @@ describe('BudgetViewActionsBar', () => {
                     onBack='home'
                     onUndo={jest.fn()}
                     onRedo={jest.fn()}
+                    onSave={jest.fn()}
                     onExport={jest.fn()}
                     viewHistory={null} />
             );
@@ -184,6 +195,7 @@ describe('BudgetViewActionsBar', () => {
                     onBack='home'
                     onUndo={jest.fn()}
                     onRedo={jest.fn()}
+                    onSave={jest.fn()}
                     onExport={jest.fn()}
                     viewHistory={{ past: [], future: [] }} />
             );
@@ -198,6 +210,7 @@ describe('BudgetViewActionsBar', () => {
                     onBack='home'
                     onUndo={jest.fn()}
                     onRedo={jest.fn()}
+                    onSave={jest.fn()}
                     onExport={jest.fn()}
                     viewHistory={{ past: [], future: [{}] }}
                     isLoading={false} />
@@ -215,12 +228,79 @@ describe('BudgetViewActionsBar', () => {
                     onBack='home'
                     onUndo={jest.fn()}
                     onRedo={onRedo}
+                    onSave={jest.fn()}
                     onExport={jest.fn()} />
             );
 
             output.find(Button).at(2).simulate('click');
 
             expect(onRedo).toHaveBeenCalledTimes(1);
+        });
+    });
+
+    describe('save button', () => {
+        it('Should have save button', () => {
+            const onSave = jest.fn();
+
+            const output = shallow(
+                <BudgetViewsButtonActions
+                    onBack='home'
+                    onUndo={jest.fn()}
+                    onRedo={jest.fn()}
+                    onSave={onSave}
+                    onExport={jest.fn()} />
+            );
+
+            const button = output.find(Button);
+            expect(button.at(3).prop('icon')).toEqual('save');
+            expect(button.at(3).prop('onClick')).toEqual(onSave);
+        });
+
+        it('Should disable save button on loading', () => {
+            const output = shallow(
+                <BudgetViewsButtonActions
+                    onBack='home'
+                    onUndo={jest.fn()}
+                    onRedo={jest.fn()}
+                    onSave={jest.fn()}
+                    onExport={jest.fn()}
+                    isLoading={true} />
+            );
+
+            const button = output.find(Button);
+            expect(button.at(3).prop('disabled')).toEqual(true);
+        });
+
+        it('Should enable save button when not loading', () => {
+            const output = shallow(
+                <BudgetViewsButtonActions
+                    onBack='home'
+                    onUndo={jest.fn()}
+                    onRedo={jest.fn()}
+                    onSave={jest.fn()}
+                    onExport={jest.fn()}
+                    isLoading={false} />
+            );
+
+            const button = output.find(Button);
+            expect(button.at(3).prop('disabled')).toEqual(false);
+        });
+
+        it('Should execute save callback', () => {
+            const onSave = jest.fn();
+
+            const output = shallow(
+                <BudgetViewsButtonActions
+                    onBack='home'
+                    onUndo={jest.fn()}
+                    onRedo={jest.fn()}
+                    onSave={onSave}
+                    onExport={jest.fn()} />
+            );
+
+            output.find(Button).at(3).simulate('click');
+
+            expect(onSave).toHaveBeenCalledTimes(1);
         });
     });
 
@@ -233,26 +313,28 @@ describe('BudgetViewActionsBar', () => {
                     onBack='home'
                     onUndo={jest.fn()}
                     onRedo={jest.fn()}
+                    onSave={jest.fn()}
                     onExport={onExport} />
             );
 
             const button = output.find(Button);
-            expect(button.at(3).prop('icon')).toEqual('download');
-            expect(button.at(3).prop('onClick')).toEqual(onExport);
+            expect(button.at(4).prop('icon')).toEqual('download');
+            expect(button.at(4).prop('onClick')).toEqual(onExport);
         });
 
-        it('Should disable redo button on loading', () => {
+        it('Should disable export button on loading', () => {
             const output = shallow(
                 <BudgetViewsButtonActions
                     onBack='home'
                     onUndo={jest.fn()}
                     onRedo={jest.fn()}
+                    onSave={jest.fn()}
                     onExport={jest.fn()}
                     isLoading={true} />
             );
 
             const button = output.find(Button);
-            expect(button.at(3).prop('disabled')).toEqual(true);
+            expect(button.at(4).prop('disabled')).toEqual(true);
         });
 
         it('Should enable export button when not loading', () => {
@@ -261,12 +343,13 @@ describe('BudgetViewActionsBar', () => {
                     onBack='home'
                     onUndo={jest.fn()}
                     onRedo={jest.fn()}
+                    onSave={jest.fn()}
                     onExport={jest.fn()}
                     isLoading={false} />
             );
 
             const button = output.find(Button);
-            expect(button.at(3).prop('disabled')).toEqual(false);
+            expect(button.at(4).prop('disabled')).toEqual(false);
         });
 
         it('Should execute export callback', () => {
@@ -277,10 +360,11 @@ describe('BudgetViewActionsBar', () => {
                     onBack='home'
                     onUndo={jest.fn()}
                     onRedo={jest.fn()}
+                    onSave={jest.fn()}
                     onExport={onExport} />
             );
 
-            output.find(Button).at(3).simulate('click');
+            output.find(Button).at(4).simulate('click');
 
             expect(onExport).toHaveBeenCalledTimes(1);
         });

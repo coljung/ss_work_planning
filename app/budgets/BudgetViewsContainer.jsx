@@ -116,6 +116,9 @@ class BudgetViewsContainer extends Component {
         return this.changeCellValue(data.dataObject);
     };
 
+    save = () => {
+    };
+
     changeCellValue = dataObject =>
         this.props.sendDataForSpreading(this.props.params.budgetId, this.props.params.tab, dataObject);
 
@@ -165,6 +168,7 @@ class BudgetViewsContainer extends Component {
                             onBack={ROUTE_DASHBOARD}
                             onUndo={this.undo}
                             onRedo={this.redo}
+                            onSave={this.save}
                             onExport={this.handleExportFile}>
                             <FilterModal onSave={this.applyFilters} availableOptions={this.props.config} filters={this.props.filters} />
                         </BudgetViewActionsBar>
