@@ -43,6 +43,11 @@ export default function cellValueRenderer(instance, td, row, col, prop, value, c
                 break;
             }
             case 'percentage':
+                if (this.state.viewData.data[row].info.metric === 'GmPercentage') {
+                    this.props.config.formattingConfiguration.percentageDecimals.display = 1;
+                } else {
+                    this.props.config.formattingConfiguration.percentageDecimals.display = 0;
+                }
                 instance.setCellMeta(row, col, 'numericFormat', percentageFormat(this.props.config.formattingConfiguration.percentageDecimals.display));
                 // eslint-disable-next-line prefer-rest-params
                 Handsontable.renderers.NumericRenderer.apply(this, arguments);

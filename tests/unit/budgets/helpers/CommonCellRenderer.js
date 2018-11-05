@@ -21,7 +21,7 @@ const createCell = (instance, row, col, data = {}, value = '', state = {}, props
             config: {
                 formattingConfiguration: {
                     percentageDecimals: {
-                        display: 1,
+                        display: 0,
                         edit: 6
                     },
                     currencyDecimals: {
