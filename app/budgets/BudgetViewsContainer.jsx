@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import i18n from 'i18next';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
@@ -12,6 +13,7 @@ import ViewPicker from './ViewPicker';
 import TableContainer from './TableContainer';
 import { ROUTE_BUDGET, ROUTE_DASHBOARD } from '../constants/routes';
 import SavePlanModal from './SavePlanModal';
+import { messages } from '../notifications/NotificationActions';
 
 class BudgetViewsContainer extends Component {
     static propTypes = {
@@ -20,6 +22,8 @@ class BudgetViewsContainer extends Component {
         filters: PropTypes.object.isRequired,
         fetchBudgetConfigData: PropTypes.func.isRequired,
         fetchBudgetMetricData: PropTypes.func.isRequired,
+        savePlan: PropTypes.func.isRequired,
+        messages: PropTypes.func.isRequired,
         getViewExportFile: PropTypes.func.isRequired,
         history: PropTypes.object,
         historyRedo: PropTypes.func.isRequired,
@@ -117,6 +121,11 @@ class BudgetViewsContainer extends Component {
 
     save = (revisionPlanType) => {
         console.log('Saving revision', revisionPlanType);
+
+        this.props.savePlan(revisionPlanType, this.props.params.budgetId).then(() =>
+            this.props.messages({ content: i18n.t('budgetView.savePlanModal.savePlan.success'), response: '', isError: false }),
+        );
+
     };
 
     changeCellValue = dataObject =>
@@ -213,12 +222,14 @@ function mapDispatchToProps(dispatch) {
         fetchBudgetConfigData: budgetViewActions.fetchBudgetConfigData,
         fetchBudgetMetricData: budgetViewActions.fetchBudgetMetricData,
         getViewExportFile: budgetViewOperations.getViewExportFile,
+        savePlan: budgetViewActions.savePlan,
         historyRedo,
         historyUndo,
         historyPush,
         resetState: budgetViewActions.resetState,
         sendDataForSpreading: budgetViewActions.sendDataForSpreading,
         filterSetup: budgetViewActions.filterSetup,
+        messages,
     }, dispatch);
 }
 

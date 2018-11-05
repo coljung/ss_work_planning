@@ -70,6 +70,8 @@ budgetView:
         rp1: Revised Plan (RP1)
         rp2: Revised Plan (RP2)
         rp3: Revised Plan (RP3)
+    savePlan:
+      success: Plan Saved Successfully!
 404:
   title: 404!
   description: Page not found

@@ -48,6 +48,13 @@ function filterSetup(filters) {
     };
 }
 
+function savePlan(planType, budgetId) {
+    return {
+        types: [types.REQUEST_SAVE_PLAN, types.RECEIVE_SAVE_PLAN, types.FAILED_SAVE_PLAN],
+        promise: client => client.post('/planning/budgets/save', { body: { planType, budgetId } }),
+    };
+}
+
 function resetState() {
     return {
         type: types.RESET_BUDGETS_DATA,
@@ -60,5 +67,6 @@ export default {
     fetchBudgetMetricData,
     sendDataForSpreading,
     filterSetup,
+    savePlan,
     resetState,
 };
