@@ -37,6 +37,7 @@ class BudgetViewsContainer extends Component {
         sendDataForSpreading: PropTypes.func.isRequired,
         viewData: PropTypes.object.isRequired,
         filterSetup: PropTypes.func.isRequired,
+        saveBudget: PropTypes.func.isRequired,
         location: PropTypes.object,
     };
 
@@ -55,7 +56,7 @@ class BudgetViewsContainer extends Component {
 
     componentDidMount() {
         // get config data, then fetch metrics based on config
-        this.props.fetchBudgetConfigData().then(({ type, result }) => {
+        this.props.fetchBudgetConfigData(this.props.params.budgetId).then(({ type, result }) => {
             const filter = {
                 selectedMetrics: result.defaultFilters.metrics,
                 selectedPlanTypes: result.defaultFilters.plans,
@@ -148,7 +149,7 @@ class BudgetViewsContainer extends Component {
             mimeType: 'text/csv',
             rowDelimiter: '\r\n',
         });
-    }
+    };
 
     render() {
         // make sure config is loaded before moving forward

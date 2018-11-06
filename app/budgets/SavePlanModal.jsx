@@ -60,7 +60,8 @@ export default class SavePlanModal extends Component {
                     onCancel={this.closeModal}
                     cancelText={i18n.t('budgetView.savePlanModal.cancelButton')}>
                     <Radio.Group value={this.state.selectedPlan}
-                                 onChange={this.handleSelectedPlanChange}>
+                                 onChange={this.handleSelectedPlanChange}
+                                 buttonStyle='solid'>
                         {
                             this.revisedPlanTypes.map(x => (
                                 <Radio.Button key={x} value={x}>{i18n.t(`budgetView.savePlanModal.planTypes.${x}`)}</Radio.Button>

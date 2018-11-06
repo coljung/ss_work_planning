@@ -65,7 +65,6 @@ const transformer = (newFilters, data, config) => {
     }
 
     const years = Object.keys(data.years).sort().slice(1).reverse();
-    const incrDataType = 'percentage';
 
     // find number of years for each plan type
     const selectedPlanTypes = newFilters.selectedPlanTypes.map(plan => ({

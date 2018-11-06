@@ -10,10 +10,10 @@ function requestViewDownload(budgetId, view, filter) {
     };
 }
 
-function fetchBudgetConfigData() {
+function fetchBudgetConfigData(budgetId) {
     return {
         types: [types.REQUEST_BUDGETS_CONFIG_DATA, types.RECEIVE_BUDGETS_CONFIG_DATA, types.FAILED_BUDGETS_CONFIG_DATA],
-        promise: client => client.get('/planning/config'),
+        promise: client => client.get(`/planning/config/${budgetId}`),
     };
 }
 
