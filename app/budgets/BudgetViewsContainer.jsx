@@ -32,12 +32,12 @@ class BudgetViewsContainer extends Component {
         isBudgetLoading: PropTypes.bool.isRequired,
         isDataSpreading: PropTypes.bool.isRequired,
         isRefreshRequired: PropTypes.bool.isRequired,
+        isFullRefreshRequired: PropTypes.bool.isRequired,
         resetState: PropTypes.func.isRequired,
         router: PropTypes.object,
         sendDataForSpreading: PropTypes.func.isRequired,
         viewData: PropTypes.object.isRequired,
         filterSetup: PropTypes.func.isRequired,
-        saveBudget: PropTypes.func.isRequired,
         location: PropTypes.object,
     };
 
@@ -55,18 +55,7 @@ class BudgetViewsContainer extends Component {
     }
 
     componentDidMount() {
-        // get config data, then fetch metrics based on config
-        this.props.fetchBudgetConfigData(this.props.params.budgetId).then(({ type, result }) => {
-            const filter = {
-                selectedMetrics: result.defaultFilters.metrics,
-                selectedPlanTypes: result.defaultFilters.plans,
-            };
-            this.applyFilters(filter);
-            this.getMetricData(
-                this.props.params.budgetId,
-                this.props.params.tab,
-            );
-        });
+        this.refreshEverything();
     }
 
     componentWillUnmount() {
@@ -82,7 +71,24 @@ class BudgetViewsContainer extends Component {
                 plans: nextProps.filters.selectedPlanTypes,
             };
             this.getMetricData(nextProps.params.budgetId, nextProps.params.tab, filters);
+        } else if (nextProps.isFullRefreshRequired && nextProps.isFullRefreshRequired !== this.props.isFullRefreshRequired) {
+            this.refreshEverything();
         }
+    }
+
+    refreshEverything = () => {
+        // get config data, then fetch metrics based on config
+        this.props.fetchBudgetConfigData(this.props.params.budgetId).then(({ type, result }) => {
+            const filter = {
+                selectedMetrics: result.defaultFilters.metrics,
+                selectedPlanTypes: result.defaultFilters.plans,
+            };
+            this.applyFilters(filter);
+            this.getMetricData(
+                this.props.params.budgetId,
+                this.props.params.tab,
+            );
+        });
     }
 
     getMetricData(budgetId, tab, filters = { metrics: null, plans: null }) {
@@ -211,6 +217,7 @@ function mapStateToProps(state) {
         isBudgetLoading: budgetViewReducer.isBudgetLoading,
         isDataSpreading: budgetViewReducer.isDataSpreading,
         isRefreshRequired: budgetViewReducer.isRefreshRequired,
+        isFullRefreshRequired: budgetViewReducer.isFullRefreshRequired,
         viewData: budgetViewReducer.viewData,
     };
 }
