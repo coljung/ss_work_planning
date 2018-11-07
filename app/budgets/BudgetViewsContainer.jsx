@@ -55,7 +55,18 @@ class BudgetViewsContainer extends Component {
     }
 
     componentDidMount() {
-        this.refreshEverything();
+        // get config data, then fetch metrics based on config
+        this.props.fetchBudgetConfigData(this.props.params.budgetId).then(({ type, result }) => {
+            const filter = {
+                selectedMetrics: result.defaultFilters.metrics,
+                selectedPlanTypes: result.defaultFilters.plans,
+            };
+            this.applyFilters(filter);
+            this.getMetricData(
+                this.props.params.budgetId,
+                this.props.params.tab,
+            );
+        });
     }
 
     componentWillUnmount() {
@@ -72,23 +83,19 @@ class BudgetViewsContainer extends Component {
             };
             this.getMetricData(nextProps.params.budgetId, nextProps.params.tab, filters);
         } else if (nextProps.isFullRefreshRequired && nextProps.isFullRefreshRequired !== this.props.isFullRefreshRequired) {
-            this.refreshEverything();
+            // get config data, then fetch metrics based on config
+            this.props.fetchBudgetConfigData(this.props.params.budgetId).then(() => {
+                const filter = {
+                    selectedMetrics: this.props.filters.selectedMetrics,
+                    selectedPlanTypes: this.props.filters.selectedPlanTypes,
+                };
+                this.applyFilters(filter);
+                this.getMetricData(
+                    this.props.params.budgetId,
+                    this.props.params.tab,
+                );
+            });
         }
-    }
-
-    refreshEverything = () => {
-        // get config data, then fetch metrics based on config
-        this.props.fetchBudgetConfigData(this.props.params.budgetId).then(({ type, result }) => {
-            const filter = {
-                selectedMetrics: result.defaultFilters.metrics,
-                selectedPlanTypes: result.defaultFilters.plans,
-            };
-            this.applyFilters(filter);
-            this.getMetricData(
-                this.props.params.budgetId,
-                this.props.params.tab,
-            );
-        });
     }
 
     getMetricData(budgetId, tab, filters = { metrics: null, plans: null }) {
