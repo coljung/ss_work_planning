@@ -311,6 +311,7 @@ class TableContainer extends Component {
                     observeChanges={true}
                     persistentState={true}
                     ref={this.setHotTableRef}
+                    undo={false}
                     id='hot'
                     root='hot'
                     viewportColumnRenderingOffset={20}
