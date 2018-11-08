@@ -16,8 +16,9 @@ describe('Budget view action creators', () => {
     });
 
     it('Should handle fetchBudgetConfigData', async () => {
+        const budget = 1;
         nock(UI_PLANNING_HOST)
-            .get('/api/planning/config')
+            .get(`/api/planning/config/${budget}`)
             .reply(200, []);
 
         const expectedActions = [
@@ -27,7 +28,7 @@ describe('Budget view action creators', () => {
 
         const store = mockStore({});
 
-        await store.dispatch(actions.fetchBudgetConfigData());
+        await store.dispatch(actions.fetchBudgetConfigData(budget));
 
         expect(store.getActions()).toEqual(expectedActions);
     });
@@ -55,7 +56,7 @@ describe('Budget view action creators', () => {
                  result : response,
                  type :  'RECEIVE_BUDGETS_DATA',
                  view : 'total',
-            }]
+            }];
 
         const store = mockStore({});
 

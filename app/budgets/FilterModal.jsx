@@ -120,17 +120,20 @@ export default class FilterModal extends Component {
             label: i18n.t(`filterModal.filters.years.${x}`),
             value: x,
         }));
-        const footer = <div>
-            <div className="note" >{ this.state.isModalActive && (!this.state.metricCheckedList.length || !this.state.planCheckedList.length) ? i18n.t('filterModal.note') : ' '}</div>
+        const footer =
+        <div>
+            { this.state.isModalActive && (!this.state.metricCheckedList.length || !this.state.planCheckedList.length) &&
+                <div className="note" >
+                    {i18n.t('filterModal.note')}
+                </div>
+            }
             <span>
-                <Button onClick={this.closeModal}
-                >
+                <Button onClick={this.closeModal}>
                     {i18n.t('filterModal.cancelButton')}
                 </Button>
                 <Button onClick={this.handleSave}
                         type='primary'
-                        disabled={ !this.state.metricCheckedList.length || !this.state.planCheckedList.length }
-                >
+                        disabled={ !this.state.metricCheckedList.length || !this.state.planCheckedList.length }>
                         {i18n.t('filterModal.saveButton')}
                 </Button>
             </span>

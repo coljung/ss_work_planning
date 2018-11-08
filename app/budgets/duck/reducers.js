@@ -12,6 +12,7 @@ export const initialState = {
     isBudgetLoading: false,
     isDataSpreading: false,
     isRefreshRequired: false,
+    isFullRefreshRequired: false,
     view: null,
     viewData: {
         season: '',
@@ -35,6 +36,7 @@ const budgetViewReducer = (state = initialState, action) => {
                 ...state,
                 isBudgetLoading: true,
                 isRefreshRequired: false,
+                isFullRefreshRequired: false,
             };
 
         case types.RECEIVE_BUDGETS_DATA:
@@ -57,6 +59,13 @@ const budgetViewReducer = (state = initialState, action) => {
                 ...state,
                 isDataSpreading: false,
                 isRefreshRequired: true,
+            };
+
+        case types.RECEIVE_SAVE_PLAN:
+        case types.FAILED_SAVE_PLAN:
+            return {
+                ...state,
+                isFullRefreshRequired: true,
             };
 
         case types.SET_FILTER_SETUP:

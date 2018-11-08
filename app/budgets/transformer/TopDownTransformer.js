@@ -4,8 +4,13 @@ export default class TopDownTransformer {
     }
 
     transform(year, metric, plan, config) {
+        let comparisonPlan = plan;
+        if (['op', 'rp1', 'rp2', 'rp3'].includes(plan)) {
+            comparisonPlan = 'wp';
+        }
+
         const fullSeason = this.data.years[year].metrics[metric].plans[plan];
-        const prevFullSeason = this.data.years[year - 1].metrics[metric].plans[plan];
+        const prevFullSeason = this.data.years[year - 1].metrics[metric].plans[comparisonPlan];
 
         // preMkdwn previous and current year path
         const preMkdwn = fullSeason.periods['PRE-MKD'];

@@ -241,7 +241,7 @@ describe('BudgetViewActionsBar', () => {
             expect(button.at(3).prop('onClick')).toEqual(onExport);
         });
 
-        it('Should disable redo button on loading', () => {
+        it('Should disable export button on loading', () => {
             const output = shallow(
                 <BudgetViewsButtonActions
                     onBack='home'

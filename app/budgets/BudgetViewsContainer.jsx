@@ -1,3 +1,4 @@
+import i18n from 'i18next';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
@@ -11,6 +12,8 @@ import FilterModal from './FilterModal';
 import ViewPicker from './ViewPicker';
 import TableContainer from './TableContainer';
 import { ROUTE_BUDGET, ROUTE_DASHBOARD } from '../constants/routes';
+import SavePlanModal from './SavePlanModal';
+import { messages } from '../notifications/NotificationActions';
 
 class BudgetViewsContainer extends Component {
     static propTypes = {
@@ -19,6 +22,8 @@ class BudgetViewsContainer extends Component {
         filters: PropTypes.object.isRequired,
         fetchBudgetConfigData: PropTypes.func.isRequired,
         fetchBudgetMetricData: PropTypes.func.isRequired,
+        savePlan: PropTypes.func.isRequired,
+        messages: PropTypes.func.isRequired,
         getViewExportFile: PropTypes.func.isRequired,
         history: PropTypes.object,
         historyRedo: PropTypes.func.isRequired,
@@ -27,6 +32,7 @@ class BudgetViewsContainer extends Component {
         isBudgetLoading: PropTypes.bool.isRequired,
         isDataSpreading: PropTypes.bool.isRequired,
         isRefreshRequired: PropTypes.bool.isRequired,
+        isFullRefreshRequired: PropTypes.bool.isRequired,
         resetState: PropTypes.func.isRequired,
         router: PropTypes.object,
         sendDataForSpreading: PropTypes.func.isRequired,
@@ -50,7 +56,7 @@ class BudgetViewsContainer extends Component {
 
     componentDidMount() {
         // get config data, then fetch metrics based on config
-        this.props.fetchBudgetConfigData().then(({ type, result }) => {
+        this.props.fetchBudgetConfigData(this.props.params.budgetId).then(({ type, result }) => {
             const filter = {
                 selectedMetrics: result.defaultFilters.metrics,
                 selectedPlanTypes: result.defaultFilters.plans,
@@ -76,6 +82,19 @@ class BudgetViewsContainer extends Component {
                 plans: nextProps.filters.selectedPlanTypes,
             };
             this.getMetricData(nextProps.params.budgetId, nextProps.params.tab, filters);
+        } else if (nextProps.isFullRefreshRequired && nextProps.isFullRefreshRequired !== this.props.isFullRefreshRequired) {
+            // get config data, then fetch metrics based on config
+            this.props.fetchBudgetConfigData(this.props.params.budgetId).then(() => {
+                const filter = {
+                    selectedMetrics: this.props.filters.selectedMetrics,
+                    selectedPlanTypes: this.props.filters.selectedPlanTypes,
+                };
+                this.applyFilters(filter);
+                this.getMetricData(
+                    this.props.params.budgetId,
+                    this.props.params.tab,
+                );
+            });
         }
     }
 
@@ -112,6 +131,12 @@ class BudgetViewsContainer extends Component {
         const data = this.props.historyRedo(tab);
 
         return this.changeCellValue(data.dataObject);
+    };
+
+    save = (revisionPlanType) => {
+        this.props.savePlan(revisionPlanType, this.props.params.budgetId).then(() =>
+            this.props.messages({ content: i18n.t('budgetView.savePlanModal.savePlan.success'), response: '', isError: false }),
+        );
     };
 
     changeCellValue = dataObject =>
@@ -165,6 +190,7 @@ class BudgetViewsContainer extends Component {
                             onRedo={this.redo}
                             onExport={this.handleExportFile}>
                             <FilterModal onSave={this.applyFilters} availableOptions={this.props.config} filters={this.props.filters} />
+                            <SavePlanModal onSave={this.save} disabled={this.props.isBudgetLoading || this.props.isDataSpreading} existingPlans={this.props.config.availablePlans} />
                         </BudgetViewActionsBar>
                     </Col>
                 </Row>
@@ -198,6 +224,7 @@ function mapStateToProps(state) {
         isBudgetLoading: budgetViewReducer.isBudgetLoading,
         isDataSpreading: budgetViewReducer.isDataSpreading,
         isRefreshRequired: budgetViewReducer.isRefreshRequired,
+        isFullRefreshRequired: budgetViewReducer.isFullRefreshRequired,
         viewData: budgetViewReducer.viewData,
     };
 }
@@ -207,12 +234,14 @@ function mapDispatchToProps(dispatch) {
         fetchBudgetConfigData: budgetViewActions.fetchBudgetConfigData,
         fetchBudgetMetricData: budgetViewActions.fetchBudgetMetricData,
         getViewExportFile: budgetViewOperations.getViewExportFile,
+        savePlan: budgetViewActions.savePlan,
         historyRedo,
         historyUndo,
         historyPush,
         resetState: budgetViewActions.resetState,
         sendDataForSpreading: budgetViewActions.sendDataForSpreading,
         filterSetup: budgetViewActions.filterSetup,
+        messages,
     }, dispatch);
 }
 

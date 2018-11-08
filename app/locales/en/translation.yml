@@ -42,6 +42,10 @@ filterModal:
       SellThrough: ST%
     plans:
       wp: Working Plan (WP)
+      op: Original Plan (OP)
+      rp1: Revised Plan (RP1)
+      rp2: Revised Plan (RP2)
+      rp3: Revised Plan (RP3)
       dsrp: Forecast (Fct)
       achd: Actuals (Act)
     years:
@@ -54,12 +58,25 @@ budgetView:
   filter: Filter
   undoButton: Undo
   redoButton: Redo
+  saveButton: Save
   exportButton: Export
   totalTab: Total
   womenTab: Women
   menTab: Men
   notification:
     spreadingFailed: Spreading failed
+  savePlanModal:
+    title: Save Plan
+    saveButton: Confirm
+    cancelButton: Cancel
+    existingPlanSelected: "Warning: This action will override existing {{plan}}"
+    planTypes:
+        op: Original Plan (OP)
+        rp1: Revised Plan (RP1)
+        rp2: Revised Plan (RP2)
+        rp3: Revised Plan (RP3)
+    savePlan:
+      success: Plan Saved Successfully!
 404:
   title: 404!
   description: Page not found
@@ -72,6 +89,10 @@ metric:
   SellThrough: ST%
 plan:
   wp: (WP)
+  op: (OP)
+  rp1: (RP1)
+  rp2: (RP2)
+  rp3: (RP3)
   dsrp: (Fct)
   achd: (Act)
 headers:
