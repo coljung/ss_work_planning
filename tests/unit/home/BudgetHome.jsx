@@ -4,6 +4,9 @@ import Adapter from 'enzyme-adapter-react-16';
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
 import configureMockStore from 'redux-mock-store';
+import { createToggle } from '@mathdoy/toggle';
+import { ToggleProvider } from '@mathdoy/toggle-react';
+import { createToggleQuerystring } from '@mathdoy/toggle-querystring';
 import BudgetHome, { BudgetHome as PureBudgetHome } from '../../../app/home/BudgetHome';
 import * as sinon from 'sinon';
 import i18n from 'i18next';
@@ -47,10 +50,26 @@ function setup(state = {}) {
 
     let store = mockStore(initialState);
 
+    const toggleQuerystring = createToggleQuerystring({
+        // Query string parameter
+        param: 'features',
+        // Default features
+        features: {
+            createBudget: true,
+            saveAs: true,
+        },
+    });
+
+    const toggle = createToggle({
+        features: toggleQuerystring(window ? window.location.search : ''),
+    });
+
     const enzymeWrapper = mount(
-        <Provider store={store}>
-            <BudgetHome {...props} />
-        </Provider>
+        <ToggleProvider toggle={toggle}>
+            <Provider store={store}>
+                <BudgetHome {...props} />
+            </Provider>
+        </ToggleProvider>
     );
 
     return {
@@ -79,6 +98,9 @@ function setupPureComponent() {
             query: {
                 create: 'yes'
             }
+        },
+        toggle: {
+            isEnabled: () => false,
         },
     };
 
@@ -226,6 +248,7 @@ describe('BudgetHome', () => {
         const { enzymeWrapper } = setupPureComponent();
 
         enzymeWrapper.setState({ showCreate: true });
+        enzymeWrapper.setProps({ toggle: { isEnabled: () => true } });
 
         const spy = jest.spyOn(enzymeWrapper.props(), 'createBudget');
 
