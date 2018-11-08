@@ -4,6 +4,8 @@ import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Row, Col } from 'antd';
+import compose from 'recompose/compose';
+import { withToggle, togglePropType } from '@mathdoy/toggle-react';
 import { homeActions } from './duck';
 import Board from '../components/Board';
 import BudgetList from './BudgetList';
@@ -26,6 +28,7 @@ export class BudgetHome extends Component {
         budgetCreateFetched: PropTypes.bool.isRequired,
         messages: PropTypes.func.isRequired,
         location: PropTypes.object.isRequired,
+        toggle: togglePropType.isRequired,
     };
 
     state = {
@@ -77,13 +80,14 @@ export class BudgetHome extends Component {
     );
 
     render() {
+        const { toggle } = this.props;
         return (
             <Row>
                 <Col xs={12}>
                     <Board title={i18n.t('home.budgetsDashboard')} style={{ paddingTop: '25px' }}>
                         <div>
                             { this.renderBudgetList() }
-                            { this.state.showCreate && this.renderCreateButton() }
+                            { toggle.isEnabled('createBudget') && this.renderCreateButton() }
                         </div>
                     </Board>
                 </Col>
@@ -112,4 +116,7 @@ function mapDispatchToProps(dispatch) {
     }, dispatch);
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(BudgetHome);
+export default compose(
+    connect(mapStateToProps, mapDispatchToProps),
+    withToggle(),
+)(BudgetHome);
