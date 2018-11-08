@@ -6,11 +6,13 @@ import { Modal, Button, Radio } from 'antd';
 export default class SavePlanModal extends Component {
     static propTypes = {
         onSave: PropTypes.func.isRequired,
+        existingPlans: PropTypes.array.isRequired,
     };
 
     state = {
         isModalActive: false,
         selectedPlan: null,
+        isExistingPlanSelected: false,
     };
 
     revisedPlanTypes = [
@@ -23,6 +25,7 @@ export default class SavePlanModal extends Component {
     handleSelectedPlanChange = (selection) => {
         this.setState({
             selectedPlan: selection.target.value,
+            isExistingPlanSelected: this.props.existingPlans.includes(selection.target.value),
         });
     };
 
@@ -36,6 +39,7 @@ export default class SavePlanModal extends Component {
         this.setState({
             selectedPlan: null,
             isModalActive: false,
+            isExistingPlanSelected: false,
         });
     };
 
@@ -43,10 +47,30 @@ export default class SavePlanModal extends Component {
         this.setState({
             selectedPlan: null,
             isModalActive: true,
+            isExistingPlanSelected: false,
         });
     };
 
     render() {
+        const footer =
+        <div>
+            {this.state.isExistingPlanSelected &&
+                <div className="note">
+                    {i18n.t('budgetView.savePlanModal.existingPlanSelected', { plan: i18n.t(`budgetView.savePlanModal.planTypes.${this.state.selectedPlan}`) })}
+                </div>
+            }
+            <span>
+                <Button onClick={this.closeModal}>
+                    {i18n.t('budgetView.savePlanModal.cancelButton')}
+                </Button>
+                <Button onClick={this.handleSave}
+                        type='primary'
+                        disabled={ !this.state.selectedPlan }>
+                        {i18n.t('budgetView.savePlanModal.saveButton')}
+                </Button>
+            </span>
+        </div>;
+
         return (
             <span>
                 <Modal
@@ -54,11 +78,8 @@ export default class SavePlanModal extends Component {
                     visible={this.state.isModalActive}
                     className='save-plan-modal'
                     width={400}
-                    onOk={this.handleSave}
-                    okText={i18n.t('budgetView.savePlanModal.saveButton')}
-                    okButtonProps={{ disabled: !this.state.selectedPlan }}
                     onCancel={this.closeModal}
-                    cancelText={i18n.t('budgetView.savePlanModal.cancelButton')}>
+                    footer={footer}>
                     <Radio.Group value={this.state.selectedPlan}
                                  onChange={this.handleSelectedPlanChange}
                                  buttonStyle='solid'>

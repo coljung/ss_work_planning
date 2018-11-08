@@ -327,6 +327,29 @@ describe('FilterModal', () => {
         expect(output.find(Modal).find(Button).at(1).prop('disabled')).toBeTruthy();
     });
 
+    it('Should show error message when no checked Metrics', () => {
+        setResource('filterModal.filters.plans.plan1');
+        setResource('filterModal.filters.metrics.metric1');
+
+        const metricFilters = ['metric1'];
+        const planFilters = ['plan1'];
+
+        const output = mount(
+            <FilterModal
+                onSave={jest.fn()}
+                filters={{ selectedMetrics: metricFilters, selectedPlanTypes: createOptions(...planFilters) }}
+                availableOptions={{ availableMetrics: metricFilters, availablePlans: planFilters }} />
+        );
+
+        // Click the open button
+        output.find(Button).first().simulate('click');
+
+        // Unselect nodes
+        output.find(Modal).find(Checkbox.Group).at(0).find('.ant-checkbox-input').at(0).simulate('change', { target: { checked: false } });
+
+        expect(output.find(Modal).find('.note').exists()).toBeTruthy();
+    });
+
     it('Should disable save button when no checked plans', () => {
         setResource('filterModal.filters.plans.plan1');
         setResource('filterModal.filters.metrics.metric1');
@@ -348,6 +371,29 @@ describe('FilterModal', () => {
         output.find(Modal).find(Checkbox).at(1).find('.ant-checkbox-input').at(0).simulate('change', { target: { checked: false } });
 
         expect(output.find(Modal).find(Button).at(1).prop('disabled')).toBeTruthy();
+    });
+
+    it('Should show error message when no checked plans', () => {
+        setResource('filterModal.filters.plans.plan1');
+        setResource('filterModal.filters.metrics.metric1');
+
+        const metricFilters = ['metric1'];
+        const planFilters = ['plan1'];
+
+        const output = mount(
+            <FilterModal
+                onSave={jest.fn()}
+                filters={{ selectedMetrics: metricFilters, selectedPlanTypes: createOptions(...planFilters) }}
+                availableOptions={{ availableMetrics: metricFilters, availablePlans: planFilters }} />
+        );
+
+        // Click the open button
+        output.find(Button).first().simulate('click');
+
+        // Unselect nodes
+        output.find(Modal).find(Checkbox).at(1).find('.ant-checkbox-input').at(0).simulate('change', { target: { checked: false } });
+
+        expect(output.find(Modal).find('.note').exists()).toBeTruthy();
     });
 
     it('Should contain a list of available metrics', () => {

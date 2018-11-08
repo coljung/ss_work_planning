@@ -69,6 +69,7 @@ budgetView:
     title: Save Plan
     saveButton: Confirm
     cancelButton: Cancel
+    existingPlanSelected: "Warning: This action will override existing {{plan}}"
     planTypes:
         op: Original Plan (OP)
         rp1: Revised Plan (RP1)

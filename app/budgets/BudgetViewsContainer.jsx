@@ -190,7 +190,7 @@ class BudgetViewsContainer extends Component {
                             onRedo={this.redo}
                             onExport={this.handleExportFile}>
                             <FilterModal onSave={this.applyFilters} availableOptions={this.props.config} filters={this.props.filters} />
-                            <SavePlanModal onSave={this.save} disabled={this.props.isBudgetLoading || this.props.isDataSpreading} />
+                            <SavePlanModal onSave={this.save} disabled={this.props.isBudgetLoading || this.props.isDataSpreading} existingPlans={this.props.config.availablePlans} />
                         </BudgetViewActionsBar>
                     </Col>
                 </Row>
