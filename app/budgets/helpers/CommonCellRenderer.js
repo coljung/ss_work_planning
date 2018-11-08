@@ -37,13 +37,18 @@ export default function cellValueRenderer(instance, td, row, col, prop, value, c
 
         switch (metricInformation.dataType) {
             case 'currency': {
-                instance.setCellMeta(row, col, 'numericFormat', currencyFormat(this.props.useDecimals));
+                instance.setCellMeta(row, col, 'numericFormat', currencyFormat(this.props.useDecimals, this.props.config.formattingConfiguration.currencyDecimals.display));
                 // eslint-disable-next-line prefer-rest-params
                 Handsontable.renderers.NumericRenderer.apply(this, arguments);
                 break;
             }
             case 'percentage':
-                instance.setCellMeta(row, col, 'numericFormat', percentageFormat);
+                if (this.state.viewData.data[row].info.metric === 'GmPercentage') {
+                    this.props.config.formattingConfiguration.percentageDecimals.display = 1;
+                } else {
+                    this.props.config.formattingConfiguration.percentageDecimals.display = 0;
+                }
+                instance.setCellMeta(row, col, 'numericFormat', percentageFormat(this.props.config.formattingConfiguration.percentageDecimals.display));
                 // eslint-disable-next-line prefer-rest-params
                 Handsontable.renderers.NumericRenderer.apply(this, arguments);
                 break;

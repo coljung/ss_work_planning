@@ -2,22 +2,22 @@ import i18n from 'i18next';
 import _ from 'lodash/fp';
 import Transformer from '../transformer/Transformer';
 
-export const currencyFormat = (decimals = false) => ({
+export const currencyFormat = (decimals = false, currencyDecimals = 0) => ({
     pattern: {
         output: 'currency',
-        mantissa: decimals ? 2 : 0,
+        mantissa: decimals ? 2 : currencyDecimals,
         thousandSeparated: true,
     },
     culture: 'en-US',
 });
 
-export const percentageFormat = {
+export const percentageFormat = (percentageDecimals = 1) => ({
     pattern: {
         output: 'percent',
-        mantissa: 1,
+        mantissa: percentageDecimals,
         spaceSeparated: true,
     },
-};
+});
 
 export const numericFormat = {
     pattern: {
@@ -74,13 +74,14 @@ const transformer = (newFilters, data, config) => {
 
     const viewType = 'topDown';
     const factory = new Transformer(viewType, data);
+    const formattingConfiguration = config.formattingConfiguration;
 
     return _.flattenDeep(_.intersection(newFilters.selectedMetrics, config.availableMetrics).map(metric =>
         years.map((year) => {
             const row = [];
             selectedPlanTypes.forEach(({ plan, years: planYear }) => {
                 if (planYear.includes(year)) {
-                    row.push(factory.transform(year, metric, plan));
+                    row.push(factory.transform(year, metric, plan, formattingConfiguration));
                 }
             });
 

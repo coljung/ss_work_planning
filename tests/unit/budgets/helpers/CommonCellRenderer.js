@@ -3,7 +3,7 @@ import * as sinon from 'sinon';
 import i18n from 'i18next';
 import Handsontable from 'handsontable';
 import cellValueRenderer from '../../../../app/budgets/helpers/CommonCellRenderer';
-import { percentageFormat, numericFormat } from '../../../../app/budgets/helpers/TableHelpers';
+import { numericFormat, percentageFormat } from '../../../../app/budgets/helpers/TableHelpers';
 
 const createCell = (instance, row, col, data = {}, value = '', state = {}, props = {}, info = { year: 2018, season: 'SS' }) => {
     const stateContainer = {
@@ -18,6 +18,18 @@ const createCell = (instance, row, col, data = {}, value = '', state = {}, props
         },
         props: {
             ...props,
+            config: {
+                formattingConfiguration: {
+                    percentageDecimals: {
+                        display: 0,
+                        edit: 6
+                    },
+                    currencyDecimals: {
+                        display: 0,
+                        edit: 2
+                    }
+                }
+            }
         },
     };
 
@@ -156,7 +168,6 @@ describe('Common view cell rendering', () => {
 
         expect(spy.called).to.equal(true);
         expect(spy.getCall(0).args[2]).to.equal('numericFormat');
-        expect(spy.getCall(0).args[3]).to.equal(percentageFormat);
     });
 
     it('should return numeric cell based on data type', () => {
