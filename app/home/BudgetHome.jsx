@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Row, Col } from 'antd';
-import compose from 'recompose/compose';
+import { compose } from 'recompose';
 import { withToggle, togglePropType } from '@mathdoy/toggle-react';
 import { homeActions } from './duck';
 import Board from '../components/Board';
@@ -118,5 +118,5 @@ function mapDispatchToProps(dispatch) {
 
 export default compose(
     connect(mapStateToProps, mapDispatchToProps),
-    withToggle(),
+    withToggle,
 )(BudgetHome);
