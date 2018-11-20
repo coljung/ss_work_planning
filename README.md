@@ -13,6 +13,5 @@ Before test in locally :
    
 ```NODE_ENV=test```
 
-
 ## Static Build
 
