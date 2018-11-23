@@ -25,7 +25,6 @@ const toggleQuerystring = createToggleQuerystring({
     // Default features
     features: {
         createBudget: false,
-        saveAs: false,
     },
 });
 
