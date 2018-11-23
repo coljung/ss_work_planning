@@ -134,9 +134,14 @@ class BudgetViewsContainer extends Component {
     };
 
     save = (revisionPlanType) => {
-        this.props.savePlan(revisionPlanType, this.props.params.budgetId).then(() =>
-            this.props.messages({ content: i18n.t('budgetView.savePlanModal.savePlan.success'), response: '', isError: false }),
-        );
+        this.props.savePlan(revisionPlanType, this.props.params.budgetId).then((res) => {
+            const message = res.result ? i18n.t('budgetView.savePlanModal.savePlan.success') : i18n.t('budgetView.savePlanModal.savePlan.failed');
+            this.props.messages({
+                content: message,
+                response: '',
+                isError: !res.result,
+            });
+        });
     };
 
     changeCellValue = dataObject =>
