@@ -56,7 +56,6 @@ function setup(state = {}) {
         // Default features
         features: {
             createBudget: true,
-            saveAs: true,
         },
     });
 
