@@ -5,7 +5,6 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import { Row, Col } from 'antd';
-import { Toggle } from '@mathdoy/toggle-react';
 import { budgetViewActions, budgetViewOperations } from './duck';
 import { historyUndo, historyRedo, historyPush } from './history/HistoryActions';
 import BudgetViewActionsBar from './BudgetViewActionsBar';
@@ -191,9 +190,7 @@ class BudgetViewsContainer extends Component {
                             onRedo={this.redo}
                             onExport={this.handleExportFile}>
                             <FilterModal onSave={this.applyFilters} availableOptions={this.props.config} filters={this.props.filters} />
-                            <Toggle isEnabled="saveAs">
-                                <SavePlanModal onSave={this.save} disabled={this.props.isBudgetLoading || this.props.isDataSpreading} existingPlans={this.props.config.availablePlans} />
-                            </Toggle>
+                            <SavePlanModal onSave={this.save} disabled={this.props.isBudgetLoading || this.props.isDataSpreading} existingPlans={this.props.config.availablePlans} />
                         </BudgetViewActionsBar>
                     </Col>
                 </Row>
