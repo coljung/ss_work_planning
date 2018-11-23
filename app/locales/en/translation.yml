@@ -76,7 +76,8 @@ budgetView:
         rp2: Revised Plan (RP2)
         rp3: Revised Plan (RP3)
     savePlan:
-      success: Plan Saved Successfully!
+      success: Plan saved successfully!
+      failed: Plan save failed!
 404:
   title: 404!
   description: Page not found
